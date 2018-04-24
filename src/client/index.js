@@ -17,6 +17,6 @@ const history = createBrowserHistory({
 hydrate(
 	<Provider store={store}>
 		<Router history={history}>
-			<AppSwitcher pathname={history.location.pathname}/>
+			<AppSwitcher/>
 		</Router>
 	</Provider>, document.querySelector(".root"));

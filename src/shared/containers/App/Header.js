@@ -6,5 +6,6 @@ const Header = styled.header`
 	background: ${style.darkLilac};
 	width: 100%;
 	height: 50px;
+	box-shadow: 0px 30px 30px black;
 `;
 export default Header;

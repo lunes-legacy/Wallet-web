@@ -28,7 +28,7 @@ app.get('*', (req, res) => {
 		let html = renderToString(sheet.collectStyles(
 			<Provider store={store}>
 				<StaticRouter location={req.url} context={{}}>
-					<AppSwitcher pathname={req.url}/>
+					<AppSwitcher/>
 				</StaticRouter>
 			</Provider>
 		));
@@ -48,12 +48,12 @@ const render = (html, styleTags) => {
 		<html>
 			<head>
 				<meta name="viewport" content="width=device-width, initial-scale=1">
-				<link rel="stylesheet" type="text/css" href="css/style.css"/>
+				<link rel="stylesheet" type="text/css" href="/css/style.css"/>
 				${styleTags}
 			</head>
 			<body>
 				<div class="root">${html}</div>
-				<script src="bundle.js" refer></script>
+				<script src="/bundle.js" refer></script>
 			</body>
 		</html>
 	`;

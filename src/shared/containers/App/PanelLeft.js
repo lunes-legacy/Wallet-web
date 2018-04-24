@@ -6,7 +6,6 @@ const PanelLeft = styled.div`
 	background: ${styles.normalLilac2};
 	width: 30%;
 	height: 100%;
-	float: left;
 `;
 
 export default PanelLeft;

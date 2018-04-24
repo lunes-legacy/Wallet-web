@@ -1,6 +1,8 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link as TmpLink } from 'react-router-dom';
 
-export let Link = styled(Link)`
+import { LinkBase } from './LinkBase';
+
+export let Link = styled(TmpLink)`
 	${LinkBase}
 `;
