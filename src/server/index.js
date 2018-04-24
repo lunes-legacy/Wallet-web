@@ -4,10 +4,12 @@ import { renderToString } from 'react-dom/server';
 import { Provider }       from 'react-redux';
 import { StaticRouter, Router } from 'react-router';
 import express            from 'express';
+import { ServerStyleSheet } from 'styled-components'
 
 import { errorPattern } from 'Utils/functions';
 import { store }        from 'Stores/store';
-import App              from 'Containers/App';
+import App              from 'Containers/App/index';
+import AppSwitcher      from 'Containers/AppSwitcher';
 
 const app = express();
 
@@ -20,17 +22,18 @@ app.use((req, res, next) => {
 	);
 	next();
 });
-
 app.get('*', (req, res) => {
+	let sheet = new ServerStyleSheet();
 	try {
-		let html = renderToString(
+		let html = renderToString(sheet.collectStyles(
 			<Provider store={store}>
 				<StaticRouter location={req.url} context={{}}>
-					<App/>
+					<AppSwitcher pathname={req.url}/>
 				</StaticRouter>
 			</Provider>
-		);
-		res.send(render(html));
+		));
+		let styleTags = sheet.getStyleTags();
+		res.send(render(html, styleTags));
 	} catch(err) {
 		console.log(errorPattern(err));
 	}
@@ -39,11 +42,15 @@ app.listen(3000, () => {
 	console.log('Server is running on port 3000');
 });
 
-const render = (html) => {
+const render = (html, styleTags) => {
 	return `
 		<!DOCTYPE html>
 		<html>
-			<head></head>
+			<head>
+				<meta name="viewport" content="width=device-width, initial-scale=1">
+				<link rel="stylesheet" type="text/css" href="css/style.css"/>
+				${styleTags}
+			</head>
 			<body>
 				<div class="root">${html}</div>
 				<script src="bundle.js" refer></script>

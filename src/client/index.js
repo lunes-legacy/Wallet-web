@@ -1,20 +1,22 @@
+require('dotenv').load();
 import React                    from 'react';
-import { hydrate }              from 'react-dom';
+import { hydrate }          from 'react-dom';
 import { Provider }             from 'react-redux';
-import { Router }               from 'react-router';
+import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 import App from 'Containers/App';
+import AppSwitcher from 'Containers/AppSwitcher';
 
 import { store } from 'Stores/store';
 
 const history = createBrowserHistory({
-	basename: '/'
+	basename: process.env.BROWSER_HISTORY_BASENAME
 });
 
 hydrate(
 	<Provider store={store}>
 		<Router history={history}>
-			<App/>
+			<AppSwitcher pathname={history.location.pathname}/>
 		</Router>
 	</Provider>, document.querySelector(".root"));

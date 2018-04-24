@@ -1,0 +1,38 @@
+* {
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: Roboto, sans-serif;
+	font-weight: 100;
+}
+*::-webkit-scrollbar {
+	border-radius: 10px; /*It wont works, but it need to be here*/
+	/*background: yellow;*/
+	width: 7px;
+}
+*::-webkit-scrollbar-track {
+	border-radius: 10px;
+	background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background: #725C98;
+}
+.root {
+	height: 100vh;
+}
+.app {
+	height: 100vh;
+	max-height: calc(100vh - 50px);
+	position: relative;
+}
+.main-container {
+	width: 70%;
+	height: 100%;
+	float: left;
+}
+
+/*.text {	font-family: Roboto, sans-serif; }
+.text-center  { text-align: center; }
+.text-right   { text-align: center; }
+.text-justify { text-align: justify; }*/

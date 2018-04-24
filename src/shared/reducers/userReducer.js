@@ -1,11 +1,9 @@
-
-
 let initialState = { 
-	status:'pending',
+	status: 'initial',
 	logged: false
 }
 const userReducer = (state = initialState, action) => {
-	if (action.type === 'USER_LOGIN') {
+	if (action.type === 'USER_LOGIN_PENDING') {
 		return {
 			status: 'pending',
 			logged: false
@@ -22,10 +20,37 @@ const userReducer = (state = initialState, action) => {
 			message: action.payload,
 			logged: false
 		}
+	} else if (action.type === 'USER_CREATE_PENDING') {
+		return {
+			status: 'pending',
+			logged: false
+		}
+	} else if (action.type === 'USER_CREATE_FULFILLED') {
+		return {
+			status: 'fulfilled',
+			token: action.payload,
+			logged: true
+		}
+	} else if (action.type === 'USER_CREATE_REJECTED') {
+		return {
+			status: 'rejected',
+			logged: false
+		}
+	} else if (action.type === 'USER_RESET_PENDING') {
+		return {
+			status: 'pending'
+		}
+	} else if (action.type === 'USER_RESET_FULFILLED') {
+		return {
+			status: 'fulfilled',
+			result: action.payload
+		}
+	} else if (action.type === 'USER_RESET_REJECTED') {
+		return {
+			status: 'rejected'
+		}
 	}
 	return state;
 }
 
-export {
-	userReducer
-}
+export default userReducer;

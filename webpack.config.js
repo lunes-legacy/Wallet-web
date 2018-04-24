@@ -6,6 +6,9 @@ let client = {
 		path: __dirname+'/public/',
 		filename: 'bundle.js'
 	},
+	node: {
+		fs: 'empty'
+	},
 	mode: 'development',
 	module: {
 		rules: [
@@ -14,7 +17,7 @@ let client = {
 				loader: 'babel-loader',
 				exclude: /(node_modules)/,
 				query: {
-					presets: ['es2015', 'react']
+					presets: ['env', 'react', 'stage-0']
 				}
 			}
 		]
@@ -40,7 +43,7 @@ let server = {
 				loader: 'babel-loader',
 				exclude: /(node_modules)/,
 				query: {
-					presets: ['es2015', 'react']
+					presets: ['env', 'react', 'stage-0']
 				}
 			}
 		]
@@ -55,7 +58,9 @@ let alias = {
 	Containers: __dirname+'/src/shared/containers/',
 	Components: __dirname+'/src/shared/components/',
 	Stores: __dirname+'/src/shared/stores',
-	Utils: __dirname+'/src/shared/utils'
+	Utils: __dirname+'/src/shared/utils',
+	Shared: __dirname+'/src/shared/',
+	Auth: __dirname+'/src/shared/auth/',
 };
 server.resolve = {
 	alias
