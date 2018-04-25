@@ -9,7 +9,7 @@ import { createBrowserHistory } from 'history';
 
 //COMPONENTS
 import Login            from 'Containers/User/Login/index';
-import Home             from 'Containers/Home/index';
+import Portfolio        from 'Containers/Portfolio/index';
 import Wallet           from 'Containers/Wallet/index';
 //SUB-COMPONENTS
 import { Link }         from 'Components/Link';
@@ -42,8 +42,8 @@ class App extends React.Component {
 					</PanelLeft>
 					<PanelRight>
 						<Switch>
-							<Route exact path={"/app/"} component={Home}/>
-							<Route exact path={"/app/home"} component={Home}/>
+							<Route exact path={"/app/"} component={Portfolio}/>
+							<Route exact path={"/app/home"} component={Portfolio}/>
 							<Route exact path={"/app/wallet"} component={Wallet}/>
 						</Switch>
 					</PanelRight>
