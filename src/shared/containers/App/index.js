@@ -23,8 +23,23 @@ let Panels = styled.div`
 	width: 100%;
 	height: 100%;
 	display: flex;
-`;
+	flex-flow: wrap;
 
+	@media (min-width: 768px) {
+		flex-flow: nowrap;
+	}
+`;
+let WrapApp = styled.div`
+	width: 100%;
+	height: 100vh;
+	max-height: 100vh;
+	max-width: 100vw;
+	overflow: hidden;
+	position: relative;
+`;
+let CustomLink = Link.extend`
+	text-align: center;
+`;
 class App extends React.Component {
 	componentDidMount() {
 		console.log(this.props, "APP");
@@ -33,12 +48,12 @@ class App extends React.Component {
 	}
 	render() {
 		return(
-			<div className={"app"}>
+			<WrapApp>
 				<Header/>
 				<Panels>
 					<PanelLeft>
-						<Link to={"/app/home"}>Home</Link> <br/>
-						<Link to={"/app/wallet"}>Wallet</Link>
+						<CustomLink to={"/app/home"}>Home</CustomLink>
+						<CustomLink to={"/app/wallet"}>Wallet</CustomLink>
 					</PanelLeft>
 					<PanelRight>
 						<Switch>
@@ -48,7 +63,7 @@ class App extends React.Component {
 						</Switch>
 					</PanelRight>
 				</Panels>
-			</div>
+			</WrapApp>
 		);
 	}
 }

@@ -2,6 +2,7 @@ import { css } from 'styled-components';
 import style from 'Shared/style-variables';
 
 export let TextBase = css`
+	font-size: 1.8rem;
 	${props => {
 		if (props.clNormalGreen) {
 			return 'color: '+style.normalGreen;
@@ -21,6 +22,11 @@ export let TextBase = css`
 	${props => {
 		if (props.margin) {
 			return 'margin: '+props.margin+';';
+		}
+	}}
+	${props => {
+		if (props.size && props.size.indexOf('rem') !== -1) {
+			return `font-size: ${props.size}`;
 		}
 	}}
 `;

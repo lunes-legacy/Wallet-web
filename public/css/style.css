@@ -3,6 +3,7 @@
 	margin: 0px;
 	box-sizing: border-box;
 	font-family: Roboto, sans-serif;
+	font-size: 10px; /*BASE TO REM*/
 	font-weight: 100;
 }
 *::-webkit-scrollbar {
@@ -21,11 +22,11 @@
 .root {
 	height: 100vh;
 }
-.app {
+/*.app {
 	height: 100vh;
 	max-height: calc(100vh - 50px);
 	position: relative;
-}
+}*/
 .main-container {
 	width: 70%;
 	height: 100%;

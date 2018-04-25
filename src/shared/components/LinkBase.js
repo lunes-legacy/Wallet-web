@@ -1,10 +1,11 @@
 import { css }       from 'styled-components';
-import { Textbase }  from './TextBase';
+
+import { TextBase }  from './TextBase';
 import { BlockBase } from './BlockBase';
 
 
 export let LinkBase = css`
-	${Textbase}
+	${TextBase}
 	${BlockBase}
 	text-decoration: none;
 	color: white;
