@@ -40,6 +40,16 @@ export const toggleScaleX = ({element, visible, hidden}) => {
 		element.setAttribute('state', 'visible');
 	}
 }
+export const toggleScaleY = ({element, visible, hidden}) => {
+	let state = element.getAttribute('state');
+	if (state === 'visible') {
+		element.style.transform = `scaleY(${hidden})`;
+		element.setAttribute('state', 'hidden');
+	} else {
+		element.style.transform = `scaleY(${visible})`;
+		element.setAttribute('state', 'visible');
+	}
+}
 export const visibilityAllChildren = ({element, value}) => {
 	let children = element.children;
 	Array.from(children).map((child) => {

@@ -5,6 +5,7 @@ import { users } from 'lunes-lib';
 import { toggleScaleX, toggleWidth } from 'Utils/ui';
 
 import { TextBase } from 'Components/TextBase';
+import { Text }     from 'Components/Text';
 
 let Panels = styled.div`
 	width: 100%;
@@ -174,7 +175,7 @@ let CoinControl = styled.div`
 	box-shadow: 0 3px 5px rgba(0,0,0,.2);
 `;
 let WrapAmount = styled.div`
-
+	
 `;
 let Amount     = styled.div`
 	${TextBase}
@@ -227,7 +228,80 @@ let ReceiveCoin = styled.div`
 	color: white;
 	border-radius: 20px;
 `;
+//PANEL RIGHT ____ HISTORY
+let Histories = styled.div`
+	width: 100%;
+	padding: 50px 0 0 0;
+	overflow-x: auto;
+`;
+let History = styled.div`
+	width: 100%;
+	border-bottom: 1px solid black;
+`;
+let HistoryHead = styled.div`
+	width: 100%;
+	display: flex;
+	padding: 10px 0 10px 0;
+`;
+let HistoryHeadStatus = styled.div`
+	padding: 0 50px 0 50px;
+`;
+let HeadStatusIcon = styled.div`
+	width: 20px;
+	height: 20px;
+	background: ${style.normalRed};
+	display: block;
+	margin: 0 auto;
+`;
+let HeadStatusDate = styled.div`
+	${TextBase}
+	color: white;
+	text-align: center;
+	font-size: 1.5rem;
+`;
+let HistoryHeadText = styled.div`
+	${TextBase}
+	color: white;
+	display: flex;
+	align-items: center;
+`;
+let HistoryHeadAmount = styled.div`
+	${TextBase}
+	color: white;
+	margin-left: auto;
+	display: flex;
+	flex-flow: nowrap;
+	padding: 0 20px 0 0;
+`;
+let HeadAmountCoin = styled.div`
+	${TextBase}
+	color: white;
+	padding: 0 20px 0 0;
+`;
+let HeadAmountMoney = styled.div`
+	${TextBase}
+	color: white;
+`;
+let HistoryContent = styled.div`
+	width: 100%;
+	display: flex;
+	flex-flow: wrap;
+	padding: 0 20px 0 20px;
 
+	transform: scaleY(0);
+
+	transition: transform 0.3s;
+`;
+let HistoryContentItem = styled.div`
+	${TextBase}
+	width: 50%;
+	padding: 0 0 20px 0;
+`;
+let TextBold = Text.extend`
+	${TextBase}
+	font-weight: bold;
+	display: inline-block;
+`;
 
 export default class Wallet extends React.Component {
 	componentDidMount() {
@@ -246,6 +320,15 @@ export default class Wallet extends React.Component {
 			element: panelLeftEl,
 			visible: '31.6666%', 
 			hidden: '0px'
+		});
+	}
+	handleToggleHistory = (event) => {
+		let historyEl = event.currentTarget.parentElement;
+		let historyContentEl = historyEl.querySelector(':nth-child(2)');
+		toggleScaleY({
+			element: historyContentEl,
+			visible: '1',
+			hidden: '0'
 		});
 	}
 	render() {
@@ -304,6 +387,41 @@ export default class Wallet extends React.Component {
 							<ReceiveCoin>Receber</ReceiveCoin>
 						</WrapButtons>
 					</CoinControl>
+
+					<Histories>
+						<History>
+							<HistoryHead onClick={this.handleToggleHistory}>
+								<HistoryHeadStatus>
+									<HeadStatusIcon/>
+									<HeadStatusDate>
+										25/05/2018
+									</HeadStatusDate>
+								</HistoryHeadStatus>
+								<HistoryHeadText>
+									Enviado 2 horas atrás
+								</HistoryHeadText>
+								<HistoryHeadAmount>
+									<HeadAmountCoin>
+										-0.00000002
+									</HeadAmountCoin>
+									<HeadAmountMoney>
+										(R$ 1,00)
+									</HeadAmountMoney>
+								</HistoryHeadAmount>
+							</HistoryHead>
+							<HistoryContent>
+								<HistoryContentItem clWhite>
+									Enviado: <TextBold>0.00000002 BTC ($ 2.00)</TextBold>
+								</HistoryContentItem>
+								<HistoryContentItem clWhite>
+									Transaction ID: <TextBold>a123ae456d54f564c654b4a564e</TextBold>
+								</HistoryContentItem>
+								<HistoryContentItem clWhite>
+									Data: Segunda-feira, <TextBold>25/04/2018</TextBold>
+								</HistoryContentItem>
+							</HistoryContent>
+						</History>
+					</Histories>
 				</PanelRight>
 			</Panels>
 		);

@@ -3,6 +3,7 @@ import style from 'Shared/style-variables';
 
 export let TextBase = css`
 	font-size: 1.8rem;
+	display: block;
 	${props => {
 		if (props.clNormalGreen) {
 			return 'color: '+style.normalGreen;

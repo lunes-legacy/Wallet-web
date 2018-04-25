@@ -34,7 +34,8 @@ let WrapApp = styled.div`
 	height: 100vh;
 	max-height: 100vh;
 	max-width: 100vw;
-	overflow: hidden;
+	overflow-x: hidden;
+	overflow-y: auto;
 	position: relative;
 `;
 let CustomLink = Link.extend`
