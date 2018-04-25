@@ -4,7 +4,7 @@ import styles from 'Shared/style-variables';
 
 const PanelLeft = styled.div`
 	background: ${styles.normalLilac2};
-	width: 30%;
+	width: 10%;
 	height: 100%;
 `;
 
