@@ -1,7 +1,7 @@
 const HardSourcePlugin = require('hard-source-webpack-plugin');
 
 let client = {
-	entry: __dirname+'/src/client/index.js',
+	entry: ['babel-polyfill',__dirname+'/src/client/index.js'],
 	output: {
 		path: __dirname+'/public/',
 		filename: 'bundle.js'
@@ -17,7 +17,7 @@ let client = {
 				loader: 'babel-loader',
 				exclude: /(node_modules)/,
 				query: {
-					presets: ['env', 'react', 'stage-0']
+					presets: ['es2015', 'env', 'react', 'stage-0']
 				}
 			}
 		]
@@ -28,7 +28,7 @@ let client = {
 };
 
 let server = {
-	entry: __dirname+'/src/server/index.js',
+	entry: ['babel-polyfill',__dirname+'/src/server/index.js'],
 	target: 'node',
 	output: {
 		path: __dirname+'/src/server/bundle/',
@@ -43,7 +43,7 @@ let server = {
 				loader: 'babel-loader',
 				exclude: /(node_modules)/,
 				query: {
-					presets: ['env', 'react', 'stage-0']
+					presets: ['es2015', 'env', 'react', 'stage-0']
 				}
 			}
 		]
@@ -61,6 +61,7 @@ let alias = {
 	Utils: __dirname+'/src/shared/utils',
 	Shared: __dirname+'/src/shared/',
 	Auth: __dirname+'/src/shared/auth/',
+	Classes: __dirname+'/src/shared/classes/'
 };
 server.resolve = {
 	alias

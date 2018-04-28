@@ -1,13 +1,10 @@
-import React      from 'react';
-import { users }   from 'lunes-lib';
-import { connect } from 'react-redux';
-import { Link }    from 'react-router-dom';
-//style
-import styled     from 'styled-components';
-import style      from 'Shared/style-variables';
-//PARTICULAR COMPONENTS
-import PanelLeft  from './PanelLeft';
-import PanelRight from './PanelRight';
+import React          from 'react';
+import { users }      from 'lunes-lib';
+import { connect }    from 'react-redux';
+import { Link }       from 'react-router-dom';
+import styled         from 'styled-components';
+import style          from 'Shared/style-variables';
+import { UserClass }  from 'Classes/User';
 //COMPONENTS
 import { Form }       from 'Components/Form';
 import { FormGroup }  from 'Components/FormGroup';
@@ -17,7 +14,9 @@ import { H1 }         from 'Components/H1';
 import { H2 }         from 'Components/H2';
 import { H3 }         from 'Components/H3';
 import { Logo }       from 'Components/Logo';
-import { checkAuth }  from 'Auth/index';
+//PRIVATE COMPONENTS
+import PanelLeft      from './PanelLeft';
+import PanelRight     from './PanelRight';
 
 let WrapPhrases = styled.div`
 	width: 100%;
@@ -35,6 +34,9 @@ let CustomLink = styled(Link)`
 	${props => props.margin ? 'margin: '+props.margin+';' : '' }
 `;
 class Login extends React.Component {
+	componentDidUpdate() {
+		this.handleStatus();
+	}
 	handleLogin = (event) => {
 		event.preventDefault();
 		let emailEl = document.querySelector('.login-email');
@@ -43,9 +45,6 @@ class Login extends React.Component {
 		let email     = emailEl.value;
 		let password  = passEl.value;
 		this.props.userLogin(email, password);
-	}
-	componentDidUpdate() {
-		this.handleStatus();
 	}
 	handleStatus() {
 		let statusEl   = document.querySelector('.js-status');
@@ -104,9 +103,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		userLogin: (email, password) => {
+			let user = new UserClass;
 			dispatch({
 				type: 'USER_LOGIN',
-				payload: users.login({email, password})
+				payload: user.login({email, password})
 			});
 		}
 	}

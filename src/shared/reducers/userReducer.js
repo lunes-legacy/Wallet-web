@@ -9,15 +9,18 @@ const userReducer = (state = initialState, action) => {
 			logged: false
 		};
 	} else if (action.type === 'USER_LOGIN_FULFILLED') {
+		// EX: action.payload {
+		// 	data: {_id:'id',accessToken:'accTok', ...}
+		// }
 		return {
 			status: 'fulfilled',
-			token: action.payload,
+			data: action.payload,
 			logged: true
 		}
 	} else if (action.type === 'USER_LOGIN_REJECTED') {
 		return {
 			status: 'rejected',
-			message: action.payload,
+			error: action.payload,
 			logged: false
 		}
 	} else if (action.type === 'USER_CREATE_PENDING') {
@@ -28,7 +31,7 @@ const userReducer = (state = initialState, action) => {
 	} else if (action.type === 'USER_CREATE_FULFILLED') {
 		return {
 			status: 'fulfilled',
-			token: action.payload,
+			data: action.payload,
 			logged: true
 		}
 	} else if (action.type === 'USER_CREATE_REJECTED') {

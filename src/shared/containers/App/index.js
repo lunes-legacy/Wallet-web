@@ -37,6 +37,10 @@ let WrapApp = styled.div`
 	overflow-x: hidden;
 	overflow-y: auto;
 	position: relative;
+
+	& > * {
+		overflow-y: auto;
+	}
 `;
 let CustomLink = Link.extend`
 	text-align: center;
