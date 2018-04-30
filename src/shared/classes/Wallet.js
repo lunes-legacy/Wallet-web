@@ -54,6 +54,9 @@ export class WalletClass {
 			}
 	*/
 	getBalance = async (user) => {
+		if (typeof user === 'string') {
+			user = JSON.parse(user);
+		}
 		try {
 			let coinsPrice = await this.getCoinsPrice([
 				{fromSymbol: 'BTC', toSymbol: 'BRL,USD'},
@@ -92,7 +95,7 @@ export class WalletClass {
 			}
 			return balance;
 		} catch(err) {
-			return errorPattern('Error on get balance',500,'WALLET_GETBALANCE_ERROR', err);
+			throw errorPattern('Error on get balance',500,'WALLET_GETBALANCE_ERROR', err);
 		}
 	}
 

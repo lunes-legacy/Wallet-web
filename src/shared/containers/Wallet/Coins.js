@@ -100,6 +100,8 @@ class Coins extends React.Component {
 					(() => {
 						if (!coinsPrice || !balance) {
 							return <Loading/>;
+						} else if (!balance.btc) {
+							return <H1>Moeda(BTC) não encontrada</H1>;
 						}
 						let components = [];
 						//EX: coinKey = 'btc';

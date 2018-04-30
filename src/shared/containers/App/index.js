@@ -13,6 +13,8 @@ import Portfolio        from 'Containers/Portfolio/index';
 import Wallet           from 'Containers/Wallet/index';
 //SUB-COMPONENTS
 import { Link }         from 'Components/Link';
+import { TextBase }     from 'Components/TextBase';
+import { Text }         from 'Components/Text';
 import Header           from './Header';
 import PanelLeft        from './PanelLeft';
 import PanelRight       from './PanelRight';
@@ -42,24 +44,43 @@ let WrapApp = styled.div`
 		overflow-y: auto;
 	}
 `;
-let CustomLink = Link.extend`
-	text-align: center;
+let WrapLogo = styled.div`
+	padding: 0 50px 0 50px;
+`;
+let Logo = styled.img`
+	width: 100px;
+`;
+let WrapBalance = styled.div`
+	margin-left: auto;
+	padding: 0 50px 0 50px;
+`;
+let Balance = styled.div`
+	${TextBase}
 `;
 class App extends React.Component {
 	componentDidMount() {
-		console.log(this.props, "APP");
 	}
 	componentDidUpdate() {
 	}
 	render() {
 		return(
 			<WrapApp>
-				<Header/>
+				<Header>
+					<WrapLogo>
+						<Logo src={'/img/logo.svg'}/>
+					</WrapLogo>
+					<WrapBalance>
+						<Balance>
+							<Text clWhite txLight txInline >Balance: </Text>
+							<Text clNormalGreen txBold txInline >LNS </Text> 
+							<Text clWhite txBold txInline >1,300.00</Text>
+						</Balance>
+						<Text clNormalGreen txBold txRight size={'1.6rem'}>$ 130.00</Text>
+					</WrapBalance>
+				</Header>
 				<Panels>
-					<PanelLeft>
-						<CustomLink to={"/app/home"}>Home</CustomLink>
-						<CustomLink to={"/app/wallet"}>Wallet</CustomLink>
-					</PanelLeft>
+					<PanelLeft/>
+					
 					<PanelRight>
 						<Switch>
 							<Route exact path={"/app/"} component={Portfolio}/>

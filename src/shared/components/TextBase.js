@@ -30,4 +30,20 @@ export let TextBase = css`
 			return `font-size: ${props.size}`;
 		}
 	}}
+	${props => {
+		if (props.txBold) {
+			return 'font-weight: bold;';
+		} else if (props.txLight) {
+			return 'font-weight: 100;';
+		} else if (props.txNormal) {
+			return 'font-weight: 300;';
+		}
+	}}
+	${props => {
+		if (props.txInline) {
+			return 'display: inline;';
+		} else if (props.txInlineBlock){
+			return 'display: inline-block;';
+		}
+	}}
 `;

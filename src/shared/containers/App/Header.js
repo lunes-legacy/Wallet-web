@@ -7,5 +7,8 @@ const Header = styled.header`
 	width: 100%;
 	height: 85px;
 	box-shadow: 0px 30px 30px black;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
 `;
 export default Header;

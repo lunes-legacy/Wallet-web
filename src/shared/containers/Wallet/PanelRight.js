@@ -202,6 +202,12 @@ let TextBold = Text.extend`
 	font-weight: bold;
 	display: inline-block;
 `;
+let StyledPanelRight = styled.div`
+	position: relative;
+	background: ${style.normalLilac};
+	width: 100%;
+	height: 100%;
+`;
 class PanelRight extends React.Component {
 	constructor(props) {
 		super(props);
@@ -224,7 +230,7 @@ class PanelRight extends React.Component {
 	componentDidMount = async() => {
 		let wallet = new WalletClass;
 		let result = await wallet.getHistory({address: undefined, accessToken: undefined});
-		console.log(result, "RESULT");
+		console.log(result, "WALLET_PANELRIGHT_HISTORY");
 	}
 	render() {
 		let coinPrice;
@@ -241,7 +247,7 @@ class PanelRight extends React.Component {
 			return <H1>PROBLEMA NO SEGUNDO IF</H1>;
 		}
 		return (
-			<div>
+			<StyledPanelRight>
 				<CoinStatus>
 					<CoinDetails>
 						<CoinDetailsName>
@@ -311,16 +317,10 @@ class PanelRight extends React.Component {
 						</HistoryContent>
 					</History>
 				</Histories>
-			</div>
+			</StyledPanelRight>
 		);
 	}
 }
-let styledPanelRight = styled(PanelRight)`
-	position: relative;
-	background: ${style.normalLilac};
-	width: 100%;
-	height: 100%;
-`;
 const mapStateToProps = (state) => {
 	return {
 		wallet: state.wallet
@@ -331,6 +331,4 @@ const mapDispatchToProps = (dispatch) => {
 
 	}
 }
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(styledPanelRight);;
+export default connect(mapStateToProps, mapDispatchToProps)(PanelRight);;

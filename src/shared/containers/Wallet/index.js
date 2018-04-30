@@ -8,7 +8,7 @@ import { coins }       from 'lunes-lib';
 import CookieClass     from 'Classes/Cookie';
 import { toggleScaleX, toggleWidth } from 'Utils/ui';
 import { WalletClass } from 'Classes/Wallet';
-import { UserClass }   from 'Classes/User';
+import UserClass   from 'Classes/User';
 
 
 //COMPONENTS
@@ -65,19 +65,28 @@ class Wallet extends React.Component {
 			coinsPrice: undefined
 		};
 	}
+	setBalance = () => {
+
+	}
 	componentDidMount = async () => {
 		let cookies = new CookieClass;
 		let user    = cookies.getCookie('user').user;
-		if (!user)
+		// let userObj = new UserClass;
+		// let user    = await userObj.login({email: '', password: ''});
+		if (!user) {
 			return;
-		// let user = new User.userLogin({email: '', password: ''});
-		if (user) {
-			let wallet     = new WalletClass;
-			let balance    = await wallet.getBalance(user);
-			let coinsPrice = wallet.coinsPrice;
-
-			this.props.setBalance({balance, coinsPrice});
 		}
+		let wallet     = new WalletClass;
+		let balance;
+		try {
+			balance = await wallet.getBalance(user);
+		} catch(e) {
+			console.log(e);
+			return;
+		}
+		let coinsPrice = wallet.coinsPrice;
+
+		this.props.setBalance({balance, coinsPrice});
 	}
 	handleTogglePanelLeft = (event) => {
 		let panelLeftEl = event.currentTarget.parentElement;
@@ -93,7 +102,6 @@ class Wallet extends React.Component {
 		return(
 			<Panels>
 				<PanelLeft>
-					{/*<TogglePanelLeft onClick={this.handleTogglePanelLeft}/>*/}
 					<TogglePanelLeft onClick={this.handleTogglePanelLeft}/>
 					<Coins balance={balance} coinsPrice={coinsPrice}/>
 				</PanelLeft>
