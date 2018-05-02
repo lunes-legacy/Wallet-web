@@ -17,6 +17,7 @@ import { Logo }       from 'Components/Logo';
 //PRIVATE COMPONENTS
 import PanelLeft      from './PanelLeft';
 import PanelRight     from './PanelRight';
+import Slide          from "./Slide";
 
 let WrapPhrases = styled.div`
 	width: 100%;
@@ -89,7 +90,9 @@ class Login extends React.Component {
 					<CustomLink to={"/reset"}>Perdi minha senha</CustomLink>
 				</PanelLeft>
 
-				<PanelRight/>
+				<PanelRight>
+					<Slide/>
+				</PanelRight>
 			</div>
 		);
 	}
