@@ -13,6 +13,7 @@ import { ButtonSecondary } from 'Components/Buttons';
 import { H1 }         from 'Components/H1';
 import { H2 }         from 'Components/H2';
 import { H3 }         from 'Components/H3';
+import { P }          from 'Components/P';
 import { Logo }       from 'Components/Logo';
 //PRIVATE COMPONENTS
 import PanelLeft      from './PanelLeft';
@@ -20,19 +21,24 @@ import PanelRight     from './PanelRight';
 
 let WrapPhrases = styled.div`
 	width: 100%;
-	margin-top: 140px;
+	margin-top: 70px;
 `;
 let CustomLogo = Logo.extend`
 	margin: 70px auto 0 auto;
 `;
 let CustomLink = styled(Link)`
-	color: white;
+	font-size: 1.2rem;
 	text-decoration: none;
 	text-align: center;
 	display: block;
-	margin: 10px auto 0 auto;
-	${props => props.margin ? 'margin: '+props.margin+';' : '' }
+	color: ${props => props.color ? props.color : 'white'};
+	margin: ${props => props.margin ? props.margin : '10px auto 0 auto' };
 `;
+
+let CustomLinkRight = CustomLink.extend`
+	text-align: right;
+`;
+
 class Login extends React.Component {
 	componentDidUpdate() {
 		this.handleStatus();
@@ -42,12 +48,12 @@ class Login extends React.Component {
 		let emailEl = document.querySelector('.login-email');
 		let passEl  = document.querySelector('.login-password');
 
-		let email     = emailEl.value;
-		let password  = passEl.value;
+		let email = emailEl.value;
+		let password = passEl.value;
 		this.props.userLogin(email, password);
 	}
 	handleStatus() {
-		let statusEl   = document.querySelector('.js-status');
+		let statusEl = document.querySelector('.js-status');
 		
 		let { status } = this.props.user;
 
@@ -67,17 +73,20 @@ class Login extends React.Component {
 					<CustomLogo/>
 
 					<WrapPhrases>
-						<H1 clNormalGreen txCenter >Rápida segura e inteligente</H1>
-						<H3 clWhite txCenter margin={'25px 0 0 0'}>Entre com seus dados</H3>
+						<H1 clNormalGreen txCenter >Rápida, segura e inteligente</H1>
+						<P clWhite txCenter margin={'20px 0 70px 0'} fontSize={'1.2rem'}>Entre com seus dados</P>
 					</WrapPhrases>
 
-					<Form margin={"50px auto 0 auto"} width={'70%'}>
+					<Form margin={"20px auto"} width={'80%'}>
 						<FormGroup>
 							<Input placeholder={"nome@email.com"} className={"login-email"}/>
 						</FormGroup>
 						<FormGroup>
-							<Input placeholder={"Senha"} className={"login-password"}/>
+							<Input type="password" placeholder={"Senha"} className={"login-password"}/>
 						</FormGroup>
+
+						<CustomLinkRight to={"/reset"} margin={"0 auto 25px auto"}>Esqueceu a senha?</CustomLinkRight>					
+
 						<ButtonSecondary secondary onClick={this.handleLogin}>
 							{  logged ? 'Logado' : 'Fazer login'}
 						</ButtonSecondary>
@@ -85,8 +94,9 @@ class Login extends React.Component {
 
 					<H1 txCenter clWhite className={"js-status"}></H1>
 
-					<CustomLink to={"/registry"}>Criar conta</CustomLink>
-					<CustomLink to={"/reset"}>Perdi minha senha</CustomLink>
+					<P clWhite txCenter margin={'70px 0 0 0'} fontSize={'1.2rem'}>
+						Não tem uma conta? <CustomLink to={"/registry"} color={`${style.normalGreen}`}>Inscrever-se.</CustomLink>
+					</P>
 				</PanelLeft>
 
 				<PanelRight/>

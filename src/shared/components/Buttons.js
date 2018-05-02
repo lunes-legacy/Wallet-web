@@ -8,7 +8,7 @@ export let Button = styled.button`
 `;
 export let ButtonSecondary = Button.extend`
 	background: transparent;
-	border: 2px solid ${style.normalGreen};
+	border: 1.5px solid ${style.normalGreen};
 
 	transition: background 0.2s;
 	&:hover {
