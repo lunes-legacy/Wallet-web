@@ -1,4 +1,5 @@
 node_modules/
 src/server/bundle/
+public/bundle.js
 *.hot-update.*
 public/*.hot-update.*
