@@ -9,7 +9,7 @@ export const PanelRight = styled.main`
   height: 100vh;
   background: ${variables.normalLilac};
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
 `;
