@@ -92,7 +92,10 @@ class Reset extends React.Component {
 			secondPanelEl.style.display = 'block';
 			statusEl.textContent = 'Sucesso';
 		} else if (status === 'rejected') {
-			statusEl.textContent = 'Tente novamente';
+			statusEl.textContent = 'Ops, tente novamente!';
+			window.setTimeout(() => {
+				statusEl.textContent = '';
+			}, 2000);
 		}
 	}
 	render() {
@@ -104,9 +107,11 @@ class Reset extends React.Component {
 					<CustomLogo/>
 
 					<H1 clNormalGreen txCenter margin={'100px auto 0 auto'}>Esqueceu sua senha?</H1>
+
 					<P clWhite txCenter margin={'20px'} fontSize={'1.4rem'}>
 						Nós enviaremos suas instruções de como redefini-la.
 					</P>
+
 					<CustomForm onSubmit={this.handleSubmit}>
 						<FormBuilder inputs={inputs}/>
 						<CustomLinkRight to={'/login'} margin={'0 auto 25px auto'}>Fazer login?</CustomLinkRight>
@@ -115,7 +120,7 @@ class Reset extends React.Component {
 						</ButtonSecondary>
 					</CustomForm>
 
-					<H1 txCenter clWhite margin={'20px 0 0 0'} className={'js-status'}></H1>
+					<P txCenter clWhite margin={'20px 0 0 0'} fontSize={'1.4rem'} className={'js-status'}></P>
 
 					<CustomP clWhite fontSize={'1.4rem'}>
 						Não tem uma conta? <CustomLink to={"/registry"} color={`${style.normalGreen}`}>Inscrever-se.</CustomLink>
