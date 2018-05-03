@@ -3,11 +3,16 @@ import styled from 'styled-components';
 
 import variables from 'Shared/style-variables';
 
-let PanelRight = styled.main`
-	float: left;
-	width: 60%;
-	height: 100vh;
+export const PanelRight = styled.main`
 	background: ${variables.normalLilac};
+	display: none;
+	float: left;
+	height: 100vh;
+	width: 60%;
+
+	@media only screen and (min-width: 768px) {
+		display: block;
+	}
 `;
 
 export default PanelRight;

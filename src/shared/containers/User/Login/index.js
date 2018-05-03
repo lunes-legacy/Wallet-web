@@ -1,20 +1,22 @@
-import React          from 'react';
-import { users }      from 'lunes-lib';
-import { connect }    from 'react-redux';
-import { Link }       from 'react-router-dom';
-import styled         from 'styled-components';
-import style          from 'Shared/style-variables';
-import { UserClass }  from 'Classes/User';
+import React from 'react';
+import { users } from 'lunes-lib';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import style from 'Shared/style-variables';
+import { UserClass } from 'Classes/User';
+
 //COMPONENTS
-import { Form }       from 'Components/Form';
-import { FormGroup }  from 'Components/FormGroup';
-import { Input }      from 'Components/Input';
+import { Form } from 'Components/Form';
+import { FormGroup } from 'Components/FormGroup';
+import { Input } from 'Components/Input';
 import { ButtonSecondary } from 'Components/Buttons';
-import { H1 }         from 'Components/H1';
-import { H2 }         from 'Components/H2';
-import { H3 }         from 'Components/H3';
-import { P }          from 'Components/P';
-import { Logo }       from 'Components/Logo';
+import { Link, CustomLink } from 'Components/Link';
+import { H1 } from 'Components/H1';
+import { H2 } from 'Components/H2';
+import { H3 } from 'Components/H3';
+import { P } from 'Components/P';
+import { Logo } from 'Components/Logo';
+
 //PRIVATE COMPONENTS
 import PanelLeft      from './PanelLeft';
 import PanelRight     from './PanelRight';
@@ -23,16 +25,9 @@ let WrapPhrases = styled.div`
 	width: 100%;
 	margin-top: 70px;
 `;
+
 let CustomLogo = Logo.extend`
 	margin: 70px auto 0 auto;
-`;
-let CustomLink = styled(Link)`
-	font-size: 1.2rem;
-	text-decoration: none;
-	text-align: center;
-	display: block;
-	color: ${props => props.color ? props.color : 'white'};
-	margin: ${props => props.margin ? props.margin : '10px auto 0 auto' };
 `;
 
 let CustomLinkRight = CustomLink.extend`
@@ -74,7 +69,7 @@ class Login extends React.Component {
 
 					<WrapPhrases>
 						<H1 clNormalGreen txCenter >Rápida, segura e inteligente</H1>
-						<P clWhite txCenter margin={'20px 0 70px 0'} fontSize={'1.2rem'}>Entre com seus dados</P>
+						<P clWhite txCenter margin={'20px 0 70px 0'} fontSize={'1.4rem'}>Entre com seus dados</P>
 					</WrapPhrases>
 
 					<Form margin={"20px auto"} width={'80%'}>
@@ -94,7 +89,7 @@ class Login extends React.Component {
 
 					<H1 txCenter clWhite className={"js-status"}></H1>
 
-					<P clWhite txCenter margin={'70px 0 0 0'} fontSize={'1.2rem'}>
+					<P clWhite txCenter margin={'15% 0 10px 0'} fontSize={'1.4rem'}>
 						Não tem uma conta? <CustomLink to={"/registry"} color={`${style.normalGreen}`}>Inscrever-se.</CustomLink>
 					</P>
 				</PanelLeft>

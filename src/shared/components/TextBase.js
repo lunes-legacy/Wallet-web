@@ -28,7 +28,12 @@ export let TextBase = css`
 	}}
 	${props => {
 		if (props.margin) {
-			return 'margin: '+props.margin+';';
+			return 'margin: ' + props.margin + ';';
+		}
+	}}
+	${props => {
+		if (props.padding) {
+			return 'padding: ' + props.padding + ';';
 		}
 	}}
 	${props => {
