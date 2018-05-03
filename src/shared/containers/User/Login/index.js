@@ -21,17 +21,29 @@ import { Logo } from 'Components/Logo';
 import PanelLeft      from './PanelLeft';
 import PanelRight     from './PanelRight';
 
-let WrapPhrases = styled.div`
+const WrapPhrases = styled.div`
 	width: 100%;
 	margin-top: 70px;
 `;
 
-let CustomLogo = Logo.extend`
+const CustomLogo = Logo.extend`
 	margin: 70px auto 0 auto;
 `;
 
-let CustomLinkRight = CustomLink.extend`
+const CustomLinkRight = CustomLink.extend`
 	text-align: right;
+`;
+
+const CustomP = P.extend`
+	display: block;
+	margin: 50px auto 10px auto;
+	text-align: center;
+
+	@media only screen and (min-width: 768px) {
+		position: absolute;
+		bottom: 0;
+		width: 40%;
+	}
 `;
 
 class Login extends React.Component {
@@ -80,7 +92,7 @@ class Login extends React.Component {
 							<Input type="password" placeholder={"Senha"} className={"login-password"}/>
 						</FormGroup>
 
-						<CustomLinkRight to={"/reset"} margin={"0 auto 25px auto"}>Esqueceu a senha?</CustomLinkRight>					
+						<CustomLinkRight to={"/reset"} margin={"0 auto 20px auto"}>Esqueceu a senha?</CustomLinkRight>					
 
 						<ButtonSecondary secondary onClick={this.handleLogin}>
 							{  logged ? 'Logado' : 'Fazer login'}
@@ -89,9 +101,9 @@ class Login extends React.Component {
 
 					<H1 txCenter clWhite className={"js-status"}></H1>
 
-					<P clWhite txCenter margin={'15% 0 10px 0'} fontSize={'1.4rem'}>
+					<CustomP clWhite fontSize={'1.4rem'}>
 						Não tem uma conta? <CustomLink to={"/registry"} color={`${style.normalGreen}`}>Inscrever-se.</CustomLink>
-					</P>
+					</CustomP>
 				</PanelLeft>
 
 				<PanelRight/>

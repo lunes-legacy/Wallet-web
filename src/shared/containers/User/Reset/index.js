@@ -37,6 +37,18 @@ const ArrowImg = Img.extend`
 	padding-top: 14px;
 `;
 
+const CustomP = P.extend`
+	display: block;
+	margin: 50px auto 10px auto;
+	text-align: center;
+
+	@media only screen and (min-width: 768px) {
+		position: absolute;
+		bottom: 0;
+		width: 40%;
+	}
+`;
+
 const CustomForm = styled.form`
 	width: 80%;
 	display: block;
@@ -105,9 +117,9 @@ class Reset extends React.Component {
 
 					<H1 txCenter clWhite margin={'20px 0 0 0'} className={'js-status'}></H1>
 
-					<P clWhite txCenter margin={'20% 0 10px 0'} fontSize={'1.4rem'}>
+					<CustomP clWhite fontSize={'1.4rem'}>
 						Não tem uma conta? <CustomLink to={"/registry"} color={`${style.normalGreen}`}>Inscrever-se.</CustomLink>
-					</P>
+					</CustomP>
 				</PanelLeft>
 
 				<SecondPanelLeft className={'js-second-panel-left'}>
