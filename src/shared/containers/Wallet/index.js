@@ -8,15 +8,16 @@ import { coins }       from 'lunes-lib';
 import CookieClass     from 'Classes/Cookie';
 import { toggleScaleX, toggleWidth } from 'Utils/ui';
 import { WalletClass } from 'Classes/Wallet';
-import UserClass   from 'Classes/User';
+import UserClass       from 'Classes/User';
 
 
 //COMPONENTS
 import { TextBase }    from 'Components/TextBase';
 import { Text }        from 'Components/Text';
 import { Loading }     from 'Components/Loading';
-import PanelRight      from './PanelRight';
-import Coins           from './Coins';
+//PRIVATE COMPONENTS
+import PanelRight      from './PanelRight/index';
+import Coins           from './Coins/index';
 
 
 //______INDEX

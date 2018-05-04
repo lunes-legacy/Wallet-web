@@ -6,11 +6,11 @@ export let TextBase = css`
 	display: block;
 	${props => {
 		if (props.clNormalGreen) {
-			return 'color: '+style.normalGreen;
+			return `color: ${style.normalGreen}`;
 		} else if(props.clWhite) {
-			return 'color: white';
+			return `color: white`;
 		} else if (props.clNormalLilac) {
-			return 'color: '+style.normalLilac;
+			return `color: ${style.normalLilac}`;
 		}
 	}}
 	${props => {
