@@ -1,4 +1,5 @@
 const HardSourcePlugin = require('hard-source-webpack-plugin');
+var nodeExternals = require('webpack-node-externals');
 
 let client = {
 	entry: ['babel-polyfill',__dirname+'/src/client/index.js'],
@@ -9,6 +10,7 @@ let client = {
 	node: {
 		fs: 'empty'
 	},
+	externals: [nodeExternals()], 
 	mode: 'development',
 	module: {
 		rules: [
@@ -36,6 +38,7 @@ let server = {
 		libraryTarget: 'commonjs2'
 	},
 	mode: 'development',
+	externals: [nodeExternals()], 
 	module: {
 		rules: [
 			{
