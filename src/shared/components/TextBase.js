@@ -2,8 +2,14 @@ import { css } from 'styled-components';
 import style from 'Shared/style-variables';
 
 export let TextBase = css`
-	font-size: 1.8rem;
 	display: block;
+	${props => {
+		if (props.fontSize) {
+			return `font-size: ${props.fontSize};`;
+		}
+
+		return 'font-size: 1.8rem;';
+	}}
 	${props => {
 		if (props.clNormalGreen) {
 			return `color: ${style.normalGreen}`;
@@ -22,7 +28,12 @@ export let TextBase = css`
 	}}
 	${props => {
 		if (props.margin) {
-			return 'margin: '+props.margin+';';
+			return 'margin: ' + props.margin + ';';
+		}
+	}}
+	${props => {
+		if (props.padding) {
+			return 'padding: ' + props.padding + ';';
 		}
 	}}
 	${props => {

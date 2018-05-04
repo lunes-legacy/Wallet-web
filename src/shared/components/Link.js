@@ -7,3 +7,12 @@ import { LinkBase } from './LinkBase';
 export let Link = styled(TmpLink)`
 	${LinkBase}
 `;
+
+export let CustomLink = styled(TmpLink)`
+	font-size: 1.4rem;
+	text-decoration: none;
+	text-align: center;
+	display: block;
+	color: ${props => props.color ? props.color : 'white'};
+	margin: ${props => props.margin ? props.margin : '10px auto 0 auto' };
+`;
