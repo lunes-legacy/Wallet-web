@@ -1,16 +1,14 @@
+import React from 'react';
 import styled from 'styled-components';
 import style from 'Shared/style-variables';
 
-export let PanelLeft = styled.aside`
+const PanelLeft = styled.aside`
 	background: ${style.darkLilac};
 	float: left;
-	width: 100%;
+	width: 40%;
 	height: 100vh;
 	overflow: auto;
-	padding-bottom: 50px;
-
-	@media only screen and (min-width: 768px) {
-		width: 40%;
-	}
-
+	padding: 0 0 50px 0;
 `;
+
+export default PanelLeft;

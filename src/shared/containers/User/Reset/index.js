@@ -1,48 +1,72 @@
 import React from 'react';
 import styled from 'styled-components';
+import style from 'Shared/style-variables';
 import { users } from 'lunes-lib';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
-import PanelLeft       from './PanelLeft';
-import PanelRight      from './PanelRight';
-import { Logo }        from 'Components/Logo';
-import { H3 }          from 'Components/H3';
-import { H1 }          from 'Components/H1';
+// Components
+import PanelLeft from './PanelLeft';
+import PanelRight from './PanelRight';
+import { Logo } from 'Components/Logo';
+import { Link, CustomLink } from 'Components/Link';
+import { Img } from 'Components/Img';
+import { H3 } from 'Components/H3';
+import { H1 } from 'Components/H1';
+import { P } from 'Components/P';
 import { FormBuilder } from 'Components/FormBuilder';
 import { ButtonSecondary } from 'Components/Buttons';
 
-let CustomLogo = Logo.extend`
+const CustomLogo = Logo.extend`
 	margin: 70px auto 0 auto;
 `;
-let CustomH3 = H3.extend`
-	margin: 25px 0 0 0;
-	text-align: center;
-	color: white;
+
+const CustomLinkRight = CustomLink.extend`
+	text-align: right;
 `;
-let CustomForm = styled.form`
-	width: 70%;
+
+const CircleLink = CustomLink.extend`
+	background-color: white;
+	border: 0;
+	border-radius: 100%;
+	height: 40px;
+	width: 40px;
+`;
+
+const ArrowImg = Img.extend`
+	border-style: none;
+	padding-top: 14px;
+`;
+
+const CustomP = P.extend`
+	display: block;
+	margin: 50px auto 10px auto;
+	text-align: center;
+
+	@media only screen and (min-width: 768px) {
+		position: absolute;
+		bottom: 0;
+		width: 40%;
+	}
+`;
+
+const CustomForm = styled.form`
+	width: 80%;
 	display: block;
 	margin: 25px auto 0 auto;
 `;
-let SecondPanelLeft = PanelLeft.extend`
+
+const SecondPanelLeft = PanelLeft.extend`
 	display: none;
 `;
-let CustomLink = styled(Link)`
-	color: white;
-	text-decoration: none;
-	text-align: center;
-	display: block;
-	margin: 25px auto 0 auto;
-	${props => props.margin ? 'margin: '+props.margin+';' : '' }
-`;
-let inputs = [
+
+const inputs = [
 	{ 
 		className: 'reset-email',  
 		placeholder: 'E-mail',
 		type: 'email' 
 	}
 ];
+
 class Reset extends React.Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
@@ -55,9 +79,9 @@ class Reset extends React.Component {
 		this.handleStatus();
 	}
 	handleStatus() {
-		let firstPanelEl  = document.querySelector('.js-first-panel-left');
+		let firstPanelEl = document.querySelector('.js-first-panel-left');
 		let secondPanelEl = document.querySelector('.js-second-panel-left');
-		let statusEl      = document.querySelector('.js-status');
+		let statusEl = document.querySelector('.js-status');
 		
 		let { status } = this.props.user;
 
@@ -68,7 +92,10 @@ class Reset extends React.Component {
 			secondPanelEl.style.display = 'block';
 			statusEl.textContent = 'Sucesso';
 		} else if (status === 'rejected') {
-			statusEl.textContent = 'Tente novamente';
+			statusEl.textContent = 'Ops, tente novamente!';
+			window.setTimeout(() => {
+				statusEl.textContent = '';
+			}, 2000);
 		}
 	}
 	render() {
@@ -76,26 +103,39 @@ class Reset extends React.Component {
 
 		return (
 			<div>
-				<PanelLeft className={"js-first-panel-left"}>
+				<PanelLeft className={'js-first-panel-left'}>
 					<CustomLogo/>
 
-					<CustomH3>Preencha seus dados abaixo</CustomH3>
+					<H1 clNormalGreen txCenter margin={'100px auto 0 auto'}>Esqueceu sua senha?</H1>
+
+					<P clWhite txCenter margin={'20px'} fontSize={'1.4rem'}>
+						Nós enviaremos suas instruções de como redefini-la.
+					</P>
 
 					<CustomForm onSubmit={this.handleSubmit}>
 						<FormBuilder inputs={inputs}/>
-						<ButtonSecondary type={"submit"}>
+						<CustomLinkRight to={'/login'} margin={'0 auto 25px auto'}>Fazer login?</CustomLinkRight>
+						<ButtonSecondary type={'submit'}>
 							Resgatar
 						</ButtonSecondary>
 					</CustomForm>
 
-					<H1 txCenter clWhite margin={"20px 0 0 0"} className={"js-status"}></H1>
+					<P txCenter clWhite margin={'20px 0 0 0'} fontSize={'1.4rem'} className={'js-status'}></P>
 
-					<CustomLink to={'/login'}>Fazer login</CustomLink>
-					<CustomLink to={'/registry'}>Criar conta</CustomLink>
+					<CustomP clWhite fontSize={'1.4rem'}>
+						Não tem uma conta? <CustomLink to={"/registry"} color={`${style.normalGreen}`}>Inscrever-se.</CustomLink>
+					</CustomP>
 				</PanelLeft>
 
-				<SecondPanelLeft className={"js-second-panel-left"}>
-					<H1 txCenter clWhite margin={"20px 0 0 0"}>Voce conseguiu</H1>
+				<SecondPanelLeft className={'js-second-panel-left'}>
+					<CustomLogo/>
+					<Img src={'img/ic_email.svg'} margin={'130px auto 0 auto'} width={'80px'} />
+					<H1 txCenter clWhite margin={'20px'}>
+						Uma mensagem com link de definição de senha foi enviado para o seu endereço de e-mail.
+					</H1>
+					<CircleLink to={'/login'} margin={'50px auto 10px auto'}>
+						<ArrowImg src={'img/right-arrow.svg'} margin={'auto'} width={'20px'} />				
+					</CircleLink>
 				</SecondPanelLeft>
 
 				<PanelRight/>
