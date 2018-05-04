@@ -62,7 +62,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "691ba54cd9fe8a583cbb"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "8399173bb0655ea5d325"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -5706,7 +5706,7 @@ eval("const users = __webpack_require__(/*! ./actions/users/index */ \"./node_mo
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const axios = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\")\r\n\r\nconst createEndpoint = `${__webpack_require__(/*! ../../../constants/api */ \"./node_modules/lunes-lib/constants/api.js\")}/coins/tx/create/btc`\r\n\r\n/**\r\n *\r\n * @param {*} transactionData - email, pin, receivingAddress, amount, fee, testnet\r\n * @param {*} accessToken .\r\n */\r\n\r\nmodule.exports = async (transactionData, accessToken) => {\r\n  const headers = { Authorization: `Bearer ${accessToken}` }\r\n  try {\r\n    // 1. create transaction\r\n    //1234\r\n    //5534\r\n    // transactionData.pin       = 1234; //CUSTOMIZADO POR MIM\r\n    // transactionData.testnet   = true; //CUSTOMIZADO POR MIM\r\n    const transactionResponse = await create(headers, transactionData)\r\n\r\n    return transactionResponse\r\n  } catch (err) {\r\n    throw err\r\n  }\r\n}\r\n\r\nconst create = async (headers, transactionData) => {\r\n  try {\r\n    const res = await axios.post(createEndpoint, transactionData, { headers })\r\n    return res.data\r\n  } catch (err) {\r\n    throw err.response ? err.response.data : new Error(err)\r\n  }\r\n}\r\n\n\n//# sourceURL=webpack:///./node_modules/lunes-lib/actions/coins/bitcoin/createTransaction.js?");
+eval("const axios = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\")\r\n\r\nconst createEndpoint = `${__webpack_require__(/*! ../../../constants/api */ \"./node_modules/lunes-lib/constants/api.js\")}/coins/tx/create/btc`\r\n\r\n/**\r\n *\r\n * @param {*} transactionData - email, pin, receivingAddress, amount, fee, testnet\r\n * @param {*} accessToken .\r\n */\r\nmodule.exports = async (transactionData, accessToken) => {\r\n  const headers = { Authorization: `Bearer ${accessToken}` }\r\n  try {\r\n    // 1. create transaction\r\n    const transactionResponse = await create(headers, transactionData)\r\n\r\n    return transactionResponse\r\n  } catch (err) {\r\n    throw err\r\n  }\r\n}\r\n\r\nconst create = async (headers, transactionData) => {\r\n  try {\r\n    const res = await axios.post(createEndpoint, transactionData, { headers })\r\n    return res.data\r\n  } catch (err) {\r\n    throw err.response ? err.response.data : new Error(err)\r\n  }\r\n}\r\n\n\n//# sourceURL=webpack:///./node_modules/lunes-lib/actions/coins/bitcoin/createTransaction.js?");
 
 /***/ }),
 
@@ -5717,7 +5717,7 @@ eval("const axios = __webpack_require__(/*! axios */ \"./node_modules/axios/inde
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const axios = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\")\r\n\r\nconst endpoint = `${__webpack_require__(/*! ../../../constants/api */ \"./node_modules/lunes-lib/constants/api.js\")}/coins/balance`\r\n\r\nmodule.exports = async (params, accessToken) => {\r\n  // params.testnet = true; //CUSTOMIZADO POR MIM\r\n  const headers = { Authorization: `Bearer ${accessToken}` }\r\n  let url = `${endpoint}/btc/${params.address}?testnet=${params.testnet}`\r\n  try {\r\n    const res = await axios.get(url, { headers })\r\n    if (res) {\r\n      return res.data\r\n    }\r\n    return 0\r\n  } catch (err) {\r\n    throw err.response ? err.response.data : new Error(err)\r\n  }\r\n}\r\n\n\n//# sourceURL=webpack:///./node_modules/lunes-lib/actions/coins/bitcoin/getBalance.js?");
+eval("const axios = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\")\r\n\r\nconst endpoint = `${__webpack_require__(/*! ../../../constants/api */ \"./node_modules/lunes-lib/constants/api.js\")}/coins/balance`\r\n\r\nmodule.exports = async (params, accessToken) => {\r\n  const headers = { Authorization: `Bearer ${accessToken}` }\r\n  let url = `${endpoint}/btc/${params.address}?testnet=${params.testnet}`\r\n  try {\r\n    const res = await axios.get(url, { headers })\r\n    if (res) {\r\n      return res.data\r\n    }\r\n    return 0\r\n  } catch (err) {\r\n    throw err.response ? err.response.data : new Error(err)\r\n  }\r\n}\r\n\n\n//# sourceURL=webpack:///./node_modules/lunes-lib/actions/coins/bitcoin/getBalance.js?");
 
 /***/ }),
 
@@ -5728,7 +5728,7 @@ eval("const axios = __webpack_require__(/*! axios */ \"./node_modules/axios/inde
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const axios = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\")\r\n\r\nconst endpoint = `${__webpack_require__(/*! ../../../constants/api */ \"./node_modules/lunes-lib/constants/api.js\")}/coins/history`\r\n\r\nmodule.exports = async (params, accessToken) => {\r\n\t// params.testnet = true; //CUSTOMIZADO POR MIM\r\n\r\n\tconst headers = { Authorization: `Bearer ${accessToken}` }\r\n\tlet url = `${endpoint}/btc/${params.address}?testnet=${params.testnet}`\r\n\ttry {\r\n\t\tconst res = await axios.get(url, { headers })\r\n\t\treturn res.data\r\n\t} catch (err) {\r\n\t\tthrow err.response ? err.response.data : new Error(err)\r\n\t}\r\n}\r\n\n\n//# sourceURL=webpack:///./node_modules/lunes-lib/actions/coins/bitcoin/getHistory.js?");
+eval("const axios = __webpack_require__(/*! axios */ \"./node_modules/axios/index.js\")\r\n\r\nconst endpoint = `${__webpack_require__(/*! ../../../constants/api */ \"./node_modules/lunes-lib/constants/api.js\")}/coins/history`\r\n\r\nmodule.exports = async (params, accessToken) => {\r\n  const headers = { Authorization: `Bearer ${accessToken}` }\r\n  let url = `${endpoint}/btc/${params.address}?testnet=${params.testnet}`\r\n  try {\r\n    const res = await axios.get(url, { headers })\r\n    return res.data\r\n  } catch (err) {\r\n    throw err.response ? err.response.data : new Error(err)\r\n  }\r\n}\r\n\n\n//# sourceURL=webpack:///./node_modules/lunes-lib/actions/coins/bitcoin/getHistory.js?");
 
 /***/ }),
 
