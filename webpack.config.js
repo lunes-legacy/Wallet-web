@@ -9,8 +9,7 @@ let client = {
 	},
 	node: {
 		fs: 'empty'
-	},
-	externals: [nodeExternals()], 
+	}, 
 	mode: 'development',
 	module: {
 		rules: [

@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import variables from 'Shared/style-variables';
+import variables from "Shared/style-variables";
 
 export const PanelRight = styled.main`
 	background: ${variables.normalLilac};
