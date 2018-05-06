@@ -1,8 +1,11 @@
-import React from 'react';
-import styled from 'styled-components';
-import style from 'Shared/style-variables';
+import React        from 'react';
+import styled       from 'styled-components';
+import style        from 'Shared/style-variables';
 import { TextBase } from 'Components/TextBase';
-import { Text } from 'Components/Text';
+import { Text }     from 'Components/Text';
+import ModalSend    from './ModalSend/index';
+
+
 
 
 let StyledCoinControl = styled.div`
@@ -70,6 +73,9 @@ let ReceiveCoin = styled.div`
 
 
 class CoinControl extends React.Component {
+	handleToggleSendModal = () => {
+
+	}
 	render() {
 		return(
 			<StyledCoinControl>
@@ -83,6 +89,8 @@ class CoinControl extends React.Component {
 					<SendCoin>Enviar</SendCoin>
 					<ReceiveCoin>Receber</ReceiveCoin>
 				</WrapButtons>
+
+				<ModalSend className={"js-send-modal"}/>
 			</StyledCoinControl>
 		);
 	}

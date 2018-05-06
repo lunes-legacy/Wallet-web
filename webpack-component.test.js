@@ -1,11 +1,15 @@
+// const LivereloadPlugin = require('webpack-livereload-plugin');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+
+//this is the directory of the target component to test
+let targetComponent = __dirname+'/tests/components/index.js';
+__webpack_public_path__ = '/';
 module.exports = {
 	mode: 'development',
-	entry: ['babel-polyfill', __dirname+'/tests/index.js'],
-	target: 'node',
+	entry: targetComponent,
 	output: {
 		filename: 'test.bundle.js',
-		path: __dirname+'/tests/bundle/',
-		libraryTarget: 'commonjs2'
+		path: __dirname+'/public/test/'
 	},
 	module: {
 		rules: [
@@ -19,6 +23,15 @@ module.exports = {
 			}
 		]
 	},
+	plugins: [
+		new BrowserSyncPlugin({
+			host: 'localhost',
+			port: 8000,
+			server: {
+				baseDir: ['./public/']
+			}
+		})
+	],
 	resolve: {
 		alias: {
 			Actions: __dirname+'/src/shared/actions/',
