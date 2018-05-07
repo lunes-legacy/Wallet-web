@@ -3,7 +3,8 @@
 	margin: 0px;
 	box-sizing: border-box;
 	font-family: Roboto, sans-serif;
-	font-size: 10px; /*BASE TO REM*/
+	/*I've put important here, because materialize was overwriting it*/
+	font-size: 10px!important; /*BASE TO REM*/
 	font-weight: 100;
 }
 *::-webkit-scrollbar {

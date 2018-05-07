@@ -9,7 +9,7 @@ module.exports = {
 	entry: targetComponent,
 	output: {
 		filename: 'test.bundle.js',
-		path: __dirname+'/public/test/'
+		path: __dirname+'/tests/components/bundle/'
 	},
 	module: {
 		rules: [
@@ -28,7 +28,7 @@ module.exports = {
 			host: 'localhost',
 			port: 8000,
 			server: {
-				baseDir: ['./public/']
+				baseDir: ['./tests/components/', './public/']
 			}
 		})
 	],

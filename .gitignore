@@ -3,3 +3,5 @@ src/server/bundle/
 public/bundle.js
 *.hot-update.*
 public/*.hot-update.*
+tests/components/bundle/*
+tests/bundle/
