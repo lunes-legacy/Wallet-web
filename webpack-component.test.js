@@ -2,11 +2,12 @@
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 //this is the directory of the target component to test
+let polyfill        = 'babel-polyfill';
 let targetComponent = __dirname+'/tests/components/index.js';
 __webpack_public_path__ = '/';
 module.exports = {
 	mode: 'development',
-	entry: targetComponent,
+	entry: [polyfill, targetComponent],
 	output: {
 		filename: 'test.bundle.js',
 		path: __dirname+'/tests/components/bundle/'

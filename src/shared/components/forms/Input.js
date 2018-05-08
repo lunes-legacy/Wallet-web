@@ -2,6 +2,9 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import style  from 'Shared/style-variables';
 import { TextBase } from 'Components/TextBase';
+import ReactDOM from 'react-dom';
+import { renderToString } from 'react-dom/server';
+
 let InputSizeBase = css`
 	${props => {
 		if (props.small) {
@@ -208,14 +211,67 @@ let Radio = (props) => {
 	);
 }
 
-let Select = (props) => {
-	let { type, children, ...restProps } = props;
-	return(
-		<div {...restProps}>
-			{ children }
-		</div>
-	);
+let WrapSelect   = styled.div`
+
+`;
+let StyledSelect = styled.div`
+	position: relative;
+`;
+let Opt = styled.div`
+	${TextBase};
+	width: 100%;
+	height: 20px;
+	background: white;
+`;
+
+class Select extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			children: undefined
+		};
+		this.select;
+	}
+	componentDidMount = async () => {
+		let timer = (time) => {
+			return new Promise((resolve) => {
+				setTimeout(resolve, time);
+			});
+		}
+		this.select = ReactDOM.findDOMNode(this.refs.select);
+		let { children } = this.props;
+
+		for (let tmp in children) {
+			await timer(200);
+			let opt = renderToString(
+				<Opt>
+					Mordecai bate a cara no polero
+				</Opt>
+			);
+			this.select.innerHTML += opt;
+		}
+		for (let key in this.select.children) {
+			await timer(200);
+			let el = this.select.children[key];
+			if (el && el.style) {
+				el.style.background = 'dodgerblue';
+			}
+		}
+	}
+	renderChildren = () => {
+	}
+	render() {
+		let { children } = this.props;
+
+		return (
+			<div ref="select">
+				{ children }
+			</div>
+		);
+	}
 }
+// let Select = (props) => {
+// }
 
 
 
@@ -224,8 +280,8 @@ let Select = (props) => {
 
 let Input = (props) => {
 	switch (props.type) {
-		case 'text': return <Text {...props}/>; break;
-		case 'radio': return <Radio {...props}/>; break;
+		case 'text':   return <Text {...props}/>;   break;
+		case 'radio':  return <Radio {...props}/>;  break;
 		case 'select': return <Select {...props}/>; break;
 	}
 	return null;
