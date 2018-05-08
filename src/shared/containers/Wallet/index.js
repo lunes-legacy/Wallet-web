@@ -71,7 +71,7 @@ class Wallet extends React.Component {
 	}
 	componentDidMount = async () => {
 		let cookies = new CookieClass;
-		 let user    = cookies.getCookie('user').user;
+    let user    = cookies.getCookie('user').user;
 		// let userObj = new UserClass;
 		// let user    = await userObj.login({email: '', password: ''});
 		if (!user) {
@@ -91,13 +91,13 @@ class Wallet extends React.Component {
 	}
 	handleTogglePanelLeft = (event) => {
 		let panelLeftEl = event.currentTarget.parentElement;
-		toggleWidth({ 
+		toggleWidth({
 			element: panelLeftEl,
-			visible: '31.6666%', 
+			visible: '31.6666%',
 			hidden: '0px'
 		});
 	}
-	
+
 	render() {
 		let { coinsPrice, balance, status } = this.props.wallet.panelLeft;
 		return(
@@ -131,7 +131,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch({
 				type: 'WALLET_TOGGLE_PANEL_LEFT',
 				payload: status
-			});	
+			});
 		}
 	}
 }
