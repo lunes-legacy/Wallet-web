@@ -73,7 +73,7 @@ class CoinStatus extends React.Component {
 						Bitcoin
 					</CoinDetailsName>
 					<CoinDetailsPrice>
-						{ `1 ${coinName.toUpperCase()} ${coinPrice.BRL}` }
+						{ `1 ${coinName.toUpperCase()} $${coinPrice.BRL}` }
 					</CoinDetailsPrice>
 				</CoinDetails>
 				{/* <CoinGraph data={[]}/> */}
