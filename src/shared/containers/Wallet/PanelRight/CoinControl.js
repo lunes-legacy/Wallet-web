@@ -83,7 +83,7 @@ class CoinControl extends React.Component {
 					<ReceiveCoin>Receber</ReceiveCoin>
 				</WrapButtons>
 
-				<ModalSend className={"js-send-modal"}/>
+				{/*<ModalSend className={"js-send-modal"}/>*/}
 			</StyledCoinControl>
 		);
 	}
