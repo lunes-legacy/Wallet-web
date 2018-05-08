@@ -17,6 +17,8 @@ export let TextBase = css`
       return `color: white`;
     } else if (props.clNormalLilac) {
       return `color: ${style.normalLilac}`;
+    } else if (props.clLightLilac) {
+      return `color: ${style.lightLilac}`;
     }
   }}
 	${props => {
@@ -48,6 +50,12 @@ export let TextBase = css`
       return "font-weight: 100;";
     } else if (props.txNormal) {
       return "font-weight: 300;";
+    }
+
+    if (props.txItalic) {
+      return "font-style: italic;";
+    } else if (props.txOblique) {
+      return "font-style: oblique;";
     }
   }}
 	${props => {
