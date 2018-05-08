@@ -76,7 +76,7 @@ class CoinStatus extends React.Component {
 						{ `1 ${coinName.toUpperCase()} $${coinPrice.BRL}` }
 					</CoinDetailsPrice>
 				</CoinDetails>
-				{/* <CoinGraph data={[]}/> */}
+				<CoinGraph data={[]}/>
 				<WrapCoinPercent>
 					<CoinPercent>-350%</CoinPercent>
 				</WrapCoinPercent>
