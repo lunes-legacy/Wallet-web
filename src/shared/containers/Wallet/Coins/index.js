@@ -112,10 +112,10 @@ class Coins extends React.Component {
 										<CoinImg src="/img/bitcoin.svg"/>
 									</WrapCoinImg>
 									<WrapCoinData>
-										<CoinAmount clWhite size={'2.5rem'}>
+										<CoinAmount clWhite offSide size={'2.5rem'}>
 											{ balance[coinKey].total_confirmed }
 										</CoinAmount>
-										<CoinValue clWhite size={'2rem'}>
+										<CoinValue clWhite offSide size={'2rem'}>
 											{ `USD ${balance[coinKey].total_amount}` }
 										</CoinValue>
 									</WrapCoinData>
