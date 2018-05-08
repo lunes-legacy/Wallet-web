@@ -91,13 +91,13 @@ class Wallet extends React.Component {
 	}
 	handleTogglePanelLeft = (event) => {
 		let panelLeftEl = event.currentTarget.parentElement;
-		toggleWidth({ 
+		toggleWidth({
 			element: panelLeftEl,
-			visible: '31.6666%', 
+			visible: '31.6666%',
 			hidden: '0px'
 		});
 	}
-	
+
 	render() {
 		let { coinsPrice, balance, status } = this.props.wallet.panelLeft;
 		return(
@@ -131,7 +131,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch({
 				type: 'WALLET_TOGGLE_PANEL_LEFT',
 				payload: status
-			});	
+			});
 		}
 	}
 }
