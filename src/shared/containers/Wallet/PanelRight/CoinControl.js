@@ -22,7 +22,8 @@ let Usd = styled.div`
   ${TextBase} font-size: 2.7rem;
   color: white;
   display: inline-block;
-  line-height: 50px;`;
+  line-height: 50px;
+`;
 
 let Brl = styled.div`
   ${TextBase} font-size: 2.7rem;
@@ -41,7 +42,7 @@ let WrapButtons = styled.div`
 let SendCoin = styled.div`
   ${TextBase} width: 125px;
   // height: 125px;
-  padding: 53px 0 53px 0;
+  padding: 25px 0 25px 0;
   text-align: center;
   margin: 0 0 0 25px;
   background: ${style.normalRed};
@@ -52,13 +53,20 @@ let SendCoin = styled.div`
 let ReceiveCoin = styled.div`
   ${TextBase} width: 125px;
   // height: 125px;
-  padding: 53px 0 53px 0;
+  padding: 25px 0 25px 0;
   margin: 0 0 0 25px;
   text-align: center;
   background: ${style.normalGreen};
   cursor: pointer;
   color: white;
   border-radius: 20px;
+`;
+
+let SendCoinImage = styled.img`
+  width: 30px;
+  height: 30px;
+  margin-top: 5px;
+  margin-bottom: 3px;
 `;
 
 class CoinControl extends React.Component {
@@ -72,8 +80,17 @@ class CoinControl extends React.Component {
         </WrapAmount>
 
         <WrapButtons>
-          <SendCoin>Enviar</SendCoin>
-          <ReceiveCoin>Receber</ReceiveCoin>
+          <SendCoin>
+            <SendCoinImage src="/img/app_wallet/ic_enviar.svg" />
+            <br />
+            Enviar
+          </SendCoin>
+
+          <ReceiveCoin>
+            <SendCoinImage src="/img/app_wallet/ic_receber.svg" />
+            <br />
+            Receber
+          </ReceiveCoin>
         </WrapButtons>
       </StyledCoinControl>
     );
