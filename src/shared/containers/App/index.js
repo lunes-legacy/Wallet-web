@@ -73,7 +73,7 @@ class App extends React.Component {
 						<Balance>
 							<Text clWhite txLight txInline offSide >Balance: </Text>
 							<Text clNormalGreen txNormal txInline offSide >LNS </Text> 
-							<Text clWhite txNormal txInline offSide offSide>1,300.00</Text>
+							<Text clWhite txNormal txInline offSide>1,300.00</Text>
 						</Balance>
 						<Text clNormalGreen txBold txRight size={'1.6rem'}>$ 130.00</Text>
 					</WrapBalance>

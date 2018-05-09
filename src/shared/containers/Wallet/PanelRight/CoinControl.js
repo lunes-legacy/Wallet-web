@@ -1,12 +1,9 @@
-import React        from 'react';
-import styled       from 'styled-components';
-import style        from 'Shared/style-variables';
-import { TextBase } from 'Components/TextBase';
-import { Text }     from 'Components/Text';
-import ModalSend    from './ModalSend/index';
-
-
-
+import React from "react";
+import styled from "styled-components";
+import style from "Shared/style-variables";
+import { TextBase } from "Components/TextBase";
+import { Text } from "Components/Text";
+import ModalSend from "./ModalSend/index";
 
 let StyledCoinControl = styled.div`
   width: 100%;
@@ -26,7 +23,8 @@ let Usd = styled.div`
   ${TextBase} font-size: 2.7rem;
   color: white;
   display: inline-block;
-  line-height: 50px;`;
+  line-height: 50px;
+`;
 
 let Brl = styled.div`
   ${TextBase} font-size: 2.7rem;
@@ -45,7 +43,7 @@ let WrapButtons = styled.div`
 let SendCoin = styled.div`
   ${TextBase} width: 125px;
   // height: 125px;
-  padding: 53px 0 53px 0;
+  padding: 25px 0 25px 0;
   text-align: center;
   margin: 0 0 0 25px;
   background: ${style.normalRed};
@@ -56,7 +54,7 @@ let SendCoin = styled.div`
 let ReceiveCoin = styled.div`
   ${TextBase} width: 125px;
   // height: 125px;
-  padding: 53px 0 53px 0;
+  padding: 25px 0 25px 0;
   margin: 0 0 0 25px;
   text-align: center;
   background: ${style.normalGreen};
@@ -65,28 +63,39 @@ let ReceiveCoin = styled.div`
   border-radius: 20px;
 `;
 
+let SendCoinImage = styled.img`
+  width: 30px;
+  height: 30px;
+  margin-top: 5px;
+  margin-bottom: 3px;
+`;
+
 class CoinControl extends React.Component {
-	handleToggleSendModal = () => {
+  handleToggleSendModal = () => {};
+  render() {
+    return (
+      <StyledCoinControl>
+        <WrapAmount>
+          <Amount offSide>0.00000001</Amount>
+          <Usd offSide>USD 2.00</Usd>
+          <Brl offSide>BRL 6,30</Brl>
+        </WrapAmount>
 
-	}
-	render() {
-		return(
-			<StyledCoinControl>
-				<WrapAmount>
-					<Amount>0.00000001</Amount>
-					<Usd>USD 2.00</Usd>
-					<Brl>BRL 6,30</Brl>
-				</WrapAmount>
-
-				<WrapButtons>
-					<SendCoin>Enviar</SendCoin>
-					<ReceiveCoin>Receber</ReceiveCoin>
-				</WrapButtons>
-
-				{/*<ModalSend className={"js-send-modal"}/>*/}
-			</StyledCoinControl>
-		);
-	}
+        <WrapButtons>
+          <SendCoin>
+            <SendCoinImage src="/img/app_wallet/ic_enviar.svg" />
+            <br />
+            Enviar
+          </SendCoin>
+          <ReceiveCoin>
+            <SendCoinImage src="/img/app_wallet/ic_receber.svg" />
+            <br />
+            Receber
+          </ReceiveCoin>
+        </WrapButtons>
+      </StyledCoinControl>
+    );
+  }
 }
 
 export default CoinControl;
