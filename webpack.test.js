@@ -1,6 +1,6 @@
 module.exports = {
 	mode: 'development',
-	entry: ['babel-polyfill', './tests/index.js'],
+	entry: ['babel-polyfill', __dirname+'/tests/index.js'],
 	target: 'node',
 	output: {
 		filename: 'test.bundle.js',

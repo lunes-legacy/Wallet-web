@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { users } from 'lunes-lib';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import style from 'Shared/style-variables';
 
 import { PanelLeft }   from './PanelLeft';
 import { PanelRight }  from './PanelRight';
@@ -19,6 +20,7 @@ let CustomH3 = H3.extend`
 	margin: 25px 0 0 0;
 	text-align: center;
 	color: white;
+	font-size:1.2em;
 `;
 let CustomForm = styled.form`
 	width: 70%;
@@ -33,13 +35,22 @@ let CustomLink = styled(Link)`
 	margin: 10px auto 0 auto;
 	${props => props.margin ? 'margin: '+props.margin+';' : '' }
 `;
+
+let CustomLinkGreen = styled(Link)`
+	color: ${style.normalGreen};
+	font-size: 1.4em;
+	text-decoration: none;
+	text-align:center;
+	display:block;
+	margin: 140px auto 0px auto;
+`;
 let inputs = [
 	{ className: 'registry-fname',  placeholder: 'Nome' },
 	{ className: 'registry-lname',  placeholder: 'Sobrenome' },
 	{ className: 'registry-email',  placeholder: 'E-mail',          type: 'email' },
 	{ className: 'registry-pass',   placeholder: 'Senha',           type: 'password' },
 	{ className: 'registry-cpass',  placeholder: 'Confirmar senha', type: 'password' },
-	{ className: 'registry-terms',  value:       'Eu aceito os termos de serviço', type: 'checkbox' }
+	{ className: 'registry-terms',  value: ' Eu aceito os Termos de Serviços', type: 'checkbox' }
 ];
 class Registry extends React.Component {
 	handleSubmit = (event) => {
@@ -97,18 +108,19 @@ class Registry extends React.Component {
 				<PanelLeft>
 					<CustomLogo/>
 
-					<CustomH3>Preencha seus dados abaixo</CustomH3>
+					<CustomH3>Insira os dados necessários para efetuar o seu cadastro</CustomH3>
 
 					<CustomForm onSubmit={this.handleSubmit}>
-						<FormBuilder inputs={inputs}/>
-						<ButtonSecondary type={"submit"}>
-							Registrar
-						</ButtonSecondary>
+						<FormBuilder inputs={inputs} />
+						<ButtonSecondary type={"submit"}>ENTRAR</ButtonSecondary>
 					</CustomForm>
+
 					<H1 className={"js-status"} txCenter clWhite margin={"50px 0 0 0"}></H1>
 
-					<CustomLink to={"/login"} margin={"50px 0 0 0"}>Fazer login</CustomLink>
-					<CustomLink to={"/reset"} margin={"10px 0 0 0"}>Perdi minha senha</CustomLink>
+					<CustomLinkGreen to={"/login"}>Já tem uma conta? Entrar</CustomLinkGreen>
+
+					{/* <CustomLink to={"/login"} margin={"50px 0 0 0"}>Fazer login</CustomLink>
+					<CustomLink to={"/reset"} margin={"10px 0 0 0"}>Perdi minha senha</CustomLink> */}
 				</PanelLeft>
 				<PanelRight/>
 			</div>

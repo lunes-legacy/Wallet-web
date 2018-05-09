@@ -1,49 +1,73 @@
-import { css } from 'styled-components';
-import style from 'Shared/style-variables';
+import { css } from "styled-components";
+import style from "Shared/style-variables";
 
 export let TextBase = css`
-	font-size: 1.8rem;
 	display: block;
 	${props => {
-		if (props.clNormalGreen) {
-			return 'color: '+style.normalGreen;
-		} else if(props.clWhite) {
-			return 'color: white';
-		} else if (props.clNormalLilac) {
-			return 'color: '+style.normalLilac;
-		}
-	}}
+    if (props.fontSize) {
+      return `font-size: ${props.fontSize};`;
+    }
+
+    return "font-size: 1.8rem;";
+  }}
 	${props => {
-		if (props.txCenter) {
-			return 'text-align: center';
-		} else if (props.txRight) {
-			return 'text-align: right';
-		}
-	}}
+    if (props.clNormalGreen) {
+      return `color: ${style.normalGreen}`;
+    } else if (props.clWhite) {
+      return `color: white`;
+    } else if (props.clNormalLilac) {
+      return `color: ${style.normalLilac}`;
+    } else if (props.clLightLilac) {
+      return `color: ${style.lightLilac}`;
+    }
+  }}
 	${props => {
-		if (props.margin) {
-			return 'margin: '+props.margin+';';
-		}
-	}}
+    if (props.txCenter) {
+      return "text-align: center";
+    } else if (props.txRight) {
+      return "text-align: right";
+    }
+  }}
 	${props => {
-		if (props.size && props.size.indexOf('rem') !== -1) {
-			return `font-size: ${props.size}`;
-		}
-	}}
+    if (props.margin) {
+      return "margin: " + props.margin + ";";
+    }
+  }}
 	${props => {
-		if (props.txBold) {
-			return 'font-weight: bold;';
-		} else if (props.txLight) {
-			return 'font-weight: 100;';
-		} else if (props.txNormal) {
-			return 'font-weight: 300;';
-		}
-	}}
+    if (props.padding) {
+      return "padding: " + props.padding + ";";
+    }
+  }}
 	${props => {
-		if (props.txInline) {
-			return 'display: inline;';
-		} else if (props.txInlineBlock){
-			return 'display: inline-block;';
-		}
-	}}
+    if (props.size && props.size.indexOf("rem") !== -1) {
+      return `font-size: ${props.size}`;
+    }
+  }}
+	${props => {
+    if (props.txBold) {
+      return "font-weight: bold;";
+    } else if (props.txLight) {
+      return "font-weight: 100;";
+    } else if (props.txNormal) {
+      return "font-weight: 300;";
+    }
+
+    if (props.txItalic) {
+      return "font-style: italic;";
+    } else if (props.txOblique) {
+      return "font-style: oblique;";
+    }
+  }}
+	${props => {
+    if (props.txInline) {
+      return "display: inline;";
+    } else if (props.txInlineBlock) {
+      return "display: inline-block;";
+    }
+  }}
+  ${props => {
+    if (props.offSide) {
+      return "font-family: OffSide";
+    }
+  }}
 `;

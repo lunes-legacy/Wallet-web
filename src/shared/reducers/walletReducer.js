@@ -47,6 +47,22 @@ const walletReducer = (state = initialState, action) => {
 				status: status
 			}
 		}
+	} else if (action.type === 'WALLET_SET_COIN_HISTORY') {
+		// action.payload = [
+		// 	{
+		// 		value: 1.003,
+		// 		type: 'RECEIVED' || 'SPENT',
+		// 		time: [timestamp],
+		// 		...all bitcoin transaction infomation
+		// 	}
+		// ]
+		return {
+			...state,
+			panelRight: {
+				...state.panelRight,
+				coinHistory: action.payload
+			}
+		}
 	}
 	return state;
 }

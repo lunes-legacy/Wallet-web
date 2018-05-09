@@ -8,6 +8,13 @@ import { Form }      from './Form';
 import { Input }     from './Input';
 import { ButtonSecondary } from './Buttons';
 
+// import { Checkbox } from 'react-materialize';
+
+let FormGroupCheck =  FormGroup.extend`
+	text-align: center;
+	display: block;
+	margin: 10px auto 0 auto;
+`;
 
 export class FormBuilder extends React.Component {
 	render() {
@@ -19,10 +26,12 @@ export class FormBuilder extends React.Component {
 		return inputs.map((input, index) => {
 			if (input.type == 'checkbox') {
 				return (
-					<FormGroup key={index}>
-						<input {...input}/>
-						<label style={{color: 'white'}}>{ input.value }</label>
-					</FormGroup>
+					<FormGroupCheck key={index}>
+						<label style={{color: 'white', fontSize: '1.4em'}}>
+						<input {...input} />
+						{ input.value }
+						</label>
+					</FormGroupCheck>
 				);
 			}
 			return (

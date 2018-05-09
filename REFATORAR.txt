@@ -1,0 +1,4 @@
+Procure a partir da pasta root do projeto pelas palavras:
+-refatorar
+-cuidado
+Isso servirá para indentificá-las, indo direto para a linha
