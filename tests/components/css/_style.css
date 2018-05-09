@@ -82,3 +82,17 @@ html {
 		text-shadow: 0px 0px 0px transparent;
 	}
 }*/
+
+@keyframes bounce_up_select_option {
+	0%   {transform: scale(1);}
+	50%  {transform: scale(1.05);}
+	100% {transform: scale(1);}
+}
+@keyframes slide_down_select_content {
+	0%   {transform: scaleY(0);}
+	100% {transform: scaleY(1);}	
+}
+@keyframes slide_up_select_content {
+	0%   {transform: scaleY(1);}
+	100% {transform: scaleY(0);}	
+}

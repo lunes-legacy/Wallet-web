@@ -4,6 +4,7 @@ import style  from 'Shared/style-variables';
 import { TextBase } from 'Components/TextBase';
 import ReactDOM from 'react-dom';
 import { renderToString } from 'react-dom/server';
+import { timer } from 'Utils/functions';
 
 let InputSizeBase = css`
 	${props => {
@@ -217,11 +218,28 @@ let WrapSelect   = styled.div`
 let StyledSelect = styled.div`
 	position: relative;
 `;
+let SelectHead = styled.div`
+	${TextBase};
+	width: 100%;
+	border-bottom: 1px solid white;
+}
+`;
+let SelectContent = styled.div`
+	position: relative;
+	width: 100%;
+	transform-origin: top;
+	transform: scale(0);
+	animation-duration: 0.3s;
+	animation-fill-mode: forwards;
+`;
 let Opt = styled.div`
 	${TextBase};
 	width: 100%;
 	height: 20px;
 	background: white;
+	transform: scale(1);
+	animation-origin: top;
+	animation-duration: 0.3s;
 `;
 
 class Select extends React.Component {
@@ -233,40 +251,68 @@ class Select extends React.Component {
 		this.select;
 	}
 	componentDidMount = async () => {
-		let timer = (time) => {
-			return new Promise((resolve) => {
-				setTimeout(resolve, time);
-			});
-		}
-		this.select = ReactDOM.findDOMNode(this.refs.select);
+		this.select  = ReactDOM.findDOMNode(this.refs.select);
+		this.content = ReactDOM.findDOMNode(this.refs.content);
+		
 		let { children } = this.props;
 
-		for (let tmp in children) {
-			await timer(200);
-			let opt = renderToString(
-				<Opt>
-					Mordecai bate a cara no polero
-				</Opt>
+		for (let key in children) {
+			if (!children) { continue; }
+			let opt = children[key];
+
+			if (!opt || !opt.props.children) { continue; }
+			let optChildren = opt.props.children;
+
+			let strOpt = renderToString(
+				<Opt {...opt.props}>{ optChildren }</Opt>
 			);
-			this.select.innerHTML += opt;
+			//cuidado ao renderizar strings no react, isso é vulneravel a XSS
+			this.content.innerHTML += strOpt;
 		}
-		for (let key in this.select.children) {
+		
+	}
+	handleToggleContent = async () => {
+		let state = this.content.getAttribute('state');
+		if (state === 'visible') {
+			this.content.style.animationName = 'slide_up_select_content';
+			this.content.setAttribute('state', 'hidden');
+
+		} else {
+			this.content.style.animationName = 'slide_down_select_content';
+			this.content.setAttribute('state', 'visible');
 			await timer(200);
-			let el = this.select.children[key];
-			if (el && el.style) {
-				el.style.background = 'dodgerblue';
-			}
+			this.addOptAnimations();
 		}
 	}
-	renderChildren = () => {
+	addOptAnimations = async () => {
+		let contentChildren = this.content.children;
+		for (let key in contentChildren) {
+			if (!contentChildren[key]) { continue; }
+			let opt = contentChildren[key];
+			if (!opt || !opt.style) { continue; }
+			await timer(100);
+			opt.style.animationName = 'bounce_up_select_option';
+		}
+	}
+	removeOptAnimations = async () => {
+		let contentChildren = this.content.children;
+		for (let key in contentChildren) {
+			if (!contentChildren[key]) { continue; }
+			let opt = contentChildren[key];
+			if (!opt || !opt.style) { continue; }
+			opt.style.animationName = '';
+		}	
 	}
 	render() {
-		let { children } = this.props;
-
 		return (
-			<div ref="select">
-				{ children }
-			</div>
+			<WrapSelect>
+				<StyledSelect ref="select">
+					<SelectHead onClick={this.handleToggleContent}>Nome</SelectHead>
+					<SelectContent ref="content">
+
+					</SelectContent>
+				</StyledSelect>
+			</WrapSelect>
 		);
 	}
 }

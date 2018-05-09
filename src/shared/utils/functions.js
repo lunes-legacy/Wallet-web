@@ -21,8 +21,14 @@ const hexToRgba = (hex, alpha) => {
 		return `rgba(${r}, ${g}, ${b})`;
 	}
 }
+const timer = (time) => {
+	return new Promise((resolve) => {
+		setTimeout(resolve, time);
+	});
+}
 export {
 	errorPattern,
 	timestampDiff,
-	hexToRgba
+	hexToRgba,
+	timer
 }
