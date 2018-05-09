@@ -1,8 +1,12 @@
-import React from "react";
-import styled from "styled-components";
-import style from "Shared/style-variables";
-import { TextBase } from "Components/TextBase";
-import { Text } from "Components/Text";
+import React        from 'react';
+import styled       from 'styled-components';
+import style        from 'Shared/style-variables';
+import { TextBase } from 'Components/TextBase';
+import { Text }     from 'Components/Text';
+import ModalSend    from './ModalSend/index';
+
+
+
 
 let StyledCoinControl = styled.div`
   width: 100%;
@@ -70,14 +74,7 @@ let SendCoinImage = styled.img`
 `;
 
 class CoinControl extends React.Component {
-  render() {
-    return (
-      <StyledCoinControl>
-        <WrapAmount>
-          <Amount offSide>0.00000001</Amount>
-          <Usd offSide>USD 2.00</Usd>
-          <Brl offSide>BRL 6,30</Brl>
-        </WrapAmount>
+	handleToggleSendModal = () => {
 
         <WrapButtons>
           <SendCoin>

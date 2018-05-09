@@ -1,0 +1,10 @@
+* {
+	box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+	font-family: Roboto, sans-serif;
+}
+html {
+	/*I've put important here, because materialize was overwriting it*/
+	font-size: 10px!important; /*BASE TO REM*/
+}

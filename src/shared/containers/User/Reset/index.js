@@ -60,10 +60,10 @@ const SecondPanelLeft = PanelLeft.extend`
 `;
 
 const inputs = [
-	{ 
-		className: 'reset-email',  
+	{
+		className: 'reset-email',
 		placeholder: 'E-mail',
-		type: 'email' 
+		type: 'email'
 	}
 ];
 
@@ -71,7 +71,7 @@ class Reset extends React.Component {
 	handleSubmit = (event) => {
 		event.preventDefault();
 		let emailEl = document.querySelector('.reset-email');
-		this.props.userReset(emailEl.value);	
+		this.props.userReset(emailEl.value);
 	}
 	componentDidMount() {
 	}
@@ -82,7 +82,7 @@ class Reset extends React.Component {
 		let firstPanelEl = document.querySelector('.js-first-panel-left');
 		let secondPanelEl = document.querySelector('.js-second-panel-left');
 		let statusEl = document.querySelector('.js-status');
-		
+
 		let { status } = this.props.user;
 
 		if (status === 'pending') {
@@ -129,12 +129,12 @@ class Reset extends React.Component {
 
 				<SecondPanelLeft className={'js-second-panel-left'}>
 					<CustomLogo/>
-					<Img src={'img/ic_email.svg'} margin={'130px auto 0 auto'} width={'80px'} />
+					<Img src={'img/user_panel_left/ic_email.svg'} margin={'130px auto 0 auto'} width={'80px'} />
 					<H1 txCenter clWhite margin={'20px'}>
 						Uma mensagem com link de definição de senha foi enviado para o seu endereço de e-mail.
 					</H1>
 					<CircleLink to={'/login'} margin={'50px auto 10px auto'}>
-						<ArrowImg src={'img/right-arrow.svg'} margin={'auto'} width={'20px'} />				
+						<ArrowImg src={'img/user_panel_left/right-arrow.svg'} margin={'auto'} width={'20px'} />
 					</CircleLink>
 				</SecondPanelLeft>
 
@@ -150,7 +150,7 @@ const mapDispatchToProps = (dispatch) => {
 		userReset: (email) => {
 			dispatch({
 				type: 'USER_RESET',
-				payload: users.resetPassword({ 
+				payload: users.resetPassword({
 					email
 				})
 			});

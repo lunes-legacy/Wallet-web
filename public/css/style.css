@@ -1,10 +1,14 @@
 * {
-  padding: 0px;
-  margin: 0px;
-  box-sizing: border-box;
-  font-family: Roboto, sans-serif;
-  font-size: 10px; /*BASE TO REM*/
-  font-weight: 100;
+	padding: 0px;
+	margin: 0px;
+	box-sizing: border-box;
+	font-family: Roboto, sans-serif;
+	/*I've put important here, because materialize was overwriting it*/
+	/*font-size: 10px!important;*/ /*BASE TO REM*/
+	font-weight: 100;
+}
+html {
+	font-size: 10px!important;
 }
 *::-webkit-scrollbar {
   border-radius: 10px; /*It wont works, but it need to be here*/

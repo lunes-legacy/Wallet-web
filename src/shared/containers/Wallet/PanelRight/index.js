@@ -1,27 +1,26 @@
-import React           from 'react';
-import style           from 'Shared/style-variables';
-import styled          from 'styled-components';
+import React from 'react';
+import style from 'Shared/style-variables';
+import styled from 'styled-components';
 import { errorPattern } from 'Utils/functions';
-import { connect }     from 'react-redux';
+import { connect } from 'react-redux';
 import { WalletClass } from 'Classes/Wallet';
 //COMPONENTS
-import { TextBase }    from 'Components/TextBase';
-import { Text }        from 'Components/Text';
-import { H1 }          from 'Components/H1';
+import { TextBase } from 'Components/TextBase';
+import { Text } from 'Components/Text';
+import { H1 } from 'Components/H1';
 //PRIVATE COMPONENTS
-import Histories   from './Histories';
+import Histories from './Histories';
 import CoinControl from './CoinControl';
-import CoinStatus  from './CoinStatus';
-import Default     from './Default';
+import CoinStatus from './CoinStatus';
+import Default from './Default';
 
-
-
-let TextBold = Text.extend`
+const TextBold = Text.extend`
 	${TextBase}
 	font-weight: bold;
 	display: inline-block;
 `;
-let StyledPanelRight = styled.div`
+
+const StyledPanelRight = styled.div`
 	position: relative;
 	background: ${style.normalLilac};
 	width: 100%;
@@ -38,9 +37,9 @@ class PanelRight extends React.Component {
 		}
 	}
 	handleToggleHistory = (event) => {
-		let historyEl    = 
+		let historyEl =
 			event.currentTarget.parentElement,
-		historyContentEl = 
+		historyContentEl =
 			historyEl.querySelector(':nth-child(2)');
 		toggleScaleY({
 			element: historyContentEl,
@@ -49,7 +48,7 @@ class PanelRight extends React.Component {
 		});
 	}
 	componentDidMount = async() => {
-		let wallet      = new WalletClass;
+		let wallet = new WalletClass;
 		let coinHistory = await wallet.getHistory({address: undefined, accessToken: undefined});
 		// TO VERIFY
 		// WE NEED TO SEE IF THIS COINHISTORY RETURNS
