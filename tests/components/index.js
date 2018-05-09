@@ -9,10 +9,20 @@ let toRender = () => {
 		<Input normal whiteTheme s={12} m={6} l={6} type={'text'} label={{value: 'Nome', txItalic: true}} />
 		<Input type={'select'} label={{value: 'Nome', txBold:true}}>
 			<option>Marcelo</option>
-			<option>Fernandica</option>
-			<option>Mordecookie</option>
-			<option>Mordecoca</option>
-			<option>Mirchel'</option>
+			<option>Rafael</option>
+			<option>Brito</option>
+			<option>Joao</option>
+			<option>Jao</option>
+			<option>Felipe</option>
+			<option>Bruno</option>
+			<option>Mateus</option>
+			<option>Jonas</option>
+			<option>Lucas</option>
+			<option>Tiago</option>
+			<option>Cássia</option>
+			<option>Hellen</option>
+			<option>Ana</option>
+			<option>Josefina</option>
 		</Input>
 		<Input type={'radio'} label={{value: 'Nome'}}/>
 	</div>);
