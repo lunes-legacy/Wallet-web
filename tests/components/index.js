@@ -24,7 +24,9 @@ let toRender = () => {
 			<option>Ana</option>
 			<option>Josefina</option>
 		</Input>
-		<Input type={'radio'} label={{value: 'Nome'}}/>
+		<Input type={'radio'} name={'agree'} label={{value: 'Nome'}}/>
+		<Input type={'radio'} name={'agree'} label={{value: 'Nome'}}/>
+		<Input type={'checkbox'} label={{value: 'Concordo e aceito com os termos'}}/>
 	</div>);
 }
 
