@@ -6,6 +6,7 @@ let Label = styled.div`
 	padding-left: 5px;
 	color: white;
 	user-select: none;
+	cursor: pointer;
 `;
 
 export default Label;

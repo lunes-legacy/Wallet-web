@@ -83,10 +83,10 @@ export default class Select extends React.Component {
 		this.handleToggleContent();
 	}
 	render() {
-		let { children } = this.props;
+		let { s,m,l, children, ...selectProps } = this.props;
 		return (
-			<Wrapper ref="wrapper">
-				<StyledSelect ref="select">
+			<Wrapper ref="wrapper" s={s} m={m} l={l}>
+				<StyledSelect ref="select" {...selectProps}>
 					<Head ref="head" onClick={this.handleToggleContent} value={this.state.value}>
 						{ this.state.value }
 						<Arrow ref="arrow"/>

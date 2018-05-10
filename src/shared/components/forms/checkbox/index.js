@@ -19,19 +19,21 @@ class Checkbox extends React.Component {
 			this.square.style.opacity    = '1';
 			this.square.style.top        = '0px';
 			this.checkbox.setAttribute('checked', 'checked');
+			this.wrapper.setAttribute('checked', 'checked');
 		} else {
 			this.square.style.visibility = 'hidden';
 			this.square.style.opacity    = '0';
 			this.square.style.top        = '-50px';
 			this.checkbox.removeAttribute('checked');
+			this.wrapper.removeAttribute('checked');
 		}
 	}
 	render() {
-		let { type, children, ...restProps } = this.props;
 		let { value, ...restPropsLabel } = this.props.label;
+		let { s,m,l, ...restPropsCheckBox } = this.props;
 		return(
-			<Wrapper ref="wrapper">
-				<StyledCheckbox ref="checkbox" onClick={this.handleToggleRadio}>
+			<Wrapper ref="wrapper" s={s} m={m} l={l}>
+				<StyledCheckbox {...restPropsCheckBox} ref="checkbox" onClick={this.handleToggleRadio}>
 					<Square ref="square"/>
 				</StyledCheckbox>
 				<Label ref="label" {...restPropsLabel} onClick={this.handleToggleRadio}>

@@ -7,6 +7,7 @@ let StyledInput = styled.input`
 	&:focus {
 		outline: none;
 	}
+	-webkit-appearence: textfield;
 	${props => {
 		if (props.whiteTheme) {
 			return `

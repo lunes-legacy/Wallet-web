@@ -20,6 +20,7 @@ import Checkbox from './checkbox';
 let Input = (props) => {
 	switch (props.type) {
 		case 'text':     return <Text {...props}/>;   break;
+		case 'number':   return <Text {...props}/>;   break;
 		case 'radio':    return <Radio {...props}/>;  break;
 		case 'select':   return <Select {...props}/>; break;
 		case 'checkbox': return <Checkbox {...props}/>; break;

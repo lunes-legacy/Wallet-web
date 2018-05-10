@@ -44,11 +44,11 @@ class Radio extends React.Component {
 	}
 
 	render() {
-		let { type, children, name, ...restProps } = this.props;
 		let { value, ...restPropsLabel } = this.props.label;
+		let { s,m,l, ...restPropsRadio } = this.props;
 		return(
-			<Wrapper ref="wrapper">
-				<StyledRadio name={name} ref="radio" onClick={this.handleToggleRadio}>
+			<Wrapper ref="wrapper" s={s} m={m} l={l}>
+				<StyledRadio {...restPropsRadio} ref="radio" onClick={this.handleToggleRadio}>
 					<Circle ref="circle"/>
 				</StyledRadio>
 				<Label ref="label" {...restPropsLabel} onClick={this.handleToggleRadio}>
