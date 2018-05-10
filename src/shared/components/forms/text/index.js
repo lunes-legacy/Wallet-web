@@ -6,6 +6,10 @@ import Label from './Label';
 import Wrapper from './Wrapper';
 
 class Text extends React.Component {
+	constructor(props) {
+		super(props);
+		this.inputRef = React.createRef();
+	}
 	handleOnFocus = (event) => {
 		this.label.style.top           = '-100%';
 		this.label.style.animationName = 'input_text_label_shadow_up';
@@ -21,7 +25,7 @@ class Text extends React.Component {
 	}
 	componentDidMount() {
 		this.wrapper = ReactDOM.findDOMNode(this.refs.wrapper);
-		this.input   = ReactDOM.findDOMNode(this.refs.input);
+		this.input   = ReactDOM.findDOMNode(this.inputRef.current);
 		this.label   = ReactDOM.findDOMNode(this.refs.label);
 	}
 	handleOnKeyUp = () => {
@@ -30,13 +34,18 @@ class Text extends React.Component {
 		let regex = /(?![0-9])(.)/gm;
 		this.input.value = value.replace(regex, '');
 	}
+	handleClickLabel = () => {
+		this.input.focus();
+	}
 	render() {
-		let { value, ...labelProps  } = this.props.label;
+		if (this.props.label) {
+			var { value, ...labelProps  } = this.props.label;
+		}
 		let { type, ...inputProps } = this.props;
 		return (
 			<Wrapper {...inputProps} ref="wrapper">
-				<StyledInput ref="input" {...inputProps} onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onKeyUp={this.handleOnKeyUp}/>
-				<Label ref="label" className={'label'} {...labelProps}>
+				<StyledInput ref={this.inputRef} {...inputProps} onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onKeyUp={this.handleOnKeyUp}/>
+				<Label ref="label" className={'label'} {...labelProps} onClick={this.handleClickLabel}>
 					{ value }
 				</Label>
 			</Wrapper>

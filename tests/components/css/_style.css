@@ -7,7 +7,6 @@
 body {
 	background: #4B2C82;
 	height: 100vh;
-	padding: 50px;
 }
 html {
 	/*I've put important here, because materialize was overwriting it*/

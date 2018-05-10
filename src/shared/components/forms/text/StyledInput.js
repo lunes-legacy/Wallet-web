@@ -3,11 +3,17 @@ import style from 'Shared/style-variables';
 import { InputBase } from './../bases';
 
 let StyledInput = styled.input`
-	${InputBase};
+	appearence: textfield;
+	padding: 0.5rem;
+	z-index: 2;
+	overflow: visible;
 	&:focus {
 		outline: none;
 	}
-	-webkit-appearence: textfield;
+	&::placeholder {
+		color: white;
+	}
+	${InputBase};
 	${props => {
 		if (props.whiteTheme) {
 			return `

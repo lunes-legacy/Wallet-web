@@ -1,6 +1,6 @@
 import { css } from 'styled-components';
 import { TextBase } from 'Components/TextBase';
-import { InputSizeBase } from './InputSizeBase';
+import InputSizeBase from './InputSizeBase';
 
 let InputBase = css`
 	background: transparent;

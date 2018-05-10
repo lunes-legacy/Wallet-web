@@ -19,6 +19,7 @@ module.exports = {
 	lightLilac: '#725C98',
 	normalGreen: '#4CD566',
 	normalRed: '#FF1C38',
+	normalYellow: '#F5A623',
 	marginTopSmall: '10px',
 	marginTopNormal: '15px',
 	marginTopRegular: '20px',
