@@ -25,7 +25,7 @@ module.exports = {
 	marginTopBig: '30px',
 	marginTopHuge: '50px',
 	media: {
-		mobile: 'min-width: 0px',     
+		mobile: 'min-width: 310px',     
 		mobile2: 'min-width: 470px',  
 		tablet: 'min-width: 590px',   
 		tablet2: 'min-width: 790px',  

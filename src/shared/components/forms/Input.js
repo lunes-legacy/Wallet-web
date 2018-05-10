@@ -28,12 +28,3 @@ let Input = (props) => {
 	return null;
 }
 export default Input;
-
-// <Input type={'text'} placeholder={'Nome'}/>
-// <Input type={'radio'} label={'Quantidade em BTC'}/>
-
-// <Input type={select}>
-// 	<option>BH</option>
-// 	<option>SP</option>
-// </Input>
-

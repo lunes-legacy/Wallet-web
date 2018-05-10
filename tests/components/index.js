@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 // import ModalSend from 'Containers/Wallet/PanelRight/ModalSend/index';
 import Input from 'Components/forms/Input';
+import { Col, Row } from 'Components/index';
 
 let toRender = () => {
 	return (
@@ -35,6 +36,15 @@ let toRender = () => {
 		<Input type={'radio'} name={'agree'} label={{value: 'Batata'}}/>
 		<Input type={'radio'} name={'agree'} label={{value: 'Feijao'}}/>
 		<Input type={'checkbox'} label={{value: 'Concordo e aceito com os termos'}}/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<br/>
+		<Row>
+			<Col s={4} m={4} l={4} style={{background: 'red', height: '100px'}}></Col>
+			<Col s={4} m={4} l={4} style={{background: 'blue', height: '100px'}}></Col>
+		</Row>
 	</div>);
 }
 

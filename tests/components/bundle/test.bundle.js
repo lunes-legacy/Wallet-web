@@ -62,7 +62,7 @@
 /******/ 	}
 /******/
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "15303e48ec58d1758033"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "916afb4488ed0e12058a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -4870,6 +4870,30 @@ eval("var g;\r\n\r\n// This works in non-strict mode\r\ng = (function() {\r\n\tr
 
 /***/ }),
 
+/***/ "./src/shared/components/Col.js":
+/*!**************************************!*\
+  !*** ./src/shared/components/Col.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\nexports.Col = undefined;\n\nvar _templateObject = _taggedTemplateLiteral(['\\n\\twidth: 100%;\\n\\t', ';\\n'], ['\\n\\twidth: 100%;\\n\\t', ';\\n']);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nvar _styledComponents2 = _interopRequireDefault(_styledComponents);\n\nvar _bases = __webpack_require__(/*! Components/bases */ \"./src/shared/components/bases/index.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }\n\nvar Col = exports.Col = _styledComponents2.default.div(_templateObject, _bases.ColBase);\n\n//# sourceURL=webpack:///./src/shared/components/Col.js?");
+
+/***/ }),
+
+/***/ "./src/shared/components/Row.js":
+/*!**************************************!*\
+  !*** ./src/shared/components/Row.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\nexports.Row = undefined;\n\nvar _templateObject = _taggedTemplateLiteral(['\\n\\twidth: 100%;\\n\\theight: auto;\\n\\toverflow: auto;\\n\\t&:before {\\n\\t\\tcontent: \\'\\';\\n\\t}\\n\\t&:after {\\n\\t\\tcontent: \\'\\';\\n\\t}\\n\\tdisplay: flex;\\n\\tjustify-content: center;\\n\\talign-items: flex-start;\\n\\tflex-flow: wrap;\\n\\t', ';\\n'], ['\\n\\twidth: 100%;\\n\\theight: auto;\\n\\toverflow: auto;\\n\\t&:before {\\n\\t\\tcontent: \\'\\';\\n\\t}\\n\\t&:after {\\n\\t\\tcontent: \\'\\';\\n\\t}\\n\\tdisplay: flex;\\n\\tjustify-content: center;\\n\\talign-items: flex-start;\\n\\tflex-flow: wrap;\\n\\t', ';\\n']);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nvar _styledComponents2 = _interopRequireDefault(_styledComponents);\n\nvar _bases = __webpack_require__(/*! Components/bases */ \"./src/shared/components/bases/index.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }\n\nvar Row = exports.Row = _styledComponents2.default.div(_templateObject, _bases.RowBase);\n\n//# sourceURL=webpack:///./src/shared/components/Row.js?");
+
+/***/ }),
+
 /***/ "./src/shared/components/TextBase.js":
 /*!*******************************************!*\
   !*** ./src/shared/components/TextBase.js ***!
@@ -4882,6 +4906,54 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 
 /***/ }),
 
+/***/ "./src/shared/components/bases/ColBase.js":
+/*!************************************************!*\
+  !*** ./src/shared/components/bases/ColBase.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n\nvar _templateObject = _taggedTemplateLiteral([\"\\n\\t\", \"\\n\"], [\"\\n\\t\", \"\\n\"]);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nvar _styleVariables = __webpack_require__(/*! Shared/style-variables */ \"./src/shared/style-variables.js\");\n\nvar _styleVariables2 = _interopRequireDefault(_styleVariables);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }\n\nvar ColBase = (0, _styledComponents.css)(_templateObject, function (props) {\n\tif (!props.s) props.s = 12;\n\tif (!props.m) props.m = 12;\n\tif (!props.l) props.l = 12;\n\t//regra de 3, onde 12 é o numero total de colunas\n\tvar sWidth = 100 / 12 * props.s;\n\tvar mWidth = 100 / 12 * props.m;\n\tvar lWidth = 100 / 12 * props.l;\n\treturn \"\\n\\t\\t\\t@media (\" + _styleVariables2.default.media.mobile + \") {\\n\\t\\t\\t\\twidth: \" + sWidth + \"%;\\n\\t\\t\\t}\\n\\t\\t\\t@media (\" + _styleVariables2.default.media.tablet2 + \") {\\n\\t\\t\\t\\twidth: \" + mWidth + \"%;\\n\\t\\t\\t}\\n\\t\\t\\t@media (\" + _styleVariables2.default.media.desktop2 + \") {\\n\\t\\t\\t\\twidth: \" + lWidth + \"%;\\n\\t\\t\\t}\\n\\t\\t\";\n});\n\nexports.default = ColBase;\n\n//# sourceURL=webpack:///./src/shared/components/bases/ColBase.js?");
+
+/***/ }),
+
+/***/ "./src/shared/components/bases/MarginBase.js":
+/*!***************************************************!*\
+  !*** ./src/shared/components/bases/MarginBase.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\nexports.MarginBase = undefined;\n\nvar _templateObject = _taggedTemplateLiteral(['\\n\\t', '\\n'], ['\\n\\t', '\\n']);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nfunction _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }\n\nvar MarginBase = exports.MarginBase = (0, _styledComponents.css)(_templateObject, function (props) {\n\tif (props.noMargin) {\n\t\treturn 'margin: none';\n\t}\n});\n\n//# sourceURL=webpack:///./src/shared/components/bases/MarginBase.js?");
+
+/***/ }),
+
+/***/ "./src/shared/components/bases/RowBase.js":
+/*!************************************************!*\
+  !*** ./src/shared/components/bases/RowBase.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n\nvar _templateObject = _taggedTemplateLiteral(['\\n\\t', '\\n'], ['\\n\\t', '\\n']);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nvar _styleVariables = __webpack_require__(/*! Shared/style-variables */ \"./src/shared/style-variables.js\");\n\nvar _styleVariables2 = _interopRequireDefault(_styleVariables);\n\nvar _ColBase = __webpack_require__(/*! ./ColBase */ \"./src/shared/components/bases/ColBase.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }\n\nvar RowBase = (0, _styledComponents.css)(_templateObject, function (props) {\n\tvar local = [];\n\t!props.sAlign ? local['sAlign'] = 'center' : local['sAlign'] = props.sAlign;\n\t!props.mAlign ? local['mAlign'] = 'center' : local['mAlign'] = props.mAlign;\n\t!props.lAlign ? local['lAlign'] = 'center' : local['lAlign'] = props.lAlign;\n\n\tfor (var key in local) {\n\t\tif (local[key] === 'left') local[key] = 'flex-start';\n\t\tif (local[key] === 'right') local[key] = 'flex-end';\n\t}\n\n\treturn '\\n\\t\\t\\t@media (' + _styleVariables2.default.media.mobile + ') {\\n\\t\\t\\t\\tjustify-content: ' + local.sAlign + ';\\n\\t\\t\\t}\\n\\t\\t\\t@media (' + _styleVariables2.default.media.tablet2 + ') {\\n\\t\\t\\t\\tjustify-content: ' + local.mAlign + ';\\n\\t\\t\\t}\\n\\t\\t\\t@media (' + _styleVariables2.default.media.desktop2 + ') {\\n\\t\\t\\t\\tjustify-content: ' + local.lAlign + ';\\n\\t\\t\\t}\\n\\t\\t';\n});\n\nexports.default = RowBase;\n\n//# sourceURL=webpack:///./src/shared/components/bases/RowBase.js?");
+
+/***/ }),
+
+/***/ "./src/shared/components/bases/index.js":
+/*!**********************************************!*\
+  !*** ./src/shared/components/bases/index.js ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\nexports.RowBase = exports.ColBase = exports.MarginBase = undefined;\n\nvar _MarginBase = __webpack_require__(/*! ./MarginBase */ \"./src/shared/components/bases/MarginBase.js\");\n\nvar _ColBase = __webpack_require__(/*! ./ColBase */ \"./src/shared/components/bases/ColBase.js\");\n\nvar _ColBase2 = _interopRequireDefault(_ColBase);\n\nvar _RowBase = __webpack_require__(/*! ./RowBase */ \"./src/shared/components/bases/RowBase.js\");\n\nvar _RowBase2 = _interopRequireDefault(_RowBase);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nexports.MarginBase = _MarginBase.MarginBase;\nexports.ColBase = _ColBase2.default;\nexports.RowBase = _RowBase2.default;\n\n//# sourceURL=webpack:///./src/shared/components/bases/index.js?");
+
+/***/ }),
+
 /***/ "./src/shared/components/forms/Input.js":
 /*!**********************************************!*\
   !*** ./src/shared/components/forms/Input.js ***!
@@ -4890,7 +4962,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nvar _styledComponents2 = _interopRequireDefault(_styledComponents);\n\nvar _styleVariables = __webpack_require__(/*! Shared/style-variables */ \"./src/shared/style-variables.js\");\n\nvar _styleVariables2 = _interopRequireDefault(_styleVariables);\n\nvar _TextBase = __webpack_require__(/*! Components/TextBase */ \"./src/shared/components/TextBase.js\");\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _reactDom2 = _interopRequireDefault(_reactDom);\n\nvar _server = __webpack_require__(/*! react-dom/server */ \"./node_modules/react-dom/server.browser.js\");\n\nvar _bases = __webpack_require__(/*! ./bases */ \"./src/shared/components/forms/bases/index.js\");\n\nvar _select = __webpack_require__(/*! ./select */ \"./src/shared/components/forms/select/index.js\");\n\nvar _select2 = _interopRequireDefault(_select);\n\nvar _text = __webpack_require__(/*! ./text */ \"./src/shared/components/forms/text/index.js\");\n\nvar _text2 = _interopRequireDefault(_text);\n\nvar _radio = __webpack_require__(/*! ./radio */ \"./src/shared/components/forms/radio/index.js\");\n\nvar _radio2 = _interopRequireDefault(_radio);\n\nvar _checkbox = __webpack_require__(/*! ./checkbox */ \"./src/shared/components/forms/checkbox/index.js\");\n\nvar _checkbox2 = _interopRequireDefault(_checkbox);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar Input = function Input(props) {\n\tswitch (props.type) {\n\t\tcase 'text':\n\t\t\treturn _react2.default.createElement(_text2.default, props);break;\n\t\tcase 'number':\n\t\t\treturn _react2.default.createElement(_text2.default, props);break;\n\t\tcase 'radio':\n\t\t\treturn _react2.default.createElement(_radio2.default, props);break;\n\t\tcase 'select':\n\t\t\treturn _react2.default.createElement(_select2.default, props);break;\n\t\tcase 'checkbox':\n\t\t\treturn _react2.default.createElement(_checkbox2.default, props);break;\n\t}\n\treturn null;\n};\n\n//BASES\nexports.default = Input;\n\n// <Input type={'text'} placeholder={'Nome'}/>\n// <Input type={'radio'} label={'Quantidade em BTC'}/>\n\n// <Input type={select}>\n// \t<option>BH</option>\n// \t<option>SP</option>\n// </Input>\n\n//# sourceURL=webpack:///./src/shared/components/forms/Input.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nvar _styledComponents2 = _interopRequireDefault(_styledComponents);\n\nvar _styleVariables = __webpack_require__(/*! Shared/style-variables */ \"./src/shared/style-variables.js\");\n\nvar _styleVariables2 = _interopRequireDefault(_styleVariables);\n\nvar _TextBase = __webpack_require__(/*! Components/TextBase */ \"./src/shared/components/TextBase.js\");\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _reactDom2 = _interopRequireDefault(_reactDom);\n\nvar _server = __webpack_require__(/*! react-dom/server */ \"./node_modules/react-dom/server.browser.js\");\n\nvar _bases = __webpack_require__(/*! ./bases */ \"./src/shared/components/forms/bases/index.js\");\n\nvar _select = __webpack_require__(/*! ./select */ \"./src/shared/components/forms/select/index.js\");\n\nvar _select2 = _interopRequireDefault(_select);\n\nvar _text = __webpack_require__(/*! ./text */ \"./src/shared/components/forms/text/index.js\");\n\nvar _text2 = _interopRequireDefault(_text);\n\nvar _radio = __webpack_require__(/*! ./radio */ \"./src/shared/components/forms/radio/index.js\");\n\nvar _radio2 = _interopRequireDefault(_radio);\n\nvar _checkbox = __webpack_require__(/*! ./checkbox */ \"./src/shared/components/forms/checkbox/index.js\");\n\nvar _checkbox2 = _interopRequireDefault(_checkbox);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar Input = function Input(props) {\n\tswitch (props.type) {\n\t\tcase 'text':\n\t\t\treturn _react2.default.createElement(_text2.default, props);break;\n\t\tcase 'number':\n\t\t\treturn _react2.default.createElement(_text2.default, props);break;\n\t\tcase 'radio':\n\t\t\treturn _react2.default.createElement(_radio2.default, props);break;\n\t\tcase 'select':\n\t\t\treturn _react2.default.createElement(_select2.default, props);break;\n\t\tcase 'checkbox':\n\t\t\treturn _react2.default.createElement(_checkbox2.default, props);break;\n\t}\n\treturn null;\n};\n\n//BASES\nexports.default = Input;\n\n//# sourceURL=webpack:///./src/shared/components/forms/Input.js?");
 
 /***/ }),
 
@@ -5206,6 +5278,18 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n
 
 /***/ }),
 
+/***/ "./src/shared/components/index.js":
+/*!****************************************!*\
+  !*** ./src/shared/components/index.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\nexports.Row = exports.Col = undefined;\n\nvar _Col = __webpack_require__(/*! ./Col */ \"./src/shared/components/Col.js\");\n\nvar _Row = __webpack_require__(/*! ./Row */ \"./src/shared/components/Row.js\");\n\nexports.Col = _Col.Col;\nexports.Row = _Row.Row;\n\n//# sourceURL=webpack:///./src/shared/components/index.js?");
+
+/***/ }),
+
 /***/ "./src/shared/style-variables.js":
 /*!***************************************!*\
   !*** ./src/shared/style-variables.js ***!
@@ -5214,7 +5298,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _functions = __webpack_require__(/*! Utils/functions */ \"./src/shared/utils/functions.js\");\n\n//media: {\n// \tmobile: 'min-width: 0px',     #small\n// \tmobile2: 'min-width: 470px',  #small\n// \ttablet: 'min-width: 590px',   #small\n// \ttablet2: 'min-width: 790px',  #medium\n// \tlaptop: 'min-width: 1014px'   #medium\n// \tdesktop: 'min-width: 1356px', #medium \n// \tdesktop2: 'min-width: 1590px',#large \n// \tfullhd: 'min-width: 1970px'   #large\n// }\n\nmodule.exports = {\n\trgba: _functions.hexToRgba,\n\tdarkLilac: '#3B1878',\n\tnormalLilac: '#4B2C82',\n\tnormalLilac2: '#3F1C7B',\n\tnormalLilac3: '#432678',\n\tlightLilac: '#725C98',\n\tnormalGreen: '#4CD566',\n\tnormalRed: '#FF1C38',\n\tmarginTopSmall: '10px',\n\tmarginTopNormal: '15px',\n\tmarginTopRegular: '20px',\n\tmarginTopBig: '30px',\n\tmarginTopHuge: '50px',\n\tmedia: {\n\t\tmobile: 'min-width: 0px',\n\t\tmobile2: 'min-width: 470px',\n\t\ttablet: 'min-width: 590px',\n\t\ttablet2: 'min-width: 790px',\n\t\tlaptop: 'min-width: 1014px',\n\t\tdesktop: 'min-width: 1356px',\n\t\tdesktop2: 'min-width: 1590px',\n\t\tfullhd: 'min-width: 1970px'\n\t}\n};\n\n//# sourceURL=webpack:///./src/shared/style-variables.js?");
+eval("\n\nvar _functions = __webpack_require__(/*! Utils/functions */ \"./src/shared/utils/functions.js\");\n\n//media: {\n// \tmobile: 'min-width: 0px',     #small\n// \tmobile2: 'min-width: 470px',  #small\n// \ttablet: 'min-width: 590px',   #small\n// \ttablet2: 'min-width: 790px',  #medium\n// \tlaptop: 'min-width: 1014px'   #medium\n// \tdesktop: 'min-width: 1356px', #medium \n// \tdesktop2: 'min-width: 1590px',#large \n// \tfullhd: 'min-width: 1970px'   #large\n// }\n\nmodule.exports = {\n\trgba: _functions.hexToRgba,\n\tdarkLilac: '#3B1878',\n\tnormalLilac: '#4B2C82',\n\tnormalLilac2: '#3F1C7B',\n\tnormalLilac3: '#432678',\n\tlightLilac: '#725C98',\n\tnormalGreen: '#4CD566',\n\tnormalRed: '#FF1C38',\n\tmarginTopSmall: '10px',\n\tmarginTopNormal: '15px',\n\tmarginTopRegular: '20px',\n\tmarginTopBig: '30px',\n\tmarginTopHuge: '50px',\n\tmedia: {\n\t\tmobile: 'min-width: 310px',\n\t\tmobile2: 'min-width: 470px',\n\t\ttablet: 'min-width: 590px',\n\t\ttablet2: 'min-width: 790px',\n\t\tlaptop: 'min-width: 1014px',\n\t\tdesktop: 'min-width: 1356px',\n\t\tdesktop2: 'min-width: 1590px',\n\t\tfullhd: 'min-width: 1970px'\n\t}\n};\n\n//# sourceURL=webpack:///./src/shared/style-variables.js?");
 
 /***/ }),
 
@@ -5238,7 +5322,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _Input = __webpack_require__(/*! Components/forms/Input */ \"./src/shared/components/forms/Input.js\");\n\nvar _Input2 = _interopRequireDefault(_Input);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nvar toRender = function toRender() {\n\treturn _react2.default.createElement(\n\t\t'div',\n\t\tnull,\n\t\t_react2.default.createElement(\n\t\t\t'h3',\n\t\t\tnull,\n\t\t\t'Dados'\n\t\t),\n\t\t_react2.default.createElement(_Input2.default, { normal: true, whiteTheme: true, s: 12, m: 6, l: 6, type: 'text', label: { value: 'Nome', txItalic: true } }),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement(_Input2.default, { normal: true, whiteTheme: true, s: 12, m: 6, l: 6, type: 'number', label: { value: 'Idade', txItalic: true } }),\n\t\t_react2.default.createElement(\n\t\t\t'h3',\n\t\t\tnull,\n\t\t\t'Pessoas'\n\t\t),\n\t\t_react2.default.createElement(\n\t\t\t_Input2.default,\n\t\t\t{ type: 'select', s: 12, m: 6, l: 6, label: { value: 'Nome', txBold: true } },\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Marcelo'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Rafael'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Brito'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Joao'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Jao'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Felipe'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Bruno'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Mateus'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Jonas'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Lucas'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Tiago'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'C\\xE1ssia'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Hellen'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Ana'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Josefina'\n\t\t\t)\n\t\t),\n\t\t_react2.default.createElement(\n\t\t\t'h3',\n\t\t\tnull,\n\t\t\t'Alimentos'\n\t\t),\n\t\t_react2.default.createElement(_Input2.default, { type: 'radio', name: 'agree', label: { value: 'Batata' } }),\n\t\t_react2.default.createElement(_Input2.default, { type: 'radio', name: 'agree', label: { value: 'Feijao' } }),\n\t\t_react2.default.createElement(_Input2.default, { type: 'checkbox', label: { value: 'Concordo e aceito com os termos' } })\n\t);\n};\n// import ModalSend from 'Containers/Wallet/PanelRight/ModalSend/index';\n\n\n(0, _reactDom.render)(toRender(), document.querySelector('.root'));\n\n//# sourceURL=webpack:///./tests/components/index.js?");
+eval("\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _Input = __webpack_require__(/*! Components/forms/Input */ \"./src/shared/components/forms/Input.js\");\n\nvar _Input2 = _interopRequireDefault(_Input);\n\nvar _index = __webpack_require__(/*! Components/index */ \"./src/shared/components/index.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\n// import ModalSend from 'Containers/Wallet/PanelRight/ModalSend/index';\nvar toRender = function toRender() {\n\treturn _react2.default.createElement(\n\t\t'div',\n\t\tnull,\n\t\t_react2.default.createElement(\n\t\t\t'h3',\n\t\t\tnull,\n\t\t\t'Dados'\n\t\t),\n\t\t_react2.default.createElement(_Input2.default, { normal: true, whiteTheme: true, s: 12, m: 6, l: 6, type: 'text', label: { value: 'Nome', txItalic: true } }),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement(_Input2.default, { normal: true, whiteTheme: true, s: 12, m: 6, l: 6, type: 'number', label: { value: 'Idade', txItalic: true } }),\n\t\t_react2.default.createElement(\n\t\t\t'h3',\n\t\t\tnull,\n\t\t\t'Pessoas'\n\t\t),\n\t\t_react2.default.createElement(\n\t\t\t_Input2.default,\n\t\t\t{ type: 'select', s: 12, m: 6, l: 6, label: { value: 'Nome', txBold: true } },\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Marcelo'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Rafael'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Brito'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Joao'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Jao'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Felipe'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Bruno'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Mateus'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Jonas'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Lucas'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Tiago'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'C\\xE1ssia'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Hellen'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Ana'\n\t\t\t),\n\t\t\t_react2.default.createElement(\n\t\t\t\t'option',\n\t\t\t\tnull,\n\t\t\t\t'Josefina'\n\t\t\t)\n\t\t),\n\t\t_react2.default.createElement(\n\t\t\t'h3',\n\t\t\tnull,\n\t\t\t'Alimentos'\n\t\t),\n\t\t_react2.default.createElement(_Input2.default, { type: 'radio', name: 'agree', label: { value: 'Batata' } }),\n\t\t_react2.default.createElement(_Input2.default, { type: 'radio', name: 'agree', label: { value: 'Feijao' } }),\n\t\t_react2.default.createElement(_Input2.default, { type: 'checkbox', label: { value: 'Concordo e aceito com os termos' } }),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement('br', null),\n\t\t_react2.default.createElement(\n\t\t\t_index.Row,\n\t\t\tnull,\n\t\t\t_react2.default.createElement(_index.Col, { s: 4, m: 4, l: 4, style: { background: 'red', height: '100px' } }),\n\t\t\t_react2.default.createElement(_index.Col, { s: 4, m: 4, l: 4, style: { background: 'blue', height: '100px' } })\n\t\t)\n\t);\n};\n\n(0, _reactDom.render)(toRender(), document.querySelector('.root'));\n\n//# sourceURL=webpack:///./tests/components/index.js?");
 
 /***/ }),
 
