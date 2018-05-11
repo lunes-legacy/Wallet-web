@@ -35,8 +35,10 @@ let P = styled.div`
   position: center;
   color: white;
   font-size: 12pt;
-  margin-left: 15%;
+  margin-left: 3%;
   width: 100%;
+  margin-top: 4%;
+  margin-bottom: 4%
 `;
 let DivParagraph = styled.div`
   position: center;
