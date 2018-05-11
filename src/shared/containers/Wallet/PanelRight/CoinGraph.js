@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import { LineChart, Line, XAxis, YAxis, Tooltip } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { WalletClass } from "Classes/Wallet";
+
 class CoinGraph extends React.Component {
   constructor() {
     super();
@@ -17,26 +18,49 @@ class CoinGraph extends React.Component {
   }
 
   coinHistory = async () => {
-    let wallet = new WalletClass();
-    let obj = { fromSymbol: "BTC", toSymbol: "USD", range: "RANGE_1M" };
-    let dataHistory = await wallet.getTransactionHistory(obj);
-
+    let obj = { fromSymbol: this.props.coinName, toSymbol: "USD", range: "RANGE_1M" };
+    let wallet = await new WalletClass().getTransactionHistory(obj);
+    let walletFormatted = await this.convertTimestampToDate(wallet.data);
+ 
     this.setState(() => {
       return {
-        history_time_price: dataHistory.data
+        history_time_price: walletFormatted
       };
     });
   };
 
+  convertTimestampToDate = async data => {
+    data.map(timeStamp => {
+      let date = new Date(timeStamp.time * 1000);
+      let months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
+      timeStamp.time = date.getDate() + "/" + months[date.getMonth()] + "/" + date.getFullYear();
+    });
+
+    return await data;
+  };
+
   render() {
+    const fontStyle = {
+      fontSize: "14pt",
+      color: "#4cd566",
+      fontWeight: "bold"
+    };
+
+    const styleWrapper = {
+      backgroundColor: "#3B1878"
+    };
+
     return (
       <div>
-        <LineChart width={500} height={175} data={this.state.history_time_price}>
-          <XAxis hide dataKey="time" />
-          <YAxis hide domain={["dataMin", "dataMax"]} />
-          <Tooltip />
-          <Line dataKey="close" stroke="#4cd566" />
-        </LineChart>
+        <ResponsiveContainer width={350} height={100}>
+          <LineChart data={this.state.history_time_price}>
+            <XAxis hide dataKey="time" />
+            <YAxis hide domain={["dataMin", "dataMax"]} />
+            <Tooltip wrapperStyle={styleWrapper} labelStyle={fontStyle} itemStyle={fontStyle} separator={": $"}/>
+            <Line dataKey="close" dot={false} stroke="#4cd566" />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     );
   }
