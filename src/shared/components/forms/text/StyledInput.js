@@ -6,7 +6,7 @@ let StyledInput = styled.input`
 	appearence: textfield;
 	padding: 0.5rem;
 	z-index: 2;
-	overflow: visible;
+	overflow-x: auto;
 	&:focus {
 		outline: none;
 	}

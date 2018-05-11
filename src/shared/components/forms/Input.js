@@ -5,12 +5,6 @@ import { TextBase } from 'Components/TextBase';
 import ReactDOM from 'react-dom';
 import { renderToString } from 'react-dom/server';
 
-//BASES
-import { 
-	InputBase, 
-	GridBase, 
-	InputSizeBase } from './bases';
-
 import Select   from './select';
 import Text     from './text';
 import Radio    from './radio';

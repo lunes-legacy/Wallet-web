@@ -82,10 +82,17 @@ let FirstRowCss = css`
 class ModalSend extends React.Component {
 	constructor(props) {
 		super(props);
-		this.wrapperQr = React.createRef();
+		this.ref = {};
+		this.ref['wrapperQr']       = React.createRef();
+		this.ref['radioCoinAmount'] = React.createRef();
+		this.ref['coinAmount']      = React.createRef();
+		this.ref['address']         = React.createRef();
 	}
 	componentDidMount() {
-		this.DOMWrapperQr = ReactDOM.findDOMNode(this.wrapperQr.current);
+		this.wrapperQr       = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
+		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
+		this.coinAmount      = ReactDOM.findDOMNode(this.ref.coinAmount.current);
+		this.address         = ReactDOM.findDOMNode(this.ref.address.current);
 		this.makeQrCode();
 	}
 	toggleModal = (event) => {
@@ -95,11 +102,18 @@ class ModalSend extends React.Component {
 		let qr = qrcode(4, 'L');
 		qr.addData('Marcelo Rafael');
 		qr.make();
-		let img = qr.createSvgTag();
-		this.DOMWrapperQr.innerHTML = img;
-		let imgEl = this.DOMWrapperQr.children[0];
+		let img   = qr.createSvgTag();
+		this.wrapperQr.innerHTML = img;
+		let imgEl = this.wrapperQr.children[0];
 		imgEl.style.width  = '90%';
 		imgEl.style.height = 'auto';
+	}
+	handleSend = async () => {
+		console.log(this.coinAmount.getAttribute('value'));
+		let coinAmount = this.coinAmount.value;
+		let address    = this.address.value;
+		let result = await this.props.send({coinAmount, address});
+		console.log(`%c${result}`, 'font-size: 20px; color: lightgreen; background: indianred;');
 	}
 	render() {
 		return(
@@ -117,18 +131,47 @@ class ModalSend extends React.Component {
 								{/*FIRST ROW*/}
 								<Row css={FirstRowCss}>
 									<Col offset={'s3'} s={6} m={6} l={6}>
-										<Input huge s={12} type={'radio'} className={'js-modal-send-quantity'} label={{value: 'Quantidade LTC'}}/>
+										<Input 
+											innerRef={this.ref.radioCoinAmount}
+											normal 
+											s={12} 
+											type={'radio'}
+											label={{value: 'Quantidade LTC'}}/>
 									</Col>
 									<Col s={12} m={6} l={6}>
 										<Row>
-											{/*<Input fontSize={'4rem'} s={12} m={12} l={12} type={'text'} className={'js-modal-send-amount'} placeholder={'0.00000000'}/>*/}
-											<Input huge phRight noBorder className={'js-modal-send-amount'} type={'text'} placeholder={'0.00000000'} fontSize={'4rem'} whiteTheme s={12} m={12} l={12}  />
+											<Input 
+												huge 
+												phRight 
+												noBorder 
+												whiteTheme 
+												innerRef={this.ref.coinAmount}
+												type={'text'} 
+												placeholder={'0.00000000'} 
+												fontSize={'4rem'} 
+												s={12} m={12} l={12}/>
 										</Row>
 										<Row>
-											<Input type={'radio'} label={{value: '25%'}} name={'percent'}/>
-											<Input type={'radio'} label={{value: '50%'}} name={'percent'}/>
-											<Input type={'radio'} label={{value: '75%'}} name={'percent'}/>
-											<Input type={'radio'} label={{value: 'Max'}} name={'percent'}/>
+											<Input 
+												type={'radio'} 
+												label={{value: '25%'}} 
+												name={'percent'} 
+												normal />
+											<Input 
+												type={'radio'} 
+												label={{value: '50%'}} 
+												name={'percent'} 
+												normal />
+											<Input 
+												type={'radio'} 
+												label={{value: '75%'}} 
+												name={'percent'} 
+												normal />
+											<Input 
+												type={'radio'} 
+												label={{value: 'Max'}} 
+												name={'percent'} 
+												normal />
 										</Row>
 									</Col>
 								</Row>
@@ -139,19 +182,41 @@ class ModalSend extends React.Component {
 								<Row style={{padding: '3rem 0 3rem 0'}}>
 									<Col s={6} m={6} l={6}>
 										<Row sAlign={'left'} mAlign={'left'} lAlign={'left'} style={{textAlign:'left'}}>
-											<Input type={'radio'} label={{value: 'Valor em dólar'}} name={'fiat-unit'}/>
+											<Input 
+												type={'radio'} 
+												label={{value: 'Valor em dólar'}} 
+												name={'fiat-unit'}
+												normal />
 										</Row>
-										<Row sAlign={'left'} mAlign={'left'} lAlign={'left'}  style={{textAlign:'left'}}>
-											<Input type={'radio'} label={{value: 'Valor em real'}} name={'fiat-unit'} checked={true}/>
+										<Row 
+											sAlign={'left'} 
+											mAlign={'left'} 
+											lAlign={'left'} 
+											style={{textAlign:'left'}}>
+											<Input 
+												type={'radio'} 
+												label={{value: 'Valor em real'}} 
+												name={'fiat-unit'} 
+												checked={true}
+												normal />
 										</Row>
 									</Col>
-									<Col s={6} m={6} l={6}  >
+									<Col s={6} m={6} l={6}>
 										<Row>
 											{/*<Input fontSize={'4rem'} type={'text'} s={12} m={12} l={12} whiteTheme label={{value:'BRL'}}/>*/}
-											<Input huge phRight noBorder whiteTheme s={12} m={12} l={12} type={'text'} placeholder={'BRL 0.00'}/>
+											<Input 
+												huge 
+												phRight 
+												noBorder 
+												whiteTheme 
+												type={'text'} 
+												placeholder={'BRL 0.00'}
+												s={12} m={12} l={12}/>
 										</Row>
-										<Row sAlign="right" mAlign="right" lAlign="right">
-											<Text clWhite fontSize={'1.7rem'}>USD 0.00</Text>
+										<Row defaultAlign='right'>
+											<Text 
+												clWhite 
+												fontSize={'1.7rem'}>USD 0.00</Text>
 										</Row>
 									</Col>
 								</Row>
@@ -162,19 +227,37 @@ class ModalSend extends React.Component {
 								<Row>
 									<Col defaultAlign={'center'} s={12} m={6} l={6}>
 										{/*<Input type={'text'} fontSize={'2rem'} s={6} label={'address'}/>*/}
-										<Input className={''} fontSize={'4rem'} normal whiteTheme type={'text'} label={{value: 'Endereço', txItalic: true}} />
+										<Input 
+											className={''} 
+											fontSize={'4rem'} 
+											normal 
+											whiteTheme 
+											type={'text'} 
+											innerRef={this.ref.address}
+											label={{value: 'Endereço'}}/>
 									</Col>
 								</Row>
 							</Col>
 
-							<Col defaultAlign={'center'} s={3} m={3} l={3}>
+							<Col 
+								defaultAlign={'center'} 
+								s={3} m={3} l={3}>
 								<Row>
-									<Button css={SendButtonCss} blockCenter clWhite bgNormalYellow >
+									<Button 
+										css={SendButtonCss} 
+										blockCenter 
+										clWhite 
+										bgNormalYellow 
+										onClick={this.handleSend}>
 										Enviar
 									</Button>
 								</Row>
 								<Row>
-									<Button ref={this.wrapperQr} blockCenter clWhite bgWhite >
+									<Button 
+										innerRef={this.ref.wrapperQr} 
+										blockCenter 
+										clWhite 
+										bgWhite >
 										QR Code
 									</Button>
 								</Row>

@@ -8,6 +8,9 @@ import Wrapper from './Wrapper';
 class Text extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			value: undefined
+		}
 		this.inputRef = React.createRef();
 	}
 	handleOnFocus = (event) => {
@@ -25,12 +28,15 @@ class Text extends React.Component {
 	}
 	componentDidMount() {
 		this.wrapper = ReactDOM.findDOMNode(this.refs.wrapper);
-		this.input   = ReactDOM.findDOMNode(this.inputRef.current);
+		this.input   = this.wrapper.children[0];
 		this.label   = ReactDOM.findDOMNode(this.refs.label);
 	}
 	handleOnKeyUp = () => {
-		if (this.props.type !== 'number') { return null; }
 		let value = this.input.value;
+		this.setState({
+			value 
+		});
+		if (this.props.type !== 'number') { return null; }
 		let regex = /(?![0-9])(.)/gm;
 		this.input.value = value.replace(regex, '');
 	}
@@ -46,8 +52,8 @@ class Text extends React.Component {
 		}
 		let { type, ...inputProps } = this.props;
 		return (
-			<Wrapper css={wrapperCss} {...inputProps} ref="wrapper">
-				<StyledInput ref={this.inputRef} css={inputCss} {...inputProps} onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onKeyUp={this.handleOnKeyUp}/>
+			<Wrapper css={wrapperCss} value={this.state.value} {...inputProps} ref="wrapper">
+				<StyledInput className={'js-input'} css={inputCss} {...inputProps} onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onKeyUp={this.handleOnKeyUp}/>
 				<Label ref="label" className={'label'} css={labelCss} {...labelProps} onClick={this.handleClickLabel}>
 					{ value }
 				</Label>

@@ -47,10 +47,20 @@ import { Col, Row } from 'Components/index';
 // 		</Row>
 // 	</div>);
 // }
-
+let props = {
+	coinName: 'btc',
+	send: ({coinAmount, address}) => {
+		console.log(`%cEnviando ${coinAmount} para ${address}`, 'background: indianred; color: lightgreen; font-size: 20px;');
+		return new Promise((resolve) => {
+			setTimeout(() => {
+				resolve(`Enviado para ${address}`)
+			}, 1000);
+		});
+	}
+};
 const toRender = () => {
 	return(
-		<ModalSend/>	
+		<ModalSend {...props}/>	
 	);
 }
 
