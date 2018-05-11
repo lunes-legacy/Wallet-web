@@ -41,11 +41,14 @@ class Text extends React.Component {
 		if (this.props.label) {
 			var { value, ...labelProps  } = this.props.label;
 		}
+		if (this.props.css) {
+			var { wrapperCss, inputCss, labelCss } = this.props.css;
+		}
 		let { type, ...inputProps } = this.props;
 		return (
-			<Wrapper {...inputProps} ref="wrapper">
-				<StyledInput ref={this.inputRef} {...inputProps} onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onKeyUp={this.handleOnKeyUp}/>
-				<Label ref="label" className={'label'} {...labelProps} onClick={this.handleClickLabel}>
+			<Wrapper css={wrapperCss} {...inputProps} ref="wrapper">
+				<StyledInput ref={this.inputRef} css={inputCss} {...inputProps} onFocus={this.handleOnFocus} onBlur={this.handleOnBlur} onKeyUp={this.handleOnKeyUp}/>
+				<Label ref="label" className={'label'} css={labelCss} {...labelProps} onClick={this.handleClickLabel}>
 					{ value }
 				</Label>
 			</Wrapper>

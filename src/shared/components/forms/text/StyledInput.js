@@ -12,6 +12,13 @@ let StyledInput = styled.input`
 	}
 	&::placeholder {
 		color: white;
+		${props => {
+			if (props.phRight) {
+				return 'text-align: right';
+			} else if(props.phCenter) {
+				return 'text-align: center';
+			}
+		}}
 	}
 	${InputBase};
 	${props => {
@@ -44,6 +51,7 @@ let StyledInput = styled.input`
 				}`;
 		}
 	}}
+	${props => props.css ? props.css : ''};
 `;
 
 export default StyledInput;

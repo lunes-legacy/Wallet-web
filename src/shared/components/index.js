@@ -3,9 +3,9 @@ import { Row }        from './Row';
 import Input          from './forms/Input';
 import Button         from './forms/Button';
 import { TextBase }   from './TextBase';
-import BackgroundBase from './bases/BackgroundBase';
+import { BackgroundBase } from './bases';
 
-export {
+export { 
 	Col,
 	Row,
 	Input,

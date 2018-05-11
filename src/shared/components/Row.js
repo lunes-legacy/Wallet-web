@@ -16,4 +16,5 @@ export let Row = styled.div`
 	align-items: flex-start;
 	flex-flow: wrap;
 	${RowBase};
+	${props => props.css ? props.css : ''};
 `;

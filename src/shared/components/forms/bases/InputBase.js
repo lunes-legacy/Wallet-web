@@ -11,6 +11,11 @@ let InputBase = css`
 	z-index: 1;
 	${TextBase};
 	${InputSizeBase};
+	${props => {
+		if (props.noBorder) {
+			return 'border: none';
+		}
+	}}
 `;
 
 export default InputBase;

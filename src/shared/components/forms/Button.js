@@ -1,7 +1,8 @@
-import styled       from 'styled-components';
-import style        from 'Shared/style-variables';
-import { TextBase, BackgroundBase } from 'Components/index.js';
-console.log(TextBase, BackgroundBase);
+import styled         from 'styled-components';
+import style          from 'Shared/style-variables';
+import { TextBase }   from 'Components/TextBase.js';
+import BackgroundBase from 'Components/bases/BackgroundBase.js';
+
 let Button = styled.div`
 	display: block;
 	height: 13rem;
@@ -18,7 +19,7 @@ let Button = styled.div`
 		if (props.blockCenter)
 			return `margin: 0 auto;`;
 	}}
-	
+	${props => props.css ? props.css : ''};
 `;
 
 export default Button;

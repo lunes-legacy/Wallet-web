@@ -1,4 +1,5 @@
 import { css } from 'styled-components';
+import style from 'Shared/style-variables';
 
 let BackgroundBase = css`
 	${props => {
@@ -13,6 +14,9 @@ let BackgroundBase = css`
 		if (props.bgWhite)
 			return `background: white; color: black;`;
 	}}
+	background-position: center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
 `;
 
 export default BackgroundBase;

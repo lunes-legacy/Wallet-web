@@ -6,6 +6,7 @@ let WrapInput = styled.div`
 	margin: 0 0 10px 0;
 	width: 100%;
 	${GridBase};
+	${props => props.css ? props.css : ''};
 `;
 
 export default WrapInput;

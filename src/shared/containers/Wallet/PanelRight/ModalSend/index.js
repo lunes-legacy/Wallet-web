@@ -1,5 +1,6 @@
 import React       from 'react';
-import styled      from 'styled-components';
+import ReactDOM    from 'react-dom';
+import styled, { css }      from 'styled-components';
 import style       from 'Shared/style-variables';
 import { connect } from 'react-redux';
 // import { Row } from 'react-materialize';
@@ -7,6 +8,7 @@ import { connect } from 'react-redux';
 import { H1 } from 'Components/H1';
 import { Text } from 'Components/Text';
 import { Col, Row, Input, Button } from 'Components/index';
+import qrcode from 'qrcode-generator';
 
 let Background = styled.div`
 	width: 100%;
@@ -68,9 +70,36 @@ let Foot    = styled.div``;
 let Hr = styled.hr`
 	border: 0.7px solid ${style.darkLilac};
 `;
+
+
+let SendButtonCss = css`
+	margin: 0 auto 20px auto;
+`;
+let FirstRowCss = css`
+	margin-top: 3rem;
+	margin-bottom: 3rem;
+`;
 class ModalSend extends React.Component {
+	constructor(props) {
+		super(props);
+		this.wrapperQr = React.createRef();
+	}
+	componentDidMount() {
+		this.DOMWrapperQr = ReactDOM.findDOMNode(this.wrapperQr.current);
+		this.makeQrCode();
+	}
 	toggleModal = (event) => {
 
+	}
+	makeQrCode = () => {
+		let qr = qrcode(4, 'L');
+		qr.addData('Marcelo Rafael');
+		qr.make();
+		let img = qr.createSvgTag();
+		this.DOMWrapperQr.innerHTML = img;
+		let imgEl = this.DOMWrapperQr.children[0];
+		imgEl.style.width  = '90%';
+		imgEl.style.height = 'auto';
 	}
 	render() {
 		return(
@@ -86,14 +115,14 @@ class ModalSend extends React.Component {
 						<Row>
 							<Col s={9} m={9} l={9}>
 								{/*FIRST ROW*/}
-								<Row style={{padding: '3rem 0 3rem 0'}}>
+								<Row css={FirstRowCss}>
 									<Col offset={'s3'} s={6} m={6} l={6}>
-										<Input s={12} type={'radio'} className={'js-modal-send-quantity'} label={{value: 'Quantidade LTC'}}/>
+										<Input huge s={12} type={'radio'} className={'js-modal-send-quantity'} label={{value: 'Quantidade LTC'}}/>
 									</Col>
 									<Col s={12} m={6} l={6}>
 										<Row>
 											{/*<Input fontSize={'4rem'} s={12} m={12} l={12} type={'text'} className={'js-modal-send-amount'} placeholder={'0.00000000'}/>*/}
-											<Input className={'js-modal-send-amount'} fontSize={'4rem'} normal whiteTheme s={12} m={12} l={12} type={'text'} />
+											<Input huge phRight noBorder className={'js-modal-send-amount'} type={'text'} placeholder={'0.00000000'} fontSize={'4rem'} whiteTheme s={12} m={12} l={12}  />
 										</Row>
 										<Row>
 											<Input type={'radio'} label={{value: '25%'}} name={'percent'}/>
@@ -119,7 +148,7 @@ class ModalSend extends React.Component {
 									<Col s={6} m={6} l={6}  >
 										<Row>
 											{/*<Input fontSize={'4rem'} type={'text'} s={12} m={12} l={12} whiteTheme label={{value:'BRL'}}/>*/}
-											<Input normal whiteTheme s={12} m={12} l={12} type={'text'} placeholder={'BRL 0.00'}/>
+											<Input huge phRight noBorder whiteTheme s={12} m={12} l={12} type={'text'} placeholder={'BRL 0.00'}/>
 										</Row>
 										<Row sAlign="right" mAlign="right" lAlign="right">
 											<Text clWhite fontSize={'1.7rem'}>USD 0.00</Text>
@@ -131,22 +160,22 @@ class ModalSend extends React.Component {
 
 								{/*THIRD ROW*/}
 								<Row>
-									<Col s={12}>
+									<Col defaultAlign={'center'} s={12} m={6} l={6}>
 										{/*<Input type={'text'} fontSize={'2rem'} s={6} label={'address'}/>*/}
-										<Input className={''} fontSize={'4rem'} normal whiteTheme s={12} m={12} l={12} type={'text'} label={{value: 'Endereço', txItalic: true}} />
+										<Input className={''} fontSize={'4rem'} normal whiteTheme type={'text'} label={{value: 'Endereço', txItalic: true}} />
 									</Col>
 								</Row>
 							</Col>
 
 							<Col defaultAlign={'center'} s={3} m={3} l={3}>
 								<Row>
-									<Button blockCenter clWhite bgNormalYellow >
+									<Button css={SendButtonCss} blockCenter clWhite bgNormalYellow >
 										Enviar
 									</Button>
 								</Row>
 								<Row>
-									<Button blockCenter clWhite bgWhite >
-										Receber
+									<Button ref={this.wrapperQr} blockCenter clWhite bgWhite >
+										QR Code
 									</Button>
 								</Row>
 							</Col>
