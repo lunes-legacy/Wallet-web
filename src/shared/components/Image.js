@@ -53,7 +53,7 @@ class Image extends React.Component {
   render() {
     return (
       <DivCarrousel>
-        <Carousel>
+        <Carousel wrapAround autoplay>
           {this.renderImage(this.props.imageList)}
         </Carousel>
       </DivCarrousel>
