@@ -21,7 +21,7 @@ class CoinGraph extends React.Component {
     let obj = { fromSymbol: this.props.coinName, toSymbol: "USD", range: "RANGE_1M" };
     let wallet = await new WalletClass().getTransactionHistory(obj);
     let walletFormatted = await this.convertTimestampToDate(wallet.data);
- 
+
     this.setState(() => {
       return {
         history_time_price: walletFormatted
@@ -42,7 +42,7 @@ class CoinGraph extends React.Component {
 
   render() {
     const fontStyle = {
-      fontSize: "14pt",
+      fontSize: "10pt",
       color: "#4cd566",
       fontWeight: "bold"
     };
@@ -57,7 +57,7 @@ class CoinGraph extends React.Component {
           <LineChart data={this.state.history_time_price}>
             <XAxis hide dataKey="time" />
             <YAxis hide domain={["dataMin", "dataMax"]} />
-            <Tooltip wrapperStyle={styleWrapper} labelStyle={fontStyle} itemStyle={fontStyle} separator={": $"}/>
+            <Tooltip wrapperStyle={styleWrapper} labelStyle={fontStyle} itemStyle={fontStyle} separator={": $"} />
             <Line dataKey="close" dot={false} stroke="#4cd566" />
           </LineChart>
         </ResponsiveContainer>

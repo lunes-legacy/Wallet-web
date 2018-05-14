@@ -38,7 +38,7 @@ let P = styled.div`
   margin-left: 3%;
   width: 100%;
   margin-top: 4%;
-  margin-bottom: 4%
+  margin-bottom: 4%;
 `;
 let DivParagraph = styled.div`
   position: center;
@@ -47,10 +47,15 @@ let DivParagraph = styled.div`
 `;
 
 class Image extends React.Component {
+  handleChange = index => {
+    if (index == this.props.imageList.length) this.renderImage(this.props.imageList);
+  };
   render() {
     return (
       <DivCarrousel>
-        <Carousel>{this.renderImage(this.props.imageList)}</Carousel>
+        <Carousel>
+          {this.renderImage(this.props.imageList)}
+        </Carousel>
       </DivCarrousel>
     );
   }
