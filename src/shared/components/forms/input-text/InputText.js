@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import style from 'Shared/style-variables';
-import { InputBase, InputSizeBase } from 'Components/bases';
+import { InputBase, InputSizeBase } from 'Components/forms/bases';
 
-let InputText = styled.input`
+let InputText = styled.input.attrs({
+	type: 'text'
+})`
 	appearence: textfield;
 	padding: 0.5rem;
 	z-index: 2;

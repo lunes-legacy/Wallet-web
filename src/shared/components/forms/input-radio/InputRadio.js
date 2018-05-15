@@ -13,6 +13,7 @@ let InputRadio = styled.input.attrs({
 	&:checked ~ .checkmark {
 		top: 0.25rem;
 		opacity: 1;
+		visibility: visible;
 	}
 `;
 

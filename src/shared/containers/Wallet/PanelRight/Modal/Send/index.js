@@ -5,13 +5,13 @@ import style       from 'Shared/style-variables';
 import { connect } from 'react-redux';
 import qrcode from 'qrcode-generator';
 
-import { Col, Row, Button } from 'Components/index';
 import { 
 	InputRadio, 
 	WrapRadio, 
 	LabelRadio, 
-	RadioCheckmark } from 'Components/forms/input-radio';
+	RadioCheckmark }   from 'Components/forms/input-radio';
 import { InputText } from 'Components/forms/input-text';
+import { Col, Row, Button } from 'Components/index';
 
 //PRIVATE COMPONENTS
 import Background  from '../Background';
@@ -207,13 +207,11 @@ class ModalSend extends React.Component {
 													whiteTheme
 													txRight
 													noBorder
-													type={'text'} 
 													ref={this.ref.coinAmount}
 													onKeyUp={this.handleOnAmountChange}
 													data-amount-type={'coin'}
 													className={'input-amount coin'}
-													placeholder={'0.00000000'} 
-												/>
+													placeholder={'0.00000000'}/>
 										</Row>
 										<Row>
 											<WrapRadio>
