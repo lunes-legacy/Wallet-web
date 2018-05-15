@@ -3,197 +3,30 @@ import ReactDOM    from 'react-dom';
 import styled, { css }      from 'styled-components';
 import style       from 'Shared/style-variables';
 import { connect } from 'react-redux';
-
-import { InputBase } from 'Components/forms/bases';
-import { TextBase } from 'Components';
-// import { Row } from 'react-materialize';
-// import { Input, Col, Row } from 'Components/materialize';
-import { H1 } from 'Components/H1';
-import { Text } from 'Components/Text';
-import { Col, Row, Input, Button } from 'Components/index';
 import qrcode from 'qrcode-generator';
 
-let Background = styled.div`
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	display: flex;
-	justify-content: center;
-	align-items: flex-end;
-	background: ${style.rgba(style.darkLilac, 0.8)};
-	z-index: 1000;
-	@media (min-width: 601px) {
-		align-items: center;
-	}
-	& * {
-		overflow: visible;
-	}
-`;
-let StyledModal = styled.div`
-	width: 100%;
-	height: calc(100% - 75px);
-	min-width: 320px;
-	min-height: 480px;
-	position: relative;
-	background: ${style.normalLilac};
-	border-radius: 10px;
-	padding: 3rem;
-	@media (min-width: 601px) {
-		width: 70%;
-		height: 70%;
-		margin-top: 75px;
-	}
-`;
-let Close   = styled.div`
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	font-size: 2rem;
-	color: white;
-	cursor: pointer;
-`;
-let Head    = styled.div`
-	width: 150px;
-	height: 150px;
-	border-radius: 100%;
-	background: ${style.normalLilac};
-	position: absolute;
-	top: -75px;
-	left: calc(50% - 75px);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	z-index: 100;
-	overflow: visible;
-`;
-let IconCoin = styled.img`
-	width: 60%;
-	height: 60%;
-`;
-let Content = styled.div`
-	overflow: auto;
-	margin: 75px 0 0 0;
-`;
-let Foot    = styled.div``;
+import { Col, Row, Button } from 'Components/index';
+import { 
+	InputRadio, 
+	WrapRadio, 
+	LabelRadio, 
+	RadioCheckmark } from 'Components/forms/input-radio';
+import { InputText } from 'Components/forms/input-text';
+//PRIVATE COMPONENTS
+import Background  from './Background';
+import Close       from './Close';
+import Content     from './Content';
+import Foot        from './Foot';
+import Head        from './Head';
+import Hr          from './Hr';
+import IconCoin    from './IconCoin';
+import StyledModal from './StyledModal';
+//CUSTOM CSS
+import { 
+	SendButtonCss, 
+	FirstRowCss, 
+	ThirdRowCss } from './custom';
 
-let Hr = styled.hr`
-	border: 0.7px solid ${style.darkLilac};
-`;
-
-
-let SendButtonCss = css`
-	margin: 0 auto 20px auto;
-`;
-let FirstRowCss = css`
-	margin-top: 3rem;
-	margin-bottom: 3rem;
-`;
-let ThirdRowCss = css`
-	padding: 25px 0 25px 0;
-`;
-let InputText = styled.input`
-	appearence: textfield;
-	padding: 0.5rem;
-	z-index: 2;
-	overflow-x: auto;
-	&:focus {
-		outline: none;
-	}
-	&::placeholder {
-		color: white;
-		${props => {
-			if (props.phRight) {
-				return 'text-align: right;';
-			} else if(props.phCenter) {
-				return 'text-align: center;';
-			}
-		}}
-		${props => {
-			if (props.phWeightBold) {
-				return 'font-weight: bold;';
-			} else if (props.phWeightLight) {
-				return 'font-weight: 100;';
-			}
-		}}
-		${props => {
-			if (props.phStyleItalic)
-				return 'font-style: italic;';
-		}}
-	}
-	${InputBase};
-	${props => {
-		if (props.whiteTheme) {
-			return `
-				border-color: white;
-				color: white;
-				& + label {
-					color: white;
-					border-color: white;
-					text-shadow: 0px 0px 0px white;
-				}`;
-		} else if (props.darkLilacTheme) {
-			return `
-				border-color: ${style.darkLilac};
-				color: ${style.lightLilac};
-				& + label {
-					color: ${style.darkLilac};
-					border-color: ${style.darkLilac};
-					text-shadow: 0px 0px 0px ${style.darkLilac};
-				}`;
-		} else if (props.lightLilacTheme) {
-			return `
-				border-color: ${style.lightLilac};
-				color: white;
-				& + label {
-					color: ${style.lightLilac};
-					border-color: ${style.lightLilac};
-					text-shadow: 0px 0px 0px ${style.lightLilac};
-				}`;
-		}
-	}}
-	${props => props.css ? props.css : ''};
-`;
-
-
-let InputRadio = styled.input.attrs({
-	type: 'radio'
-})`
-	opacity: 0;
-	cursor: pointer;
-	display: inline;
-	z-index: 2;
-	&:checked ~ .checkmark {
-		opacity: 1;
-	}
-`;
-let RadioCheckmark = styled.div.attrs({
-	className: 'checkmark'
-})`
-		z-index: 1;
-		width: 15px;
-		height: 15px;
-		border-radius: 100%;
-		background: dodgerblue;
-		top: 0px;
-		left: 0px;
-		opacity: 0;
-		position: absolute;
-`;
-let WrapRadio = styled.div`
-	width: 100%;
-	height: auto;
-	position: relative;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	&:hover .checkmark {
-		opacity: 1;
-	}
-`;
-let Label = styled.label`
-	${TextBase}
-	display: inline;
-`;
 
 class ModalSend extends React.Component {
 	constructor(props) {
@@ -353,43 +186,21 @@ class ModalSend extends React.Component {
 									<Col offset={'s3'} s={6} m={6} l={6}>
 										<div>
 											<WrapRadio>
-												<InputRadio/>
+												<InputRadio
+													name={'amount-type'}
+													onChange={this.arrangeAmountType}
+													value={'coin'}
+													unique={'true'}
+												/>
 												<RadioCheckmark/>
-												<Label>Mordecai</Label>
+												<LabelRadio clWhite >Quantidade em BTC</LabelRadio>
 											</WrapRadio>
-
-											<input
-												type={'radio'}
-												name={'amount-type'}
-												onChange={this.arrangeAmountType}
-												value={'coin'}
-												unique={'true'}/>
-												<label>Quantidade em BTC</label>
 										</div>
-										{/*<Input 
-											normal 
-											s={12} 
-											innerRef={this.ref.radioCoinAmount}
-											type={'radio'}
-											name={'amount'}
-											data-amount-type={'coin'}
-											label={{value: 'Quantidade BTC'}}/>*/}
 									</Col>
 									<Col s={12} m={6} l={6}>
 										<Row defaultAlign={'right'}>
-											{/*<Input 
-												huge 
-												phRight 
-												noBorder 
-												whiteTheme 
-												innerRef={this.ref.coinAmount}
-												type={'text'} 
-												onKeyUp={this.handleOnAmountChange}
-												data-amount-type={'coin'}
-												placeholder={'0.00000000'} 
-												fontSize={'4rem'} 
-												s={12} m={12} l={12}/>*/}
 												<InputText
+													huge
 													phRight
 													phWeightLight
 													whiteTheme
@@ -404,59 +215,50 @@ class ModalSend extends React.Component {
 												/>
 										</Row>
 										<Row>
-											<input
-												type={'radio'}
-												value={25}
-												name={'percent'}
-												unique={'true'}
-												onClick={this.handleOnPercentChange}
-											/>
-											<input
-												type={'radio'}
-												value={50}
-												name={'percent'}
-												unique={'true'}
-												onClick={this.handleOnPercentChange}
-											/>
-											<input
-												type={'radio'}
-												value={75}
-												name={'percent'}
-												unique={'true'}
-												onClick={this.handleOnPercentChange}
-											/>
-											<input
-												type={'radio'}
-												value={100}
-												name={'percent'}
-												unique={'true'}
-												onClick={this.handleOnPercentChange}
-											/>
-											{/*<Input 
-												type={'radio'} 
-												value={25}
-												label={{value: '25%'}} 
-												name={'percent'} 
-												onClick={this.handleOnPercentChange}
-												normal />
-											<Input 
-												type={'radio'}
-												value={50}
-												label={{value: '50%'}}
-												name={'percent'} 
-												normal />
-											<Input 
-												type={'radio'} 
-												value={75}
-												label={{value: '75%'}} 
-												name={'percent'} 
-												normal />
-											<Input 
-												type={'radio'} 
-												value={100}
-												label={{value: 'Max'}} 
-												name={'percent'} 
-												normal />*/}
+											<WrapRadio>
+												<InputRadio
+													type={'radio'}
+													value={25}
+													name={'percent'}
+													unique={'true'}
+													onClick={this.handleOnPercentChange}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >25%</LabelRadio>
+											</WrapRadio>
+											<WrapRadio>
+												<InputRadio
+													type={'radio'}
+													value={50}
+													name={'percent'}
+													unique={'true'}
+													onClick={this.handleOnPercentChange}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >50%</LabelRadio>
+											</WrapRadio>
+											<WrapRadio>
+												<InputRadio
+													type={'radio'}
+													value={75}
+													name={'percent'}
+													unique={'true'}
+													onClick={this.handleOnPercentChange}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >75%</LabelRadio>
+											</WrapRadio>
+											<WrapRadio>
+												<InputRadio
+													type={'radio'}
+													value={100}
+													name={'percent'}
+													unique={'true'}
+													onClick={this.handleOnPercentChange}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >100%</LabelRadio>
+											</WrapRadio>
 										</Row>
 									</Col>
 								</Row>
@@ -466,53 +268,31 @@ class ModalSend extends React.Component {
 								{/* SECOND ROW */}
 								<Row style={{padding: '3rem 0 3rem 0'}}>
 									<Col s={6} m={6} l={6}>
-											{/*<Input 
-												type={'radio'} 
-												label={{value: 'Valor em real'}} 
-												name={'amount'}
-												normal />
-											<br/>
-											<Input 
-												type={'radio'} 
-												label={{value: 'Valor em dólar'}} 
-												name={'amount'} 
-												data-amount-type={'real'}
-												checked={true}
-												normal />*/}
-											<div>
-												<input
-													type={'radio'}
+											<WrapRadio>
+												<InputRadio
 													name={'amount-type'}
-													unique={'true'}
 													onChange={this.arrangeAmountType}
-													value={'brl'}/>
-												<label>Quantidade em real</label>
-											</div>
-											<div>
-												<input
-													type={'radio'}
+													value={'brl'}
+													unique={'true'}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >Quantidade em real</LabelRadio>
+											</WrapRadio>
+											<WrapRadio css={css`margin: 4rem 0 0 0;`}>
+												<InputRadio
 													name={'amount-type'}
-													unique={'true'}
 													onChange={this.arrangeAmountType}
-													value={'usd'}/>
-												<label>Quantidade em dólar</label>
-											</div>
+													value={'usd'}
+													unique={'true'}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >Quantidade em dólar</LabelRadio>
+											</WrapRadio>
 									</Col>
 									<Col s={6} m={6} l={6}>
 										<Row defaultAlign={'right'}>
-											{/*<Input fontSize={'4rem'} type={'text'} s={12} m={12} l={12} whiteTheme label={{value:'BRL'}}/>*/}
-											{/*<Input 
-												huge 
-												phRight 
-												noBorder 
-												whiteTheme 
-												type={'text'} 
-												innerRef={this.ref.brlAmount}
-												data-amount-type={'brl'}
-												onKeyUp={this.handleOnAmountChange}
-												placeholder={'BRL 0.00'}
-												s={12} m={12} l={12}/>*/}
 												<InputText
+													huge
 													phRight
 													phWeightLight
 													whiteTheme
@@ -527,6 +307,7 @@ class ModalSend extends React.Component {
 										</Row>
 										<Row defaultAlign='right'>
 											<InputText
+												huge
 												phRight
 												phWeightLight
 												whiteTheme
@@ -546,15 +327,13 @@ class ModalSend extends React.Component {
 								{/*THIRD ROW*/}
 								<Row css={ThirdRowCss}>
 									<Col s={12} m={12} l={12}>
-										{/*<Input type={'text'} fontSize={'2rem'} s={6} label={'address'}/>*/}
-										<Input 
-											className={''} 
-											fontSize={'4rem'} 
-											normal 
-											whiteTheme 
-											type={'text'} 
-											innerRef={this.ref.address}
-											label={{value: 'Endereço'}}/>
+										<InputText
+												normal
+												whiteTheme
+												txRight
+												type={'text'}
+												ref={this.ref.address}
+												placeholder={'Endereço'}/>
 									</Col>
 								</Row>
 
