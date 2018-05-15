@@ -12,20 +12,21 @@ import {
 	LabelRadio, 
 	RadioCheckmark } from 'Components/forms/input-radio';
 import { InputText } from 'Components/forms/input-text';
+
 //PRIVATE COMPONENTS
-import Background  from './Background';
-import Close       from './Close';
-import Content     from './Content';
-import Foot        from './Foot';
-import Head        from './Head';
-import Hr          from './Hr';
-import IconCoin    from './IconCoin';
-import StyledModal from './StyledModal';
+import Background  from '../Background';
+import Close       from '../Close';
+import Content     from '../Content';
+import Foot        from '../Foot';
+import Head        from '../Head';
+import Hr          from '../Hr';
+import IconCoin    from '../IconCoin';
+import StyledModal from '../StyledModal';
 //CUSTOM CSS
 import { 
 	SendButtonCss, 
 	FirstRowCss, 
-	ThirdRowCss } from './custom';
+	ThirdRowCss } from './css';
 
 
 class ModalSend extends React.Component {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import ModalSend from 'Containers/Wallet/PanelRight/ModalSend/index';
+import ModalSend from 'Containers/Wallet/PanelRight/Modal/Send/index';
 import Input from 'Components/forms/Input';
 import { Col, Row } from 'Components/index';
 
