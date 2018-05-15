@@ -1,75 +1,172 @@
 import React       from 'react';
-import styled      from 'styled-components';
+import ReactDOM    from 'react-dom';
+import styled, { css }      from 'styled-components';
 import style       from 'Shared/style-variables';
 import { connect } from 'react-redux';
-// import { Row } from 'react-materialize';
-import { Input, Col, Row } from 'Components/materialize';
-import { H1 } from 'Components/H1';
-import { Text } from 'Components/Text';
+import qrcode from 'qrcode-generator';
 
-let Background = styled.div`
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	display: flex;
-	justify-content: center;
-	align-items: flex-end;
-	background: ${style.rgba(style.darkLilac, 0.8)};
-	z-index: 1000;
-	@media (min-width: 601px) {
-		align-items: center;
-	}
-`;
-let StyledModal = styled.div`
-	width: 100%;
-	height: calc(100% - 75px);
-	min-width: 320px;
-	min-height: 480px;
-	position: relative;
-	background: ${style.normalLilac};
-	border-radius: 10px;
-	padding: 10px;
-	@media (min-width: 601px) {
-		width: 70%;
-		height: 70%;
-		margin-top: 75px;
-	}
-`;
-let Close   = styled.div`
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	font-size: 2rem;
-	color: white;
-	cursor: pointer;
-`;
-let Head    = styled.div`
-	width: 150px;
-	height: 150px;
-	border-radius: 100%;
-	background: ${style.normalLilac};
-	position: absolute;
-	top: -75px;
-	left: calc(50% - 75px);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
-let IconCoin = styled.img`
-	width: 60%;
-	height: 60%;
-`;
-let Content = styled.div`
-	margin: 75px 0 0 0;
-`;
-let Foot    = styled.div``;
+import { Col, Row, Button } from 'Components/index';
+import { 
+	InputRadio, 
+	WrapRadio, 
+	LabelRadio, 
+	RadioCheckmark } from 'Components/forms/input-radio';
+import { InputText } from 'Components/forms/input-text';
+//PRIVATE COMPONENTS
+import Background  from './Background';
+import Close       from './Close';
+import Content     from './Content';
+import Foot        from './Foot';
+import Head        from './Head';
+import Hr          from './Hr';
+import IconCoin    from './IconCoin';
+import StyledModal from './StyledModal';
+//CUSTOM CSS
+import { 
+	SendButtonCss, 
+	FirstRowCss, 
+	ThirdRowCss } from './custom';
 
-let Hr = styled.hr`
-	border: 0.7px solid ${style.darkLilac};
-`;
+
 class ModalSend extends React.Component {
+	constructor(props) {
+		super(props);
+
+		this.ref = {};
+		this.ref.wrapperQr       = React.createRef();
+		this.ref.radioCoinAmount = React.createRef();
+		this.ref.coinAmount      = React.createRef();
+		this.ref.address         = React.createRef();
+		this.ref.brlAmount       = React.createRef();
+		this.ref.usdAmount       = React.createRef();
+		this.ref.coinAmount      = React.createRef();
+		//quantity types: real, dollar, coin
+	}
+	componentDidMount() {
+		this.wrapperQr       = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
+		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
+		this.coinAmount      = ReactDOM.findDOMNode(this.ref.coinAmount.current);
+		this.address         = ReactDOM.findDOMNode(this.ref.address.current);
+		this.brlAmount       = ReactDOM.findDOMNode(this.ref.brlAmount.current);
+		this.usdAmount       = ReactDOM.findDOMNode(this.ref.usdAmount.current);
+		this.coinAmount      = ReactDOM.findDOMNode(this.ref.coinAmount.current);
+
+		this.makeQrCode();
+		this.arrangeAmountType();
+	}
 	toggleModal = (event) => {
 
+	}
+	makeQrCode = () => {
+		let qr = qrcode(4, 'L');
+		qr.addData('Marcelo Rafael');
+		qr.make();
+		let img   = qr.createSvgTag();
+		this.wrapperQr.innerHTML = img;
+		let imgEl = this.wrapperQr.children[0];
+		imgEl.style.width  = '90%';
+		imgEl.style.height = 'auto';
+	}
+	handleSend = async () => {
+		console.log(this.coinAmount.getAttribute('value'));
+		let coinAmount = this.coinAmount.value;
+		let address    = this.address.value;
+		let result = await this.props.send({coinAmount, address});
+		console.log(`%c${result}`, 'font-size: 20px; color: lightgreen; background: indianred;');
+	}
+	arrangeAmountType = () => {
+		let radios = document.getElementsByName('amount-type');
+		Array.from(radios).map((radio) => {
+			console.log(radio, radio.checked);
+			if (radio.checked) {
+				let inputCOIN = document.querySelector('.input-amount.coin');
+				let inputBRL  = document.querySelector('.input-amount.brl');
+				let inputUSD  = document.querySelector('.input-amount.usd');
+				if (radio.value === 'coin') {
+					inputCOIN.removeAttribute('disabled');
+					inputBRL.setAttribute('disabled',  true);
+					inputUSD.setAttribute('disabled',  true);
+				} else if (radio.value === 'brl') {
+					inputBRL.removeAttribute('disabled');
+					inputUSD.setAttribute('disabled',  true);
+					inputCOIN.setAttribute('disabled', true);
+				} else if (radio.value === 'usd') {
+					inputUSD.removeAttribute('disabled');
+					inputBRL.setAttribute('disabled',  true);
+					inputCOIN.setAttribute('disabled', true);
+				}
+			}
+		});
+		console.log('----------------------------');
+	}
+	handleOnPercentChange = (event) => {
+		let element = event.currentTarget;
+		let name    = element.getAttribute('name');
+		let value   = element.value;
+		let amount  = parseFloat(this.props.balance.total_confirmed);
+		let result  = amount * (parseInt(value) / 100);
+		this.coinAmount.value = result;
+		this.handleOnAmountChange();
+	}
+	handleOnAmountChange = (event) => {
+		let element;
+		if (!event) {
+			element = this.coinAmount;
+		} else {
+			element = event.currentTarget;
+		}
+		let type      = element.getAttribute('data-amount-type');
+		let value     = element.value;
+		let { coinPrice } = this.props;
+		let usdResult;
+		let coinResult;
+		let brlResult;
+		const BRLToCOIN = ({amount, price}) => {
+			return amount / price;
+		}
+		const BRLToUSD = ({amount, price}) => {
+			return amount / price;
+		}	
+		const COINToUSD = ({amount, price}) => {
+			return amount * price;
+		}
+		const COINToBRL = ({amount, price}) => {
+			return amount * price;
+		}
+		const USDToBRL = ({amount, price}) => {
+			return amount * price;
+		}
+		const USDToCOIN = ({amount, price}) => {
+			return amount / price;
+		}
+		if (type === 'brl') {
+			usdResult   =  BRLToUSD({amount: parseFloat(value), price: 3.3});
+			coinResult  =  BRLToCOIN({amount: parseFloat(value), price: coinPrice.brl});
+
+			if (!usdResult)  { usdResult  = 0; }
+			if (!coinResult) { coinResult = 0; }
+
+			this.usdAmount.value  = usdResult.toFixed(2);
+			this.coinAmount.value = coinResult.toFixed(8);
+		} else if (type === 'coin') {
+			usdResult   =  COINToUSD({amount: parseFloat(value), price: coinPrice.usd});
+			brlResult   =  COINToBRL({amount: parseFloat(value), price: coinPrice.brl});
+
+			if (!usdResult)  { usdResult = 0; }
+			if (!brlResult)  { brlResult = 0; }
+
+			this.brlAmount.value = brlResult.toFixed(2);
+			this.usdAmount.value = usdResult.toFixed(2);
+		} else if (type === 'usd') {
+			brlResult   =  USDToBRL({amount: parseFloat(value), price: 3.3});
+			coinResult  =  USDToCOIN({amount: parseFloat(value), price: coinPrice.usd});
+
+			if (!brlResult)  { brlResult = 0; }
+			if (!coinResult) { coinResult = 0; }
+
+			this.brlAmount.value  = brlResult.toFixed(2);
+			this.coinAmount.value = coinResult.toFixed(8);
+		}
 	}
 	render() {
 		return(
@@ -83,48 +180,194 @@ class ModalSend extends React.Component {
 
 					<Content>
 						<Row>
-							<Col offset={'s3'} s={6} m={6} l={6}>
-								<Input s={12} type={'radio'} className={'js-modal-send-quantity'} label={'Quantidade LTC'}/>
-							</Col>
-							<Col s={12} m={6} l={6}>
-								<Row>
-									<Input clWhite fontSize={'2rem'} s={12} m={12} l={12} type={'text'} className={'js-modal-send-amount'} placeholder={'0.00000000'}/>
+							<Col s={9} m={9} l={9}>
+								{/*FIRST ROW*/}
+								<Row css={FirstRowCss}>
+									<Col offset={'s3'} s={6} m={6} l={6}>
+										<div>
+											<WrapRadio>
+												<InputRadio
+													name={'amount-type'}
+													onChange={this.arrangeAmountType}
+													value={'coin'}
+													unique={'true'}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >Quantidade em BTC</LabelRadio>
+											</WrapRadio>
+										</div>
+									</Col>
+									<Col s={12} m={6} l={6}>
+										<Row defaultAlign={'right'}>
+												<InputText
+													huge
+													phRight
+													phWeightLight
+													whiteTheme
+													txRight
+													noBorder
+													type={'text'} 
+													ref={this.ref.coinAmount}
+													onKeyUp={this.handleOnAmountChange}
+													data-amount-type={'coin'}
+													className={'input-amount coin'}
+													placeholder={'0.00000000'} 
+												/>
+										</Row>
+										<Row>
+											<WrapRadio>
+												<InputRadio
+													type={'radio'}
+													value={25}
+													name={'percent'}
+													unique={'true'}
+													onClick={this.handleOnPercentChange}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >25%</LabelRadio>
+											</WrapRadio>
+											<WrapRadio>
+												<InputRadio
+													type={'radio'}
+													value={50}
+													name={'percent'}
+													unique={'true'}
+													onClick={this.handleOnPercentChange}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >50%</LabelRadio>
+											</WrapRadio>
+											<WrapRadio>
+												<InputRadio
+													type={'radio'}
+													value={75}
+													name={'percent'}
+													unique={'true'}
+													onClick={this.handleOnPercentChange}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >75%</LabelRadio>
+											</WrapRadio>
+											<WrapRadio>
+												<InputRadio
+													type={'radio'}
+													value={100}
+													name={'percent'}
+													unique={'true'}
+													onClick={this.handleOnPercentChange}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >100%</LabelRadio>
+											</WrapRadio>
+										</Row>
+									</Col>
 								</Row>
-								<Row>
-									<Input type={'radio'} label={'25%'} unique={'true'} name={'percent'} className={'with-gap'}/>
-									<Input type={'radio'} label={'50%'} unique={'true'} name={'percent'} className={'with-gap'}/>
-									<Input type={'radio'} label={'75%'} unique={'true'} name={'percent'} className={'with-gap'}/>
-									<Input type={'radio'} label={'Max'} unique={'true'} name={'percent'} className={'with-gap'}/>
-								</Row>
-							</Col>
-						</Row>
 
-						<Hr/>
+								<Hr/>
 
-						<Row>
-							<Col s={6} m={6} l={6}>
-								<Row>
-									<Input type={'radio'} label={'Valor em dólar'} name={'fiat-unit'}/>
+								{/* SECOND ROW */}
+								<Row style={{padding: '3rem 0 3rem 0'}}>
+									<Col s={6} m={6} l={6}>
+											<WrapRadio>
+												<InputRadio
+													name={'amount-type'}
+													onChange={this.arrangeAmountType}
+													value={'brl'}
+													unique={'true'}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >Quantidade em real</LabelRadio>
+											</WrapRadio>
+											<WrapRadio css={css`margin: 4rem 0 0 0;`}>
+												<InputRadio
+													name={'amount-type'}
+													onChange={this.arrangeAmountType}
+													value={'usd'}
+													unique={'true'}
+												/>
+												<RadioCheckmark/>
+												<LabelRadio clWhite >Quantidade em dólar</LabelRadio>
+											</WrapRadio>
+									</Col>
+									<Col s={6} m={6} l={6}>
+										<Row defaultAlign={'right'}>
+												<InputText
+													huge
+													phRight
+													phWeightLight
+													whiteTheme
+													txRight
+													noBorder
+													type={'text'} 
+													ref={this.ref.brlAmount}
+													onKeyUp={this.handleOnAmountChange}
+													className={'input-amount brl'}
+													data-amount-type={'brl'}
+													placeholder={'BRL 0.00'}/>
+										</Row>
+										<Row defaultAlign='right'>
+											<InputText
+												huge
+												phRight
+												phWeightLight
+												whiteTheme
+												txRight
+												noBorder
+												type={'text'}
+												ref={this.ref.usdAmount}
+												onChange={this.handleOnAmountChange}
+												className={'input-amount usd'}
+												data-amount-type={'usd'}
+												placeholder={'USD 0.00'}/>
+										</Row>
+									</Col>
 								</Row>
+
+								<Hr/>
+								{/*THIRD ROW*/}
+								<Row css={ThirdRowCss}>
+									<Col s={12} m={12} l={12}>
+										<InputText
+												normal
+												whiteTheme
+												txRight
+												type={'text'}
+												ref={this.ref.address}
+												placeholder={'Endereço'}/>
+									</Col>
+								</Row>
+
+								<Hr/>
+								{/*FOURTH ROW*/}
 								<Row>
-									<Input type={'radio'} label={'Valor em real'} name={'fiat-unit'} checked={true}/>
+									<Col></Col>
 								</Row>
 							</Col>
-							<Col s={6} m={6} l={6} noMargin >
+
+
+							{/*BUTTONS COL*/}
+							<Col 
+								defaultAlign={'center'} 
+								s={3} m={3} l={3}>
 								<Row>
-									<Input noMargin clWhite fontSize={'2rem'} type={'text'} s={12} m={12} l={12} label={'BRL'}/>
+									<Button 
+										css={SendButtonCss} 
+										blockCenter 
+										clWhite 
+										bgNormalYellow 
+										onClick={this.handleSend}>
+										Enviar
+									</Button>
 								</Row>
 								<Row>
-									<Text clWhite fontSize={'1.7rem'}>USD 0.00</Text>
+									<Button 
+										innerRef={this.ref.wrapperQr} 
+										blockCenter 
+										clWhite 
+										bgWhite >
+										QR Code
+									</Button>
 								</Row>
-							</Col>
-						</Row>
-
-						<Hr/>
-
-						<Row>
-							<Col s={12}>
-								<Input clWhite fontSize={'2rem'} s={6} label={'address'}/>
 							</Col>
 						</Row>
 					</Content>

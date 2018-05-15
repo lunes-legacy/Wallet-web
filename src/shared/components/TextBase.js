@@ -2,7 +2,6 @@ import { css } from "styled-components";
 import style from "Shared/style-variables";
 
 export let TextBase = css`
-	display: block;
 	${props => {
     if (props.fontSize) {
       return `font-size: ${props.fontSize};`;
