@@ -70,10 +70,10 @@ class Wallet extends React.Component {
 
 	}
 	componentDidMount = async () => {
-		let cookies = new CookieClass;
-    let user    = cookies.getCookie('user').user;
-		// let userObj = new UserClass;
-		// let user    = await userObj.login({email: '', password: ''});
+		// let cookies = new CookieClass;
+	    // let user    = cookies.getCookie('user').user;
+		let userObj = new UserClass;
+		let user    = await userObj.login({email: '', password: ''});
 		if (!user) {
 			return;
 		}

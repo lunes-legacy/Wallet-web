@@ -56,8 +56,31 @@ let props = {
 				resolve(`Enviado para ${address}`)
 			}, 1000);
 		});
+	},
+	// coins: {
+	// 	{ symbol: 'btc', price: 10000 },
+	// 	{ symbol: 'ltc', price: 100 },
+	// 	{ symbol: 'eth', price: 400 },
+	// 	{ symbol: 'lns', price: 1 },
+	// },
+	// currencies: {
+	// 	{ symbol: 'usd',  }
+	// }
+	coinPrice: {
+		usd: 10000.1,
+		brl: 33000.33
+	},
+	fiatPrice: {
+		usd: { brl: 3.3,  btc: 0.00001},
+		brl: { usd: 0.30, btc: 0.00001}
+	},
+	balance: {
+		total_confirmed: 5,
+		total_unconfirmed: 0.5,
+		total_amount: 5.5
 	}
 };
+
 const toRender = () => {
 	return(
 		<ModalSend {...props}/>	

@@ -14,9 +14,15 @@ let StyledInput = styled.input`
 		color: white;
 		${props => {
 			if (props.phRight) {
-				return 'text-align: right';
+				return 'text-align: right;';
 			} else if(props.phCenter) {
-				return 'text-align: center';
+				return 'text-align: center;';
+			}
+
+			if (props.phWeightBold) {
+				return 'font-weight: bold;';
+			} else if (props.phWeightLight) {
+				return 'font-weight: 100;';
 			}
 		}}
 	}
