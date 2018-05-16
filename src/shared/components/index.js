@@ -4,6 +4,7 @@ import Input          from './forms/Input';
 import Button         from './forms/Button';
 import { TextBase }   from './TextBase';
 import { BackgroundBase } from './bases';
+import { H1 }         from './H1';
 
 export { 
 	Col,
@@ -11,5 +12,6 @@ export {
 	Input,
 	Button,
 	TextBase,
-	BackgroundBase
+	BackgroundBase,
+	H1
 }

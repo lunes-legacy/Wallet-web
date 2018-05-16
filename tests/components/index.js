@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import ModalSend from 'Containers/Wallet/PanelRight/Modal/Send/index';
+import Modal from 'Containers/Wallet/PanelRight/Modal/Send/index';
 import Input from 'Components/forms/Input';
 import { Col, Row } from 'Components/index';
 
@@ -83,7 +83,7 @@ let props = {
 
 const toRender = () => {
 	return(
-		<ModalSend {...props}/>	
+		<Modal {...props}/>	
 	);
 }
 
