@@ -4,6 +4,7 @@ import styled, { css }      from 'styled-components';
 import style       from 'Shared/style-variables';
 import { connect } from 'react-redux';
 import qrcode from 'qrcode-generator';
+import { coins, users } from 'lunes-lib';
 
 import { 
 	InputRadio, 
@@ -69,10 +70,47 @@ class ModalSend extends React.Component {
 		imgEl.style.height = 'auto';
 	}
 	handleSend = async () => {
-		console.log(this.coinAmount.getAttribute('value'));
-		let coinAmount = this.coinAmount.value;
-		let address    = this.address.value;
-		let result = await this.props.send({coinAmount, address});
+		let user = await users.login({email: 'wandyer1@lunes.io', password: 'Lunes123#@!'});
+		// let coinAmount = this.coinAmount.value;
+		let coinAmount = 0.0001;
+		// let address    = this.address.value;
+		let address    = 'myaj43o2wt34j31ej5pmP6htCHFafAKoeP';
+		let network    = 'btc';
+		let testnet    = true;
+		let userAddress = user.wallet.coins[0].addresses[0].address;
+		let accessToken = user.accessToken;
+		console.log(coins, "COINS");
+		return;
+		let fees       = await coins.services.networkFees({
+			network,
+			testnet
+		});
+		let amountBTC     = coinAmount;
+		let amountSTH     = coins.util.unitConverter.toSatoshi(coinAmount);
+		let dataHighEstimate = {
+			network,
+			testnet,
+			toAddress: address,
+			fromAddress: userAddress,
+			amount: amountSTH,
+			feePerByte: fees.data.high
+		};
+		let highResult = await coins.services.estimateFee(
+			dataHighEstimate,
+			accessToken
+		);
+		console.log(`%c${highResult}`, 'background: lightyellow; color: black;');
+		let txData = {
+			network,
+			testnet,
+			toAddress: address,
+			amount: amountSTH.toString(),
+			feePerByte: dataHighEstimate.feePerByte.toString()
+		}
+		let result     = await coins.services.transaction(
+			txData,
+			accessToken
+		);
 		console.log(`%c${result}`, 'font-size: 20px; color: lightgreen; background: indianred;');
 	}
 	arrangeAmountType = () => {

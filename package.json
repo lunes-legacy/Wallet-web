@@ -9,7 +9,7 @@
     "start": "nodemon ./src/server/bundle/index.bundle.js -w ./src/server/ -e bundle.js",
     "clear": "rm -f ./src/server/bundle/*.hot-update.* && rm -f ./public/*.hot-update.*",
     "test": "webpack --config ./webpack.test.js --progress --watch --hot",
-    "test-component": "webpack --config ./webpack-component.test.js --watch --hot --progress",
+    "test-component": "webpack --config ./webpack-component.test.js --watch --hot --progress --verbose",
     "start-test": "nodemon ./tests/bundle/test.bundle.js -w ./tests/bundle/"
   },
   "keywords": [],
@@ -39,7 +39,7 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "history": "^4.7.2",
-    "lunes-lib": "0.0.29",
+    "lunes-lib": "git@github.com:Lunes-platform/lunes-lib.git#develop^0.0.31",
     "money-formatter": "^0.1.4",
     "nuka-carousel": "^4.0.2",
     "qrcode-generator": "^1.4.0",
