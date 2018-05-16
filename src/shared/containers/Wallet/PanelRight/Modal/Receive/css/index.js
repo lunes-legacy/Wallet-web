@@ -50,3 +50,37 @@ export let FirstRowCss = css`
 export let ThirdRowCss = css`
   padding: 25px 0 25px 0;
 `;
+
+export let ReceiveLabelCss = styled.label`
+  position: relative;
+  top: 10px;
+  font-weight: bold;
+  color: #fff;
+  font-size: 14pt;
+  position: center;
+`;
+
+export let ReceiveLabelTexCss = styled.label`
+  position: relative;
+  top: 10px;
+  font-weight: bold;
+  color: #4cd566;
+  font-size: 14pt;
+  position: center;
+`;
+
+export let ReceiveButtonCopyCss = styled.div`
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 14%;
+`;
+
+export let IconAction = styled.img`
+  width: 60px;
+  height: 60px;
+  min-width: 50px;
+  position: center;
+`;

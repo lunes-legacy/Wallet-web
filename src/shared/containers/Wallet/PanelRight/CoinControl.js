@@ -3,7 +3,8 @@ import styled from "styled-components";
 import style from "Shared/style-variables";
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
-import ModalSend from "./ModalSend/index";
+import ModalSend from "./Modal/Send/index";
+import ModalReceive from "./Modal/Receive/index";
 
 let StyledCoinControl = styled.div`
   width: 100%;
@@ -72,6 +73,18 @@ let SendCoinImage = styled.img`
 
 class CoinControl extends React.Component {
   handleToggleSendModal = () => {};
+
+  constructor() {
+    super();
+    this.state = { isOpenModalReceived: false };
+  }
+
+  showModalReceived = () => {
+    this.setState({
+      isOpenModalReceived: !this.state.isOpenModalReceived
+    });
+  };
+
   render() {
     return (
       <StyledCoinControl>
@@ -80,19 +93,19 @@ class CoinControl extends React.Component {
           <Usd offSide>USD 2.00</Usd>
           <Brl offSide>BRL 6,30</Brl>
         </WrapAmount>
-
         <WrapButtons>
           <SendCoin>
             <SendCoinImage src="/img/app_wallet/ic_enviar.svg" />
             <br />
             Enviar
           </SendCoin>
-          <ReceiveCoin>
+          <ReceiveCoin onClick={() => this.showModalReceived()}>
             <SendCoinImage src="/img/app_wallet/ic_receber.svg" />
             <br />
             Receber
           </ReceiveCoin>
         </WrapButtons>
+        {this.state.isOpenModalReceived && <ModalReceive isShow={this.state.isOpenModalReceived} />}
       </StyledCoinControl>
     );
   }
