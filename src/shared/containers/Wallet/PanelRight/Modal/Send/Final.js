@@ -1,10 +1,14 @@
 import React from 'react';
-import { H1 } from 'Components';
+import { Img, Row, Col } from 'Components';
 
 class Final extends React.Component {
 	render() {
 		return(
-			<H1>Final</H1>
+			<Row defaultAlign={'center'}>
+				<Col s={6} m={6} l={6}>
+					<Img center width={'70%'} src={'/img/app_wallet/ic_send_final.png'}/>
+				</Col>
+			</Row>
 		);
 	}
 }

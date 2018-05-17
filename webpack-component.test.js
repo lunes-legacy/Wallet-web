@@ -12,6 +12,9 @@ module.exports = {
 		filename: 'test.bundle.js',
 		path: __dirname+'/tests/components/bundle/'
 	},
+	node: {
+		fs: 'empty'
+	},
 	module: {
 		rules: [
 			{

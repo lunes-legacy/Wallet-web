@@ -1,8 +1,8 @@
 import React from 'react';
 //COMPONENTS
-import ModalSend from './ModalSend';
+import Send    from './Send';
 import Loading from './Loading'
-import Final from './Final';
+import Final   from './Final';
 //PRIVATE COMPONENTS
 import Background  from '../Background';
 import Close       from '../Close';
@@ -22,7 +22,7 @@ class Modal extends React.Component {
 	}
 	componentDidMount() {
 		let steps = [
-			{name: 'Step 1', component: ModalSend},
+			{name: 'Step 1', component: Send},
 			{name: 'Step 2', component: Loading},
 			{name: 'Step 3', component: Final}
 		]
@@ -38,7 +38,7 @@ class Modal extends React.Component {
 			currStep: this.state.currStep + 1,
 			generalProps: props
 		}, () => {
-			console.log(this.state);
+			console.log(this.state, "nextStep STATE");
 		});
 	}
 	render() {
@@ -46,7 +46,6 @@ class Modal extends React.Component {
 			return null;
 
 		let Component = this.state.steps[this.state.currStep].component;
-
 		return (
 			<Background>
 				<StyledModal className={'js-modal-send'}>
@@ -57,7 +56,7 @@ class Modal extends React.Component {
 					</Head>
 
 					<Content>
-						<Component {...this.props} nextStep={() => this.nextStep()}/>
+						<Component nextStep={(props) => this.nextStep(props)} {...this.state.generalProps} />
 					</Content>
 				</StyledModal>
 			</Background>

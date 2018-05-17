@@ -6,7 +6,6 @@ export let TextBase = css`
     if (props.fontSize) {
       return `font-size: ${props.fontSize};`;
     }
-
     return "font-size: 1.8rem;";
   }}
 	${props => {
@@ -28,8 +27,8 @@ export let TextBase = css`
     }
   }}
 	${props => {
-    if (props.margin) {
-      return "margin: " + props.margin + ";";
+    if (props.margin && props.margin.indexOf('rem') !== -1) {
+      return `margin: ${props.margin};`;
     }
   }}
 	${props => {
