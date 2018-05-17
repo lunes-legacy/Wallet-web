@@ -16,13 +16,13 @@ import Hr from "../Hr";
 import StyledModal from "../StyledModal";
 import {
   ReceiveStyleModalCss,
-  ReceiveButtonCss,
+  ReceiveButtonQrCodeCss,
   ReceiveContentCss,
   ReceiveCircleButtonCss,
   ReceiveLabelCss,
-  ReceiveButtonCopyCss,
+  ReceiveButtonModalCss,
   IconAction,
-  ReceiveLabelTexCss
+  ReceiveLabelTextCss
 } from "./css";
 import CookieClass from "../../../../../classes/Cookie";
 
@@ -79,13 +79,15 @@ class ModalReceive extends React.Component {
     return (
       <Background>
         <ReceiveStyleModalCss>
-          <Close onClick={() => this.toggleModalReceived(this.props.isShow)}>X</Close>
+          <Close onClick={() => this.toggleModalReceived(this.props.isShow)}>
+            <strong>X</strong>
+          </Close>
           <ReceiveContentCss>
             <Col defaultAlign={"center"} s={12} m={12} l={12}>
               <Row>
-                <ReceiveButtonCss innerRef={this.ref.wrapperQr} blockCenter clWhite bgWhite>
+                <ReceiveButtonQrCodeCss innerRef={this.ref.wrapperQr} blockCenter clWhite bgWhite>
                   QR Code
-                </ReceiveButtonCss>
+                </ReceiveButtonQrCodeCss>
               </Row>
             </Col>
           </ReceiveContentCss>
@@ -94,12 +96,21 @@ class ModalReceive extends React.Component {
               <ReceiveLabelCss> {this.getPayAddress()}</ReceiveLabelCss>
             </Row>
             <Row>
-              <ReceiveLabelTexCss>COPY THIS ADDRESS</ReceiveLabelTexCss>
+              <ReceiveLabelTextCss>COPY THIS ADDRESS</ReceiveLabelTextCss>
             </Row>
             <Row>
-              <ReceiveButtonCopyCss onClick={() => this.copyPaymentAddress()}>
+              <ReceiveButtonModalCss onClick={() => this.copyPaymentAddress()}>
                 <IconAction src={"/img/bitcoin.svg"} />
-              </ReceiveButtonCopyCss>
+              </ReceiveButtonModalCss>
+              <ReceiveButtonModalCss onClick={() => this.copyPaymentAddress()}>
+                <IconAction src={"/img/bitcoin.svg"} />
+              </ReceiveButtonModalCss>
+              <ReceiveButtonModalCss onClick={() => this.copyPaymentAddress()}>
+                <IconAction src={"/img/bitcoin.svg"} />
+              </ReceiveButtonModalCss>
+              <ReceiveButtonModalCss onClick={() => this.copyPaymentAddress()}>
+                <IconAction src={"/img/bitcoin.svg"} />
+              </ReceiveButtonModalCss>
             </Row>
           </Foot>
         </ReceiveStyleModalCss>

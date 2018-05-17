@@ -9,7 +9,7 @@ export let ReceiveStyleModalCss = styled.div`
   min-width: 320px;
   min-height: 414px;
   position: relative;
-  background: ${style.normalLilac};
+  background: #3a1777;
   border-radius: 10px;
   padding: 3rem;
   @media (min-width: 601px) {
@@ -19,9 +19,9 @@ export let ReceiveStyleModalCss = styled.div`
   }
 `;
 
-export let ReceiveButtonCss = styled.div`
-  height: 25rem;
-  width: 25rem;
+export let ReceiveButtonQrCodeCss = styled.div`
+  height: 20rem;
+  width: 20rem;
   border-radius: 20px;
   display: flex;
   justify-content: center;
@@ -54,13 +54,12 @@ export let ThirdRowCss = css`
 export let ReceiveLabelCss = styled.label`
   position: relative;
   top: 10px;
-  font-weight: bold;
   color: #fff;
-  font-size: 14pt;
+  font-size: 12pt;
   position: center;
 `;
 
-export let ReceiveLabelTexCss = styled.label`
+export let ReceiveLabelTextCss = styled.label`
   position: relative;
   top: 10px;
   font-weight: bold;
@@ -69,18 +68,19 @@ export let ReceiveLabelTexCss = styled.label`
   position: center;
 `;
 
-export let ReceiveButtonCopyCss = styled.div`
-  width: 60px;
-  height: 60px;
+export let ReceiveButtonModalCss = styled.div`
+  width: 100px;
+  height: 90px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-top: 14%;
+  padding: 20px;
 `;
 
 export let IconAction = styled.img`
-  width: 60px;
-  height: 60px;
+  width: 100px;
+  height: 90px;
   min-width: 50px;
   position: center;
 `;
