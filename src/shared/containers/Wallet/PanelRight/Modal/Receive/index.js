@@ -100,16 +100,16 @@ class ModalReceive extends React.Component {
             </Row>
             <Row>
               <ReceiveButtonModalCss onClick={() => this.copyPaymentAddress()}>
-                <IconAction src={"/img/bitcoin.svg"} />
+                <IconAction src={"/img/app_wallet/modal_receive/ic_copy.svg"} />
               </ReceiveButtonModalCss>
-              <ReceiveButtonModalCss onClick={() => this.copyPaymentAddress()}>
-                <IconAction src={"/img/bitcoin.svg"} />
+              <ReceiveButtonModalCss>
+                <IconAction src={"/img/app_wallet/modal_receive/ic_print.svg"} />
               </ReceiveButtonModalCss>
-              <ReceiveButtonModalCss onClick={() => this.copyPaymentAddress()}>
-                <IconAction src={"/img/bitcoin.svg"} />
+              <ReceiveButtonModalCss>
+                <IconAction src={"/img/app_wallet/modal_receive/ic_email.svg"} />
               </ReceiveButtonModalCss>
-              <ReceiveButtonModalCss onClick={() => this.copyPaymentAddress()}>
-                <IconAction src={"/img/bitcoin.svg"} />
+              <ReceiveButtonModalCss>
+                <IconAction src={"/img/app_wallet/modal_receive/ic_link.svg"} />
               </ReceiveButtonModalCss>
             </Row>
           </Foot>

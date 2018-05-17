@@ -69,18 +69,20 @@ export let ReceiveLabelTextCss = styled.label`
 `;
 
 export let ReceiveButtonModalCss = styled.div`
-  width: 100px;
-  height: 90px;
-  display: flex;
-  justify-content: flex-start;
+  width: 80px;
+  height: 80px;
+  background-color: #f7931a;
+  border-radius: 60%;
   align-items: center;
-  margin-top: 14%;
-  padding: 20px;
+  margin-top: 19%;
+  margin-right: 10px;
+  padding: 14px;
 `;
 
 export let IconAction = styled.img`
-  width: 100px;
-  height: 90px;
+  margin-top: 6px;
+  width: 40px;
+  height: 40px;
   min-width: 50px;
   position: center;
 `;
