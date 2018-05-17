@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 	);
 	next();
 });
-
+global.window = {};
 app.get('*', (req, res) => {
 	let sheet = new ServerStyleSheet();
 	try {

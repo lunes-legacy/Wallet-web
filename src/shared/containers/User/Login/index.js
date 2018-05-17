@@ -3,7 +3,7 @@ import { users } from "lunes-lib";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import { UserClass } from "Classes/User";
+import UserClass from "Classes/User";
 
 //COMPONENTS
 import { Form } from "Components/Form";
@@ -132,10 +132,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     userLogin: (email, password) => {
-      let user = new UserClass();
+      let login = new UserClass().login;
       dispatch({
         type: "USER_LOGIN",
-        payload: user.login({ email, password })
+        payload: login({ email, password })
       });
     }
   };

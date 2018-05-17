@@ -4,7 +4,7 @@ import styled, { css }      from 'styled-components';
 import style       from 'Shared/style-variables';
 import { connect } from 'react-redux';
 import qrcode      from 'qrcode-generator';
-import Instascan   from 'instascan';
+// import Instascan   from 'instascan';
 
 
 import { 
