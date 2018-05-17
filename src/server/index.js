@@ -11,7 +11,31 @@ import { store }        from 'Stores/store';
 import App              from 'Containers/App/index';
 import AppSwitcher      from 'Containers/AppSwitcher';
 
+import { users } from 'lunes-lib';
+
 const app = express();
+
+app.use(async (req, res, next) => {
+	//preciso aplicar apenas na rota /app
+	//preciso verificar se tem token, se nao redireciona
+	//preciso verificar se o token é valido, se nao redirect,
+	try {
+		if (req.url.indexOf('/login') !== -1) {
+			next();
+			return;
+		}
+
+		let logged = false;
+		if (logged) {
+			next();
+			return;
+		} else {
+			res.redirect('/login');
+		}
+	} catch (e) {
+		console.log(e);
+	}
+});
 
 app.use(express.static('public'));
 
