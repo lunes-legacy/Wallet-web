@@ -40,7 +40,7 @@ const CustomP = P.extend`
   margin: 50px auto 10px auto;
   text-align: center;
 
-  @media only screen and (min-width: 768px) {
+  @media (min-width: 768px) {
     position: absolute;
     bottom: 0;
     width: 40%;

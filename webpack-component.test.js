@@ -42,7 +42,8 @@ module.exports = {
 			Stores: __dirname+'/src/shared/stores',
 			Utils: __dirname+'/src/shared/utils',
 			Shared: __dirname+'/src/shared/',
-			Auth: __dirname+'/src/shared/auth/',
+      Auth: __dirname+'/src/shared/auth/',
+      Classes: __dirname+'/src/shared/classes'
 		}
 	}
 };

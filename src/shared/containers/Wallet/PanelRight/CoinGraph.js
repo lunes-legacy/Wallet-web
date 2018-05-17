@@ -53,7 +53,7 @@ class CoinGraph extends React.Component {
 
     return (
       <div>
-        <ResponsiveContainer width={350} height={100}>
+        <ResponsiveContainer width={this.props.width} height={this.props.height}>
           <LineChart data={this.state.history_time_price}>
             <XAxis hide dataKey="time" />
             <YAxis hide domain={["dataMin", "dataMax"]} />

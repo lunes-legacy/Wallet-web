@@ -3,7 +3,7 @@ import styled from "styled-components";
 import style from "Shared/style-variables";
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
-import ModalSend from "./ModalSend/index";
+// import ModalSend from "./ModalSend/index";
 
 let StyledCoinControl = styled.div`
   width: 100%;

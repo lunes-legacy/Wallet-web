@@ -8,6 +8,7 @@ import { WalletClass } from 'Classes/Wallet';
 import { TextBase } from 'Components/TextBase';
 import { Text } from 'Components/Text';
 import { H1 } from 'Components/H1';
+import { Col, Row } from 'Components/index';
 //PRIVATE COMPONENTS
 import Histories from './Histories';
 import CoinControl from './CoinControl';
@@ -25,7 +26,7 @@ const StyledPanelRight = styled.div`
 	background: ${style.normalLilac};
 	width: 100%;
 	height: 100%;
-	overflow-x: auto;
+  overflow-x: auto;
 `;
 
 class PanelRight extends React.Component {

@@ -7,7 +7,7 @@
     "build": "webpack",
     "dev": "webpack --watch --hot --progress",
     "start": "nodemon ./src/server/bundle/index.bundle.js -w ./src/server/ -e bundle.js",
-    "clear": "rm -f ./src/server/bundle/*.hot-update.* && rm -f ./public/*.hot-update.*",
+    "clear": "rm -f ./src/server/bundle/*.hot-update.* && rm -f ./public/*.hot-update.* && rm -f ./tests/components/bundle/*.hot-update.*",
     "test": "webpack --config ./webpack.test.js --progress --watch --hot",
     "test-component": "webpack --config ./webpack-component.test.js --watch --hot --progress --verbose",
     "start-test": "nodemon ./tests/bundle/test.bundle.js -w ./tests/bundle/"
