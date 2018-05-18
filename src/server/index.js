@@ -23,6 +23,8 @@ app.use(async (req, res, next) => {
 	//preciso verificar se o token é valido, se nao redirect,
 	// let u = await users.login({email:'wandyer1@lunes.io', password:'Lunes123#@!'});
 	// console.log(u, "UUU"); return;
+	next();
+	return;
 	const checkCookies = () => {
 		let user = req.cookies && req.cookies.user;
 		if (!user) {

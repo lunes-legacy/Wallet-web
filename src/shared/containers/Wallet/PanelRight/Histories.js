@@ -166,15 +166,15 @@ class Histories extends React.Component {
         weekDay = "sexta-feira";
         break;
       case 5:
-        weekDay = "sabado-feira";
+        weekDay = "sabado";
         break;
       case 6:
-        weekDay = "domingo-feira";
+        weekDay = "domingo";
         break;
     }
-    let day = date.getDate();
+    let day   = date.getDate();
     let month = date.getMonth() + 1;
-    let year = date.getYear();
+    let year  = date.getYear();
     return `${weekDay} ${day}/${month}/${year}`;
   };
 

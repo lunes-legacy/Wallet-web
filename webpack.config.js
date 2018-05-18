@@ -63,7 +63,8 @@ let alias = {
 	Utils: __dirname+'/src/shared/utils',
 	Shared: __dirname+'/src/shared/',
 	Auth: __dirname+'/src/shared/auth/',
-	Classes: __dirname+'/src/shared/classes/'
+	Classes: __dirname+'/src/shared/classes/',
+	Config: __dirname+'/src/shared/config/'
 };
 server.resolve = {
 	alias

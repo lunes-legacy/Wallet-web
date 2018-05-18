@@ -1,7 +1,8 @@
 import { errorPattern } from "Utils/functions";
-import { coins } from "lunes-lib";
-import sb from "satoshi-bitcoin";
-
+import { coins }        from "lunes-lib";
+import sb               from "satoshi-bitcoin";
+import { testnet }      from 'Config/constants';
+console.log(testnet, "TESTNET <<<<");
 export class WalletClass {
   static coinsPrice;
 
@@ -64,9 +65,9 @@ export class WalletClass {
         { fromSymbol: "ETH", toSymbol: "BRL,USD" }
       ]);
       this.coinsPrice = coinsPrice;
-      let addresses = this.getUserAddresses(user);
-      let balance = {};
-      let token = user.accessToken;
+      let addresses   = this.getUserAddresses(user);
+      let balance     = {};
+      let token       = user.accessToken;
       //coin = 'btc' (example)
       for (let coin in addresses) {
         //addressKey = 1 (example)
@@ -75,21 +76,21 @@ export class WalletClass {
           //it gets the current addres of the iteration
           let address = addresses[coin][addressKey];
           //it returns a response object
-          let response = await coins.bitcoin.getBalance({ address }, token);
+          let response = await coins.services.balance({ network: 'btc', address, testnet });
           if (response.status === "success") {
             if (!balance[coin]) {
               balance[coin] = {};
-              balance[coin]["total_confirmed"] = sb.toSatoshi(0);
+              balance[coin]["total_confirmed"]   = sb.toSatoshi(0);
               balance[coin]["total_unconfirmed"] = sb.toSatoshi(0);
-              balance[coin]["total_amount"] = 0;
+              balance[coin]["total_amount"]      = 0;
             }
             //it sums the old total_confirmed with the new
-            balance[coin]["total_confirmed"] += sb.toSatoshi(response.data.confirmed_balance);
+            balance[coin]["total_confirmed"]   += sb.toSatoshi(response.data.confirmed_balance);
             balance[coin]["total_unconfirmed"] += sb.toSatoshi(response.data.unconfirmed_balance);
             //it converts total_confirmed to bitcoin
             balance[coin]["total_unconfirmed"] = sb.toBitcoin(balance[coin]["total_unconfirmed"]);
-            balance[coin]["total_confirmed"] = sb.toBitcoin(balance[coin]["total_confirmed"]);
-            balance[coin]["total_amount"] = balance[coin]["total_confirmed"] * coinsPrice[coin]["USD"];
+            balance[coin]["total_confirmed"]   = sb.toBitcoin(balance[coin]["total_confirmed"]);
+            balance[coin]["total_amount"]      = balance[coin]["total_confirmed"] * coinsPrice[coin]["USD"];
           }
         }
       }
@@ -101,10 +102,9 @@ export class WalletClass {
 
   getHistory = async ({
     address = "1Q7Jmho4FixWBiTVcZ5aKXv4rTMMp6CjiD",
-    accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZGYzNTZlZjI2Mjk0MGRhMDY0N2M0NSIsInBob25lVmVyaWZpZWQiOm51bGwsInBpbiI6bnVsbCwidHdvZmFFbmFibGVkIjpudWxsLCJpYXQiOjE1MjQ3NTAwNTEsImV4cCI6MTUyNDc1NzI1MX0.ONXUF-aaaO17xCf1L3EXwzZ1oWZ_2EMdQw-0uPvJyHo"
   }) => {
     try {
-      return coins.bitcoin.getHistory({ address }, accessToken);
+      return coins.services.history({ network: 'btc', address, testnet });
     } catch (err) {
       return errorPattern("Error on get history", 500, "WALLET_GETHISTORY_ERROR", err);
     }
