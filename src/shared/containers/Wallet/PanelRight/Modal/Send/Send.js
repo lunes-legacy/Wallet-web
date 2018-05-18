@@ -247,8 +247,7 @@ class Send extends React.Component {
 										onKeyUp={this.handleOnAmountChange}
 										data-amount-type={'coin'}
 										className={'input-amount coin'}
-										placeholder={'0.00000000'}
-										value={0.000001}/>
+										placeholder={'0.00000000'}/>
 							</Row>
 							<Row>
 								<WrapRadio>
@@ -368,8 +367,7 @@ class Send extends React.Component {
 								whiteTheme
 								type={'text'}
 								ref={this.ref.address}
-								placeholder={'Endereço'}
-								value={'123123123123'}/>
+								placeholder={'Endereço'}/>
 						</Col>
 					</Row>
 
