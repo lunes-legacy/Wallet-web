@@ -5,39 +5,45 @@ import { Provider }       from 'react-redux';
 import { StaticRouter, Router } from 'react-router';
 import express            from 'express';
 import { ServerStyleSheet } from 'styled-components'
+import CookieClass        from 'Classes/Cookie';
+import { users }          from 'lunes-lib';
 
 import { errorPattern } from 'Utils/functions';
 import { store }        from 'Stores/store';
 import App              from 'Containers/App/index';
 import AppSwitcher      from 'Containers/AppSwitcher';
 
-import { users } from 'lunes-lib';
-
 const app = express();
+
+app.use(express.static('public'));
 
 app.use(async (req, res, next) => {
 	//preciso aplicar apenas na rota /app
 	//preciso verificar se tem token, se nao redireciona
 	//preciso verificar se o token é valido, se nao redirect,
-	try {
-		if (req.url.indexOf('/login') !== -1) {
-			next();
-			return;
-		}
-
-		let logged = false;
-		if (logged) {
-			next();
-			return;
-		} else {
+	// let u = await users.login({email:'wandyer1@lunes.io', password:'Lunes123#@!'});
+	// console.log(u, "UUU"); return;
+	const checkCookies = () => {
+		let user = req.cookies && req.cookies.user;
+		if (!user) {
+			if (req.url.indexOf('/login') !== -1) {
+				next();
+				return;
+			}
 			res.redirect('/login');
+			return;
 		}
-	} catch (e) {
-		console.log(e);
+		next();
+	}
+	if (req.url.indexOf('/app') !== -1) {
+		checkCookies();
+		res.redirect('/login');
+		return;
+	} else {
+		checkCookies();
 	}
 });
 
-app.use(express.static('public'));
 
 app.use((req, res, next) => {
 	console.log(
@@ -63,8 +69,8 @@ app.get('*', (req, res) => {
 		console.log(errorPattern(err));
 	}
 });
-app.listen(3000, () => {
-	console.log('Server is running on port 3000');
+app.listen(3002, () => {
+	console.log('Server is running on port 3002');
 });
 
 const render = (html, styleTags) => {
