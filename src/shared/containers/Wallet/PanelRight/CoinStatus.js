@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import style from "Shared/style-variables";
 import CoinGraph from "./CoinGraph";
+import { WalletClass } from "Classes/Wallet";
 //COMPONENTS
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
@@ -47,13 +48,38 @@ const CoinPercent = styled.div`
   color: white;
   width: auto;
   height: 75%;
-  background: ${style.normalGreen};
   border-radius: 10px;
   text-align: center;
   padding: 17px 20px 17px 20px;
 `;
 
 class CoinStatus extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      coin_porcentage_price: []
+    };
+  }
+  componentWillMount() {
+    this.calcCoinPorcent();
+  }
+
+  calcCoinPorcent = async () => {
+    let obj = { fromSymbol: this.props.wallet.panelRight.coinName.toUpperCase(), toSymbol: "USD", range: "RANGE_1D" };
+    let wallet = await new WalletClass().getTransactionHistory(obj);
+    let coinPrices = wallet.data;
+
+    let coinPriceLength = coinPrices.length;
+    let lastValueCoin = coinPrices[0].close;
+    let currentValueCoin = coinPrices[coinPriceLength - 1].close;
+
+    this.setState(() => {
+      return {
+        coin_porcentage_price: (currentValueCoin * 100 / lastValueCoin - 100).toFixed(2)
+      };
+    });
+  };
   render() {
     let { coinName, coinPrice } = this.props.wallet.panelRight || { coinName: undefined, coinPrice: undefined };
 
@@ -70,7 +96,11 @@ class CoinStatus extends React.Component {
         </CoinDetails>
         <CoinGraph coinName={this.props.wallet.panelRight.coinName.toUpperCase()} data={[]} />
         <WrapCoinPercent>
-          <CoinPercent>-350%</CoinPercent>
+          {this.state.coin_porcentage_price > 0 ? (
+            <CoinPercent backGroundGreen txNormal>{this.state.coin_porcentage_price}%</CoinPercent>
+          ) : (
+            <CoinPercent backGroundRed txNormal>{this.state.coin_porcentage_price}%</CoinPercent>
+          )}
         </WrapCoinPercent>
       </StyledCoinStatus>
     );
