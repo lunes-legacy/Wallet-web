@@ -53,7 +53,7 @@ class PanelLeft extends React.Component {
 					<Icon src={'/img/app_panel_left/fake.png'}/>
 					<CustomLink to={"/app/ticket"} size={'1.5rem'} >Boleto</CustomLink>
 				</WrapLink>
-			</StyledPanelLeft>		
+			</StyledPanelLeft>
 		);
 	}
 }

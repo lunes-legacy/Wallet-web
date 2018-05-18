@@ -12,6 +12,7 @@ let StyledHistories = styled.div`
   height: 100%;
   padding: 50px 0 0 0;
   overflow-x: auto;
+  display: none;
 `;
 let History = styled.div`
   width: 100%;
