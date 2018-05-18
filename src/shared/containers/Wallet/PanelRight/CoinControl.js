@@ -3,67 +3,95 @@ import styled from "styled-components";
 import style from "Shared/style-variables";
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
+import { Col, Row } from "Components/index"
 // import ModalSend from "./ModalSend/index";
 
-let StyledCoinControl = styled.div`
+const StyledCoinControl = styled.div`
   width: 100%;
-  padding: 50px 25px 50px 25px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  padding: 50px 25px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 `;
-let WrapAmount = styled.div``;
-
-let Amount = styled.div`
-  ${TextBase} font-size: 5rem;
-  color: white;
-`;
-let Usd = styled.div`
-  ${TextBase} font-size: 2.7rem;
-  color: white;
-  display: inline-block;
-  line-height: 50px;
-`;
-
-let Brl = styled.div`
-  ${TextBase} font-size: 2.7rem;
-  color: white;
-  display: inline-block;
-  line-height: 50px;
-  margin: 0 0 0 20px;
-  padding: 0 0 0 20px;
-  border-left: 2px solid ${style.normalGreen};
-`;
-
-let WrapButtons = styled.div`
-  display: flex;
-  flex-flow: wrap;
-`;
-let SendCoin = styled.div`
-  ${TextBase} width: 125px;
-  // height: 125px;
-  padding: 25px 0 25px 0;
+const WrapAmount = styled.div`
   text-align: center;
-  margin: 0 0 0 25px;
+  margin-bottom: 2rem;
+
+  @media (min-width: 790px) {
+    text-align: right;
+    margin-bottom: 0;
+    margin-right: 2rem;
+  }
+
+  @media (min-width: 900px) {
+    margin-right: 1rem;
+  }
+`;
+
+const Amount = styled.div`
+  ${TextBase}
+  font-size: 2rem;
+  color: white;
+
+  @media (min-width: 470px) {
+    font-size: 3rem;
+  }
+`;
+
+const MonetaryValue = styled.div`
+  ${TextBase}
+  color: white;
+  display: inline-block;
+  font-size: 1.2rem;
+  line-height: 50px;
+
+  @media (min-width: 470px) {
+    font-size: 1.5rem;
+  }
+`;
+
+const Usd = MonetaryValue.extend``;
+
+const Brl = MonetaryValue.extend``;
+
+const Divisor = styled.div`
+  border-left: 1px solid ${style.normalGreen};
+  display: inline-block;
+  margin: 0 20px -10px 20px;
+  min-height: 3rem;
+`;
+
+const CoinAction = styled.div`
+  ${TextBase}
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin: 0 1rem 0 1.5rem;
+  padding: 5px 0;
+  text-align: center;
+  width: 70px;
+
+  @media (min-width: 470px) {
+    border-radius: 10px;
+    font-size: 1.5rem;
+    padding: 10px 0;
+    width: 90px;
+  }
+
+  @media (min-width: 790px) {
+    margin: 0 1rem;
+  }
+`;
+
+const SendCoin = CoinAction.extend`
+  float: right;
   background: ${style.normalRed};
-  cursor: pointer;
-  color: white;
-  border-radius: 20px;
-`;
-let ReceiveCoin = styled.div`
-  ${TextBase} width: 125px;
-  // height: 125px;
-  padding: 25px 0 25px 0;
-  margin: 0 0 0 25px;
-  text-align: center;
-  background: ${style.normalGreen};
-  cursor: pointer;
-  color: white;
-  border-radius: 20px;
 `;
 
-let SendCoinImage = styled.img`
+const ReceiveCoin = CoinAction.extend`
+  background: ${style.normalGreen};
+`;
+
+const SendCoinImage = styled.img`
   width: 30px;
   height: 30px;
   margin-top: 5px;
@@ -75,24 +103,30 @@ class CoinControl extends React.Component {
   render() {
     return (
       <StyledCoinControl>
-        <WrapAmount>
-          <Amount offSide>0.00000001</Amount>
-          <Usd offSide>USD 2.00</Usd>
-          <Brl offSide>BRL 6,30</Brl>
-        </WrapAmount>
-
-        <WrapButtons>
-          <SendCoin>
-            <SendCoinImage src="/img/app_wallet/ic_enviar.svg" />
-            <br />
-            Enviar
-          </SendCoin>
-          <ReceiveCoin>
-            <SendCoinImage src="/img/app_wallet/ic_receber.svg" />
-            <br />
-            Receber
-          </ReceiveCoin>
-        </WrapButtons>
+        <Row>
+          <Col s={12} m={6} l={8}>
+            <WrapAmount>
+              <Amount offSide>0.00000001</Amount>
+              <Usd offSide>USD 2.00</Usd>
+              <Divisor />
+              <Brl offSide>BRL 6,30</Brl>
+            </WrapAmount>
+          </Col>
+          <Col s={6} m={3} l={2}>
+            <SendCoin>
+              <SendCoinImage src="/img/app_wallet/ic_enviar.svg" />
+              <br />
+              Enviar
+            </SendCoin>
+          </Col>
+          <Col s={6} m={3} l={2}>
+            <ReceiveCoin>
+              <SendCoinImage src="/img/app_wallet/ic_receber.svg" />
+              <br />
+              Receber
+            </ReceiveCoin>
+          </Col>
+        </Row>
       </StyledCoinControl>
     );
   }

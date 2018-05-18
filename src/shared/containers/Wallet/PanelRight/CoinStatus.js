@@ -15,7 +15,7 @@ const StyledCoinStatus = styled.div`
   justify-content: center;
   align-items: center;
   background: ${style.normalLilac3};
-  padding: 1.5rem;
+  padding: 1.5rem 1rem;
 `;
 
 const CoinDetailsText = styled.div`
@@ -24,15 +24,17 @@ const CoinDetailsText = styled.div`
   font-size: 1.5rem;
   color: white;
 
-  @media (min-width: 790px) {
+  @media (min-width: 1024px) {
     font-size: 2rem;
   }
 `;
 
 const CoinDetails = styled.div`
+  margin-top: 3rem;
   padding-left: 1rem;
 
-  @media (min-width: 480px) {
+  @media (min-width: 470px) {
+    margin-top: 2rem;
     padding-left: 2rem;
   }
 
@@ -44,7 +46,7 @@ const CoinDetails = styled.div`
 const GraphContainer = styled.div`
   padding: 1rem;
 
-  @media (min-width: 480px) {
+  @media (min-width: 470px) {
     padding: 1rem 2rem;
   }
 
@@ -56,34 +58,33 @@ const GraphContainer = styled.div`
 const WrapCoinPercent = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: 1rem !important;
-  width: 5rem !important;
   background: ${style.normalGreen};
   border-radius: 10px;
+  height: 45px; // Mesma altura da div do gráfico
+  justify-content: center;
+  margin-top: 3rem !important;
+  width: 4rem !important;
 
-  @media (min-width: 480px) {
-    margin: 1rem 0 1rem 2rem !important;
+  @media (min-width: 470px) {
+    margin-top: 40px !important;
     width: 7rem !important;
   }
 
   @media (min-width: 790px) {
-    margin: 0rem 3rem !important;
     width: 9rem !important;
   }
 `;
 
 const CoinPercent = styled.div`
   ${TextBase}
-  font-size: 2rem;
+  font-size: 1.5rem;
   letter-space: 0.85px;
   color: white;
-  height: 75%;
   text-align: center;
   padding: 10px 25px;
 
   @media (min-width: 790px) {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 `;
 
@@ -102,15 +103,15 @@ class CoinStatus extends React.Component {
           <Col s={12} m={3} l={3}>
             <CoinDetails>
               <CoinDetailsText offSide>BitCoin</CoinDetailsText>
-              <CoinDetailsText offSide>{`1 ${coinName.toUpperCase()} $${coinPrice.BRL}`}</CoinDetailsText>
+              <CoinDetailsText offSide>{`1 ${coinName.toUpperCase()} R$${coinPrice.BRL}`}</CoinDetailsText>
             </CoinDetails>
           </Col>
-          <Col s={7} m={6} l={6}>
+          <Col s={8} m={6} l={6}>
             <GraphContainer>
               <CoinGraph width='95%' height={75} coinName={this.props.wallet.panelRight.coinName.toUpperCase()} />
             </GraphContainer>
           </Col>
-          <Col s={5} m={3} l={3}>
+          <Col s={4} m={3} l={3}>
             <WrapCoinPercent>
               <CoinPercent>35%</CoinPercent>
             </WrapCoinPercent>
