@@ -10,7 +10,6 @@ import { Text } from "Components/Text";
 
 const StyledHistories = styled.div`
   width: 100%;
-  height: 100%;
   padding-top: 20px;
   overflow-x: auto;
 `;
@@ -50,16 +49,31 @@ const HeadStatusIcon = styled.img`
 const HeadStatusDate = styled.div`
   ${TextBase}
   color: white;
+  font-size:1.2rem;
+  font-weight: bold;
   text-align: center;
-  font-size: 1.2rem;
+
+  @media (min-width: 790px) {
+    font-size: 1.4rem;
+  }
 `;
+
 const HistoryHeadText = styled.div`
   ${TextBase}
   display: flex;
   align-items: center;
   color: white;
   font-size: 1.2rem;
-  margin: 1rem 0 0 1rem;
+  margin: 1.5rem 0 0 1rem;
+
+  @media (min-width: 470px) {
+    margin: 2.4rem 0 0 1rem;
+  }
+
+  @media (min-width: 790px) {
+    font-size: 1.4rem;
+    margin: 1rem 0 0 1rem;
+  }
 `;
 
 const HistoryHeadAmount = styled.div`
@@ -67,7 +81,7 @@ const HistoryHeadAmount = styled.div`
   display: flex;
   color: white;
   flex-flow: nowrap;
-  margin: 2rem;
+  margin: 1rem;
   justify-content: center;
 
   @media (min-width: 790px) {
@@ -90,6 +104,10 @@ const HeadAmountCoin = styled.div`
       return `background: ${style.normalLilac};`;
     }
   }};
+
+  @media (min-width: 790px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const HeadAmountMoney = styled.div`
@@ -97,39 +115,37 @@ const HeadAmountMoney = styled.div`
   font-size: 1.2rem;
   color: white;
   padding-left: 1rem;
+
+  @media (min-width: 790px) {
+    font-size: 1.4rem;
+    margin-right: 1rem;
+  }
 `;
 
 const HistoryContent = styled.div.attrs({
   className: "js-history-content"
 })`
-  position: absolute;
-  top: 100%;
-  left: 0px;
-  width: 100%;
   display: flex;
-  flex-flow: nowrap;
-  padding: 0 20px 0 20px;
   background: ${style.lightLilac};
-  z-index: 2;
-  overflow-x: auto;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
+  flex-flow: nowrap;
+  left: 0px;
+  padding: 1rem 2rem;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  word-wrap: break-word;
+  z-index: 2;
 
   transform-origin: top;
   transform: scaleY(0);
 
-  transition: transform 0.2s;
+  transition: transform 0.5s;
 
   &:hover {
     transform: scaleY(1);
   }
-`;
-
-const HistoryContentCol = styled.div`
-  width: auto;
-  max-width: 50%;
-  min-width: 320px;
-  padding: 0 10px;
 `;
 
 const HistoryContentItem = styled.div`
@@ -153,6 +169,10 @@ const StatusStyle = styled.div`
       return `background: ${style.normalLilac};`;
     }
   }};
+
+  @media (min-width: 790px) {
+    font-size: 1.4rem;
+  }
 `;
 
 class Histories extends React.Component {
@@ -180,25 +200,25 @@ class Histories extends React.Component {
     let weekDay = date.getDay();
     switch (weekDay) {
       case 0:
-        weekDay = "segunda-feira";
+        weekDay = "Segunda-feira";
         break;
       case 1:
-        weekDay = "terça-feira";
+        weekDay = "Terça-feira";
         break;
       case 2:
-        weekDay = "quarta-feira";
+        weekDay = "Quarta-feira";
         break;
       case 3:
-        weekDay = "quinta-feira";
+        weekDay = "Quinta-feira";
         break;
       case 4:
-        weekDay = "sexta-feira";
+        weekDay = "Sexta-feira";
         break;
       case 5:
-        weekDay = "sabado-feira";
+        weekDay = "Sabado";
         break;
       case 6:
-        weekDay = "domingo-feira";
+        weekDay = "Domingo";
         break;
     }
     let day = date.getDate();
@@ -232,47 +252,51 @@ class Histories extends React.Component {
                       <HeadStatusDate>25/05/2018</HeadStatusDate>
                     </HistoryHeadStatus>
                   </Col>
-                  <Col s={6} m={5} l={5}>
+                  <Col s={6} m={4} l={5}>
                     <HistoryHeadText>
                       <StatusStyle type={tx.type}>{this.icoStatusToText(tx.type)}</StatusStyle>
                       {this.timeToText(tx.time)}
                     </HistoryHeadText>
                   </Col>
-                  <Col s={12} m={5} l={5}>
+                  <Col s={12} m={6} l={5}>
                     <HistoryHeadAmount>
                       <HeadAmountCoin type={tx.type}>
                         {this.SignalControl(tx.type)}
                         {tx.value}
                       </HeadAmountCoin>
-                      <HeadAmountMoney>R$: {monetaryValue(coinPrice.BRL * parseFloat(tx.value))}</HeadAmountMoney>
+                      <HeadAmountMoney>
+                        {monetaryValue(coinPrice.BRL * parseFloat(tx.value), {style: 'currency',  currency: 'BRL'})}
+                      </HeadAmountMoney>
                     </HistoryHeadAmount>
                   </Col>
                 </Row>
               </HistoryHead>
               <HistoryContent>
                 <Row>
-                  <HistoryContentCol>
+                  <Col m={6} l={6}>
                     <HistoryContentItem clWhite>
                       <Text size={"1.4rem"}>Enviado: </Text>
                       <Text size={"1.4rem"} txBold>
-                        {`${tx.value} ${coinName}`} ($ {coinPrice.USD * parseFloat(tx.value)})
+                        {`${tx.value} ${coinName.toUpperCase()}`} ($ {monetaryValue(coinPrice.USD * parseFloat(tx.value), {style: 'decimal'})})
                       </Text>
                     </HistoryContentItem>
-                    <HistoryContentItem clWhite>
-                      <Text size={"1.4rem"}>Data: </Text>
-                      <Text size={"1.4rem"} txBold>
-                        {this.parseTimestampToDate(tx.time)}
-                      </Text>
-                    </HistoryContentItem>
-                  </HistoryContentCol>
-                  <HistoryContentCol>
+                  </Col>
+                  <Col  m={6} l={6}>
                     <HistoryContentItem clWhite>
                       <Text size={"1.4rem"}>Transaction ID:</Text>
                       <Text size={"1.4rem"} txBold>
                         {tx.txid}
                       </Text>
                     </HistoryContentItem>
-                  </HistoryContentCol>
+                  </Col>
+                  <Col>
+                    <HistoryContentItem clWhite>
+                      <Text size={"1.4rem"}>Data: </Text>
+                      <Text size={"1.4rem"} txBold>
+                        {this.parseTimestampToDate(tx.time)}
+                      </Text>
+                    </HistoryContentItem>
+                  </Col>
                 </Row>
               </HistoryContent>
             </History>
@@ -283,7 +307,9 @@ class Histories extends React.Component {
   }
 }
 
-const monetaryValue = value => parseFloat(value.toFixed(2)).toLocaleString();
+const monetaryValue = (value, options) => {
+  return parseFloat(value.toFixed(2)).toLocaleString('pt-BR', options);
+};
 
 const mapStateToProps = state => {
   return {
