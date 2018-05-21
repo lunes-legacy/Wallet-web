@@ -105,7 +105,7 @@ class Coins extends React.Component {
               <Coin
                 key={coinKey}
                 onClick={() => {
-                  this.props.openPanelRight({ coinPrice: coinsPrice[coinKey], coinName: coinKey });
+                  this.props.openPanelRight({ coinPrice: coinsPrice[coinKey], coinName: coinKey, isOpenModalReceive: false });
                 }}
               >
                 <WrapCoinImg>
@@ -139,7 +139,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    openPanelRight: ({ coinPrice, coinName }) => {
+    openPanelRight: ({ coinPrice, coinName,  }) => {
       dispatch({
         type: "WALLET_OPEN_PANELRIGHT",
         payload: { coinPrice, coinName }

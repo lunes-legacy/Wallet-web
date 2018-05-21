@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import style from "Shared/style-variables";
 import CoinGraph from "./CoinGraph";
+import { WalletClass } from "Classes/Wallet";
 //COMPONENTS
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
@@ -89,10 +90,36 @@ const CoinPercent = styled.div`
 `;
 
 class CoinStatus extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      coin_porcentage_price: []
+    };
+  }
+  componentWillMount() {
+    this.calcCoinPorcent();
+  }
+
+  calcCoinPorcent = async () => {
+    let obj = { fromSymbol: this.props.wallet.panelRight.coinName.toUpperCase(), toSymbol: "USD", range: "RANGE_1D" };
+    let wallet = await new WalletClass().getTransactionHistory(obj);
+    let coinPrices = wallet.data;
+
+    let coinPriceLength = coinPrices.length;
+    let lastValueCoin = coinPrices[0].close;
+    let currentValueCoin = coinPrices[coinPriceLength - 1].close;
+
+    this.setState(() => {
+      return {
+        coin_porcentage_price: (currentValueCoin * 100 / lastValueCoin - 100).toFixed(2)
+      };
+    });
+  };
   render() {
     let { coinName, coinPrice } = this.props.wallet.panelRight || { coinName: undefined, coinPrice: undefined };
-    
-    if (!coinPrice || !coinName) {
+    //!coinPrice || 
+    if (!coinName) {
       console.warn("if (coinPrice || coinName); ERRO");
       return null;
     }
@@ -103,7 +130,7 @@ class CoinStatus extends React.Component {
           <Col s={12} m={3} l={3}>
             <CoinDetails>
               <CoinDetailsText offSide>BitCoin</CoinDetailsText>
-              <CoinDetailsText offSide>{`1 ${coinName.toUpperCase()} R$${coinPrice.BRL}`}</CoinDetailsText>
+              <CoinDetailsText offSide>{`1 ${coinName.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText>
             </CoinDetails>
           </Col>
           <Col s={8} m={6} l={6}>
@@ -112,8 +139,14 @@ class CoinStatus extends React.Component {
             </GraphContainer>
           </Col>
           <Col s={4} m={3} l={3}>
-            <WrapCoinPercent>
-              <CoinPercent>35%</CoinPercent>
+           {(() => { console.log(this.state.coin_porcentage_price, "TESTOOOOOOOO"); })()}
+            <WrapCoinPercent style={this.state.coin_porcentage_price < 0 ? {background: 'indianred'} : {background: 'lightgreen'} }>
+              <CoinPercent>{ this.state.coin_porcentage_price }%</CoinPercent>
+              {/*{this.state.coin_porcentage_price > 0 ? (
+                <CoinPercent backGroundGreen txNormal>{this.state.coin_porcentage_price}%</CoinPercent>
+              ) : (
+                <CoinPercent backGroundRed txNormal>{this.state.coin_porcentage_price}%</CoinPercent>
+              )}*/}
             </WrapCoinPercent>
           </Col>
         </Row>

@@ -4,7 +4,8 @@ import style from "Shared/style-variables";
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
 import { Col, Row } from "Components/index"
-// import ModalSend from "./ModalSend/index";
+import ModalSend from "./Modal/Send/index";
+import ModalReceive from "./Modal/Receive/index";
 
 const StyledCoinControl = styled.div`
   width: 100%;
@@ -100,6 +101,18 @@ const SendCoinImage = styled.img`
 
 class CoinControl extends React.Component {
   handleToggleSendModal = () => {};
+
+  constructor() {
+    super();
+    this.state = { isOpenModalReceived: false };
+  }
+
+  showModalReceived = () => {
+    this.setState({
+      isOpenModalReceived: !this.state.isOpenModalReceived
+    });
+  };
+
   render() {
     return (
       <StyledCoinControl>
@@ -120,11 +133,12 @@ class CoinControl extends React.Component {
             </SendCoin>
           </Col>
           <Col s={6} m={3} l={2}>
-            <ReceiveCoin>
+            <ReceiveCoin onClick={() => this.showModalReceived()}>
               <SendCoinImage src="/img/app_wallet/ic_receber.svg" />
               <br />
               Receber
             </ReceiveCoin>
+            {this.state.isOpenModalReceived && <ModalReceive isShow={this.state.isOpenModalReceived} />}
           </Col>
         </Row>
       </StyledCoinControl>

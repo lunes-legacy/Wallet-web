@@ -18,8 +18,8 @@ class CoinGraph extends React.Component {
   }
 
   coinHistory = async () => {
-    let obj = { fromSymbol: this.props.coinName, toSymbol: "USD", range: "RANGE_1M" };
-    let wallet = await new WalletClass().getCoinHistory(obj);
+    let obj     = { fromSymbol: this.props.coinName, toSymbol: "USD", range: "RANGE_1D" };
+    let wallet  = await new WalletClass().getCoinHistory(obj);
     let walletFormatted = await this.convertTimestampToDate(wallet.data);
 
     this.setState(() => {
@@ -32,9 +32,12 @@ class CoinGraph extends React.Component {
   convertTimestampToDate = async data => {
     data.map(timeStamp => {
       let date = new Date(timeStamp.time * 1000);
+
       let months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
-      timeStamp.time = date.getDate() + "/" + months[date.getMonth()] + "/" + date.getFullYear();
+      timeStamp.time = `${date.getDate()} / ${months[date.getMonth()]} / ${date.getFullYear()}  
+      ${(date.getHours() < 10 ? "0" : "") + date.getHours()}:${(date.getMinutes() < 10 ? "0" : "") +
+        date.getMinutes()}`;
     });
 
     return await data;

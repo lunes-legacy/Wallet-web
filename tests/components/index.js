@@ -1,8 +1,17 @@
+<<<<<<< HEAD
 import React from 'react';
 import { render } from 'react-dom';
 import Modal from 'Containers/Wallet/PanelRight/Modal/Send/index';
 import Input from 'Components/forms/Input';
 import { Col, Row } from 'Components/index';
+=======
+import React from "react";
+import { render } from "react-dom";
+import ModalSend from "Containers/Wallet/PanelRight/Modal/Send/index";
+import ModalReceive from "Containers/Wallet/PanelRight/Modal/Receive/index";
+import Input from "Components/forms/Input";
+import { Col, Row } from "Components/index";
+>>>>>>> 3b963681ab6ad56b12365d7fc521c2101aa71ef0
 
 // let toRender = () => {
 // 	return (
@@ -48,45 +57,51 @@ import { Col, Row } from 'Components/index';
 // 	</div>);
 // }
 let props = {
-	coinName: 'btc',
-	send: ({coinAmount, address}) => {
-		console.log(`%cEnviando ${coinAmount} para ${address}`, 'background: indianred; color: lightgreen; font-size: 20px;');
-		return new Promise((resolve) => {
-			setTimeout(() => {
-				resolve(`Enviado para ${address}`)
-			}, 1000);
-		});
-	},
-	// coins: {
-	// 	{ symbol: 'btc', price: 10000 },
-	// 	{ symbol: 'ltc', price: 100 },
-	// 	{ symbol: 'eth', price: 400 },
-	// 	{ symbol: 'lns', price: 1 },
-	// },
-	// currencies: {
-	// 	{ symbol: 'usd',  }
-	// }
-	coinPrice: {
-		usd: 10000.1,
-		brl: 33000.33
-	},
-	fiatPrice: {
-		usd: { brl: 3.3,  btc: 0.00001},
-		brl: { usd: 0.30, btc: 0.00001}
-	},
-	balance: {
-		total_confirmed: 5,
-		total_unconfirmed: 0.5,
-		total_amount: 5.5
-	}
+  coinName: "btc",
+  send: ({ coinAmount, address }) => {
+    console.log(
+      `%cEnviando ${coinAmount} para ${address}`,
+      "background: indianred; color: lightgreen; font-size: 20px;"
+    );
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(`Enviado para ${address}`);
+      }, 1000);
+    });
+  },
+  // coins: {
+  // 	{ symbol: 'btc', price: 10000 },
+  // 	{ symbol: 'ltc', price: 100 },
+  // 	{ symbol: 'eth', price: 400 },
+  // 	{ symbol: 'lns', price: 1 },
+  // },
+  // currencies: {
+  // 	{ symbol: 'usd',  }
+  // }
+  coinPrice: {
+    usd: 10000.1,
+    brl: 33000.33
+  },
+  fiatPrice: {
+    usd: { brl: 3.3, btc: 0.00001 },
+    brl: { usd: 0.3, btc: 0.00001 }
+  },
+  balance: {
+    total_confirmed: 5,
+    total_unconfirmed: 0.5,
+    total_amount: 5.5
+  }
 };
 
 const toRender = () => {
+<<<<<<< HEAD
 	return(
 		<Modal {...props}/>	
 	);
 }
+=======
+  return <ModalReceive {...props} />;
+};
+>>>>>>> 3b963681ab6ad56b12365d7fc521c2101aa71ef0
 
-render(
-	toRender(), 
-	document.querySelector('.root'));
+render(toRender(), document.querySelector(".root"));

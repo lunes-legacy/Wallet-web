@@ -1,4 +1,696 @@
 /******/ (function(modules) { // webpackBootstrap
+<<<<<<< HEAD
+=======
+/******/ 	function hotDisposeChunk(chunkId) {
+/******/ 		delete installedChunks[chunkId];
+/******/ 	}
+/******/ 	var parentHotUpdateCallback = window["webpackHotUpdate"];
+/******/ 	window["webpackHotUpdate"] = // eslint-disable-next-line no-unused-vars
+/******/ 	function webpackHotUpdateCallback(chunkId, moreModules) {
+/******/ 		hotAddUpdateChunk(chunkId, moreModules);
+/******/ 		if (parentHotUpdateCallback) parentHotUpdateCallback(chunkId, moreModules);
+/******/ 	} ;
+/******/
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	function hotDownloadUpdateChunk(chunkId) {
+/******/ 		var head = document.getElementsByTagName("head")[0];
+/******/ 		var script = document.createElement("script");
+/******/ 		script.charset = "utf-8";
+/******/ 		script.src = __webpack_require__.p + "" + chunkId + "." + hotCurrentHash + ".hot-update.js";
+/******/ 		;
+/******/ 		head.appendChild(script);
+/******/ 	}
+/******/
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	function hotDownloadManifest(requestTimeout) {
+/******/ 		requestTimeout = requestTimeout || 10000;
+/******/ 		return new Promise(function(resolve, reject) {
+/******/ 			if (typeof XMLHttpRequest === "undefined")
+/******/ 				return reject(new Error("No browser support"));
+/******/ 			try {
+/******/ 				var request = new XMLHttpRequest();
+/******/ 				var requestPath = __webpack_require__.p + "" + hotCurrentHash + ".hot-update.json";
+/******/ 				request.open("GET", requestPath, true);
+/******/ 				request.timeout = requestTimeout;
+/******/ 				request.send(null);
+/******/ 			} catch (err) {
+/******/ 				return reject(err);
+/******/ 			}
+/******/ 			request.onreadystatechange = function() {
+/******/ 				if (request.readyState !== 4) return;
+/******/ 				if (request.status === 0) {
+/******/ 					// timeout
+/******/ 					reject(
+/******/ 						new Error("Manifest request to " + requestPath + " timed out.")
+/******/ 					);
+/******/ 				} else if (request.status === 404) {
+/******/ 					// no update available
+/******/ 					resolve();
+/******/ 				} else if (request.status !== 200 && request.status !== 304) {
+/******/ 					// other failure
+/******/ 					reject(new Error("Manifest request to " + requestPath + " failed."));
+/******/ 				} else {
+/******/ 					// success
+/******/ 					try {
+/******/ 						var update = JSON.parse(request.responseText);
+/******/ 					} catch (e) {
+/******/ 						reject(e);
+/******/ 						return;
+/******/ 					}
+/******/ 					resolve(update);
+/******/ 				}
+/******/ 			};
+/******/ 		});
+/******/ 	}
+/******/
+/******/ 	var hotApplyOnUpdate = true;
+/******/ 	var hotCurrentHash = "fc2e5f0b36d16d2a87d3"; // eslint-disable-line no-unused-vars
+/******/ 	var hotRequestTimeout = 10000;
+/******/ 	var hotCurrentModuleData = {};
+/******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentParentsTemp = []; // eslint-disable-line no-unused-vars
+/******/
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	function hotCreateRequire(moduleId) {
+/******/ 		var me = installedModules[moduleId];
+/******/ 		if (!me) return __webpack_require__;
+/******/ 		var fn = function(request) {
+/******/ 			if (me.hot.active) {
+/******/ 				if (installedModules[request]) {
+/******/ 					if (installedModules[request].parents.indexOf(moduleId) === -1)
+/******/ 						installedModules[request].parents.push(moduleId);
+/******/ 				} else {
+/******/ 					hotCurrentParents = [moduleId];
+/******/ 					hotCurrentChildModule = request;
+/******/ 				}
+/******/ 				if (me.children.indexOf(request) === -1) me.children.push(request);
+/******/ 			} else {
+/******/ 				console.warn(
+/******/ 					"[HMR] unexpected require(" +
+/******/ 						request +
+/******/ 						") from disposed module " +
+/******/ 						moduleId
+/******/ 				);
+/******/ 				hotCurrentParents = [];
+/******/ 			}
+/******/ 			return __webpack_require__(request);
+/******/ 		};
+/******/ 		var ObjectFactory = function ObjectFactory(name) {
+/******/ 			return {
+/******/ 				configurable: true,
+/******/ 				enumerable: true,
+/******/ 				get: function() {
+/******/ 					return __webpack_require__[name];
+/******/ 				},
+/******/ 				set: function(value) {
+/******/ 					__webpack_require__[name] = value;
+/******/ 				}
+/******/ 			};
+/******/ 		};
+/******/ 		for (var name in __webpack_require__) {
+/******/ 			if (
+/******/ 				Object.prototype.hasOwnProperty.call(__webpack_require__, name) &&
+/******/ 				name !== "e"
+/******/ 			) {
+/******/ 				Object.defineProperty(fn, name, ObjectFactory(name));
+/******/ 			}
+/******/ 		}
+/******/ 		fn.e = function(chunkId) {
+/******/ 			if (hotStatus === "ready") hotSetStatus("prepare");
+/******/ 			hotChunksLoading++;
+/******/ 			return __webpack_require__.e(chunkId).then(finishChunkLoading, function(err) {
+/******/ 				finishChunkLoading();
+/******/ 				throw err;
+/******/ 			});
+/******/
+/******/ 			function finishChunkLoading() {
+/******/ 				hotChunksLoading--;
+/******/ 				if (hotStatus === "prepare") {
+/******/ 					if (!hotWaitingFilesMap[chunkId]) {
+/******/ 						hotEnsureUpdateChunk(chunkId);
+/******/ 					}
+/******/ 					if (hotChunksLoading === 0 && hotWaitingFiles === 0) {
+/******/ 						hotUpdateDownloaded();
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 		return fn;
+/******/ 	}
+/******/
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	function hotCreateModule(moduleId) {
+/******/ 		var hot = {
+/******/ 			// private stuff
+/******/ 			_acceptedDependencies: {},
+/******/ 			_declinedDependencies: {},
+/******/ 			_selfAccepted: false,
+/******/ 			_selfDeclined: false,
+/******/ 			_disposeHandlers: [],
+/******/ 			_main: hotCurrentChildModule !== moduleId,
+/******/
+/******/ 			// Module API
+/******/ 			active: true,
+/******/ 			accept: function(dep, callback) {
+/******/ 				if (typeof dep === "undefined") hot._selfAccepted = true;
+/******/ 				else if (typeof dep === "function") hot._selfAccepted = dep;
+/******/ 				else if (typeof dep === "object")
+/******/ 					for (var i = 0; i < dep.length; i++)
+/******/ 						hot._acceptedDependencies[dep[i]] = callback || function() {};
+/******/ 				else hot._acceptedDependencies[dep] = callback || function() {};
+/******/ 			},
+/******/ 			decline: function(dep) {
+/******/ 				if (typeof dep === "undefined") hot._selfDeclined = true;
+/******/ 				else if (typeof dep === "object")
+/******/ 					for (var i = 0; i < dep.length; i++)
+/******/ 						hot._declinedDependencies[dep[i]] = true;
+/******/ 				else hot._declinedDependencies[dep] = true;
+/******/ 			},
+/******/ 			dispose: function(callback) {
+/******/ 				hot._disposeHandlers.push(callback);
+/******/ 			},
+/******/ 			addDisposeHandler: function(callback) {
+/******/ 				hot._disposeHandlers.push(callback);
+/******/ 			},
+/******/ 			removeDisposeHandler: function(callback) {
+/******/ 				var idx = hot._disposeHandlers.indexOf(callback);
+/******/ 				if (idx >= 0) hot._disposeHandlers.splice(idx, 1);
+/******/ 			},
+/******/
+/******/ 			// Management API
+/******/ 			check: hotCheck,
+/******/ 			apply: hotApply,
+/******/ 			status: function(l) {
+/******/ 				if (!l) return hotStatus;
+/******/ 				hotStatusHandlers.push(l);
+/******/ 			},
+/******/ 			addStatusHandler: function(l) {
+/******/ 				hotStatusHandlers.push(l);
+/******/ 			},
+/******/ 			removeStatusHandler: function(l) {
+/******/ 				var idx = hotStatusHandlers.indexOf(l);
+/******/ 				if (idx >= 0) hotStatusHandlers.splice(idx, 1);
+/******/ 			},
+/******/
+/******/ 			//inherit from previous dispose call
+/******/ 			data: hotCurrentModuleData[moduleId]
+/******/ 		};
+/******/ 		hotCurrentChildModule = undefined;
+/******/ 		return hot;
+/******/ 	}
+/******/
+/******/ 	var hotStatusHandlers = [];
+/******/ 	var hotStatus = "idle";
+/******/
+/******/ 	function hotSetStatus(newStatus) {
+/******/ 		hotStatus = newStatus;
+/******/ 		for (var i = 0; i < hotStatusHandlers.length; i++)
+/******/ 			hotStatusHandlers[i].call(null, newStatus);
+/******/ 	}
+/******/
+/******/ 	// while downloading
+/******/ 	var hotWaitingFiles = 0;
+/******/ 	var hotChunksLoading = 0;
+/******/ 	var hotWaitingFilesMap = {};
+/******/ 	var hotRequestedFilesMap = {};
+/******/ 	var hotAvailableFilesMap = {};
+/******/ 	var hotDeferred;
+/******/
+/******/ 	// The update info
+/******/ 	var hotUpdate, hotUpdateNewHash;
+/******/
+/******/ 	function toModuleId(id) {
+/******/ 		var isNumber = +id + "" === id;
+/******/ 		return isNumber ? +id : id;
+/******/ 	}
+/******/
+/******/ 	function hotCheck(apply) {
+/******/ 		if (hotStatus !== "idle")
+/******/ 			throw new Error("check() is only allowed in idle status");
+/******/ 		hotApplyOnUpdate = apply;
+/******/ 		hotSetStatus("check");
+/******/ 		return hotDownloadManifest(hotRequestTimeout).then(function(update) {
+/******/ 			if (!update) {
+/******/ 				hotSetStatus("idle");
+/******/ 				return null;
+/******/ 			}
+/******/ 			hotRequestedFilesMap = {};
+/******/ 			hotWaitingFilesMap = {};
+/******/ 			hotAvailableFilesMap = update.c;
+/******/ 			hotUpdateNewHash = update.h;
+/******/
+/******/ 			hotSetStatus("prepare");
+/******/ 			var promise = new Promise(function(resolve, reject) {
+/******/ 				hotDeferred = {
+/******/ 					resolve: resolve,
+/******/ 					reject: reject
+/******/ 				};
+/******/ 			});
+/******/ 			hotUpdate = {};
+/******/ 			var chunkId = "main";
+/******/ 			{
+/******/ 				// eslint-disable-line no-lone-blocks
+/******/ 				/*globals chunkId */
+/******/ 				hotEnsureUpdateChunk(chunkId);
+/******/ 			}
+/******/ 			if (
+/******/ 				hotStatus === "prepare" &&
+/******/ 				hotChunksLoading === 0 &&
+/******/ 				hotWaitingFiles === 0
+/******/ 			) {
+/******/ 				hotUpdateDownloaded();
+/******/ 			}
+/******/ 			return promise;
+/******/ 		});
+/******/ 	}
+/******/
+/******/ 	// eslint-disable-next-line no-unused-vars
+/******/ 	function hotAddUpdateChunk(chunkId, moreModules) {
+/******/ 		if (!hotAvailableFilesMap[chunkId] || !hotRequestedFilesMap[chunkId])
+/******/ 			return;
+/******/ 		hotRequestedFilesMap[chunkId] = false;
+/******/ 		for (var moduleId in moreModules) {
+/******/ 			if (Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/ 				hotUpdate[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 		}
+/******/ 		if (--hotWaitingFiles === 0 && hotChunksLoading === 0) {
+/******/ 			hotUpdateDownloaded();
+/******/ 		}
+/******/ 	}
+/******/
+/******/ 	function hotEnsureUpdateChunk(chunkId) {
+/******/ 		if (!hotAvailableFilesMap[chunkId]) {
+/******/ 			hotWaitingFilesMap[chunkId] = true;
+/******/ 		} else {
+/******/ 			hotRequestedFilesMap[chunkId] = true;
+/******/ 			hotWaitingFiles++;
+/******/ 			hotDownloadUpdateChunk(chunkId);
+/******/ 		}
+/******/ 	}
+/******/
+/******/ 	function hotUpdateDownloaded() {
+/******/ 		hotSetStatus("ready");
+/******/ 		var deferred = hotDeferred;
+/******/ 		hotDeferred = null;
+/******/ 		if (!deferred) return;
+/******/ 		if (hotApplyOnUpdate) {
+/******/ 			// Wrap deferred object in Promise to mark it as a well-handled Promise to
+/******/ 			// avoid triggering uncaught exception warning in Chrome.
+/******/ 			// See https://bugs.chromium.org/p/chromium/issues/detail?id=465666
+/******/ 			Promise.resolve()
+/******/ 				.then(function() {
+/******/ 					return hotApply(hotApplyOnUpdate);
+/******/ 				})
+/******/ 				.then(
+/******/ 					function(result) {
+/******/ 						deferred.resolve(result);
+/******/ 					},
+/******/ 					function(err) {
+/******/ 						deferred.reject(err);
+/******/ 					}
+/******/ 				);
+/******/ 		} else {
+/******/ 			var outdatedModules = [];
+/******/ 			for (var id in hotUpdate) {
+/******/ 				if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
+/******/ 					outdatedModules.push(toModuleId(id));
+/******/ 				}
+/******/ 			}
+/******/ 			deferred.resolve(outdatedModules);
+/******/ 		}
+/******/ 	}
+/******/
+/******/ 	function hotApply(options) {
+/******/ 		if (hotStatus !== "ready")
+/******/ 			throw new Error("apply() is only allowed in ready status");
+/******/ 		options = options || {};
+/******/
+/******/ 		var cb;
+/******/ 		var i;
+/******/ 		var j;
+/******/ 		var module;
+/******/ 		var moduleId;
+/******/
+/******/ 		function getAffectedStuff(updateModuleId) {
+/******/ 			var outdatedModules = [updateModuleId];
+/******/ 			var outdatedDependencies = {};
+/******/
+/******/ 			var queue = outdatedModules.slice().map(function(id) {
+/******/ 				return {
+/******/ 					chain: [id],
+/******/ 					id: id
+/******/ 				};
+/******/ 			});
+/******/ 			while (queue.length > 0) {
+/******/ 				var queueItem = queue.pop();
+/******/ 				var moduleId = queueItem.id;
+/******/ 				var chain = queueItem.chain;
+/******/ 				module = installedModules[moduleId];
+/******/ 				if (!module || module.hot._selfAccepted) continue;
+/******/ 				if (module.hot._selfDeclined) {
+/******/ 					return {
+/******/ 						type: "self-declined",
+/******/ 						chain: chain,
+/******/ 						moduleId: moduleId
+/******/ 					};
+/******/ 				}
+/******/ 				if (module.hot._main) {
+/******/ 					return {
+/******/ 						type: "unaccepted",
+/******/ 						chain: chain,
+/******/ 						moduleId: moduleId
+/******/ 					};
+/******/ 				}
+/******/ 				for (var i = 0; i < module.parents.length; i++) {
+/******/ 					var parentId = module.parents[i];
+/******/ 					var parent = installedModules[parentId];
+/******/ 					if (!parent) continue;
+/******/ 					if (parent.hot._declinedDependencies[moduleId]) {
+/******/ 						return {
+/******/ 							type: "declined",
+/******/ 							chain: chain.concat([parentId]),
+/******/ 							moduleId: moduleId,
+/******/ 							parentId: parentId
+/******/ 						};
+/******/ 					}
+/******/ 					if (outdatedModules.indexOf(parentId) !== -1) continue;
+/******/ 					if (parent.hot._acceptedDependencies[moduleId]) {
+/******/ 						if (!outdatedDependencies[parentId])
+/******/ 							outdatedDependencies[parentId] = [];
+/******/ 						addAllToSet(outdatedDependencies[parentId], [moduleId]);
+/******/ 						continue;
+/******/ 					}
+/******/ 					delete outdatedDependencies[parentId];
+/******/ 					outdatedModules.push(parentId);
+/******/ 					queue.push({
+/******/ 						chain: chain.concat([parentId]),
+/******/ 						id: parentId
+/******/ 					});
+/******/ 				}
+/******/ 			}
+/******/
+/******/ 			return {
+/******/ 				type: "accepted",
+/******/ 				moduleId: updateModuleId,
+/******/ 				outdatedModules: outdatedModules,
+/******/ 				outdatedDependencies: outdatedDependencies
+/******/ 			};
+/******/ 		}
+/******/
+/******/ 		function addAllToSet(a, b) {
+/******/ 			for (var i = 0; i < b.length; i++) {
+/******/ 				var item = b[i];
+/******/ 				if (a.indexOf(item) === -1) a.push(item);
+/******/ 			}
+/******/ 		}
+/******/
+/******/ 		// at begin all updates modules are outdated
+/******/ 		// the "outdated" status can propagate to parents if they don't accept the children
+/******/ 		var outdatedDependencies = {};
+/******/ 		var outdatedModules = [];
+/******/ 		var appliedUpdate = {};
+/******/
+/******/ 		var warnUnexpectedRequire = function warnUnexpectedRequire() {
+/******/ 			console.warn(
+/******/ 				"[HMR] unexpected require(" + result.moduleId + ") to disposed module"
+/******/ 			);
+/******/ 		};
+/******/
+/******/ 		for (var id in hotUpdate) {
+/******/ 			if (Object.prototype.hasOwnProperty.call(hotUpdate, id)) {
+/******/ 				moduleId = toModuleId(id);
+/******/ 				/** @type {any} */
+/******/ 				var result;
+/******/ 				if (hotUpdate[id]) {
+/******/ 					result = getAffectedStuff(moduleId);
+/******/ 				} else {
+/******/ 					result = {
+/******/ 						type: "disposed",
+/******/ 						moduleId: id
+/******/ 					};
+/******/ 				}
+/******/ 				/** @type {Error|false} */
+/******/ 				var abortError = false;
+/******/ 				var doApply = false;
+/******/ 				var doDispose = false;
+/******/ 				var chainInfo = "";
+/******/ 				if (result.chain) {
+/******/ 					chainInfo = "\nUpdate propagation: " + result.chain.join(" -> ");
+/******/ 				}
+/******/ 				switch (result.type) {
+/******/ 					case "self-declined":
+/******/ 						if (options.onDeclined) options.onDeclined(result);
+/******/ 						if (!options.ignoreDeclined)
+/******/ 							abortError = new Error(
+/******/ 								"Aborted because of self decline: " +
+/******/ 									result.moduleId +
+/******/ 									chainInfo
+/******/ 							);
+/******/ 						break;
+/******/ 					case "declined":
+/******/ 						if (options.onDeclined) options.onDeclined(result);
+/******/ 						if (!options.ignoreDeclined)
+/******/ 							abortError = new Error(
+/******/ 								"Aborted because of declined dependency: " +
+/******/ 									result.moduleId +
+/******/ 									" in " +
+/******/ 									result.parentId +
+/******/ 									chainInfo
+/******/ 							);
+/******/ 						break;
+/******/ 					case "unaccepted":
+/******/ 						if (options.onUnaccepted) options.onUnaccepted(result);
+/******/ 						if (!options.ignoreUnaccepted)
+/******/ 							abortError = new Error(
+/******/ 								"Aborted because " + moduleId + " is not accepted" + chainInfo
+/******/ 							);
+/******/ 						break;
+/******/ 					case "accepted":
+/******/ 						if (options.onAccepted) options.onAccepted(result);
+/******/ 						doApply = true;
+/******/ 						break;
+/******/ 					case "disposed":
+/******/ 						if (options.onDisposed) options.onDisposed(result);
+/******/ 						doDispose = true;
+/******/ 						break;
+/******/ 					default:
+/******/ 						throw new Error("Unexception type " + result.type);
+/******/ 				}
+/******/ 				if (abortError) {
+/******/ 					hotSetStatus("abort");
+/******/ 					return Promise.reject(abortError);
+/******/ 				}
+/******/ 				if (doApply) {
+/******/ 					appliedUpdate[moduleId] = hotUpdate[moduleId];
+/******/ 					addAllToSet(outdatedModules, result.outdatedModules);
+/******/ 					for (moduleId in result.outdatedDependencies) {
+/******/ 						if (
+/******/ 							Object.prototype.hasOwnProperty.call(
+/******/ 								result.outdatedDependencies,
+/******/ 								moduleId
+/******/ 							)
+/******/ 						) {
+/******/ 							if (!outdatedDependencies[moduleId])
+/******/ 								outdatedDependencies[moduleId] = [];
+/******/ 							addAllToSet(
+/******/ 								outdatedDependencies[moduleId],
+/******/ 								result.outdatedDependencies[moduleId]
+/******/ 							);
+/******/ 						}
+/******/ 					}
+/******/ 				}
+/******/ 				if (doDispose) {
+/******/ 					addAllToSet(outdatedModules, [result.moduleId]);
+/******/ 					appliedUpdate[moduleId] = warnUnexpectedRequire;
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/
+/******/ 		// Store self accepted outdated modules to require them later by the module system
+/******/ 		var outdatedSelfAcceptedModules = [];
+/******/ 		for (i = 0; i < outdatedModules.length; i++) {
+/******/ 			moduleId = outdatedModules[i];
+/******/ 			if (
+/******/ 				installedModules[moduleId] &&
+/******/ 				installedModules[moduleId].hot._selfAccepted
+/******/ 			)
+/******/ 				outdatedSelfAcceptedModules.push({
+/******/ 					module: moduleId,
+/******/ 					errorHandler: installedModules[moduleId].hot._selfAccepted
+/******/ 				});
+/******/ 		}
+/******/
+/******/ 		// Now in "dispose" phase
+/******/ 		hotSetStatus("dispose");
+/******/ 		Object.keys(hotAvailableFilesMap).forEach(function(chunkId) {
+/******/ 			if (hotAvailableFilesMap[chunkId] === false) {
+/******/ 				hotDisposeChunk(chunkId);
+/******/ 			}
+/******/ 		});
+/******/
+/******/ 		var idx;
+/******/ 		var queue = outdatedModules.slice();
+/******/ 		while (queue.length > 0) {
+/******/ 			moduleId = queue.pop();
+/******/ 			module = installedModules[moduleId];
+/******/ 			if (!module) continue;
+/******/
+/******/ 			var data = {};
+/******/
+/******/ 			// Call dispose handlers
+/******/ 			var disposeHandlers = module.hot._disposeHandlers;
+/******/ 			for (j = 0; j < disposeHandlers.length; j++) {
+/******/ 				cb = disposeHandlers[j];
+/******/ 				cb(data);
+/******/ 			}
+/******/ 			hotCurrentModuleData[moduleId] = data;
+/******/
+/******/ 			// disable module (this disables requires from this module)
+/******/ 			module.hot.active = false;
+/******/
+/******/ 			// remove module from cache
+/******/ 			delete installedModules[moduleId];
+/******/
+/******/ 			// when disposing there is no need to call dispose handler
+/******/ 			delete outdatedDependencies[moduleId];
+/******/
+/******/ 			// remove "parents" references from all children
+/******/ 			for (j = 0; j < module.children.length; j++) {
+/******/ 				var child = installedModules[module.children[j]];
+/******/ 				if (!child) continue;
+/******/ 				idx = child.parents.indexOf(moduleId);
+/******/ 				if (idx >= 0) {
+/******/ 					child.parents.splice(idx, 1);
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/
+/******/ 		// remove outdated dependency from module children
+/******/ 		var dependency;
+/******/ 		var moduleOutdatedDependencies;
+/******/ 		for (moduleId in outdatedDependencies) {
+/******/ 			if (
+/******/ 				Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
+/******/ 			) {
+/******/ 				module = installedModules[moduleId];
+/******/ 				if (module) {
+/******/ 					moduleOutdatedDependencies = outdatedDependencies[moduleId];
+/******/ 					for (j = 0; j < moduleOutdatedDependencies.length; j++) {
+/******/ 						dependency = moduleOutdatedDependencies[j];
+/******/ 						idx = module.children.indexOf(dependency);
+/******/ 						if (idx >= 0) module.children.splice(idx, 1);
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/
+/******/ 		// Not in "apply" phase
+/******/ 		hotSetStatus("apply");
+/******/
+/******/ 		hotCurrentHash = hotUpdateNewHash;
+/******/
+/******/ 		// insert new code
+/******/ 		for (moduleId in appliedUpdate) {
+/******/ 			if (Object.prototype.hasOwnProperty.call(appliedUpdate, moduleId)) {
+/******/ 				modules[moduleId] = appliedUpdate[moduleId];
+/******/ 			}
+/******/ 		}
+/******/
+/******/ 		// call accept handlers
+/******/ 		var error = null;
+/******/ 		for (moduleId in outdatedDependencies) {
+/******/ 			if (
+/******/ 				Object.prototype.hasOwnProperty.call(outdatedDependencies, moduleId)
+/******/ 			) {
+/******/ 				module = installedModules[moduleId];
+/******/ 				if (module) {
+/******/ 					moduleOutdatedDependencies = outdatedDependencies[moduleId];
+/******/ 					var callbacks = [];
+/******/ 					for (i = 0; i < moduleOutdatedDependencies.length; i++) {
+/******/ 						dependency = moduleOutdatedDependencies[i];
+/******/ 						cb = module.hot._acceptedDependencies[dependency];
+/******/ 						if (cb) {
+/******/ 							if (callbacks.indexOf(cb) !== -1) continue;
+/******/ 							callbacks.push(cb);
+/******/ 						}
+/******/ 					}
+/******/ 					for (i = 0; i < callbacks.length; i++) {
+/******/ 						cb = callbacks[i];
+/******/ 						try {
+/******/ 							cb(moduleOutdatedDependencies);
+/******/ 						} catch (err) {
+/******/ 							if (options.onErrored) {
+/******/ 								options.onErrored({
+/******/ 									type: "accept-errored",
+/******/ 									moduleId: moduleId,
+/******/ 									dependencyId: moduleOutdatedDependencies[i],
+/******/ 									error: err
+/******/ 								});
+/******/ 							}
+/******/ 							if (!options.ignoreErrored) {
+/******/ 								if (!error) error = err;
+/******/ 							}
+/******/ 						}
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/
+/******/ 		// Load self accepted modules
+/******/ 		for (i = 0; i < outdatedSelfAcceptedModules.length; i++) {
+/******/ 			var item = outdatedSelfAcceptedModules[i];
+/******/ 			moduleId = item.module;
+/******/ 			hotCurrentParents = [moduleId];
+/******/ 			try {
+/******/ 				__webpack_require__(moduleId);
+/******/ 			} catch (err) {
+/******/ 				if (typeof item.errorHandler === "function") {
+/******/ 					try {
+/******/ 						item.errorHandler(err);
+/******/ 					} catch (err2) {
+/******/ 						if (options.onErrored) {
+/******/ 							options.onErrored({
+/******/ 								type: "self-accept-error-handler-errored",
+/******/ 								moduleId: moduleId,
+/******/ 								error: err2,
+/******/ 								originalError: err
+/******/ 							});
+/******/ 						}
+/******/ 						if (!options.ignoreErrored) {
+/******/ 							if (!error) error = err2;
+/******/ 						}
+/******/ 						if (!error) error = err;
+/******/ 					}
+/******/ 				} else {
+/******/ 					if (options.onErrored) {
+/******/ 						options.onErrored({
+/******/ 							type: "self-accept-errored",
+/******/ 							moduleId: moduleId,
+/******/ 							error: err
+/******/ 						});
+/******/ 					}
+/******/ 					if (!options.ignoreErrored) {
+/******/ 						if (!error) error = err;
+/******/ 					}
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/
+/******/ 		// handle errors in accept handlers and self accepted module load
+/******/ 		if (error) {
+/******/ 			hotSetStatus("fail");
+/******/ 			return Promise.reject(error);
+/******/ 		}
+/******/
+/******/ 		hotSetStatus("idle");
+/******/ 		return new Promise(function(resolve) {
+/******/ 			resolve(outdatedModules);
+/******/ 		});
+/******/ 	}
+/******/
+>>>>>>> 3b963681ab6ad56b12365d7fc521c2101aa71ef0
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -6812,6 +7504,18 @@ eval("module.exports = function(originalModule) {\n\tif (!originalModule.webpack
 
 /***/ }),
 
+/***/ "./src/shared/classes/Cookie.js":
+/*!**************************************!*\
+  !*** ./src/shared/classes/Cookie.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar CookieClass = function CookieClass() {\n\tvar _this = this;\n\n\t_classCallCheck(this, CookieClass);\n\n\tthis.getCookie = function (name) {\n\t\tif (_this.cookies) return _this.cookies;\n\n\t\tif (!window) return null;\n\n\t\tvar cookies = document.cookie;\n\t\tif (!cookies) return null;\n\n\t\tvar rawCookies = cookies.split('/');\n\t\tvar readyCookies = {};\n\t\trawCookies.map(function (nameValue) {\n\t\t\tvar arrCookie = nameValue.split('=');\n\t\t\treadyCookies[arrCookie[0]] = arrCookie[1];\n\t\t});\n\t\t_this.cookies = readyCookies;\n\t\treturn _this.cookies;\n\t};\n\n\tthis.setCookie = function (_ref) {\n\t\tvar name = _ref.name,\n\t\t    value = _ref.value,\n\t\t    expires = _ref.expires;\n\n\t\tif (!window) {\n\t\t\treturn null;\n\t\t}\n\t\tdocument.cookie = name + '=' + value + '; expires=' + expires;\n\t};\n};\n\nexports.default = CookieClass;\n\n//# sourceURL=webpack:///./src/shared/classes/Cookie.js?");
+
+/***/ }),
+
 /***/ "./src/shared/components/Col.js":
 /*!**************************************!*\
   !*** ./src/shared/components/Col.js ***!
@@ -7196,14 +7900,22 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ "./src/shared/containers/Wallet/PanelRight/Modal/Send/Final.js":
 /*!*********************************************************************!*\
   !*** ./src/shared/containers/Wallet/PanelRight/Modal/Send/Final.js ***!
   \*********************************************************************/
+=======
+/***/ "./src/shared/containers/Wallet/PanelRight/Modal/Receive/css/index.js":
+/*!****************************************************************************!*\
+  !*** ./src/shared/containers/Wallet/PanelRight/Modal/Receive/css/index.js ***!
+  \****************************************************************************/
+>>>>>>> 3b963681ab6ad56b12365d7fc521c2101aa71ef0
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _Components = __webpack_require__(/*! Components */ \"./src/shared/components/index.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar Final = function (_React$Component) {\n\t_inherits(Final, _React$Component);\n\n\tfunction Final() {\n\t\t_classCallCheck(this, Final);\n\n\t\treturn _possibleConstructorReturn(this, (Final.__proto__ || Object.getPrototypeOf(Final)).apply(this, arguments));\n\t}\n\n\t_createClass(Final, [{\n\t\tkey: 'render',\n\t\tvalue: function render() {\n\t\t\treturn _react2.default.createElement(\n\t\t\t\t_Components.Row,\n\t\t\t\t{ defaultAlign: 'center' },\n\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t_Components.Col,\n\t\t\t\t\t{ s: 6, m: 6, l: 6 },\n\t\t\t\t\t_react2.default.createElement(_Components.Img, { center: true, width: '70%', src: '/img/app_wallet/ic_send_final.png' })\n\t\t\t\t)\n\t\t\t);\n\t\t}\n\t}]);\n\n\treturn Final;\n}(_react2.default.Component);\n\nexports.default = Final;\n\n//# sourceURL=webpack:///./src/shared/containers/Wallet/PanelRight/Modal/Send/Final.js?");
 
 /***/ }),
@@ -7212,10 +7924,21 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n
 /*!***********************************************************************!*\
   !*** ./src/shared/containers/Wallet/PanelRight/Modal/Send/Loading.js ***!
   \***********************************************************************/
+=======
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.IconAction = exports.ReceiveButtonCopyCss = exports.ReceiveLabelTexCss = exports.ReceiveLabelCss = exports.ThirdRowCss = exports.FirstRowCss = exports.ReceiveContentCss = exports.ReceiveButtonCss = exports.ReceiveStyleModalCss = undefined;\n\nvar _templateObject = _taggedTemplateLiteral([\"\\n  width: 100%;\\n  height: calc(100% - 75px);\\n  min-width: 320px;\\n  min-height: 414px;\\n  position: relative;\\n  background: \", \";\\n  border-radius: 10px;\\n  padding: 3rem;\\n  @media (min-width: 601px) {\\n    width: 25%;\\n    height: 40%;\\n    margin-top: 75px;\\n  }\\n\"], [\"\\n  width: 100%;\\n  height: calc(100% - 75px);\\n  min-width: 320px;\\n  min-height: 414px;\\n  position: relative;\\n  background: \", \";\\n  border-radius: 10px;\\n  padding: 3rem;\\n  @media (min-width: 601px) {\\n    width: 25%;\\n    height: 40%;\\n    margin-top: 75px;\\n  }\\n\"]),\n    _templateObject2 = _taggedTemplateLiteral([\"\\n  height: 25rem;\\n  width: 25rem;\\n  border-radius: 20px;\\n  display: flex;\\n  justify-content: center;\\n  align-items: center;\\n  cursor: pointer;\\n  user-select: none;\\n\\n  \", \";\\n  \", \";\\n  \", \" \", \";\\n\"], [\"\\n  height: 25rem;\\n  width: 25rem;\\n  border-radius: 20px;\\n  display: flex;\\n  justify-content: center;\\n  align-items: center;\\n  cursor: pointer;\\n  user-select: none;\\n\\n  \", \";\\n  \", \";\\n  \", \" \", \";\\n\"]),\n    _templateObject3 = _taggedTemplateLiteral([\"\\n  overflow: auto;\\n  margin: 12px 0 0 0;\\n  max-height: calc(100% - 75px);\\n  overflow: auto;\\n\"], [\"\\n  overflow: auto;\\n  margin: 12px 0 0 0;\\n  max-height: calc(100% - 75px);\\n  overflow: auto;\\n\"]),\n    _templateObject4 = _taggedTemplateLiteral([\"\\n  margin-top: 3rem;\\n  margin-bottom: 3rem;\\n\"], [\"\\n  margin-top: 3rem;\\n  margin-bottom: 3rem;\\n\"]),\n    _templateObject5 = _taggedTemplateLiteral([\"\\n  padding: 25px 0 25px 0;\\n\"], [\"\\n  padding: 25px 0 25px 0;\\n\"]),\n    _templateObject6 = _taggedTemplateLiteral([\"\\n  position: relative;\\n  top: 10px;\\n  font-weight: bold;\\n  color: #fff;\\n  font-size: 14pt;\\n  position: center;\\n\"], [\"\\n  position: relative;\\n  top: 10px;\\n  font-weight: bold;\\n  color: #fff;\\n  font-size: 14pt;\\n  position: center;\\n\"]),\n    _templateObject7 = _taggedTemplateLiteral([\"\\n  position: relative;\\n  top: 10px;\\n  font-weight: bold;\\n  color: #4cd566;\\n  font-size: 14pt;\\n  position: center;\\n\"], [\"\\n  position: relative;\\n  top: 10px;\\n  font-weight: bold;\\n  color: #4cd566;\\n  font-size: 14pt;\\n  position: center;\\n\"]),\n    _templateObject8 = _taggedTemplateLiteral([\"\\n  width: 60px;\\n  height: 60px;\\n  display: flex;\\n  justify-content: flex-start;\\n  align-items: center;\\n  margin-top: 14%;\\n\"], [\"\\n  width: 60px;\\n  height: 60px;\\n  display: flex;\\n  justify-content: flex-start;\\n  align-items: center;\\n  margin-top: 14%;\\n\"]),\n    _templateObject9 = _taggedTemplateLiteral([\"\\n  width: 60px;\\n  height: 60px;\\n  min-width: 50px;\\n  position: center;\\n\"], [\"\\n  width: 60px;\\n  height: 60px;\\n  min-width: 50px;\\n  position: center;\\n\"]);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nvar _styledComponents2 = _interopRequireDefault(_styledComponents);\n\nvar _styleVariables = __webpack_require__(/*! Shared/style-variables */ \"./src/shared/style-variables.js\");\n\nvar _styleVariables2 = _interopRequireDefault(_styleVariables);\n\nvar _TextBase = __webpack_require__(/*! Components/TextBase.js */ \"./src/shared/components/TextBase.js\");\n\nvar _BackgroundBase = __webpack_require__(/*! Components/bases/BackgroundBase.js */ \"./src/shared/components/bases/BackgroundBase.js\");\n\nvar _BackgroundBase2 = _interopRequireDefault(_BackgroundBase);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }\n\nvar ReceiveStyleModalCss = exports.ReceiveStyleModalCss = _styledComponents2.default.div(_templateObject, _styleVariables2.default.normalLilac);\n\nvar ReceiveButtonCss = exports.ReceiveButtonCss = _styledComponents2.default.div(_templateObject2, _TextBase.TextBase, _BackgroundBase2.default, function (props) {\n  if (props.blockCenter) return \"margin: 0 auto;\";\n}, function (props) {\n  return props.css ? props.css : \"\";\n});\n\nvar ReceiveContentCss = exports.ReceiveContentCss = _styledComponents2.default.div(_templateObject3);\n\nvar FirstRowCss = exports.FirstRowCss = (0, _styledComponents.css)(_templateObject4);\nvar ThirdRowCss = exports.ThirdRowCss = (0, _styledComponents.css)(_templateObject5);\n\nvar ReceiveLabelCss = exports.ReceiveLabelCss = _styledComponents2.default.label(_templateObject6);\n\nvar ReceiveLabelTexCss = exports.ReceiveLabelTexCss = _styledComponents2.default.label(_templateObject7);\n\nvar ReceiveButtonCopyCss = exports.ReceiveButtonCopyCss = _styledComponents2.default.div(_templateObject8);\n\nvar IconAction = exports.IconAction = _styledComponents2.default.img(_templateObject9);\n\n//# sourceURL=webpack:///./src/shared/containers/Wallet/PanelRight/Modal/Receive/css/index.js?");
+
+/***/ }),
+
+/***/ "./src/shared/containers/Wallet/PanelRight/Modal/Receive/index.js":
+/*!************************************************************************!*\
+  !*** ./src/shared/containers/Wallet/PanelRight/Modal/Receive/index.js ***!
+  \************************************************************************/
+>>>>>>> 3b963681ab6ad56b12365d7fc521c2101aa71ef0
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _templateObject = _taggedTemplateLiteral(['\\n\\ttransform: translateY(-100%);\\n\\ttransform-origin: top;\\n\\ttransition: all 0.3s;\\n'], ['\\n\\ttransform: translateY(-100%);\\n\\ttransform-origin: top;\\n\\ttransition: all 0.3s;\\n']);\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _functions = __webpack_require__(/*! Utils/functions */ \"./src/shared/utils/functions.js\");\n\nvar _Components = __webpack_require__(/*! Components */ \"./src/shared/components/index.js\");\n\nvar _lunesLib = __webpack_require__(/*! lunes-lib */ \"./node_modules/lunes-lib/index.js\");\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step(\"next\", value); }, function (err) { step(\"throw\", err); }); } } return step(\"next\"); }); }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nfunction _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }\n//COMPONENTS\n\n\nvar CssWrapper = (0, _styledComponents.css)(_templateObject);\n\nvar Loading = function (_React$Component) {\n\t_inherits(Loading, _React$Component);\n\n\tfunction Loading(props) {\n\t\tvar _this2 = this;\n\n\t\t_classCallCheck(this, Loading);\n\n\t\tvar _this = _possibleConstructorReturn(this, (Loading.__proto__ || Object.getPrototypeOf(Loading)).call(this, props));\n\n\t\t_this.animThisComponentIn = function () {\n\t\t\t_this.wrapper.style.transform = 'translateY(0px)';\n\t\t};\n\n\t\t_this.animThisComponentOut = function () {\n\t\t\t_this.wrapper.style.transform = 'translateY(-100%)';\n\t\t};\n\n\t\t_this.animCoinComponent = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {\n\t\t\tvar targetAmount, currAmount, prevAmount, increaser;\n\t\t\treturn regeneratorRuntime.wrap(function _callee$(_context) {\n\t\t\t\twhile (1) {\n\t\t\t\t\tswitch (_context.prev = _context.next) {\n\t\t\t\t\t\tcase 0:\n\t\t\t\t\t\t\ttargetAmount = parseFloat(_this.props.coinAmount);\n\t\t\t\t\t\t\tcurrAmount = 0;\n\t\t\t\t\t\t\tprevAmount = 0;\n\t\t\t\t\t\t\t//incremetador é de 10% sobre o valor total\n\n\t\t\t\t\t\t\tincreaser = targetAmount * 0.01;\n\n\t\t\t\t\t\tcase 4:\n\t\t\t\t\t\t\tif (false) {}\n\n\t\t\t\t\t\t\tcurrAmount = currAmount + increaser;\n\n\t\t\t\t\t\t\tif (!(prevAmount >= targetAmount)) {\n\t\t\t\t\t\t\t\t_context.next = 10;\n\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t_this.coinAmount.textContent = targetAmount.toFixed(8);\n\t\t\t\t\t\t\t_this.setState({ blocked: false });\n\t\t\t\t\t\t\treturn _context.abrupt('break', 16);\n\n\t\t\t\t\t\tcase 10:\n\t\t\t\t\t\t\t_context.next = 12;\n\t\t\t\t\t\t\treturn (0, _functions.timer)(20);\n\n\t\t\t\t\t\tcase 12:\n\t\t\t\t\t\t\t_this.coinAmount.textContent = parseFloat(currAmount).toFixed(8);\n\t\t\t\t\t\t\tprevAmount = currAmount;\n\t\t\t\t\t\t\t_context.next = 4;\n\t\t\t\t\t\t\tbreak;\n\n\t\t\t\t\t\tcase 16:\n\t\t\t\t\t\tcase 'end':\n\t\t\t\t\t\t\treturn _context.stop();\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}, _callee, _this2);\n\t\t}));\n\t\t_this.send = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {\n\t\t\tvar interval, user, coinAmount, address, network, testnet, userAddress, accessToken, fees, amountBTC, amountSTH, dataHighEstimate, highResult, txData, result;\n\t\t\treturn regeneratorRuntime.wrap(function _callee3$(_context3) {\n\t\t\t\twhile (1) {\n\t\t\t\t\tswitch (_context3.prev = _context3.next) {\n\t\t\t\t\t\tcase 0:\n\t\t\t\t\t\t\tinterval = setInterval(_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {\n\t\t\t\t\t\t\t\treturn regeneratorRuntime.wrap(function _callee2$(_context2) {\n\t\t\t\t\t\t\t\t\twhile (1) {\n\t\t\t\t\t\t\t\t\t\tswitch (_context2.prev = _context2.next) {\n\t\t\t\t\t\t\t\t\t\t\tcase 0:\n\t\t\t\t\t\t\t\t\t\t\t\tif (!_this.state.blocked) {\n\t\t\t\t\t\t\t\t\t\t\t\t\t_context2.next = 2;\n\t\t\t\t\t\t\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t\t\t\t\t\treturn _context2.abrupt('return');\n\n\t\t\t\t\t\t\t\t\t\t\tcase 2:\n\t\t\t\t\t\t\t\t\t\t\t\tclearInterval(interval);\n\t\t\t\t\t\t\t\t\t\t\t\t_context2.next = 5;\n\t\t\t\t\t\t\t\t\t\t\t\treturn (0, _functions.timer)(1000);\n\n\t\t\t\t\t\t\t\t\t\t\tcase 5:\n\t\t\t\t\t\t\t\t\t\t\t\t_this.animThisComponentOut();\n\t\t\t\t\t\t\t\t\t\t\t\t_this.props.nextStep();\n\n\t\t\t\t\t\t\t\t\t\t\tcase 7:\n\t\t\t\t\t\t\t\t\t\t\tcase 'end':\n\t\t\t\t\t\t\t\t\t\t\t\treturn _context2.stop();\n\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}, _callee2, _this2);\n\t\t\t\t\t\t\t})), 500);\n\t\t\t\t\t\t\treturn _context3.abrupt('return');\n\n\t\t\t\t\t\tcase 11:\n\t\t\t\t\t\t\tfees = _context3.sent;\n\n\t\t\t\t\t\t\tconsole.log('%c' + JSON.stringify(fees, null, 2) + ' fees', 'background: lightyellow; color: black;');\n\t\t\t\t\t\t\tamountBTC = coinAmount;\n\t\t\t\t\t\t\tamountSTH = _lunesLib.coins.util.unitConverter.toSatoshi(coinAmount);\n\t\t\t\t\t\t\tdataHighEstimate = {\n\t\t\t\t\t\t\t\tnetwork: network,\n\t\t\t\t\t\t\t\ttestnet: testnet,\n\t\t\t\t\t\t\t\ttoAddress: address,\n\t\t\t\t\t\t\t\tfromAddress: userAddress,\n\t\t\t\t\t\t\t\tamount: amountSTH,\n\t\t\t\t\t\t\t\tfeePerByte: fees.data.high\n\t\t\t\t\t\t\t};\n\t\t\t\t\t\t\t_context3.next = 18;\n\t\t\t\t\t\t\treturn _lunesLib.coins.services.estimateFee(dataHighEstimate, accessToken);\n\n\t\t\t\t\t\tcase 18:\n\t\t\t\t\t\t\thighResult = _context3.sent;\n\n\t\t\t\t\t\t\tconsole.log('%c' + JSON.stringify(highResult), 'background: lightblue; color: black;');\n\t\t\t\t\t\t\ttxData = {\n\t\t\t\t\t\t\t\tnetwork: network,\n\t\t\t\t\t\t\t\ttestnet: testnet,\n\t\t\t\t\t\t\t\ttoAddress: address,\n\t\t\t\t\t\t\t\tamount: amountSTH.toString(),\n\t\t\t\t\t\t\t\tfeePerByte: dataHighEstimate.feePerByte.toString()\n\t\t\t\t\t\t\t};\n\t\t\t\t\t\t\t_context3.next = 23;\n\t\t\t\t\t\t\treturn _lunesLib.coins.services.transaction(txData, accessToken);\n\n\t\t\t\t\t\tcase 23:\n\t\t\t\t\t\t\tresult = _context3.sent;\n\n\t\t\t\t\t\t\tconsole.log('%c' + JSON.stringify(result), 'font-size: 20px; color: lightgreen; background: indianred;');\n\t\t\t\t\t\t\t// this.props.nextStep(this.props);\n\n\t\t\t\t\t\tcase 25:\n\t\t\t\t\t\tcase 'end':\n\t\t\t\t\t\t\treturn _context3.stop();\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}, _callee3, _this2);\n\t\t}));\n\n\n\t\t_this.state = {\n\t\t\tcoinAmount: 0,\n\t\t\tblocked: true\n\t\t};\n\n\t\t_this.ref = {};\n\t\t_this.ref.wrapper = _react2.default.createRef();\n\t\t_this.ref.coinAmount = _react2.default.createRef();\n\t\treturn _this;\n\t}\n\n\t_createClass(Loading, [{\n\t\tkey: 'componentDidMount',\n\t\tvalue: function componentDidMount() {\n\t\t\tvar _this3 = this;\n\n\t\t\tthis.wrapper = (0, _reactDom.findDOMNode)(this.ref.wrapper.current);\n\t\t\tthis.coinAmount = (0, _reactDom.findDOMNode)(this.ref.coinAmount.current);\n\n\t\t\tsetTimeout(function () {\n\t\t\t\t_this3.animThisComponentIn();\n\t\t\t\tsetTimeout(function () {\n\t\t\t\t\t_this3.animCoinComponent();\n\t\t\t\t}, 300);\n\t\t\t}, 100);\n\t\t\tconsole.log(this.props, \"LOADING PROPS\");\n\t\t\tthis.send();\n\t\t}\n\t}, {\n\t\tkey: 'render',\n\t\tvalue: function render() {\n\t\t\treturn _react2.default.createElement(\n\t\t\t\t_Components.Row,\n\t\t\t\t{ css: CssWrapper, ref: this.ref.wrapper, defaultAlign: 'center' },\n\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t_Components.Col,\n\t\t\t\t\t{ s: 12, m: 6, l: 6 },\n\t\t\t\t\t_react2.default.createElement(_Components.Img, { center: true, width: '10rem', src: '/img/app_wallet/ic_enviado_.svg' }),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_Components.Text,\n\t\t\t\t\t\t{ margin: '1rem 0 1rem 0', txCenter: true, clWhite: true, size: '3rem' },\n\t\t\t\t\t\t'Enviando'\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(_Components.Text, { ref: this.ref.coinAmount, margin: '0 0 1rem 0', txCenter: true, clNormalGreen: true, size: '2.5rem' }),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_Components.Text,\n\t\t\t\t\t\t{ txCenter: true, clWhite: true, size: '2.5rem' },\n\t\t\t\t\t\t'Endere\\xE7o'\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_Components.Text,\n\t\t\t\t\t\t{ txCenter: true, clWhite: true, size: '2rem' },\n\t\t\t\t\t\tthis.props.address\n\t\t\t\t\t)\n\t\t\t\t)\n\t\t\t);\n\t\t}\n\t}]);\n\n\treturn Loading;\n}(_react2.default.Component);\n\nexports.default = Loading;\n\n//# sourceURL=webpack:///./src/shared/containers/Wallet/PanelRight/Modal/Send/Loading.js?");
 
 /***/ }),
@@ -7229,6 +7952,9 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n
 
 "use strict";
 eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n\nvar _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _templateObject = _taggedTemplateLiteral(['\\n\\ttransform-origin: top;\\n\\ttransform: translateY(-100%);\\n\\ttransition: all 0.3s;\\n'], ['\\n\\ttransform-origin: top;\\n\\ttransform: translateY(-100%);\\n\\ttransition: all 0.3s;\\n']),\n    _templateObject2 = _taggedTemplateLiteral(['margin: 4rem 0 0 0;'], ['margin: 4rem 0 0 0;']);\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _reactDom2 = _interopRequireDefault(_reactDom);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nvar _styledComponents2 = _interopRequireDefault(_styledComponents);\n\nvar _styleVariables = __webpack_require__(/*! Shared/style-variables */ \"./src/shared/style-variables.js\");\n\nvar _styleVariables2 = _interopRequireDefault(_styleVariables);\n\nvar _reactRedux = __webpack_require__(/*! react-redux */ \"./node_modules/react-redux/es/index.js\");\n\nvar _qrcodeGenerator = __webpack_require__(/*! qrcode-generator */ \"./node_modules/qrcode-generator/qrcode.js\");\n\nvar _qrcodeGenerator2 = _interopRequireDefault(_qrcodeGenerator);\n\nvar _inputRadio = __webpack_require__(/*! Components/forms/input-radio */ \"./src/shared/components/forms/input-radio/index.js\");\n\nvar _inputText = __webpack_require__(/*! Components/forms/input-text */ \"./src/shared/components/forms/input-text/index.js\");\n\nvar _index = __webpack_require__(/*! Components/index */ \"./src/shared/components/index.js\");\n\nvar _Hr = __webpack_require__(/*! ../Hr */ \"./src/shared/containers/Wallet/PanelRight/Modal/Hr.js\");\n\nvar _Hr2 = _interopRequireDefault(_Hr);\n\nvar _css = __webpack_require__(/*! ./css */ \"./src/shared/containers/Wallet/PanelRight/Modal/Send/css/index.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nfunction _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }\n// import Instascan   from 'instascan';\n\n\n//PRIVATE COMPONENTS\n\n//CUSTOM CSS\n\n\nvar CssWrapper = (0, _styledComponents.css)(_templateObject);\n\nvar Send = function (_React$Component) {\n\t_inherits(Send, _React$Component);\n\n\tfunction Send(props) {\n\t\t_classCallCheck(this, Send);\n\n\t\tvar _this = _possibleConstructorReturn(this, (Send.__proto__ || Object.getPrototypeOf(Send)).call(this, props));\n\n\t\t_initialiseProps.call(_this);\n\n\t\t_this.ref = {};\n\t\t_this.ref.wrapperQr = _react2.default.createRef();\n\t\t_this.ref.radioCoinAmount = _react2.default.createRef();\n\t\t_this.ref.coinAmount = _react2.default.createRef();\n\t\t_this.ref.address = _react2.default.createRef();\n\t\t_this.ref.brlAmount = _react2.default.createRef();\n\t\t_this.ref.usdAmount = _react2.default.createRef();\n\t\t_this.ref.coinAmount = _react2.default.createRef();\n\t\t_this.ref.sendButton = _react2.default.createRef();\n\t\t_this.ref.wrapper = _react2.default.createRef();\n\t\t//quantity types: real, dollar, coin\n\t\t_this.state = {\n\t\t\tstateButtonSend: 'Enviar'\n\t\t};\n\t\treturn _this;\n\t}\n\n\t_createClass(Send, [{\n\t\tkey: 'componentDidMount',\n\t\tvalue: function componentDidMount() {\n\t\t\tvar _this2 = this;\n\n\t\t\tthis.wrapperQr = _reactDom2.default.findDOMNode(this.ref.wrapperQr.current);\n\t\t\tthis.radioCoinAmount = _reactDom2.default.findDOMNode(this.ref.radioCoinAmount.current);\n\t\t\tthis.coinAmount = _reactDom2.default.findDOMNode(this.ref.coinAmount.current);\n\t\t\tthis.address = _reactDom2.default.findDOMNode(this.ref.address.current);\n\t\t\tthis.brlAmount = _reactDom2.default.findDOMNode(this.ref.brlAmount.current);\n\t\t\tthis.usdAmount = _reactDom2.default.findDOMNode(this.ref.usdAmount.current);\n\t\t\tthis.coinAmount = _reactDom2.default.findDOMNode(this.ref.coinAmount.current);\n\t\t\tthis.sendButton = _reactDom2.default.findDOMNode(this.ref.sendButton.current);\n\t\t\tthis.wrapper = _reactDom2.default.findDOMNode(this.ref.wrapper.current);\n\n\t\t\tthis.makeQrCode();\n\t\t\tthis.arrangeAmountType();\n\t\t\tsetTimeout(function () {\n\t\t\t\t_this2.animThisComponentIn();\n\t\t\t}, 500);\n\n\t\t\t//__________________________________-\n\t\t\t// let scanner = new Instascan.Scanner(document.querySelector('.scan'));\n\t\t\t// scanner.addListener('scan', (content) => {\n\t\t\t// \tconsole.log(content);\n\t\t\t// });\n\t\t\t// Instascan.Camera.getCameras().then((cameras) => {\n\t\t\t// \tconsole.log(cameras, \"CAMERAS\");\n\t\t\t// \tif (cameras.length > 0)\n\t\t\t// \t\tscanner.start(cameras[0]);\n\t\t\t// \telse\n\t\t\t// \t\tconsole.log(`%c Cameras arent found`, 'background: red; color: white;');\n\t\t\t// }).catch((err) => {\n\t\t\t// \tconsole.log(`%c ${err}`, 'background: red; color: white;');\n\t\t\t// });\n\t\t}\n\t\t// toggleStateButtonSend = (text, disabled) => {\n\t\t// \tif (disabled)\n\t\t// \t\tthis.sendButton.style.pointerEvents = 'none';\n\t\t// \telse\n\t\t// \t\tthis.sendButton.style.pointerEvents = '';\n\t\t// \tthis.setState({stateButtonSend: text});\n\t\t// }\n\n\t}, {\n\t\tkey: 'render',\n\t\tvalue: function render() {\n\t\t\treturn _react2.default.createElement(\n\t\t\t\t_index.Row,\n\t\t\t\t{ css: CssWrapper, ref: this.ref.wrapper },\n\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t_index.Col,\n\t\t\t\t\t{ s: 9, m: 9, l: 9 },\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t{ css: _css.FirstRowCss },\n\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t{ offset: 's3', s: 6, m: 6, l: 6 },\n\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t'div',\n\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\tname: 'amount-type',\n\t\t\t\t\t\t\t\t\t\tonChange: this.arrangeAmountType,\n\t\t\t\t\t\t\t\t\t\tvalue: 'coin',\n\t\t\t\t\t\t\t\t\t\tunique: 'true'\n\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t'Quantidade em BTC'\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t),\n\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t{ s: 12, m: 6, l: 6 },\n\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t{ defaultAlign: 'right' },\n\t\t\t\t\t\t\t\t_react2.default.createElement(_inputText.InputText, {\n\t\t\t\t\t\t\t\t\thuge: true,\n\t\t\t\t\t\t\t\t\tphRight: true,\n\t\t\t\t\t\t\t\t\tphWeightLight: true,\n\t\t\t\t\t\t\t\t\twhiteTheme: true,\n\t\t\t\t\t\t\t\t\ttxRight: true,\n\t\t\t\t\t\t\t\t\tnoBorder: true,\n\t\t\t\t\t\t\t\t\tref: this.ref.coinAmount,\n\t\t\t\t\t\t\t\t\tonKeyUp: this.handleOnAmountChange,\n\t\t\t\t\t\t\t\t\t'data-amount-type': 'coin',\n\t\t\t\t\t\t\t\t\tclassName: 'input-amount coin',\n\t\t\t\t\t\t\t\t\tplaceholder: '0.00000000' })\n\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\ttype: 'radio',\n\t\t\t\t\t\t\t\t\t\tvalue: 25,\n\t\t\t\t\t\t\t\t\t\tname: 'percent',\n\t\t\t\t\t\t\t\t\t\tunique: 'true',\n\t\t\t\t\t\t\t\t\t\tonClick: this.handleOnPercentChange\n\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t'25%'\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\ttype: 'radio',\n\t\t\t\t\t\t\t\t\t\tvalue: 50,\n\t\t\t\t\t\t\t\t\t\tname: 'percent',\n\t\t\t\t\t\t\t\t\t\tunique: 'true',\n\t\t\t\t\t\t\t\t\t\tonClick: this.handleOnPercentChange\n\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t'50%'\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\ttype: 'radio',\n\t\t\t\t\t\t\t\t\t\tvalue: 75,\n\t\t\t\t\t\t\t\t\t\tname: 'percent',\n\t\t\t\t\t\t\t\t\t\tunique: 'true',\n\t\t\t\t\t\t\t\t\t\tonClick: this.handleOnPercentChange\n\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t'75%'\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\ttype: 'radio',\n\t\t\t\t\t\t\t\t\t\tvalue: 100,\n\t\t\t\t\t\t\t\t\t\tname: 'percent',\n\t\t\t\t\t\t\t\t\t\tunique: 'true',\n\t\t\t\t\t\t\t\t\t\tonClick: this.handleOnPercentChange\n\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t'100%'\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(_Hr2.default, null),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t{ style: { padding: '3rem 0 3rem 0' } },\n\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t{ s: 6, m: 6, l: 6 },\n\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\tname: 'amount-type',\n\t\t\t\t\t\t\t\t\tonChange: this.arrangeAmountType,\n\t\t\t\t\t\t\t\t\tvalue: 'brl',\n\t\t\t\t\t\t\t\t\tunique: 'true'\n\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t'Quantidade em real'\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t{ css: (0, _styledComponents.css)(_templateObject2) },\n\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\tname: 'amount-type',\n\t\t\t\t\t\t\t\t\tonChange: this.arrangeAmountType,\n\t\t\t\t\t\t\t\t\tvalue: 'usd',\n\t\t\t\t\t\t\t\t\tunique: 'true'\n\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t'Quantidade em d\\xF3lar'\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t),\n\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t{ s: 6, m: 6, l: 6 },\n\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t{ defaultAlign: 'right' },\n\t\t\t\t\t\t\t\t_react2.default.createElement(_inputText.InputText, {\n\t\t\t\t\t\t\t\t\thuge: true,\n\t\t\t\t\t\t\t\t\tphRight: true,\n\t\t\t\t\t\t\t\t\tphWeightLight: true,\n\t\t\t\t\t\t\t\t\twhiteTheme: true,\n\t\t\t\t\t\t\t\t\ttxRight: true,\n\t\t\t\t\t\t\t\t\tnoBorder: true,\n\t\t\t\t\t\t\t\t\ttype: 'text',\n\t\t\t\t\t\t\t\t\tref: this.ref.brlAmount,\n\t\t\t\t\t\t\t\t\tonKeyUp: this.handleOnAmountChange,\n\t\t\t\t\t\t\t\t\tclassName: 'input-amount brl',\n\t\t\t\t\t\t\t\t\t'data-amount-type': 'brl',\n\t\t\t\t\t\t\t\t\tplaceholder: 'BRL 0.00' })\n\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t{ defaultAlign: 'right' },\n\t\t\t\t\t\t\t\t_react2.default.createElement(_inputText.InputText, {\n\t\t\t\t\t\t\t\t\thuge: true,\n\t\t\t\t\t\t\t\t\tphRight: true,\n\t\t\t\t\t\t\t\t\tphWeightLight: true,\n\t\t\t\t\t\t\t\t\twhiteTheme: true,\n\t\t\t\t\t\t\t\t\ttxRight: true,\n\t\t\t\t\t\t\t\t\tnoBorder: true,\n\t\t\t\t\t\t\t\t\ttype: 'text',\n\t\t\t\t\t\t\t\t\tref: this.ref.usdAmount,\n\t\t\t\t\t\t\t\t\tonChange: this.handleOnAmountChange,\n\t\t\t\t\t\t\t\t\tclassName: 'input-amount usd',\n\t\t\t\t\t\t\t\t\t'data-amount-type': 'usd',\n\t\t\t\t\t\t\t\t\tplaceholder: 'USD 0.00' })\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(_Hr2.default, null),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t{ css: _css.ThirdRowCss },\n\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t{ s: 12, m: 12, l: 12 },\n\t\t\t\t\t\t\t_react2.default.createElement(_inputText.InputText, {\n\t\t\t\t\t\t\t\tnormal: true,\n\t\t\t\t\t\t\t\twhiteTheme: true,\n\t\t\t\t\t\t\t\ttype: 'text',\n\t\t\t\t\t\t\t\tref: this.ref.address,\n\t\t\t\t\t\t\t\tplaceholder: 'Endereço' })\n\t\t\t\t\t\t)\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(_Hr2.default, null),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\tnull,\n\t\t\t\t\t\t_react2.default.createElement(_index.Col, null)\n\t\t\t\t\t)\n\t\t\t\t),\n\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t_index.Col,\n\t\t\t\t\t{\n\t\t\t\t\t\tdefaultAlign: 'center',\n\t\t\t\t\t\ts: 3, m: 3, l: 3 },\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\tnull,\n\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t_index.Button,\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\tcss: _css.SendButtonCss,\n\t\t\t\t\t\t\t\tblockCenter: true,\n\t\t\t\t\t\t\t\tclWhite: true,\n\t\t\t\t\t\t\t\tbgNormalYellow: true,\n\t\t\t\t\t\t\t\tonClick: this.handleSend,\n\t\t\t\t\t\t\t\tinnerRef: this.ref.sendButton },\n\t\t\t\t\t\t\t'Enviar'\n\t\t\t\t\t\t)\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\tnull,\n\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t_index.Button,\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\tinnerRef: this.ref.wrapperQr,\n\t\t\t\t\t\t\t\tblockCenter: true,\n\t\t\t\t\t\t\t\tclWhite: true,\n\t\t\t\t\t\t\t\tbgWhite: true },\n\t\t\t\t\t\t\t'QR Code'\n\t\t\t\t\t\t)\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement('div', { className: 'scan', style: { width: '100px', height: '100px' } })\n\t\t\t\t)\n\t\t\t);\n\t\t}\n\t}]);\n\n\treturn Send;\n}(_react2.default.Component);\n\nvar _initialiseProps = function _initialiseProps() {\n\tvar _this3 = this;\n\n\tthis.toggleModal = function (event) {};\n\n\tthis.makeQrCode = function () {\n\t\tvar qr = (0, _qrcodeGenerator2.default)(4, 'L');\n\t\tqr.addData('Marcelo Rafael');\n\t\tqr.make();\n\t\tvar img = qr.createSvgTag();\n\t\t_this3.wrapperQr.innerHTML = img;\n\t\tvar imgEl = _this3.wrapperQr.children[0];\n\t\timgEl.style.width = '90%';\n\t\timgEl.style.height = 'auto';\n\t};\n\n\tthis.arrangeAmountType = function () {\n\t\tvar radios = document.getElementsByName('amount-type');\n\t\tArray.from(radios).map(function (radio) {\n\t\t\tif (radio.checked) {\n\t\t\t\tvar inputCOIN = document.querySelector('.input-amount.coin');\n\t\t\t\tvar inputBRL = document.querySelector('.input-amount.brl');\n\t\t\t\tvar inputUSD = document.querySelector('.input-amount.usd');\n\t\t\t\tif (radio.value === 'coin') {\n\t\t\t\t\tinputCOIN.removeAttribute('disabled');\n\t\t\t\t\tinputBRL.setAttribute('disabled', true);\n\t\t\t\t\tinputUSD.setAttribute('disabled', true);\n\t\t\t\t} else if (radio.value === 'brl') {\n\t\t\t\t\tinputBRL.removeAttribute('disabled');\n\t\t\t\t\tinputUSD.setAttribute('disabled', true);\n\t\t\t\t\tinputCOIN.setAttribute('disabled', true);\n\t\t\t\t} else if (radio.value === 'usd') {\n\t\t\t\t\tinputUSD.removeAttribute('disabled');\n\t\t\t\t\tinputBRL.setAttribute('disabled', true);\n\t\t\t\t\tinputCOIN.setAttribute('disabled', true);\n\t\t\t\t}\n\t\t\t}\n\t\t});\n\t\tconsole.log('----------------------------');\n\t};\n\n\tthis.handleOnPercentChange = function (event) {\n\t\tvar element = event.currentTarget;\n\t\tvar name = element.getAttribute('name');\n\t\tvar value = element.value;\n\t\tvar amount = parseFloat(_this3.props.balance.total_confirmed);\n\t\tvar result = amount * (parseInt(value) / 100);\n\t\t_this3.coinAmount.value = result;\n\t\t_this3.handleOnAmountChange();\n\t};\n\n\tthis.handleOnAmountChange = function (event) {\n\t\tvar element = void 0;\n\t\tif (!event) {\n\t\t\telement = _this3.coinAmount;\n\t\t} else {\n\t\t\telement = event.currentTarget;\n\t\t}\n\t\tvar type = element.getAttribute('data-amount-type');\n\t\tvar value = element.value;\n\t\tvar coinPrice = _this3.props.coinPrice;\n\n\t\tvar usdResult = void 0;\n\t\tvar coinResult = void 0;\n\t\tvar brlResult = void 0;\n\t\tvar BRLToCOIN = function BRLToCOIN(_ref) {\n\t\t\tvar amount = _ref.amount,\n\t\t\t    price = _ref.price;\n\n\t\t\treturn amount / price;\n\t\t};\n\t\tvar BRLToUSD = function BRLToUSD(_ref2) {\n\t\t\tvar amount = _ref2.amount,\n\t\t\t    price = _ref2.price;\n\n\t\t\treturn amount / price;\n\t\t};\n\t\tvar COINToUSD = function COINToUSD(_ref3) {\n\t\t\tvar amount = _ref3.amount,\n\t\t\t    price = _ref3.price;\n\n\t\t\treturn amount * price;\n\t\t};\n\t\tvar COINToBRL = function COINToBRL(_ref4) {\n\t\t\tvar amount = _ref4.amount,\n\t\t\t    price = _ref4.price;\n\n\t\t\treturn amount * price;\n\t\t};\n\t\tvar USDToBRL = function USDToBRL(_ref5) {\n\t\t\tvar amount = _ref5.amount,\n\t\t\t    price = _ref5.price;\n\n\t\t\treturn amount * price;\n\t\t};\n\t\tvar USDToCOIN = function USDToCOIN(_ref6) {\n\t\t\tvar amount = _ref6.amount,\n\t\t\t    price = _ref6.price;\n\n\t\t\treturn amount / price;\n\t\t};\n\t\tif (type === 'brl') {\n\t\t\tusdResult = BRLToUSD({ amount: parseFloat(value), price: 3.3 });\n\t\t\tcoinResult = BRLToCOIN({ amount: parseFloat(value), price: coinPrice.brl });\n\n\t\t\tif (!usdResult) {\n\t\t\t\tusdResult = 0;\n\t\t\t}\n\t\t\tif (!coinResult) {\n\t\t\t\tcoinResult = 0;\n\t\t\t}\n\n\t\t\t_this3.usdAmount.value = usdResult.toFixed(2);\n\t\t\t_this3.coinAmount.value = coinResult.toFixed(8);\n\t\t} else if (type === 'coin') {\n\t\t\tusdResult = COINToUSD({ amount: parseFloat(value), price: coinPrice.usd });\n\t\t\tbrlResult = COINToBRL({ amount: parseFloat(value), price: coinPrice.brl });\n\n\t\t\tif (!usdResult) {\n\t\t\t\tusdResult = 0;\n\t\t\t}\n\t\t\tif (!brlResult) {\n\t\t\t\tbrlResult = 0;\n\t\t\t}\n\n\t\t\t_this3.brlAmount.value = brlResult.toFixed(2);\n\t\t\t_this3.usdAmount.value = usdResult.toFixed(2);\n\t\t} else if (type === 'usd') {\n\t\t\tbrlResult = USDToBRL({ amount: parseFloat(value), price: 3.3 });\n\t\t\tcoinResult = USDToCOIN({ amount: parseFloat(value), price: coinPrice.usd });\n\n\t\t\tif (!brlResult) {\n\t\t\t\tbrlResult = 0;\n\t\t\t}\n\t\t\tif (!coinResult) {\n\t\t\t\tcoinResult = 0;\n\t\t\t}\n\n\t\t\t_this3.brlAmount.value = brlResult.toFixed(2);\n\t\t\t_this3.coinAmount.value = coinResult.toFixed(8);\n\t\t}\n\t};\n\n\tthis.animThisComponentIn = function () {\n\t\t_this3.wrapper.style.transform = 'translateY(0px)';\n\t};\n\n\tthis.animThisComponentOut = function () {\n\t\t_this3.wrapper.style.transform = 'translateY(-100%)';\n\t};\n\n\tthis.handleSend = function () {\n\t\t// this.toggleStateButtonSend('Carregando...', true);\n\t\tvar coinAmount = _this3.coinAmount.value;\n\t\tvar address = _this3.address.value;\n\t\tif (!coinAmount || !address) return;\n\n\t\tvar props = _extends({}, _this3.props, {\n\t\t\tcoinAmount: coinAmount,\n\t\t\taddress: address\n\t\t\t// console.log(props, \"handleSend PROPS VARIABLE\");\n\t\t});setTimeout(function () {\n\t\t\t_this3.props.nextStep(props);\n\t\t}, 500);\n\t\t_this3.animThisComponentOut();\n\t};\n};\n\nexports.default = Send;\n/*\nconst mapStateToProps = (state) => {\n\treturn {\n\t\twallet: state.wallet\n\t}\n}\nconst mapDispatchToProps = (dispatch) => {\n\treturn {\n\n\t}\n}\nexport default connect(mapStateToProps, mapDispatchToProps)(ModalSend);\n*/\n\n//# sourceURL=webpack:///./src/shared/containers/Wallet/PanelRight/Modal/Send/Send.js?");
+=======
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _reactDom2 = _interopRequireDefault(_reactDom);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nvar _styledComponents2 = _interopRequireDefault(_styledComponents);\n\nvar _styleVariables = __webpack_require__(/*! Shared/style-variables */ \"./src/shared/style-variables.js\");\n\nvar _styleVariables2 = _interopRequireDefault(_styleVariables);\n\nvar _reactRedux = __webpack_require__(/*! react-redux */ \"./node_modules/react-redux/es/index.js\");\n\nvar _qrcodeGenerator = __webpack_require__(/*! qrcode-generator */ \"./node_modules/qrcode-generator/qrcode.js\");\n\nvar _qrcodeGenerator2 = _interopRequireDefault(_qrcodeGenerator);\n\nvar _index = __webpack_require__(/*! Components/index */ \"./src/shared/components/index.js\");\n\nvar _Background = __webpack_require__(/*! ../Background */ \"./src/shared/containers/Wallet/PanelRight/Modal/Background.js\");\n\nvar _Background2 = _interopRequireDefault(_Background);\n\nvar _Close = __webpack_require__(/*! ../Close */ \"./src/shared/containers/Wallet/PanelRight/Modal/Close.js\");\n\nvar _Close2 = _interopRequireDefault(_Close);\n\nvar _Content = __webpack_require__(/*! ../Content */ \"./src/shared/containers/Wallet/PanelRight/Modal/Content.js\");\n\nvar _Content2 = _interopRequireDefault(_Content);\n\nvar _Foot = __webpack_require__(/*! ../Foot */ \"./src/shared/containers/Wallet/PanelRight/Modal/Foot.js\");\n\nvar _Foot2 = _interopRequireDefault(_Foot);\n\nvar _Head = __webpack_require__(/*! ../Head */ \"./src/shared/containers/Wallet/PanelRight/Modal/Head.js\");\n\nvar _Head2 = _interopRequireDefault(_Head);\n\nvar _Hr = __webpack_require__(/*! ../Hr */ \"./src/shared/containers/Wallet/PanelRight/Modal/Hr.js\");\n\nvar _Hr2 = _interopRequireDefault(_Hr);\n\nvar _StyledModal = __webpack_require__(/*! ../StyledModal */ \"./src/shared/containers/Wallet/PanelRight/Modal/StyledModal.js\");\n\nvar _StyledModal2 = _interopRequireDefault(_StyledModal);\n\nvar _css = __webpack_require__(/*! ./css */ \"./src/shared/containers/Wallet/PanelRight/Modal/Receive/css/index.js\");\n\nvar _Cookie = __webpack_require__(/*! ../../../../../classes/Cookie */ \"./src/shared/classes/Cookie.js\");\n\nvar _Cookie2 = _interopRequireDefault(_Cookie);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n//PRIVATE COMPONENTS\n\n\nvar ModalReceive = function (_React$Component) {\n  _inherits(ModalReceive, _React$Component);\n\n  function ModalReceive(props) {\n    _classCallCheck(this, ModalReceive);\n\n    var _this = _possibleConstructorReturn(this, (ModalReceive.__proto__ || Object.getPrototypeOf(ModalReceive)).call(this, props));\n\n    _this.getPayAddress = function () {\n      var data = new _Cookie2.default().getCookie(\"user\").user.replace(\"; _ga\", \"\");\n      var address = JSON.parse(data);\n      return address.wallet.coins[0].addresses[0].address;\n    };\n\n    _this.makeQrCode = function () {\n      var address = _this.getPayAddress();\n      var qr = (0, _qrcodeGenerator2.default)(4, \"L\");\n      qr.addData(address);\n      qr.make();\n      var img = qr.createSvgTag();\n      _this.wrapperQr.innerHTML = img;\n      var imgEl = _this.wrapperQr.children[0];\n      imgEl.style.width = \"90%\";\n      imgEl.style.height = \"auto\";\n    };\n\n    _this.copyPaymentAddress = function () {\n      var element = document.createElement(\"textarea\");\n      element.value = _this.getPayAddress();\n      document.body.appendChild(element);\n      element.select();\n      document.execCommand(\"copy\");\n      alert(\"Copiado com sucesso!\");\n    };\n\n    _this.toggleModalReceived = function (isShow) {\n      _this.setState({ isOpenModalReceived: !isShow });\n    };\n\n    _this.ref = {};\n    _this.ref.wrapperQr = _react2.default.createRef();\n    _this.ref.address = _react2.default.createRef();\n    _this.state = { isOpenModalReceived: _this.props.isShow };\n    return _this;\n  }\n\n  _createClass(ModalReceive, [{\n    key: \"componentDidMount\",\n    value: function componentDidMount() {\n      this.wrapperQr = _reactDom2.default.findDOMNode(this.ref.wrapperQr.current);\n\n      this.makeQrCode();\n    }\n  }, {\n    key: \"render\",\n    value: function render() {\n      var _this2 = this;\n\n      if (!this.state.isOpenModalReceived) return null;\n\n      return _react2.default.createElement(\n        _Background2.default,\n        null,\n        _react2.default.createElement(\n          _css.ReceiveStyleModalCss,\n          null,\n          _react2.default.createElement(\n            _Close2.default,\n            { onClick: function onClick() {\n                return _this2.toggleModalReceived(_this2.props.isShow);\n              } },\n            \"X\"\n          ),\n          _react2.default.createElement(\n            _css.ReceiveContentCss,\n            null,\n            _react2.default.createElement(\n              _index.Col,\n              { defaultAlign: \"center\", s: 12, m: 12, l: 12 },\n              _react2.default.createElement(\n                _index.Row,\n                null,\n                _react2.default.createElement(\n                  _css.ReceiveButtonCss,\n                  { innerRef: this.ref.wrapperQr, blockCenter: true, clWhite: true, bgWhite: true },\n                  \"QR Code\"\n                )\n              )\n            )\n          ),\n          _react2.default.createElement(\n            _Foot2.default,\n            null,\n            _react2.default.createElement(\n              _index.Row,\n              null,\n              _react2.default.createElement(\n                _css.ReceiveLabelCss,\n                null,\n                \" \",\n                this.getPayAddress()\n              )\n            ),\n            _react2.default.createElement(\n              _index.Row,\n              null,\n              _react2.default.createElement(\n                _css.ReceiveLabelTexCss,\n                null,\n                \"COPY THIS ADDRESS\"\n              )\n            ),\n            _react2.default.createElement(\n              _index.Row,\n              null,\n              _react2.default.createElement(\n                _css.ReceiveButtonCopyCss,\n                { onClick: function onClick() {\n                    return _this2.copyPaymentAddress();\n                  } },\n                _react2.default.createElement(_css.IconAction, { src: \"/img/bitcoin.svg\" })\n              )\n            )\n          )\n        )\n      );\n    }\n  }]);\n\n  return ModalReceive;\n}(_react2.default.Component);\n\nexports.default = ModalReceive;\n\n//# sourceURL=webpack:///./src/shared/containers/Wallet/PanelRight/Modal/Receive/index.js?");
+>>>>>>> 3b963681ab6ad56b12365d7fc521c2101aa71ef0
 
 /***/ }),
 
@@ -7252,7 +7978,11 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+<<<<<<< HEAD
 eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n\nvar _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _Send = __webpack_require__(/*! ./Send */ \"./src/shared/containers/Wallet/PanelRight/Modal/Send/Send.js\");\n\nvar _Send2 = _interopRequireDefault(_Send);\n\nvar _Loading = __webpack_require__(/*! ./Loading */ \"./src/shared/containers/Wallet/PanelRight/Modal/Send/Loading.js\");\n\nvar _Loading2 = _interopRequireDefault(_Loading);\n\nvar _Final = __webpack_require__(/*! ./Final */ \"./src/shared/containers/Wallet/PanelRight/Modal/Send/Final.js\");\n\nvar _Final2 = _interopRequireDefault(_Final);\n\nvar _Background = __webpack_require__(/*! ../Background */ \"./src/shared/containers/Wallet/PanelRight/Modal/Background.js\");\n\nvar _Background2 = _interopRequireDefault(_Background);\n\nvar _Close = __webpack_require__(/*! ../Close */ \"./src/shared/containers/Wallet/PanelRight/Modal/Close.js\");\n\nvar _Close2 = _interopRequireDefault(_Close);\n\nvar _Content = __webpack_require__(/*! ../Content */ \"./src/shared/containers/Wallet/PanelRight/Modal/Content.js\");\n\nvar _Content2 = _interopRequireDefault(_Content);\n\nvar _Foot = __webpack_require__(/*! ../Foot */ \"./src/shared/containers/Wallet/PanelRight/Modal/Foot.js\");\n\nvar _Foot2 = _interopRequireDefault(_Foot);\n\nvar _Head = __webpack_require__(/*! ../Head */ \"./src/shared/containers/Wallet/PanelRight/Modal/Head.js\");\n\nvar _Head2 = _interopRequireDefault(_Head);\n\nvar _IconCoin = __webpack_require__(/*! ../IconCoin */ \"./src/shared/containers/Wallet/PanelRight/Modal/IconCoin.js\");\n\nvar _IconCoin2 = _interopRequireDefault(_IconCoin);\n\nvar _StyledModal = __webpack_require__(/*! ../StyledModal */ \"./src/shared/containers/Wallet/PanelRight/Modal/StyledModal.js\");\n\nvar _StyledModal2 = _interopRequireDefault(_StyledModal);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n//COMPONENTS\n\n//PRIVATE COMPONENTS\n\n\nvar Modal = function (_React$Component) {\n\t_inherits(Modal, _React$Component);\n\n\tfunction Modal(props) {\n\t\t_classCallCheck(this, Modal);\n\n\t\tvar _this = _possibleConstructorReturn(this, (Modal.__proto__ || Object.getPrototypeOf(Modal)).call(this, props));\n\n\t\t_initialiseProps.call(_this);\n\n\t\t_this.state = {\n\t\t\tcurrStep: 0,\n\t\t\tgeneralProps: props\n\t\t};\n\t\treturn _this;\n\t}\n\n\t_createClass(Modal, [{\n\t\tkey: 'componentDidMount',\n\t\tvalue: function componentDidMount() {\n\t\t\tvar steps = [{ name: 'Step 1', component: _Send2.default }, { name: 'Step 2', component: _Loading2.default }, { name: 'Step 3', component: _Final2.default }];\n\t\t\tthis.setState({\n\t\t\t\tsteps: steps\n\t\t\t});\n\t\t}\n\t}, {\n\t\tkey: 'render',\n\t\tvalue: function render() {\n\t\t\tvar _this2 = this;\n\n\t\t\tif (!this.state.steps) return null;\n\n\t\t\tvar Component = this.state.steps[this.state.currStep].component;\n\t\t\treturn _react2.default.createElement(\n\t\t\t\t_Background2.default,\n\t\t\t\tnull,\n\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t_StyledModal2.default,\n\t\t\t\t\t{ className: 'js-modal-send' },\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_Close2.default,\n\t\t\t\t\t\tnull,\n\t\t\t\t\t\t'X'\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_Head2.default,\n\t\t\t\t\t\tnull,\n\t\t\t\t\t\t_react2.default.createElement(_IconCoin2.default, { src: '/img/bitcoin.svg' })\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_Content2.default,\n\t\t\t\t\t\tnull,\n\t\t\t\t\t\t_react2.default.createElement(Component, _extends({ nextStep: function nextStep(props) {\n\t\t\t\t\t\t\t\treturn _this2.nextStep(props);\n\t\t\t\t\t\t\t} }, this.state.generalProps))\n\t\t\t\t\t)\n\t\t\t\t)\n\t\t\t);\n\t\t}\n\t}]);\n\n\treturn Modal;\n}(_react2.default.Component);\n\nvar _initialiseProps = function _initialiseProps() {\n\tvar _this3 = this;\n\n\tthis.prevStep = function () {};\n\n\tthis.nextStep = function (props) {\n\t\t_this3.setState({\n\t\t\tcurrStep: _this3.state.currStep + 1,\n\t\t\tgeneralProps: props\n\t\t}, function () {\n\t\t\tconsole.log(_this3.state, \"nextStep STATE\");\n\t\t});\n\t};\n};\n\nexports.default = Modal;\n\n//# sourceURL=webpack:///./src/shared/containers/Wallet/PanelRight/Modal/Send/index.js?");
+=======
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _templateObject = _taggedTemplateLiteral(['margin: 4rem 0 0 0;'], ['margin: 4rem 0 0 0;']);\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _reactDom2 = _interopRequireDefault(_reactDom);\n\nvar _styledComponents = __webpack_require__(/*! styled-components */ \"./node_modules/styled-components/dist/styled-components.browser.es.js\");\n\nvar _styledComponents2 = _interopRequireDefault(_styledComponents);\n\nvar _styleVariables = __webpack_require__(/*! Shared/style-variables */ \"./src/shared/style-variables.js\");\n\nvar _styleVariables2 = _interopRequireDefault(_styleVariables);\n\nvar _reactRedux = __webpack_require__(/*! react-redux */ \"./node_modules/react-redux/es/index.js\");\n\nvar _qrcodeGenerator = __webpack_require__(/*! qrcode-generator */ \"./node_modules/qrcode-generator/qrcode.js\");\n\nvar _qrcodeGenerator2 = _interopRequireDefault(_qrcodeGenerator);\n\nvar _inputRadio = __webpack_require__(/*! Components/forms/input-radio */ \"./src/shared/components/forms/input-radio/index.js\");\n\nvar _inputText = __webpack_require__(/*! Components/forms/input-text */ \"./src/shared/components/forms/input-text/index.js\");\n\nvar _index = __webpack_require__(/*! Components/index */ \"./src/shared/components/index.js\");\n\nvar _Background = __webpack_require__(/*! ../Background */ \"./src/shared/containers/Wallet/PanelRight/Modal/Background.js\");\n\nvar _Background2 = _interopRequireDefault(_Background);\n\nvar _Close = __webpack_require__(/*! ../Close */ \"./src/shared/containers/Wallet/PanelRight/Modal/Close.js\");\n\nvar _Close2 = _interopRequireDefault(_Close);\n\nvar _Content = __webpack_require__(/*! ../Content */ \"./src/shared/containers/Wallet/PanelRight/Modal/Content.js\");\n\nvar _Content2 = _interopRequireDefault(_Content);\n\nvar _Foot = __webpack_require__(/*! ../Foot */ \"./src/shared/containers/Wallet/PanelRight/Modal/Foot.js\");\n\nvar _Foot2 = _interopRequireDefault(_Foot);\n\nvar _Head = __webpack_require__(/*! ../Head */ \"./src/shared/containers/Wallet/PanelRight/Modal/Head.js\");\n\nvar _Head2 = _interopRequireDefault(_Head);\n\nvar _Hr = __webpack_require__(/*! ../Hr */ \"./src/shared/containers/Wallet/PanelRight/Modal/Hr.js\");\n\nvar _Hr2 = _interopRequireDefault(_Hr);\n\nvar _IconCoin = __webpack_require__(/*! ../IconCoin */ \"./src/shared/containers/Wallet/PanelRight/Modal/IconCoin.js\");\n\nvar _IconCoin2 = _interopRequireDefault(_IconCoin);\n\nvar _StyledModal = __webpack_require__(/*! ../StyledModal */ \"./src/shared/containers/Wallet/PanelRight/Modal/StyledModal.js\");\n\nvar _StyledModal2 = _interopRequireDefault(_StyledModal);\n\nvar _css = __webpack_require__(/*! ./css */ \"./src/shared/containers/Wallet/PanelRight/Modal/Send/css/index.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }\n\nfunction _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step(\"next\", value); }, function (err) { step(\"throw\", err); }); } } return step(\"next\"); }); }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n//PRIVATE COMPONENTS\n\n//CUSTOM CSS\n\n\nvar ModalSend = function (_React$Component) {\n\t_inherits(ModalSend, _React$Component);\n\n\tfunction ModalSend(props) {\n\t\tvar _this2 = this;\n\n\t\t_classCallCheck(this, ModalSend);\n\n\t\tvar _this = _possibleConstructorReturn(this, (ModalSend.__proto__ || Object.getPrototypeOf(ModalSend)).call(this, props));\n\n\t\t_this.toggleModal = function (event) {};\n\n\t\t_this.makeQrCode = function () {\n\t\t\tvar qr = (0, _qrcodeGenerator2.default)(4, 'L');\n\t\t\tqr.addData('Marcelo Rafael');\n\t\t\tqr.make();\n\t\t\tvar img = qr.createSvgTag();\n\t\t\t_this.wrapperQr.innerHTML = img;\n\t\t\tvar imgEl = _this.wrapperQr.children[0];\n\t\t\timgEl.style.width = '90%';\n\t\t\timgEl.style.height = 'auto';\n\t\t};\n\n\t\t_this.handleSend = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {\n\t\t\tvar coinAmount, address, result;\n\t\t\treturn regeneratorRuntime.wrap(function _callee$(_context) {\n\t\t\t\twhile (1) {\n\t\t\t\t\tswitch (_context.prev = _context.next) {\n\t\t\t\t\t\tcase 0:\n\t\t\t\t\t\t\tconsole.log(_this.coinAmount.getAttribute('value'));\n\t\t\t\t\t\t\tcoinAmount = _this.coinAmount.value;\n\t\t\t\t\t\t\taddress = _this.address.value;\n\t\t\t\t\t\t\t_context.next = 5;\n\t\t\t\t\t\t\treturn _this.props.send({ coinAmount: coinAmount, address: address });\n\n\t\t\t\t\t\tcase 5:\n\t\t\t\t\t\t\tresult = _context.sent;\n\n\t\t\t\t\t\t\tconsole.log('%c' + result, 'font-size: 20px; color: lightgreen; background: indianred;');\n\n\t\t\t\t\t\tcase 7:\n\t\t\t\t\t\tcase 'end':\n\t\t\t\t\t\t\treturn _context.stop();\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}, _callee, _this2);\n\t\t}));\n\n\t\t_this.arrangeAmountType = function () {\n\t\t\tvar radios = document.getElementsByName('amount-type');\n\t\t\tArray.from(radios).map(function (radio) {\n\t\t\t\tconsole.log(radio, radio.checked);\n\t\t\t\tif (radio.checked) {\n\t\t\t\t\tvar inputCOIN = document.querySelector('.input-amount.coin');\n\t\t\t\t\tvar inputBRL = document.querySelector('.input-amount.brl');\n\t\t\t\t\tvar inputUSD = document.querySelector('.input-amount.usd');\n\t\t\t\t\tif (radio.value === 'coin') {\n\t\t\t\t\t\tinputCOIN.removeAttribute('disabled');\n\t\t\t\t\t\tinputBRL.setAttribute('disabled', true);\n\t\t\t\t\t\tinputUSD.setAttribute('disabled', true);\n\t\t\t\t\t} else if (radio.value === 'brl') {\n\t\t\t\t\t\tinputBRL.removeAttribute('disabled');\n\t\t\t\t\t\tinputUSD.setAttribute('disabled', true);\n\t\t\t\t\t\tinputCOIN.setAttribute('disabled', true);\n\t\t\t\t\t} else if (radio.value === 'usd') {\n\t\t\t\t\t\tinputUSD.removeAttribute('disabled');\n\t\t\t\t\t\tinputBRL.setAttribute('disabled', true);\n\t\t\t\t\t\tinputCOIN.setAttribute('disabled', true);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t});\n\t\t\tconsole.log('----------------------------');\n\t\t};\n\n\t\t_this.handleOnPercentChange = function (event) {\n\t\t\tvar element = event.currentTarget;\n\t\t\tvar name = element.getAttribute('name');\n\t\t\tvar value = element.value;\n\t\t\tvar amount = parseFloat(_this.props.balance.total_confirmed);\n\t\t\tvar result = amount * (parseInt(value) / 100);\n\t\t\t_this.coinAmount.value = result;\n\t\t\t_this.handleOnAmountChange();\n\t\t};\n\n\t\t_this.handleOnAmountChange = function (event) {\n\t\t\tvar element = void 0;\n\t\t\tif (!event) {\n\t\t\t\telement = _this.coinAmount;\n\t\t\t} else {\n\t\t\t\telement = event.currentTarget;\n\t\t\t}\n\t\t\tvar type = element.getAttribute('data-amount-type');\n\t\t\tvar value = element.value;\n\t\t\tvar coinPrice = _this.props.coinPrice;\n\n\t\t\tvar usdResult = void 0;\n\t\t\tvar coinResult = void 0;\n\t\t\tvar brlResult = void 0;\n\t\t\tvar BRLToCOIN = function BRLToCOIN(_ref2) {\n\t\t\t\tvar amount = _ref2.amount,\n\t\t\t\t    price = _ref2.price;\n\n\t\t\t\treturn amount / price;\n\t\t\t};\n\t\t\tvar BRLToUSD = function BRLToUSD(_ref3) {\n\t\t\t\tvar amount = _ref3.amount,\n\t\t\t\t    price = _ref3.price;\n\n\t\t\t\treturn amount / price;\n\t\t\t};\n\t\t\tvar COINToUSD = function COINToUSD(_ref4) {\n\t\t\t\tvar amount = _ref4.amount,\n\t\t\t\t    price = _ref4.price;\n\n\t\t\t\treturn amount * price;\n\t\t\t};\n\t\t\tvar COINToBRL = function COINToBRL(_ref5) {\n\t\t\t\tvar amount = _ref5.amount,\n\t\t\t\t    price = _ref5.price;\n\n\t\t\t\treturn amount * price;\n\t\t\t};\n\t\t\tvar USDToBRL = function USDToBRL(_ref6) {\n\t\t\t\tvar amount = _ref6.amount,\n\t\t\t\t    price = _ref6.price;\n\n\t\t\t\treturn amount * price;\n\t\t\t};\n\t\t\tvar USDToCOIN = function USDToCOIN(_ref7) {\n\t\t\t\tvar amount = _ref7.amount,\n\t\t\t\t    price = _ref7.price;\n\n\t\t\t\treturn amount / price;\n\t\t\t};\n\t\t\tif (type === 'brl') {\n\t\t\t\tusdResult = BRLToUSD({ amount: parseFloat(value), price: 3.3 });\n\t\t\t\tcoinResult = BRLToCOIN({ amount: parseFloat(value), price: coinPrice.brl });\n\n\t\t\t\tif (!usdResult) {\n\t\t\t\t\tusdResult = 0;\n\t\t\t\t}\n\t\t\t\tif (!coinResult) {\n\t\t\t\t\tcoinResult = 0;\n\t\t\t\t}\n\n\t\t\t\t_this.usdAmount.value = usdResult.toFixed(2);\n\t\t\t\t_this.coinAmount.value = coinResult.toFixed(8);\n\t\t\t} else if (type === 'coin') {\n\t\t\t\tusdResult = COINToUSD({ amount: parseFloat(value), price: coinPrice.usd });\n\t\t\t\tbrlResult = COINToBRL({ amount: parseFloat(value), price: coinPrice.brl });\n\n\t\t\t\tif (!usdResult) {\n\t\t\t\t\tusdResult = 0;\n\t\t\t\t}\n\t\t\t\tif (!brlResult) {\n\t\t\t\t\tbrlResult = 0;\n\t\t\t\t}\n\n\t\t\t\t_this.brlAmount.value = brlResult.toFixed(2);\n\t\t\t\t_this.usdAmount.value = usdResult.toFixed(2);\n\t\t\t} else if (type === 'usd') {\n\t\t\t\tbrlResult = USDToBRL({ amount: parseFloat(value), price: 3.3 });\n\t\t\t\tcoinResult = USDToCOIN({ amount: parseFloat(value), price: coinPrice.usd });\n\n\t\t\t\tif (!brlResult) {\n\t\t\t\t\tbrlResult = 0;\n\t\t\t\t}\n\t\t\t\tif (!coinResult) {\n\t\t\t\t\tcoinResult = 0;\n\t\t\t\t}\n\n\t\t\t\t_this.brlAmount.value = brlResult.toFixed(2);\n\t\t\t\t_this.coinAmount.value = coinResult.toFixed(8);\n\t\t\t}\n\t\t};\n\n\t\t_this.ref = {};\n\t\t_this.ref.wrapperQr = _react2.default.createRef();\n\t\t_this.ref.radioCoinAmount = _react2.default.createRef();\n\t\t_this.ref.coinAmount = _react2.default.createRef();\n\t\t_this.ref.address = _react2.default.createRef();\n\t\t_this.ref.brlAmount = _react2.default.createRef();\n\t\t_this.ref.usdAmount = _react2.default.createRef();\n\t\t_this.ref.coinAmount = _react2.default.createRef();\n\t\t//quantity types: real, dollar, coin\n\t\treturn _this;\n\t}\n\n\t_createClass(ModalSend, [{\n\t\tkey: 'componentDidMount',\n\t\tvalue: function componentDidMount() {\n\t\t\tthis.wrapperQr = _reactDom2.default.findDOMNode(this.ref.wrapperQr.current);\n\t\t\tthis.radioCoinAmount = _reactDom2.default.findDOMNode(this.ref.radioCoinAmount.current);\n\t\t\tthis.coinAmount = _reactDom2.default.findDOMNode(this.ref.coinAmount.current);\n\t\t\tthis.address = _reactDom2.default.findDOMNode(this.ref.address.current);\n\t\t\tthis.brlAmount = _reactDom2.default.findDOMNode(this.ref.brlAmount.current);\n\t\t\tthis.usdAmount = _reactDom2.default.findDOMNode(this.ref.usdAmount.current);\n\t\t\tthis.coinAmount = _reactDom2.default.findDOMNode(this.ref.coinAmount.current);\n\n\t\t\tthis.makeQrCode();\n\t\t\tthis.arrangeAmountType();\n\t\t}\n\t}, {\n\t\tkey: 'render',\n\t\tvalue: function render() {\n\t\t\treturn _react2.default.createElement(\n\t\t\t\t_Background2.default,\n\t\t\t\tnull,\n\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t_StyledModal2.default,\n\t\t\t\t\t{ className: 'js-modal-send' },\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_Close2.default,\n\t\t\t\t\t\tnull,\n\t\t\t\t\t\t'X'\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_Head2.default,\n\t\t\t\t\t\tnull,\n\t\t\t\t\t\t_react2.default.createElement(_IconCoin2.default, { src: '/img/bitcoin.svg' })\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t_Content2.default,\n\t\t\t\t\t\tnull,\n\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t\t{ s: 9, m: 9, l: 9 },\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t\t{ css: _css.FirstRowCss },\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t\t\t\t{ offset: 's3', s: 6, m: 6, l: 6 },\n\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t'div',\n\t\t\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\t\t\t\tname: 'amount-type',\n\t\t\t\t\t\t\t\t\t\t\t\t\tonChange: this.arrangeAmountType,\n\t\t\t\t\t\t\t\t\t\t\t\t\tvalue: 'coin',\n\t\t\t\t\t\t\t\t\t\t\t\t\tunique: 'true'\n\t\t\t\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t\t\t\t'Quantidade em BTC'\n\t\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t\t\t\t{ s: 12, m: 6, l: 6 },\n\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t\t\t\t{ defaultAlign: 'right' },\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputText.InputText, {\n\t\t\t\t\t\t\t\t\t\t\t\thuge: true,\n\t\t\t\t\t\t\t\t\t\t\t\tphRight: true,\n\t\t\t\t\t\t\t\t\t\t\t\tphWeightLight: true,\n\t\t\t\t\t\t\t\t\t\t\t\twhiteTheme: true,\n\t\t\t\t\t\t\t\t\t\t\t\ttxRight: true,\n\t\t\t\t\t\t\t\t\t\t\t\tnoBorder: true,\n\t\t\t\t\t\t\t\t\t\t\t\tref: this.ref.coinAmount,\n\t\t\t\t\t\t\t\t\t\t\t\tonKeyUp: this.handleOnAmountChange,\n\t\t\t\t\t\t\t\t\t\t\t\t'data-amount-type': 'coin',\n\t\t\t\t\t\t\t\t\t\t\t\tclassName: 'input-amount coin',\n\t\t\t\t\t\t\t\t\t\t\t\tplaceholder: '0.00000000' })\n\t\t\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\t\t\t\ttype: 'radio',\n\t\t\t\t\t\t\t\t\t\t\t\t\tvalue: 25,\n\t\t\t\t\t\t\t\t\t\t\t\t\tname: 'percent',\n\t\t\t\t\t\t\t\t\t\t\t\t\tunique: 'true',\n\t\t\t\t\t\t\t\t\t\t\t\t\tonClick: this.handleOnPercentChange\n\t\t\t\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t\t\t\t'25%'\n\t\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\t\t\t\ttype: 'radio',\n\t\t\t\t\t\t\t\t\t\t\t\t\tvalue: 50,\n\t\t\t\t\t\t\t\t\t\t\t\t\tname: 'percent',\n\t\t\t\t\t\t\t\t\t\t\t\t\tunique: 'true',\n\t\t\t\t\t\t\t\t\t\t\t\t\tonClick: this.handleOnPercentChange\n\t\t\t\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t\t\t\t'50%'\n\t\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\t\t\t\ttype: 'radio',\n\t\t\t\t\t\t\t\t\t\t\t\t\tvalue: 75,\n\t\t\t\t\t\t\t\t\t\t\t\t\tname: 'percent',\n\t\t\t\t\t\t\t\t\t\t\t\t\tunique: 'true',\n\t\t\t\t\t\t\t\t\t\t\t\t\tonClick: this.handleOnPercentChange\n\t\t\t\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t\t\t\t'75%'\n\t\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\t\t\t\ttype: 'radio',\n\t\t\t\t\t\t\t\t\t\t\t\t\tvalue: 100,\n\t\t\t\t\t\t\t\t\t\t\t\t\tname: 'percent',\n\t\t\t\t\t\t\t\t\t\t\t\t\tunique: 'true',\n\t\t\t\t\t\t\t\t\t\t\t\t\tonClick: this.handleOnPercentChange\n\t\t\t\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t\t\t\t'100%'\n\t\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t_react2.default.createElement(_Hr2.default, null),\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t\t{ style: { padding: '3rem 0 3rem 0' } },\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t\t\t\t{ s: 6, m: 6, l: 6 },\n\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\t\t\tname: 'amount-type',\n\t\t\t\t\t\t\t\t\t\t\t\tonChange: this.arrangeAmountType,\n\t\t\t\t\t\t\t\t\t\t\t\tvalue: 'brl',\n\t\t\t\t\t\t\t\t\t\t\t\tunique: 'true'\n\t\t\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t\t\t'Quantidade em real'\n\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t_inputRadio.WrapRadio,\n\t\t\t\t\t\t\t\t\t\t\t{ css: (0, _styledComponents.css)(_templateObject) },\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.InputRadio, {\n\t\t\t\t\t\t\t\t\t\t\t\tname: 'amount-type',\n\t\t\t\t\t\t\t\t\t\t\t\tonChange: this.arrangeAmountType,\n\t\t\t\t\t\t\t\t\t\t\t\tvalue: 'usd',\n\t\t\t\t\t\t\t\t\t\t\t\tunique: 'true'\n\t\t\t\t\t\t\t\t\t\t\t}),\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputRadio.RadioCheckmark, null),\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t\t_inputRadio.LabelRadio,\n\t\t\t\t\t\t\t\t\t\t\t\t{ clWhite: true },\n\t\t\t\t\t\t\t\t\t\t\t\t'Quantidade em d\\xF3lar'\n\t\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t\t\t\t{ s: 6, m: 6, l: 6 },\n\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t\t\t\t{ defaultAlign: 'right' },\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputText.InputText, {\n\t\t\t\t\t\t\t\t\t\t\t\thuge: true,\n\t\t\t\t\t\t\t\t\t\t\t\tphRight: true,\n\t\t\t\t\t\t\t\t\t\t\t\tphWeightLight: true,\n\t\t\t\t\t\t\t\t\t\t\t\twhiteTheme: true,\n\t\t\t\t\t\t\t\t\t\t\t\ttxRight: true,\n\t\t\t\t\t\t\t\t\t\t\t\tnoBorder: true,\n\t\t\t\t\t\t\t\t\t\t\t\ttype: 'text',\n\t\t\t\t\t\t\t\t\t\t\t\tref: this.ref.brlAmount,\n\t\t\t\t\t\t\t\t\t\t\t\tonKeyUp: this.handleOnAmountChange,\n\t\t\t\t\t\t\t\t\t\t\t\tclassName: 'input-amount brl',\n\t\t\t\t\t\t\t\t\t\t\t\t'data-amount-type': 'brl',\n\t\t\t\t\t\t\t\t\t\t\t\tplaceholder: 'BRL 0.00' })\n\t\t\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t\t\t\t{ defaultAlign: 'right' },\n\t\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputText.InputText, {\n\t\t\t\t\t\t\t\t\t\t\t\thuge: true,\n\t\t\t\t\t\t\t\t\t\t\t\tphRight: true,\n\t\t\t\t\t\t\t\t\t\t\t\tphWeightLight: true,\n\t\t\t\t\t\t\t\t\t\t\t\twhiteTheme: true,\n\t\t\t\t\t\t\t\t\t\t\t\ttxRight: true,\n\t\t\t\t\t\t\t\t\t\t\t\tnoBorder: true,\n\t\t\t\t\t\t\t\t\t\t\t\ttype: 'text',\n\t\t\t\t\t\t\t\t\t\t\t\tref: this.ref.usdAmount,\n\t\t\t\t\t\t\t\t\t\t\t\tonChange: this.handleOnAmountChange,\n\t\t\t\t\t\t\t\t\t\t\t\tclassName: 'input-amount usd',\n\t\t\t\t\t\t\t\t\t\t\t\t'data-amount-type': 'usd',\n\t\t\t\t\t\t\t\t\t\t\t\tplaceholder: 'USD 0.00' })\n\t\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t_react2.default.createElement(_Hr2.default, null),\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t\t{ css: _css.ThirdRowCss },\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t\t\t\t{ s: 12, m: 12, l: 12 },\n\t\t\t\t\t\t\t\t\t\t_react2.default.createElement(_inputText.InputText, {\n\t\t\t\t\t\t\t\t\t\t\tnormal: true,\n\t\t\t\t\t\t\t\t\t\t\twhiteTheme: true,\n\t\t\t\t\t\t\t\t\t\t\ttxRight: true,\n\t\t\t\t\t\t\t\t\t\t\ttype: 'text',\n\t\t\t\t\t\t\t\t\t\t\tref: this.ref.address,\n\t\t\t\t\t\t\t\t\t\t\tplaceholder: 'Endereço' })\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t_react2.default.createElement(_Hr2.default, null),\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(_index.Col, null)\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t_index.Col,\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\tdefaultAlign: 'center',\n\t\t\t\t\t\t\t\t\ts: 3, m: 3, l: 3 },\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_index.Button,\n\t\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\tcss: _css.SendButtonCss,\n\t\t\t\t\t\t\t\t\t\t\tblockCenter: true,\n\t\t\t\t\t\t\t\t\t\t\tclWhite: true,\n\t\t\t\t\t\t\t\t\t\t\tbgNormalYellow: true,\n\t\t\t\t\t\t\t\t\t\t\tonClick: this.handleSend },\n\t\t\t\t\t\t\t\t\t\t'Enviar'\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t),\n\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t_index.Row,\n\t\t\t\t\t\t\t\t\tnull,\n\t\t\t\t\t\t\t\t\t_react2.default.createElement(\n\t\t\t\t\t\t\t\t\t\t_index.Button,\n\t\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\tinnerRef: this.ref.wrapperQr,\n\t\t\t\t\t\t\t\t\t\t\tblockCenter: true,\n\t\t\t\t\t\t\t\t\t\t\tclWhite: true,\n\t\t\t\t\t\t\t\t\t\t\tbgWhite: true },\n\t\t\t\t\t\t\t\t\t\t'QR Code'\n\t\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t\t)\n\t\t\t\t\t\t\t)\n\t\t\t\t\t\t)\n\t\t\t\t\t),\n\t\t\t\t\t_react2.default.createElement(_Foot2.default, null)\n\t\t\t\t)\n\t\t\t);\n\t\t}\n\t}]);\n\n\treturn ModalSend;\n}(_react2.default.Component);\n\nexports.default = ModalSend;\n/*\r\nconst mapStateToProps = (state) => {\r\n\treturn {\r\n\t\twallet: state.wallet\r\n\t}\r\n}\r\nconst mapDispatchToProps = (dispatch) => {\r\n\treturn {\r\n\r\n\t}\r\n}\r\nexport default connect(mapStateToProps, mapDispatchToProps)(ModalSend);\r\n*/\n\n//# sourceURL=webpack:///./src/shared/containers/Wallet/PanelRight/Modal/Send/index.js?");
+>>>>>>> 3b963681ab6ad56b12365d7fc521c2101aa71ef0
 
 /***/ }),
 
@@ -7300,7 +8030,7 @@ eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n\tvalue: true\n});\n
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _index = __webpack_require__(/*! Containers/Wallet/PanelRight/Modal/Send/index */ \"./src/shared/containers/Wallet/PanelRight/Modal/Send/index.js\");\n\nvar _index2 = _interopRequireDefault(_index);\n\nvar _Input = __webpack_require__(/*! Components/forms/Input */ \"./src/shared/components/forms/Input.js\");\n\nvar _Input2 = _interopRequireDefault(_Input);\n\nvar _index3 = __webpack_require__(/*! Components/index */ \"./src/shared/components/index.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\n// let toRender = () => {\n// \treturn (\n// \t<div>\n// \t\t<h3>Dados</h3>\n// \t\t<Input normal whiteTheme s={12} m={6} l={6} type={'text'} label={{value: 'Nome', txItalic: true}} />\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<Input normal whiteTheme s={12} m={6} l={6} type={'number'} label={{value: 'Idade', txItalic: true}} />\n// \t\t<h3>Pessoas</h3>\n// \t\t<Input type={'select'} s={12} m={6} l={6} label={{value: 'Nome', txBold:true}}>\n// \t\t\t<option>Marcelo</option>\n// \t\t\t<option>Rafael</option>\n// \t\t\t<option>Brito</option>\n// \t\t\t<option>Joao</option>\n// \t\t\t<option>Jao</option>\n// \t\t\t<option>Felipe</option>\n// \t\t\t<option>Bruno</option>\n// \t\t\t<option>Mateus</option>\n// \t\t\t<option>Jonas</option>\n// \t\t\t<option>Lucas</option>\n// \t\t\t<option>Tiago</option>\n// \t\t\t<option>Cássia</option>\n// \t\t\t<option>Hellen</option>\n// \t\t\t<option>Ana</option>\n// \t\t\t<option>Josefina</option>\n// \t\t</Input>\n// \t\t<h3>Alimentos</h3>\n// \t\t<Input type={'radio'} name={'agree'} label={{value: 'Batata'}}/>\n// \t\t<Input type={'radio'} name={'agree'} label={{value: 'Feijao'}}/>\n// \t\t<Input type={'checkbox'} label={{value: 'Concordo e aceito com os termos'}}/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<Row>\n// \t\t\t<Col s={4} m={4} l={4} style={{background: 'red', height: '100px'}}></Col>\n// \t\t\t<Col s={4} m={4} l={4} style={{background: 'blue', height: '100px'}}></Col>\n// \t\t</Row>\n// \t</div>);\n// }\nvar props = {\n\tcoinName: 'btc',\n\tsend: function send(_ref) {\n\t\tvar coinAmount = _ref.coinAmount,\n\t\t    address = _ref.address;\n\n\t\tconsole.log('%cEnviando ' + coinAmount + ' para ' + address, 'background: indianred; color: lightgreen; font-size: 20px;');\n\t\treturn new Promise(function (resolve) {\n\t\t\tsetTimeout(function () {\n\t\t\t\tresolve('Enviado para ' + address);\n\t\t\t}, 1000);\n\t\t});\n\t},\n\t// coins: {\n\t// \t{ symbol: 'btc', price: 10000 },\n\t// \t{ symbol: 'ltc', price: 100 },\n\t// \t{ symbol: 'eth', price: 400 },\n\t// \t{ symbol: 'lns', price: 1 },\n\t// },\n\t// currencies: {\n\t// \t{ symbol: 'usd',  }\n\t// }\n\tcoinPrice: {\n\t\tusd: 10000.1,\n\t\tbrl: 33000.33\n\t},\n\tfiatPrice: {\n\t\tusd: { brl: 3.3, btc: 0.00001 },\n\t\tbrl: { usd: 0.30, btc: 0.00001 }\n\t},\n\tbalance: {\n\t\ttotal_confirmed: 5,\n\t\ttotal_unconfirmed: 0.5,\n\t\ttotal_amount: 5.5\n\t}\n};\n\nvar toRender = function toRender() {\n\treturn _react2.default.createElement(_index2.default, props);\n};\n\n(0, _reactDom.render)(toRender(), document.querySelector('.root'));\n\n//# sourceURL=webpack:///./tests/components/index.js?");
+eval("\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n\nvar _react2 = _interopRequireDefault(_react);\n\nvar _reactDom = __webpack_require__(/*! react-dom */ \"./node_modules/react-dom/index.js\");\n\nvar _index = __webpack_require__(/*! Containers/Wallet/PanelRight/Modal/Send/index */ \"./src/shared/containers/Wallet/PanelRight/Modal/Send/index.js\");\n\nvar _index2 = _interopRequireDefault(_index);\n\nvar _index3 = __webpack_require__(/*! Containers/Wallet/PanelRight/Modal/Receive/index */ \"./src/shared/containers/Wallet/PanelRight/Modal/Receive/index.js\");\n\nvar _index4 = _interopRequireDefault(_index3);\n\nvar _Input = __webpack_require__(/*! Components/forms/Input */ \"./src/shared/components/forms/Input.js\");\n\nvar _Input2 = _interopRequireDefault(_Input);\n\nvar _index5 = __webpack_require__(/*! Components/index */ \"./src/shared/components/index.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\n// let toRender = () => {\n// \treturn (\n// \t<div>\n// \t\t<h3>Dados</h3>\n// \t\t<Input normal whiteTheme s={12} m={6} l={6} type={'text'} label={{value: 'Nome', txItalic: true}} />\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<Input normal whiteTheme s={12} m={6} l={6} type={'number'} label={{value: 'Idade', txItalic: true}} />\n// \t\t<h3>Pessoas</h3>\n// \t\t<Input type={'select'} s={12} m={6} l={6} label={{value: 'Nome', txBold:true}}>\n// \t\t\t<option>Marcelo</option>\n// \t\t\t<option>Rafael</option>\n// \t\t\t<option>Brito</option>\n// \t\t\t<option>Joao</option>\n// \t\t\t<option>Jao</option>\n// \t\t\t<option>Felipe</option>\n// \t\t\t<option>Bruno</option>\n// \t\t\t<option>Mateus</option>\n// \t\t\t<option>Jonas</option>\n// \t\t\t<option>Lucas</option>\n// \t\t\t<option>Tiago</option>\n// \t\t\t<option>Cássia</option>\n// \t\t\t<option>Hellen</option>\n// \t\t\t<option>Ana</option>\n// \t\t\t<option>Josefina</option>\n// \t\t</Input>\n// \t\t<h3>Alimentos</h3>\n// \t\t<Input type={'radio'} name={'agree'} label={{value: 'Batata'}}/>\n// \t\t<Input type={'radio'} name={'agree'} label={{value: 'Feijao'}}/>\n// \t\t<Input type={'checkbox'} label={{value: 'Concordo e aceito com os termos'}}/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<br/>\n// \t\t<Row>\n// \t\t\t<Col s={4} m={4} l={4} style={{background: 'red', height: '100px'}}></Col>\n// \t\t\t<Col s={4} m={4} l={4} style={{background: 'blue', height: '100px'}}></Col>\n// \t\t</Row>\n// \t</div>);\n// }\nvar props = {\n  coinName: \"btc\",\n  send: function send(_ref) {\n    var coinAmount = _ref.coinAmount,\n        address = _ref.address;\n\n    console.log(\"%cEnviando \" + coinAmount + \" para \" + address, \"background: indianred; color: lightgreen; font-size: 20px;\");\n    return new Promise(function (resolve) {\n      setTimeout(function () {\n        resolve(\"Enviado para \" + address);\n      }, 1000);\n    });\n  },\n  // coins: {\n  // \t{ symbol: 'btc', price: 10000 },\n  // \t{ symbol: 'ltc', price: 100 },\n  // \t{ symbol: 'eth', price: 400 },\n  // \t{ symbol: 'lns', price: 1 },\n  // },\n  // currencies: {\n  // \t{ symbol: 'usd',  }\n  // }\n  coinPrice: {\n    usd: 10000.1,\n    brl: 33000.33\n  },\n  fiatPrice: {\n    usd: { brl: 3.3, btc: 0.00001 },\n    brl: { usd: 0.3, btc: 0.00001 }\n  },\n  balance: {\n    total_confirmed: 5,\n    total_unconfirmed: 0.5,\n    total_amount: 5.5\n  }\n};\n\nvar toRender = function toRender() {\n  return _react2.default.createElement(_index4.default, props);\n};\n\n(0, _reactDom.render)(toRender(), document.querySelector(\".root\"));\n\n//# sourceURL=webpack:///./tests/components/index.js?");
 
 /***/ }),
 
@@ -7311,7 +8041,7 @@ eval("\n\nvar _react = __webpack_require__(/*! react */ \"./node_modules/react/i
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("__webpack_require__(/*! babel-polyfill */\"./node_modules/babel-polyfill/lib/index.js\");\nmodule.exports = __webpack_require__(/*! /home/user/Desenvolvimento/web/lunes/lunes-wallet-web/tests/components/index.js */\"./tests/components/index.js\");\n\n\n//# sourceURL=webpack:///multi_babel-polyfill_./tests/components/index.js?");
+eval("__webpack_require__(/*! babel-polyfill */\"./node_modules/babel-polyfill/lib/index.js\");\nmodule.exports = __webpack_require__(/*! C:\\lunes\\lunes-wallet-web/tests/components/index.js */\"./tests/components/index.js\");\n\n\n//# sourceURL=webpack:///multi_babel-polyfill_./tests/components/index.js?");
 
 /***/ })
 
