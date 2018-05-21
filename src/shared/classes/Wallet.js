@@ -2,7 +2,7 @@ import { errorPattern } from "Utils/functions";
 import { coins }        from "lunes-lib";
 import sb               from "satoshi-bitcoin";
 import { testnet }      from 'Config/constants';
-console.log(testnet, "TESTNET <<<<");
+// console.log(testnet, "TESTNET <<<<");
 export class WalletClass {
   static coinsPrice;
 
@@ -55,10 +55,10 @@ export class WalletClass {
 			}
 	*/
   getBalance = async user => {
-    if (typeof user === "string") {
-      user = JSON.parse(user);
-    }
     try {
+      if (typeof user === "string") {
+        user = JSON.parse(user);
+      }
       let coinsPrice = await this.getCoinsPrice([
         { fromSymbol: "BTC", toSymbol: "BRL,USD" },
         { fromSymbol: "LTC", toSymbol: "BRL,USD" },
@@ -67,30 +67,37 @@ export class WalletClass {
       this.coinsPrice = coinsPrice;
       let addresses   = this.getUserAddresses(user);
       let balance     = {};
-      let token       = user.accessToken;
       //coin = 'btc' (example)
       for (let coin in addresses) {
         //addressKey = 1 (example)
         let i = 0;
         for (let addressKey in addresses[coin]) {
+          //isso deve ser refatorado com o intuito de aceitar mais moedas
+          if (coin !== 'eth' && coin !== 'btc') continue;
           //it gets the current addres of the iteration
           let address = addresses[coin][addressKey];
           //it returns a response object
-          let response = await coins.services.balance({ network: 'btc', address, testnet });
-          if (response.status === "success") {
+          let response = await coins.services.balance({ network: coin, address, testnet });
+          if (response.data) {
+            //se não temos nada no objeto
+            //então colocamos valores iniciais
             if (!balance[coin]) {
               balance[coin] = {};
               balance[coin]["total_confirmed"]   = sb.toSatoshi(0);
               balance[coin]["total_unconfirmed"] = sb.toSatoshi(0);
               balance[coin]["total_amount"]      = 0;
             }
+            //new total_(un)confirmed
+            let confirmed   = response.data.confirmed  ? response.data.confirmed : 0;
+            let unconfirmed = response.data.unconfirmed ? response.data.unconfirmed : 0;
             //it sums the old total_confirmed with the new
-            balance[coin]["total_confirmed"]   += sb.toSatoshi(response.data.confirmed_balance);
-            balance[coin]["total_unconfirmed"] += sb.toSatoshi(response.data.unconfirmed_balance);
-            //it converts total_confirmed to bitcoin
+            balance[coin]["total_confirmed"]   += confirmed;
+            balance[coin]["total_unconfirmed"] += unconfirmed;
+            //it converts total_(un)confirmed to bitcoin
             balance[coin]["total_unconfirmed"] = sb.toBitcoin(balance[coin]["total_unconfirmed"]);
             balance[coin]["total_confirmed"]   = sb.toBitcoin(balance[coin]["total_confirmed"]);
-            balance[coin]["total_amount"]      = balance[coin]["total_confirmed"] * coinsPrice[coin]["USD"];
+
+            balance[coin]["total_amount"]      = (balance[coin]["total_confirmed"] + balance[coin]["total_unconfirmed"]) * coinsPrice[coin]["USD"];
           }
         }
       }

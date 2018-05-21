@@ -4,3 +4,10 @@ Procure a partir da pasta root do projeto pelas palavras:
 Isso servirá para indentificá-las, indo direto para a linha
 com comentário
 Components/TextBase //Tirei o display: block; cuidado com conflito
+----
+Refatorar classes/wallet/getBalance, código REAL:
+Wallet.js
+74 | ...more code
+75 | //isso deve ser refatorado com o intuito de aceitar mais moedas
+76 | if (coin !== 'eth' && coin !== 'btc') continue;
+77 | ...more code

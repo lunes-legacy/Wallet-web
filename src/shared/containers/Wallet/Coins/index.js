@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import { TextBase } from "Components/TextBase";
+import { TextBase, H1 } from "Components";
 import { connect } from "react-redux";
 
 import { Loading } from "Components/Loading";
@@ -92,6 +92,7 @@ class Coins extends React.Component {
         <img src={"/img/wave-my-wallets.png"} style={{ width: "100%" }} />
 
         {(() => {
+          console.log(balance, "BALANCE");
           if (!coinsPrice || !balance) {
             return <Loading />;
           } else if (!balance.btc) {
