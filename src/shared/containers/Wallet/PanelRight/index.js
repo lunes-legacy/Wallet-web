@@ -38,31 +38,29 @@ class PanelRight extends React.Component {
 		}
 	}
 	handleToggleHistory = (event) => {
-		let historyEl =
-			event.currentTarget.parentElement,
-		historyContentEl =
-			historyEl.querySelector(':nth-child(2)');
+		let historyEl        = event.currentTarget.parentElement;
+		let historyContentEl = historyEl.querySelector(':nth-child(2)');
 		toggleScaleY({
 			element: historyContentEl,
 			visible: '1',
 			hidden: '0'
 		});
 	}
-	componentDidMount = async() => {
-		let wallet = new WalletClass;
-		let coinHistory = await wallet.getHistory({address: undefined, accessToken: undefined});
-		// TO VERIFY
-		// WE NEED TO SEE IF THIS COINHISTORY RETURNS
-		// AN EMPTY DATA IF NO DATA WAS GET
+	getTransactionHistory  = async (coinName) => {
+		let wallet      = new WalletClass;
+		let coinHistory = await wallet.getHistory({coin: coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
 		if (coinHistory) {
 			this.props.setCoinHistory(coinHistory);
 		}
 	}
+	componentDidMount = async() => {
+	}
 	render() {
 		if (!this.props.wallet.panelRight.coinName) {
-			console.warn("this.props.wallet.panelRight.coinName não existe ou está undefined");
+			console.warn("components/Wallet -> this.props.wallet.panelRight.coinName não existe ou está undefined");
 			return <Default/>;
 		}
+		this.getTransactionHistory(this.props.wallet.panelRight.coinName);
 		/*
 			coinPrice: {BRL: '31.000,00', USD: '7.600,00'}
 			coiName: 'btc' || 'ltc' || 'eth'

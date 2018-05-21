@@ -74,7 +74,7 @@ class Wallet extends React.Component {
 	    // let user    = cookies.get('user').user.toString();
 		let userObj = new UserClass;
 		let user    = await userObj.login({email: '', password: ''});
-		console.log(user);
+		console.log(user, "containers/Wallet -> USER");
 		if (!user) {
 			return;
 		}
@@ -83,10 +83,11 @@ class Wallet extends React.Component {
 		try {
 			balance = await wallet.getBalance(user);
 		} catch(e) {
-			console.log(e);
+			console.error(e, "containers/Wallet componentDidMount error");
 			return;
 		}
-		let coinsPrice = wallet.coinsPrice;
+		let coinsPrice = await wallet.getCoinsPrice();
+		console.error(coinsPrice,"containers/Wallet -> coinsPrice");
 
 		this.props.setBalance({balance, coinsPrice});
 	}

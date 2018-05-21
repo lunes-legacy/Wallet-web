@@ -91,7 +91,7 @@ const CoinPercent = styled.div`
 class CoinStatus extends React.Component {
   render() {
     let { coinName, coinPrice } = this.props.wallet.panelRight || { coinName: undefined, coinPrice: undefined };
-
+    
     if (!coinPrice || !coinName) {
       console.warn("if (coinPrice || coinName); ERRO");
       return null;

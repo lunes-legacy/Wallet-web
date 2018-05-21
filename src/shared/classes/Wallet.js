@@ -2,10 +2,12 @@ import { errorPattern } from "Utils/functions";
 import { coins }        from "lunes-lib";
 import sb               from "satoshi-bitcoin";
 import { testnet }      from 'Config/constants';
+import isCoinAvaliable  from 'Config/isCoinAvaliable';
 // console.log(testnet, "TESTNET <<<<");
 export class WalletClass {
   static coinsPrice;
 
+  //for now, we arent using this
   getCoinsPrice = async data => {
     // EX: data = {
     // 	{fromSymbol, toSymbol, exchange= 'CCCAGG'}
@@ -59,12 +61,12 @@ export class WalletClass {
       if (typeof user === "string") {
         user = JSON.parse(user);
       }
-      let coinsPrice = await this.getCoinsPrice([
-        { fromSymbol: "BTC", toSymbol: "BRL,USD" },
-        { fromSymbol: "LTC", toSymbol: "BRL,USD" },
-        { fromSymbol: "ETH", toSymbol: "BRL,USD" }
-      ]);
-      this.coinsPrice = coinsPrice;
+      // let coinsPrice = await this.getCoinsPrice([
+      //   { fromSymbol: "BTC", toSymbol: "BRL,USD" },
+      //   { fromSymbol: "LTC", toSymbol: "BRL,USD" },
+      //   { fromSymbol: "ETH", toSymbol: "BRL,USD" }
+      // ]);
+      // this.coinsPrice = coinsPrice;
       let addresses   = this.getUserAddresses(user);
       let balance     = {};
       //coin = 'btc' (example)
@@ -72,8 +74,7 @@ export class WalletClass {
         //addressKey = 1 (example)
         let i = 0;
         for (let addressKey in addresses[coin]) {
-          //isso deve ser refatorado com o intuito de aceitar mais moedas
-          if (coin !== 'eth' && coin !== 'btc') continue;
+          if (isCoinAvaliable(coin) === false) continue;
           //it gets the current addres of the iteration
           let address = addresses[coin][addressKey];
           //it returns a response object
@@ -97,7 +98,7 @@ export class WalletClass {
             balance[coin]["total_unconfirmed"] = sb.toBitcoin(balance[coin]["total_unconfirmed"]);
             balance[coin]["total_confirmed"]   = sb.toBitcoin(balance[coin]["total_confirmed"]);
 
-            balance[coin]["total_amount"]      = (balance[coin]["total_confirmed"] + balance[coin]["total_unconfirmed"]) * coinsPrice[coin]["USD"];
+            balance[coin]["total_amount"]      = balance[coin]["total_confirmed"] + balance[coin]["total_unconfirmed"];
           }
         }
       }
@@ -106,18 +107,24 @@ export class WalletClass {
       throw errorPattern("Error on get balance", 500, "WALLET_GETBALANCE_ERROR", err);
     }
   };
-
+  //"1Q7Jmho4FixWBiTVcZ5aKXv4rTMMp6CjiD"
   getHistory = async ({
-    address = "1Q7Jmho4FixWBiTVcZ5aKXv4rTMMp6CjiD",
+    coin = undefined,
+    address = undefined
   }) => {
+    if (!coin) 
+      throw errorPattern("getHistory error, you should pass through a coin name", 500, "WALLET_GETHISTORY_ERROR");
+    if (!address) 
+      throw errorPattern("getHistory error, you should pass through an address", 500, "WALLET_GETHISTORY_ERROR");
+
     try {
-      return coins.services.history({ network: 'btc', address, testnet });
+      return coins.services.history({ network: coin, address, testnet });
     } catch (err) {
       return errorPattern("Error on get history", 500, "WALLET_GETHISTORY_ERROR", err);
     }
   };
 
-  getTransactionHistory = async (object) => {
+  getCoinHistory = async (object) => {
     return await coins.getHistory(object);
   };
 }
