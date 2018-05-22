@@ -9,9 +9,7 @@ import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
 
 const StyledHistories = styled.div`
-  width: 100%;
   padding-top: 20px;
-  overflow-x: auto;
 `;
 
 const History = styled.div`
@@ -25,6 +23,7 @@ const HistoryHead = styled.div`
   cursor: pointer;
   padding: 10px 0;
   &:hover + .js-history-content {
+    height: 100%;
     transform: scaleY(1);
   }
   width: 100%;
@@ -34,7 +33,7 @@ const HistoryHeadStatus = styled.div`
   float: right;
   margin-right: 1rem;
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     float: center;
   }
 `;
@@ -49,11 +48,11 @@ const HeadStatusIcon = styled.img`
 const HeadStatusDate = styled.div`
   ${TextBase}
   color: white;
-  font-size:1.2rem;
+  font-size: 1.2rem;
   font-weight: bold;
   text-align: center;
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     font-size: 1.4rem;
   }
 `;
@@ -66,11 +65,11 @@ const HistoryHeadText = styled.div`
   font-size: 1.2rem;
   margin: 1.5rem 0 0 1rem;
 
-  @media (min-width: 470px) {
+  @media (${style.media.mobile2}) {
     margin: 2.4rem 0 0 1rem;
   }
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     font-size: 1.4rem;
     margin: 1rem 0 0 1rem;
   }
@@ -84,7 +83,7 @@ const HistoryHeadAmount = styled.div`
   margin: 1rem;
   justify-content: center;
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     justify-content: flex-end;
   }
 `;
@@ -105,7 +104,7 @@ const HeadAmountCoin = styled.div`
     }
   }};
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     font-size: 1.4rem;
   }
 `;
@@ -116,7 +115,7 @@ const HeadAmountMoney = styled.div`
   color: white;
   padding-left: 1rem;
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     font-size: 1.4rem;
     margin-right: 1rem;
   }
@@ -127,24 +126,21 @@ const HistoryContent = styled.div.attrs({
 })`
   display: flex;
   background: ${style.lightLilac};
-  border-bottom-left-radius: 7px;
-  border-bottom-right-radius: 7px;
   flex-flow: nowrap;
+  height: 0;
   left: 0px;
-  padding: 1rem 2rem;
-  position: absolute;
+  padding: 1rem 30% 1rem 3rem;
   top: 100%;
   width: 100%;
   word-wrap: break-word;
-  z-index: 2;
 
   transform-origin: top;
   transform: scaleY(0);
 
-  transition: transform 0.5s;
+  transition: .2s linear;
 
-  &:hover {
-    transform: scaleY(1);
+  @media (${style.media.tablet2}) {
+    padding: 1rem 2rem;
   }
 `;
 
@@ -170,7 +166,7 @@ const StatusStyle = styled.div`
     }
   }};
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     font-size: 1.4rem;
   }
 `;

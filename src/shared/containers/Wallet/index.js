@@ -19,23 +19,22 @@ import { Loading }     from 'Components/Loading';
 import PanelRight      from './PanelRight/index';
 import Coins           from './Coins/index';
 
-
-//______INDEX
-let Panels = styled.div`
+const Panels = styled.div`
 	width: 100%;
 	height: 100%;
 	display: flex;
 `;
-let PanelLeft = styled.div.attrs({
+
+const PanelLeft = styled.div.attrs({
 	state: 'visible'
 })`
-	background: ${style.normalLilac};
-	max-width: 90%;
+  background: ${style.normalLilac};
+  box-shadow: 30px 0 40px rgba(0,0,0,.2);
 	height: 100%;
-	box-shadow: 30px 0 40px rgba(0,0,0,.2);
+	max-width: 280px;
+  min-width: 130px;
+  position: relative;
 	z-index: 2;
-	position: relative;
-	width: 31.66666%;
 
 	transform-origin: left;
 	transform: scaleX(1);
@@ -44,7 +43,8 @@ let PanelLeft = styled.div.attrs({
 	// transition: transform 0.3s, opacity 0.5s;
 	transition: width .3s, max-width .5s;
 `;
-let TogglePanelLeft = styled.div`
+
+const TogglePanelLeft = styled.div`
 	position: absolute;
 	right: -25px;
 	bottom: 50%;
@@ -93,7 +93,7 @@ class Wallet extends React.Component {
 		let panelLeftEl = event.currentTarget.parentElement;
 		toggleWidth({
 			element: panelLeftEl,
-			visible: '31.6666%',
+			visible: '30%',
 			hidden: '0px'
 		});
 	}

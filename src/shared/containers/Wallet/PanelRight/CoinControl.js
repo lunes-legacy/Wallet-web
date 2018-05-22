@@ -8,14 +8,14 @@ import { Col, Row } from "Components/index"
 
 const StyledCoinControl = styled.div`
   width: 100%;
-  padding: 50px 25px;
+  padding: 30px 25px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 `;
 const WrapAmount = styled.div`
   text-align: center;
   margin-bottom: 2rem;
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     text-align: right;
     margin-bottom: 0;
     margin-right: 2rem;
@@ -31,7 +31,7 @@ const Amount = styled.div`
   font-size: 2rem;
   color: white;
 
-  @media (min-width: 470px) {
+  @media (${style.media.mobile2}) {
     font-size: 3rem;
   }
 `;
@@ -43,7 +43,7 @@ const MonetaryValue = styled.div`
   font-size: 1.2rem;
   line-height: 50px;
 
-  @media (min-width: 470px) {
+  @media (${style.media.mobile2}) {
     font-size: 1.5rem;
   }
 `;
@@ -70,14 +70,14 @@ const CoinAction = styled.div`
   text-align: center;
   width: 70px;
 
-  @media (min-width: 470px) {
+  @media (${style.media.mobile2}) {
     border-radius: 10px;
     font-size: 1.5rem;
     padding: 10px 0;
     width: 90px;
   }
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     margin: 0 1rem;
   }
 `;

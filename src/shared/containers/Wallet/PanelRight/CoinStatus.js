@@ -24,7 +24,7 @@ const CoinDetailsText = styled.div`
   font-size: 1.5rem;
   color: white;
 
-  @media (min-width: 1024px) {
+  @media (${style.media.laptop}) {
     font-size: 2rem;
   }
 `;
@@ -33,25 +33,33 @@ const CoinDetails = styled.div`
   margin-top: 3rem;
   padding-left: 1rem;
 
-  @media (min-width: 470px) {
+  @media (${style.media.mobile2}) {
     margin-top: 2rem;
     padding-left: 2rem;
   }
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     padding-left: 3rem;
+  }
+
+  @media (${style.media.laptop}) {
+    text-align: center;
   }
 `;
 
 const GraphContainer = styled.div`
   padding: 1rem;
 
-  @media (min-width: 470px) {
+  @media (${style.media.mobile2}) {
     padding: 1rem 2rem;
   }
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     padding: 1rem 3rem;
+  }
+
+  @media (${style.media.laptop}) {
+    padding: 1rem 20%;
   }
 `;
 
@@ -65,12 +73,12 @@ const WrapCoinPercent = styled.div`
   margin-top: 3rem !important;
   width: 4rem !important;
 
-  @media (min-width: 470px) {
+  @media (${style.media.mobile2}) {
     margin-top: 40px !important;
     width: 7rem !important;
   }
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     width: 9rem !important;
   }
 `;
@@ -83,7 +91,7 @@ const CoinPercent = styled.div`
   text-align: center;
   padding: 10px 25px;
 
-  @media (min-width: 790px) {
+  @media (${style.media.tablet2}) {
     font-size: 2rem;
   }
 `;

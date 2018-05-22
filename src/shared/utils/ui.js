@@ -15,13 +15,16 @@ export const toggleTranslateX = ({element, from, to}) => {
 export const toggleWidth = ({element, visible, hidden}) => {
 	let state = element.getAttribute('state');
 	if (state === 'visible') {
-		element.style.width    = hidden;
-		element.style.maxWidth = '0px';
+    element.style.width    = hidden;
+		element.style.minWidth = '0';
+    element.style.maxWidth = '0px';
+		element.style.maxWidth = '280px';
 		element.setAttribute('state', 'hidden');
 		visibilityAllChildren({element, value: 'hidden'});
 	} else {
 		element.style.width    = visible;
-		element.style.maxWidth = '500px';
+		element.style.minWidth = '130px';
+		element.style.maxWidth = '280px';
 		element.setAttribute('state', 'visible');
 		setTimeout(() => {
 			visibilityAllChildren({element, value: 'visible'});
@@ -32,7 +35,8 @@ export const toggleScaleX = ({element, visible, hidden}) => {
 	let state = element.getAttribute('state');
 	if (state === 'visible') {
 		element.style.transform = `scaleX(${hidden})`;
-		element.style.opacity   = `0`;
+    element.style.opacity   = `0`;
+		element.style.maxWidth = '280px';
 		element.setAttribute('state', 'hidden');
 	} else {
 		element.style.transform = `scaleX(${visible})`;

@@ -12,5 +12,5 @@ export let Loading = styled.div`
 	animation: ${rotationLoading} 1s linear infinite;
 	width: 75px;
 	height: 75px;
-	margin: 0 auto;
+  margin: 0 auto;
 `;

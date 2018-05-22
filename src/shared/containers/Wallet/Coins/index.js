@@ -6,74 +6,95 @@ import { connect } from "react-redux";
 
 import { Loading } from "Components/Loading";
 
-let Coin = styled.div`
-  width: auto;
-  min-width: 100%;
-  height: 100px;
+
+const Coin = styled.div`
+  background: ${style.normalLilac};
+  border-radius: 5px;
+  cursor: pointer;
   display: flex;
   flex-flow: nowrap;
-  background: ${style.normalLilac};
-  cursor: pointer;
+  height: 70px;
+  min-width: 100%;
+  padding: 0 1rem;
+  width: auto;
 
   box-shadow: 30px 0px 20px rgba(0, 0, 0, 0);
   transform: translateX(0);
-  transition: transform 0.3s, box-shadow 0.4s;
+  transition: transform .3s, box-shadow .4s;
 
   &:hover {
     box-shadow: 20px 0px 40px rgba(0, 0, 0, 0.1);
     transform: translateX(20px);
   }
 
-  @media (min-width: 320px) {
-    padding: 0 3rem 0 3rem;
+  @media (${style.media.tablet2}) {
+    padding: 0 2rem;
+    height: 85px;
   }
-  @media (min-width: 768px) {
-    padding: 0 5rem 0 5rem;
+
+  @media (${style.media.laptop}) {
+    padding: 0 3rem;
+    height: 100px;
   }
 `;
-let CoinsHeader = styled.div`
-  ${TextBase} height: 75px;
-  width: 100%;
+
+const CoinsHeader = styled.div`
+  ${TextBase}
+  display: flex;
+  align-items: center;
   background: #654fa4;
-  color: white;
+  font-size: 1.2rem;
+  height: 60px;
+  justify-content: center;
+  width: 100%;
+
+  @media (${style.media.tablet2}) {
+    font-size: 1.4rem;
+  }
+`;
+
+const WrapCoinImg = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 0 0 40px;
-`;
-let WrapCoinImg = styled.div`
-  width: 50%;
-  height: 100px;
-  display: flex;
   justify-content: flex-start;
   align-items: center;
 `;
-let CoinImg = styled.img`
-  width: 50px;
-  height: 50px;
-  min-width: 50px;
+
+const CoinImg = styled.img`
+  width: 25px;
+  height: 25px;
+  min-width: 25px;
+
+  @media (${style.media.tablet2}) {
+    width: 32px;
+    height: 32px;
+  }
+
+  @media (${style.media.laptop}) {
+    width: 40px;
+    height: 40px;
+  }
 `;
-let WrapCoinData = styled.div`
-  height: 100px;
-  width: auto;
+
+const WrapCoinData = styled.div`
   display: flex;
   flex-flow: wrap;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   align-content: center;
 `;
-let CoinValue = styled.div`
-  width: auto;
-  // height: 50px;
-  text-align: right;
-  ${TextBase};
-`;
-let CoinAmount = styled.div`
+
+const CoinValue = styled.div`
+  ${TextBase}
   width: 100%;
-  // height: 50px;
   text-align: right;
-  ${TextBase};
+  font-size: 1.2rem;
+
+  @media (${style.media.tablet2}) {
+    font-size: 1.4rem;
+  }
 `;
+
+const CoinAmount = CoinValue.extend``;
 
 class Coins extends React.Component {
   constructor(props) {
@@ -87,7 +108,7 @@ class Coins extends React.Component {
     let { balance, coinsPrice } = this.props;
     return (
       <div>
-        <CoinsHeader>MINHAS CARTEIRAS</CoinsHeader>
+        <CoinsHeader clWhite>MINHAS CARTEIRAS</CoinsHeader>
 
         <img src={"/img/wave-my-wallets.png"} style={{ width: "100%" }} />
 
@@ -111,11 +132,11 @@ class Coins extends React.Component {
                   <CoinImg src="/img/bitcoin.svg" />
                 </WrapCoinImg>
                 <WrapCoinData>
-                  <CoinAmount clWhite offSide size={"2.5rem"}>
-                    {balance[coinKey].total_confirmed}
+                  <CoinAmount clWhite offSide>
+                    0.04201921{/* {balance[coinKey].total_confirmed} */}
                   </CoinAmount>
-                  <CoinValue clWhite offSide size={"2rem"}>
-                    {`USD ${balance[coinKey].total_amount}`}
+                  <CoinValue clWhite offSide>
+                    USD 348,75{/* {`USD ${balance[coinKey].total_amount}`} */}
                   </CoinValue>
                 </WrapCoinData>
               </Coin>
@@ -127,10 +148,12 @@ class Coins extends React.Component {
     );
   }
 }
-let styledCoins = styled(Coins)`
+
+const styledCoins = styled(Coins)`
   width: auto;
   min-width: 100%;
 `;
+
 const mapStateToProps = state => {
   return {
     wallet: state.wallet
