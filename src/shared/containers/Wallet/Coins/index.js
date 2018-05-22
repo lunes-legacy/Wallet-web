@@ -133,10 +133,10 @@ class Coins extends React.Component {
                 </WrapCoinImg>
                 <WrapCoinData>
                   <CoinAmount clWhite offSide>
-                    0.04201921{/* {balance[coinKey].total_confirmed} */}
+                    {balance[coinKey].total_confirmed}
                   </CoinAmount>
                   <CoinValue clWhite offSide>
-                    USD 348,75{/* {`USD ${balance[coinKey].total_amount}`} */}
+                    {`USD ${balance[coinKey].total_amount}`}
                   </CoinValue>
                 </WrapCoinData>
               </Coin>
