@@ -2,14 +2,18 @@
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 //this is the directory of the target component to test
+let polyfill        = 'babel-polyfill';
 let targetComponent = __dirname+'/tests/components/index.js';
 __webpack_public_path__ = '/';
 module.exports = {
 	mode: 'development',
-	entry: targetComponent,
+	entry: [polyfill, targetComponent],
 	output: {
 		filename: 'test.bundle.js',
-		path: __dirname+'/public/test/'
+		path: __dirname+'/tests/components/bundle/'
+	},
+	node: {
+		fs: 'empty'
 	},
 	module: {
 		rules: [
@@ -28,7 +32,7 @@ module.exports = {
 			host: 'localhost',
 			port: 8000,
 			server: {
-				baseDir: ['./public/']
+				baseDir: ['./tests/components/', './public/']
 			}
 		})
 	],
@@ -41,7 +45,8 @@ module.exports = {
 			Stores: __dirname+'/src/shared/stores',
 			Utils: __dirname+'/src/shared/utils',
 			Shared: __dirname+'/src/shared/',
-			Auth: __dirname+'/src/shared/auth/',
+      Auth: __dirname+'/src/shared/auth/',
+      Classes: __dirname+'/src/shared/classes'
 		}
 	}
 };

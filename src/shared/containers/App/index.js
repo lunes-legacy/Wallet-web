@@ -27,11 +27,6 @@ let Panels = styled.div`
 	width: 100%;
 	height: 100%;
 	display: flex;
-	flex-flow: wrap;
-
-	@media (min-width: 768px) {
-		flex-flow: nowrap;
-	}
 `;
 let WrapApp = styled.div`
 	width: 100%;
@@ -72,16 +67,16 @@ class App extends React.Component {
 					</WrapLogo>
 					<WrapBalance>
 						<Balance>
-							<Text clWhite txLight txInline >Balance: </Text>
-							<Text clNormalGreen txBold txInline >LNS </Text> 
-							<Text clWhite txBold txInline >1,300.00</Text>
+							<Text clWhite txLight txInline offSide >Balance: </Text>
+							<Text clNormalGreen txNormal txInline offSide >LNS </Text>
+							<Text clWhite txNormal txInline offSide>1,300.00</Text>
 						</Balance>
 						<Text clNormalGreen txBold txRight size={'1.6rem'}>$ 130.00</Text>
 					</WrapBalance>
 				</Header>
 				<Panels>
 					<PanelLeft/>
-					
+
 					<PanelRight>
 						<Switch>
 							<Route exact path={"/app/"} component={Portfolio}/>

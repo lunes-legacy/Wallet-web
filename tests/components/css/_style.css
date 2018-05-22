@@ -1,0 +1,84 @@
+* {
+	box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+	font-family: Roboto, sans-serif;
+}
+body {
+	background: #4B2C82;
+	height: 100vh;
+}
+html {
+	/*I've put important here, because materialize was overwriting it*/
+	font-size: 10px!important; /*BASE TO REM*/
+}
+
+@keyframes input_text_label_shadow_down {
+	0% {
+		text-shadow: 0px 0px 0px;
+	}
+	30% {
+		text-shadow: 0px -18px 2px;
+	}
+	60% {
+		text-shadow: 0px 9px 2px;
+	}
+	80% {
+		text-shadow: 0px -7px 2px;
+	}
+	100% {
+		text-shadow: 0px 0px 0px transparent;
+	}
+}
+@keyframes input_text_label_shadow_up {
+	0% {
+		text-shadow: 0px 18px 2px;
+	}
+	30% {
+		text-shadow: 0px 25px 2px;
+	}
+	60% {
+		text-shadow: 0px -9px 2px;
+	}
+	80% {
+		text-shadow: 0px 7px 2px;
+	}
+	100% {
+		text-shadow: 0px 0px 0px transparent;
+	}
+}
+/*@keyframes input_text_label_shadow_down {
+	0% {
+		text-shadow: 0px 0px 0px;
+	}
+	30% {
+		text-shadow: 0px -18px 2px;
+	}
+	60% {
+		text-shadow: 0px 9px 2px;
+	}
+	80% {
+		text-shadow: 0px -7px 2px;
+	}
+	100% {
+		text-shadow: 0px 0px 0px transparent;
+	}
+}
+@keyframes input_text_label_shadow_up {
+	0% {
+		text-shadow: 0px 0px 0px;
+	}
+	30% {
+		text-shadow: 0px 18px 2px;
+	}
+	60% {
+		text-shadow: 0px -9px 2px;
+	}
+	80% {
+		text-shadow: 0px 7px 2px;
+	}
+	100% {
+		text-shadow: 0px 0px 0px transparent;
+	}
+}*/
+

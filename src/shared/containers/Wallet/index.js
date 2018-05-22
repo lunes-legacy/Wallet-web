@@ -71,33 +71,35 @@ class Wallet extends React.Component {
 	}
 	componentDidMount = async () => {
 		let cookies = new CookieClass;
-		let user    = cookies.getCookie('user').user;
-		// let userObj = new UserClass;
-		// let user    = await userObj.login({email: '', password: ''});
+	    // let user    = cookies.get('user').user.toString();
+		let userObj = new UserClass;
+		let user    = await userObj.login({email: '', password: ''});
+		console.log(user, "containers/Wallet -> USER");
 		if (!user) {
 			return;
 		}
-		let wallet     = new WalletClass;
+		let wallet = new WalletClass;
 		let balance;
 		try {
 			balance = await wallet.getBalance(user);
 		} catch(e) {
-			console.log(e);
+			console.error(e, "containers/Wallet componentDidMount error");
 			return;
 		}
-		let coinsPrice = wallet.coinsPrice;
+		let coinsPrice = await wallet.getCoinsPrice();
+		console.error(coinsPrice,"containers/Wallet -> coinsPrice");
 
 		this.props.setBalance({balance, coinsPrice});
 	}
 	handleTogglePanelLeft = (event) => {
 		let panelLeftEl = event.currentTarget.parentElement;
-		toggleWidth({ 
+		toggleWidth({
 			element: panelLeftEl,
-			visible: '31.6666%', 
+			visible: '31.6666%',
 			hidden: '0px'
 		});
 	}
-	
+
 	render() {
 		let { coinsPrice, balance, status } = this.props.wallet.panelLeft;
 		return(
@@ -131,7 +133,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch({
 				type: 'WALLET_TOGGLE_PANEL_LEFT',
 				payload: status
-			});	
+			});
 		}
 	}
 }

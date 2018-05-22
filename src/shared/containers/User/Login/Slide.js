@@ -13,19 +13,22 @@ let Container = styled.div`
 
 let images = [
   {
-    link:
-      "https://cdn.discordapp.com/attachments/441307920714694656/441312361442181140/Browser_window1.png",
-    text: `Aproveite da usabilidade e tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança.`
+    link: "/img/user_panel_right/img-slide1.png",
+    text: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
+    Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, 
+    pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.`
   },
   {
-    link:
-      "https://cdn.discordapp.com/attachments/441307920714694656/441312361794502657/Browser_window2.png",
-    text: "EXEMPLO2"
+    link: "/img/user_panel_right/img-slide2.png",
+    text: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
+    Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, 
+    pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.`
   },
   {
-    link:
-      "https://cdn.discordapp.com/attachments/441307920714694656/441312363249926154/Browser_window3.png",
-    text: "EXEMPLO3"
+    link: "/img/user_panel_right/img-slide3.png",
+    text: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
+    Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, 
+    pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.`
   }
 ];
 

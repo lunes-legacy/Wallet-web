@@ -1,5 +1,19 @@
 {
-	"plugins": [
-		"transform-object-rest-spread"
-	]
+	"env": {
+		"development": {
+			"plugins": [
+				"transform-object-rest-spread"
+			],
+		    "presets": [
+		        ["es2015", { "modules": false }]
+		    ],
+		},
+	    "test": {
+	      "presets": [
+	        [
+	          "env",{"targets": {"node": "current"}}
+	        ]
+	      ]
+	    }
+	}
 }
