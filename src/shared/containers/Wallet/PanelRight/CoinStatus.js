@@ -114,8 +114,6 @@ class CoinStatus extends React.Component {
       return {
         coin_porcentage_price: (currentValueCoin * 100 / lastValueCoin - 100).toFixed(2)
       };
-    }, () => {
-      console.log(this.state, "THIS.STATE <<<<<<<<<<<<<<<<<<<<<");
     });
   };
   render() {

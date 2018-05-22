@@ -49,7 +49,7 @@ class PanelRight extends React.Component {
 	getTransactionHistory  = async () => {
 		try {
 			let wallet      = new WalletClass;
-			let coinHistory = await wallet.getHistory({coin: this.coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
+			let coinHistory = await wallet.getTxHistory({coin: this.coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
 			if (coinHistory) {
 				this.props.setCoinHistory(coinHistory);
 			}

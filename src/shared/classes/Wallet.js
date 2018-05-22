@@ -108,7 +108,7 @@ export class WalletClass {
     }
   };
   //"1Q7Jmho4FixWBiTVcZ5aKXv4rTMMp6CjiD"
-  getHistory = async ({
+  getTxHistory = async ({
     coin = undefined,
     address = undefined
   }) => {

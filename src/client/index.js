@@ -8,7 +8,7 @@ import { createBrowserHistory } from 'history';
 import App from 'Containers/App';
 import AppSwitcher from 'Containers/AppSwitcher';
 
-import { store } from 'Stores/store';
+import { store } from 'Redux/stores';
 
 const history = createBrowserHistory({
 	basename: process.env.BROWSER_HISTORY_BASENAME

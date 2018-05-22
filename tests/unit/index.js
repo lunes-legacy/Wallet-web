@@ -25,10 +25,10 @@ describe(`\x1b[42m /src/shared/classes/Wallet \x1b[0m`, function() {
 			});
 	});
 	it('TRANSACTION HISTORY - It should be normal, with no errors', function(done) {
-		done();       // PULANDO...
-		return false; // SÓ POR GARANTIA
+		// done();       // PULANDO...
+		// return false; // SÓ POR GARANTIA
 
-		Wallet.getHistory({
+		Wallet.getTxHistory({
 			address: btcAddress,
 			coin: 'btc'
 		}).then(e => {

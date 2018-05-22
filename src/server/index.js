@@ -9,7 +9,7 @@ import CookieClass        from 'Classes/Cookie';
 import { users }          from 'lunes-lib';
 
 import { errorPattern } from 'Utils/functions';
-import { store }        from 'Stores/store';
+import { store }        from 'Redux/stores';
 import App              from 'Containers/App/index';
 import AppSwitcher      from 'Containers/AppSwitcher';
 
