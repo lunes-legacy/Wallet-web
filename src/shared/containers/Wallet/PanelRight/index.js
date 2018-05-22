@@ -46,32 +46,34 @@ class PanelRight extends React.Component {
 			hidden: '0'
 		});
 	}
-	getTransactionHistory  = async (coinName) => {
-		let wallet      = new WalletClass;
-		let coinHistory = await wallet.getHistory({coin: coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
-		if (coinHistory) {
-			this.props.setCoinHistory(coinHistory);
+	getTransactionHistory  = async () => {
+		try {
+			let wallet      = new WalletClass;
+			let coinHistory = await wallet.getHistory({coin: this.coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
+			if (coinHistory) {
+				this.props.setCoinHistory(coinHistory);
+			}
+		} catch (e) {
+			console.error(e);
 		}
 	}
 	componentDidMount = async() => {
+		let { coinName, coinPrice } = this.props.wallet && this.props.wallet.panelRight;
+		console.log("MONTEIIIIIIIIIIIIIIIIIIII");
+		this.getTransactionHistory();
 	}
 	render() {
-		if (!this.props.wallet.panelRight.coinName) {
-			console.warn("components/Wallet -> this.props.wallet.panelRight.coinName não existe ou está undefined");
-			return <Default/>;
-		}
-		this.getTransactionHistory(this.props.wallet.panelRight.coinName);
+		let { coinName, coinPrice } = this.props.wallet && this.props.wallet.panelRight;
 		/*
-			coinPrice: {BRL: '31.000,00', USD: '7.600,00'}
+			coinPrice: { BRL: '31.000,00', USD: '7.600,00' }
 			coiName: 'btc' || 'ltc' || 'eth'
 			status: 'open' || 'closed' (status of this panel, hidden or visible)
 		*/
-		// let { coinPrice, coinName, status } = this.props.wallet.panelRight;
-		// // if (!coinPrice || !coinName || status !== 'open')
-		// if (!coinPrice || !coinName)
-		// 	console.warn("Variaveis existem mas alguma está undefined");
-		// 	return <Default/>;
-
+		if (!coinName || !coinPrice) {
+			console.warn(`coinName: ${coinName} - coinPrice: ${coinPrice}`,"components/Wallet -> this.props.wallet.panelRight.coinName não existe ou está undefined");
+			return <Default/>;
+		}
+		console.warn(`%ccoinName: ${coinName} - coinPrice: ${coinPrice}`,"components/Wallet -> this.props.wallet.panelRight.coinName não existe ou está undefined", "background: black; color:white;");
 		return (
 			<StyledPanelRight>
 				<CoinStatus/>

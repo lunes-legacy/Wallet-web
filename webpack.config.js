@@ -2,6 +2,7 @@ const HardSourcePlugin = require('hard-source-webpack-plugin');
 var nodeExternals = require('webpack-node-externals');
 
 let client = {
+	target: 'web',
 	entry: ['babel-polyfill',__dirname+'/src/client/index.js'],
 	output: {
 		path: __dirname+'/public/',

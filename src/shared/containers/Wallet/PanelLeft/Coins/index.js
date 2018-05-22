@@ -1,11 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import style from "Shared/style-variables";
+import React       from "react";
+import styled      from "styled-components";
+import style       from "Shared/style-variables";
 import { TextBase, H1 } from "Components";
 import { connect } from "react-redux";
 
 import { Loading } from "Components/Loading";
 
+let StyledCoins = styled.div`
+  width: auto;
+  min-width: 100%;
+`;
 let Coin = styled.div`
   width: auto;
   min-width: 100%;
@@ -83,55 +87,56 @@ class Coins extends React.Component {
       coinsPrice: undefined
     };
   }
-  render() {
-    let { balance, coinsPrice } = this.props;
-    return (
-      <div>
-        <CoinsHeader>MINHAS CARTEIRAS</CoinsHeader>
+  renderCoins = () => {
+    let { balance, coinsPrice } = this.props.wallet.panelLeft;
 
+    if (!coinsPrice || !balance) {
+      return <Loading />;
+    } else if (!balance.btc) {
+      return <H1>Moeda(BTC) não encontrada</H1>;
+    }
+    let components = [];
+    //EX: coinKey = 'btc';
+    for (let coinKey in balance) {
+      console.log(coinsPrice, "OAIDOIASODIASIDSAIDISADIODi");
+      let tmp = (
+        <Coin
+          key={coinKey}
+          onClick={() => {
+            this.props.openPanelRight({ coinPrice: coinsPrice[coinKey], coinName: coinKey, isOpenModalReceive: false });
+          }}
+        >
+          <WrapCoinImg>
+            <CoinImg src="/img/bitcoin.svg" />
+          </WrapCoinImg>
+          <WrapCoinData>
+            <CoinAmount clWhite offSide size={"2.5rem"}>
+              { balance[coinKey].total_confirmed }
+            </CoinAmount>
+            <CoinValue clWhite offSide size={"2rem"}>
+              { `USD ${balance[coinKey].total_amount}` }
+            </CoinValue>
+          </WrapCoinData>
+        </Coin>
+      );
+      components.push(tmp);
+    }
+    return components;
+  }
+  
+  render() {
+    return (
+      <StyledCoins>
+        <CoinsHeader>MINHAS CARTEIRAS</CoinsHeader>
+        
         <img src={"/img/wave-my-wallets.png"} style={{ width: "100%" }} />
 
-        {(() => {
-          console.log(balance, "BALANCE");
-          if (!coinsPrice || !balance) {
-            return <Loading />;
-          } else if (!balance.btc) {
-            return <H1>Moeda(BTC) não encontrada</H1>;
-          }
-          let components = [];
-          //EX: coinKey = 'btc';
-          for (let coinKey in balance) {
-            components.push(
-              <Coin
-                key={coinKey}
-                onClick={() => {
-                  this.props.openPanelRight({ coinPrice: coinsPrice[coinKey], coinName: coinKey, isOpenModalReceive: false });
-                }}
-              >
-                <WrapCoinImg>
-                  <CoinImg src="/img/bitcoin.svg" />
-                </WrapCoinImg>
-                <WrapCoinData>
-                  <CoinAmount clWhite offSide size={"2.5rem"}>
-                    {balance[coinKey].total_confirmed}
-                  </CoinAmount>
-                  <CoinValue clWhite offSide size={"2rem"}>
-                    {`USD ${balance[coinKey].total_amount}`}
-                  </CoinValue>
-                </WrapCoinData>
-              </Coin>
-            );
-          }
-          return components;
-        })()}
-      </div>
+        { this.renderCoins() }
+      </StyledCoins>
     );
   }
 }
-let styledCoins = styled(Coins)`
-  width: auto;
-  min-width: 100%;
-`;
+
 const mapStateToProps = state => {
   return {
     wallet: state.wallet
@@ -139,7 +144,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    openPanelRight: ({ coinPrice, coinName,  }) => {
+    openPanelRight: ({ coinPrice, coinName }) => {
       dispatch({
         type: "WALLET_OPEN_PANELRIGHT",
         payload: { coinPrice, coinName }
@@ -148,4 +153,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(styledCoins);
+export default connect(mapStateToProps, mapDispatchToProps)(Coins);
