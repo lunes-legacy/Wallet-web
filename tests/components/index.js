@@ -1,17 +1,9 @@
-<<<<<<< HEAD
-import React from 'react';
+import React      from 'react';
 import { render } from 'react-dom';
-import Modal from 'Containers/Wallet/PanelRight/Modal/Send/index';
-import Input from 'Components/forms/Input';
+import Modal      from 'Containers/Wallet/PanelRight/Modal/Send/index';
+import Receive    from 'Containers/Wallet/PanelRight/Modal/Receive/index';
+import Input      from 'Components/forms/Input';
 import { Col, Row } from 'Components/index';
-=======
-import React from "react";
-import { render } from "react-dom";
-import ModalSend from "Containers/Wallet/PanelRight/Modal/Send/index";
-import ModalReceive from "Containers/Wallet/PanelRight/Modal/Receive/index";
-import Input from "Components/forms/Input";
-import { Col, Row } from "Components/index";
->>>>>>> 3b963681ab6ad56b12365d7fc521c2101aa71ef0
 
 // let toRender = () => {
 // 	return (
@@ -93,15 +85,15 @@ let props = {
   }
 };
 
+// const toRender = () => {
+//   return(
+//     <Modal {...props}/> 
+//   );
+// }
 const toRender = () => {
-<<<<<<< HEAD
 	return(
-		<Modal {...props}/>	
+		<Receive isShow={true}/>
 	);
 }
-=======
-  return <ModalReceive {...props} />;
-};
->>>>>>> 3b963681ab6ad56b12365d7fc521c2101aa71ef0
 
 render(toRender(), document.querySelector(".root"));

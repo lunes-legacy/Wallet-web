@@ -1,17 +1,20 @@
+Wandyer, na hora do usuário fazer a transação, pode ocorrer um problema de o usuário digitar 
+
+
+currencies: {
+	default: 'BRL',    #BRL | USD | EUR
+	price: {
+		BRL,
+		USD,
+		EUR
+	}
+},
+cryptocoins: {
+	default: 'BTC', #ALGO À PENSAR
+	btc: { USD: 10000, BRL: 30000 },
+	eth: { USD: 400, BRL: 1200 }
+},
 components: {
-	currencies: {
-		default: 'BRL',    #BRL | USD | EUR
-		price: {
-			BRL,
-			USD,
-			EUR
-		}
-	},
-	cryptocoins: {
-		default: 'BTC', #ALGO À PENSAR
-		btc: { USD: 10000, BRL: 30000 },
-		eth: { USD: 400, BRL: 1200 }
-	},
 	wallet: {
 		balance: { 
 			btc { 
@@ -51,3 +54,6 @@ Parametro com underline(_) é exclusivo para o pai, mas os outros podem usar
 //Explicações
 1) components.wallet._current_coin
 CoinStatus/CoinControl/Histories vão estar atentos a mudanças feitas pelo o redux e a cada mudança eles fazem requisições no servidor individualmente. Talvez poderemos armazenar por um curto periodo nos cookies
+
+//Questões
+1) Precisamos ver qual um bom periodo de tempo para fazer uma nova requisição no servidor para pegar o preço da moeda. Na hora da transação tem que ser obrigatório, fazer uma nova requisição para ter um preço mais atualizado possível

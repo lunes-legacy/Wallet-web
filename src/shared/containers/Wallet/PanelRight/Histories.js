@@ -4,6 +4,8 @@ import styled from "styled-components";
 import style from "Shared/style-variables";
 import { timestampDiff } from "Utils/functions";
 import { Col, Row } from 'Components/index';
+import { WalletClass } from 'Classes/Wallet';
+import sb from 'satoshi-bitcoin';
 
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
@@ -176,6 +178,12 @@ const StatusStyle = styled.div`
 `;
 
 class Histories extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      coinHistory: []
+    };
+  }
   timeToText = (txTime, type) => {
     const hoursDiff = timestampDiff({ first: txTime });
     if (hoursDiff < 48) {
@@ -234,14 +242,25 @@ class Histories extends React.Component {
     return;
   };
 
+  componentDidMount = async () => {
+    let { coinHistory, coinPrice, coinName } = this.props.wallet.panelRight;
+    // coinHistory = await new WalletClass().getTxHistory({coin: coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
+    coinHistory = await new WalletClass().getTxHistory({coin: coinName, address: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF'});
+    this.setState({
+      coinHistory: coinHistory.data.history
+    });
+  }
+
   render() {
     let { coinHistory, coinPrice, coinName } = this.props.wallet.panelRight;
-    if (!coinPrice || !coinHistory) {
+    console.log(this.state, "____HISTORIES STATE_____");
+
+    if (!coinPrice) {
       return null;
     }
     return (
       <StyledHistories>
-        {coinHistory.map((tx, key) => {
+        {this.state.coinHistory.map((tx, key) => {
           return (
             <History key={key}>
               <HistoryHead onClick={this.handleToggleHistory}>
@@ -255,17 +274,18 @@ class Histories extends React.Component {
                   <Col s={6} m={4} l={5}>
                     <HistoryHeadText>
                       <StatusStyle type={tx.type}>{this.icoStatusToText(tx.type)}</StatusStyle>
-                      {this.timeToText(tx.time)}
+                      {/*this.timeToText(tx.time)*/}
+                      90 dias atrás
                     </HistoryHeadText>
                   </Col>
                   <Col s={12} m={6} l={5}>
                     <HistoryHeadAmount>
                       <HeadAmountCoin type={tx.type}>
                         {this.SignalControl(tx.type)}
-                        {tx.value}
+                        {sb.toBitcoin(tx.nativeAmount)}
                       </HeadAmountCoin>
                       <HeadAmountMoney>
-                        {monetaryValue(coinPrice.BRL * parseFloat(tx.value), {style: 'currency',  currency: 'BRL'})}
+                        { monetaryValue(coinPrice.USD * parseFloat(sb.toBitcoin(tx.nativeAmount)), {style: 'currency',  currency: 'USD'}) }
                       </HeadAmountMoney>
                     </HistoryHeadAmount>
                   </Col>
@@ -293,7 +313,8 @@ class Histories extends React.Component {
                     <HistoryContentItem clWhite>
                       <Text size={"1.4rem"}>Data: </Text>
                       <Text size={"1.4rem"} txBold>
-                        {this.parseTimestampToDate(tx.time)}
+                        {/*this.parseTimestampToDate(tx.time)*/}
+                        Quarta-feira 23/05/2018
                       </Text>
                     </HistoryContentItem>
                   </Col>

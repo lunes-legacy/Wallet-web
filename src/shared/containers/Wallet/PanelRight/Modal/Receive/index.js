@@ -43,7 +43,8 @@ class ModalReceive extends React.Component {
   }
 
   getPayAddress = () => {
-    let data = new CookieClass().getCookie("user").user.replace("; _ga", "");
+    // let data = new CookieClass().get("user").user.replace("; _ga", "");
+    let data = '{"_id":"5afc4dd1eb40bcbca23f92ad","accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZmM0ZGQxZWI0MGJjYmNhMjNmOTJhZCIsInBob25lVmVyaWZpZWQiOm51bGwsInBpbiI6bnVsbCwidHdvZmFFbmFibGVkIjpudWxsLCJpYXQiOjE1MjcwMDAwNTAsImV4cCI6MTUyNzAwNzI1MH0.uDQQ-pdKDhg0ebagDFVUjwiFei_QyVhlygc7uubsKyo","email":"wandyer1@lunes.io","fullname":"Wandyer Silva","avatar":{"small":""},"homeAddress":"","phoneNumber":"","city":"","state":"","country":"","birthDate":"","confirmIcoTerm":false,"ownCoupon":"5SLBR768","coupon":"","whitelist":false,"pinIsValidated":false,"phoneIsValidated":false,"twofaEnabled":false,"wallet":{"hash":"skull ticket hidden split couch orient season tooth valley learn edge truck","coins":[{"symbol":"btc","currentIndex":0,"addresses":[{"index":0,"address":"moNjrdaiwked7d8jYoNxpCTZC4CyheckQH","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"},{"symbol":"ltc","currentIndex":0,"addresses":[{"index":0,"address":"moNjrdaiwked7d8jYoNxpCTZC4CyheckQH","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"},{"symbol":"dash","currentIndex":0,"addresses":[{"index":0,"address":"yUBEQnE5Xz62qCBFFy3CsqMNSggLL2VJGQ","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"},{"symbol":"eth","currentIndex":0,"addresses":[{"index":0,"address":"0x4E3f5C5DEBf6cF3B6468407fD2D8379EB6725197","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"}]},"depositWallet":{}}';
     var address = JSON.parse(data);
     return address.wallet.coins[0].addresses[0].address;
   };
@@ -54,6 +55,7 @@ class ModalReceive extends React.Component {
     qr.addData(address);
     qr.make();
     let img = qr.createSvgTag();
+    if (!this.wrapperQr) return; //precisa tirar
     this.wrapperQr.innerHTML = img;
     let imgEl = this.wrapperQr.children[0];
     imgEl.style.width = "90%";
