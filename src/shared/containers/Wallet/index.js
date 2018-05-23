@@ -31,7 +31,8 @@ const PanelLeft = styled.div.attrs({
   background: ${style.normalLilac};
   box-shadow: 30px 0 40px rgba(0,0,0,.2);
 	height: 100%;
-	max-width: 280px;
+  max-width: 280px;
+  width: 30%;
   min-width: 130px;
   position: relative;
 	z-index: 2;

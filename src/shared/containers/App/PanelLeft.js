@@ -5,32 +5,53 @@ import styles from 'Shared/style-variables';
 import { Link as TmpLink } from 'react-router-dom';
 import { TextBase } from 'Components/TextBase';
 
-let StyledPanelLeft = styled.div`
-	width: 160px;
-	min-width: 160px;
+const StyledPanelLeft = styled.div`
+  width: 65px;
+  min-width: 65px;
 	height: 100%;
 	display: block;
 	background: ${styles.normalLilac2};
 	z-index: 3;
-	padding: 15px 0 0 20px;
+  padding-left: 1.5rem;
+  transition: .2s ease-in;
+
+  @media (${styles.media.tablet2}) {
+    width: 160px;
+  }
 `;
-let WrapLink = styled.div`
-	width: 100%;
-	display: flex;
+
+const WrapLink = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
 	justify-content: flex-start;
-	align-items: center;
-	padding: 35px 0 0 0;
+  margin: 1rem 0;
+  padding: 1rem 0;
+	width: 100%;
 `;
-let Icon = styled.img`
+
+const Icon = styled.img`
 	width: 25px;
 	height: 25px;
-	display: block;
 `;
-let CustomLink = styled(TmpLink)`
+
+const CustomLink = styled(TmpLink)`
 	${TextBase};
+  color: white;
 	line-height: 25px;
-	text-decoration: none;
-	color: white;
+  text-decoration: none;
+  transition-delay: .2s;
+  display: flex;
+  align-items: center;
+`;
+
+const CustomText = styled.div`
+  ${TextBase};
+  margin-left: 1rem;
+  display: none;
+
+  @media (${styles.media.tablet2}) {
+    display: inline-block;
+  }
 `;
 
 class PanelLeft extends React.Component {
@@ -38,20 +59,28 @@ class PanelLeft extends React.Component {
 		return(
 			<StyledPanelLeft>
 				<WrapLink>
-					<Icon src={'/img/app_panel_left/fake.png'}/>
-					<CustomLink to={"/app/portfolio"} size={'1.5rem'} >Portfolio</CustomLink>
+					<CustomLink to={"/app/portfolio"}>
+            <Icon src={'/img/app_panel_left/fake.png'} alt="Portfólio"/>
+            <CustomText size={'1.4rem'}>Portfólio</CustomText>
+          </CustomLink>
 				</WrapLink>
 				<WrapLink>
-					<Icon src={'/img/app_panel_left/fake.png'}/>
-					<CustomLink to={"/app/wallet"} size={'1.5rem'} >Wallet</CustomLink>
+					<CustomLink to={"/app/wallet"}>
+            <Icon src={'/img/app_panel_left/fake.png'} alt="Wallet"/>
+            <CustomText size={'1.4rem'}>Wallet</CustomText>
+          </CustomLink>
 				</WrapLink>
 				<WrapLink>
-					<Icon src={'/img/app_panel_left/fake.png'}/>
-					<CustomLink to={"/app/recharge"} size={'1.5rem'} >Recargas</CustomLink>
+					<CustomLink to={"/app/recharge"}>
+            <Icon src={'/img/app_panel_left/fake.png'} alt="Recargas"/>
+            <CustomText size={'1.4rem'}>Recargas</CustomText>
+          </CustomLink>
 				</WrapLink>
 				<WrapLink>
-					<Icon src={'/img/app_panel_left/fake.png'}/>
-					<CustomLink to={"/app/ticket"} size={'1.5rem'} >Boleto</CustomLink>
+					<CustomLink to={"/app/ticket"}>
+            <Icon src={'/img/app_panel_left/fake.png'} alt="Boleto"/>
+            <CustomText size={'1.4rem'}>Boleto</CustomText>
+          </CustomLink>
 				</WrapLink>
 			</StyledPanelLeft>
 		);
