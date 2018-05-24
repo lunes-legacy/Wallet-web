@@ -25,8 +25,8 @@ const HistoryHead = styled.div`
   cursor: pointer;
   padding: 10px 0;
   &:hover + .js-history-content {
+    max-height: 300px;
     height: 100%;
-    transform: scaleY(1);
   }
   width: 100%;
 `;
@@ -127,22 +127,26 @@ const HistoryContent = styled.div.attrs({
   className: "js-history-content"
 })`
   display: flex;
-  background: ${style.lightLilac};
+  background: ${style.normalLilac};
   flex-flow: nowrap;
-  height: 0;
   left: 0px;
   padding: 1rem 30% 1rem 3rem;
   top: 100%;
   width: 100%;
   word-wrap: break-word;
 
-  transform-origin: top;
-  transform: scaleY(0);
+  height: 0;
+  max-height: 0;
 
-  transition: .2s linear;
+  transition: all 1s;
 
   @media (${style.media.tablet2}) {
     padding: 1rem 2rem;
+  }
+
+  &:hover {
+    height: 100%;
+    max-height: 300px;
   }
 `;
 
