@@ -10,15 +10,20 @@ import { renderToString } from 'react-dom/server';
 // import Radio    from './radio';
 // import Checkbox from './checkbox';
 
+// import Select   from './select';
+import InputText     from './input-text';
+import InputRadio    from './input-radio';
+// import Checkbox from './checkbox';
+
 
 let Input = (props) => {
 	switch (props.type) {
-		// case 'text':     return <Text {...props}/>;   break;
+		case 'text':     return <InputText {...props}/>;   break;
 		// case 'number':   return <Text {...props}/>;   break;
-		// case 'radio':    return <Radio {...props}/>;  break;
+		case 'radio':    return <InputRadio {...props}/>;  break;
 		// case 'select':   return <Select {...props}/>; break;
 		// case 'checkbox': return <Checkbox {...props}/>; break;
 	}
-	return null;
+	return <input type="text" {...props}/>;
 }
 export default Input;

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
+    "dev-doc": "webpack --watch --hot --progress --config ./doc/webpack.config.js",
     "dev": "webpack --watch --hot --progress",
     "start": "nodemon ./src/server/bundle/index.bundle.js -w ./src/server/ -e bundle.js",
     "clear": "rm -f ./src/server/bundle/*.hot-update.* && rm -f ./public/*.hot-update.* && rm -f ./tests/components/bundle/*.hot-update.*",

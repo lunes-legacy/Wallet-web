@@ -59,7 +59,6 @@ class PanelRight extends React.Component {
 	}
 	componentDidMount = async() => {
 		let { coinName, coinPrice } = this.props.wallet && this.props.wallet.panelRight;
-		console.log("MONTEIIIIIIIIIIIIIIIIIIII");
 		this.getTransactionHistory();
 	}
 	render() {
