@@ -27,6 +27,7 @@ const HistoryHead = styled.div`
   &:hover + .js-history-content {
     max-height: 300px;
     height: 100%;
+    box-shadow: 0 5px 7px inset rgba(0,0,0,.2);
   }
   width: 100%;
 `;
@@ -147,6 +148,7 @@ const HistoryContent = styled.div.attrs({
   &:hover {
     height: 100%;
     max-height: 300px;
+    box-shadow: 0 5px 7px inset rgba(0,0,0,.2);
   }
 `;
 
@@ -291,6 +293,7 @@ class Histories extends React.Component {
                   </Col>
                 </Row>
               </HistoryHead>
+
               <HistoryContent>
                 <Row>
                   <Col m={6} l={6}>
