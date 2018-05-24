@@ -12,7 +12,7 @@ const StyledPanelLeft = styled.div`
 	display: block;
 	background: ${styles.normalLilac2};
 	z-index: 3;
-  padding-left: 1.5rem;
+  padding-left: 2rem;
   transition: .2s ease-in;
 
   @media (${styles.media.tablet2}) {
