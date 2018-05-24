@@ -14,6 +14,7 @@ const StyledCoins = styled.div`
 const Coin = styled.div`
   background: ${style.normalLilac};
   border-radius: 5px;
+  color: #fff;
   cursor: pointer;
   display: flex;
   flex-flow: nowrap;
