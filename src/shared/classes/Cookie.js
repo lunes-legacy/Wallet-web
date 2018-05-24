@@ -1,6 +1,6 @@
 export default class CookieClass {
 	static cookies;
-	getCookie = (name) => {
+	get = (name) => {
 		if (this.cookies)
 			return this.cookies;
 
@@ -20,7 +20,7 @@ export default class CookieClass {
 		this.cookies = readyCookies;
 		return this.cookies;
 	}
-	setCookie = ({ name, value, expires }) => {
+	set = ({ name, value, expires }) => {
 		if (!window) { return null }
 		document.cookie = `${name}=${value}; expires=${expires}`;
 	}

@@ -38,42 +38,42 @@ class PanelRight extends React.Component {
 		}
 	}
 	handleToggleHistory = (event) => {
-		let historyEl =
-			event.currentTarget.parentElement,
-		historyContentEl =
-			historyEl.querySelector(':nth-child(2)');
+		let historyEl        = event.currentTarget.parentElement;
+		let historyContentEl = historyEl.querySelector(':nth-child(2)');
 		toggleScaleY({
 			element: historyContentEl,
 			visible: '1',
 			hidden: '0'
 		});
 	}
-	componentDidMount = async() => {
-		let wallet = new WalletClass;
-		let coinHistory = await wallet.getHistory({address: undefined, accessToken: undefined});
-		// TO VERIFY
-		// WE NEED TO SEE IF THIS COINHISTORY RETURNS
-		// AN EMPTY DATA IF NO DATA WAS GET
-		if (coinHistory) {
-			this.props.setCoinHistory(coinHistory);
+	getTransactionHistory  = async () => {
+		try {
+			let wallet      = new WalletClass;
+			let coinHistory = await wallet.getTxHistory({coin: this.coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
+			if (coinHistory) {
+				this.props.setCoinHistory(coinHistory);
+			}
+		} catch (e) {
+			console.error(e);
 		}
 	}
+	componentDidMount = async() => {
+		let { coinName, coinPrice } = this.props.wallet && this.props.wallet.panelRight;
+		console.log("MONTEIIIIIIIIIIIIIIIIIIII");
+		this.getTransactionHistory();
+	}
 	render() {
-		if (!this.props.wallet.panelRight.coinName) {
-			console.warn("this.props.wallet.panelRight.coinName não existe ou está undefined");
-			return <Default/>;
-		}
+		let { coinName, coinPrice } = this.props.wallet && this.props.wallet.panelRight;
 		/*
-			coinPrice: {BRL: '31.000,00', USD: '7.600,00'}
+			coinPrice: { BRL: '31.000,00', USD: '7.600,00' }
 			coiName: 'btc' || 'ltc' || 'eth'
 			status: 'open' || 'closed' (status of this panel, hidden or visible)
 		*/
-		// let { coinPrice, coinName, status } = this.props.wallet.panelRight;
-		// // if (!coinPrice || !coinName || status !== 'open')
-		// if (!coinPrice || !coinName)
-		// 	console.warn("Variaveis existem mas alguma está undefined");
-		// 	return <Default/>;
-
+		if (!coinName || !coinPrice) {
+			console.warn(`coinName: ${coinName} - coinPrice: ${coinPrice}`,"components/Wallet -> this.props.wallet.panelRight.coinName não existe ou está undefined");
+			return <Default/>;
+		}
+		console.warn(`%ccoinName: ${coinName} - coinPrice: ${coinPrice}`,"components/Wallet -> this.props.wallet.panelRight.coinName não existe ou está undefined", "background: black; color:white;");
 		return (
 			<StyledPanelRight>
 				<CoinStatus/>

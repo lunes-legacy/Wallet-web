@@ -6,57 +6,23 @@ import sb              from 'satoshi-bitcoin';
 import { connect }     from 'react-redux';
 import { coins }       from 'lunes-lib';
 import CookieClass     from 'Classes/Cookie';
-import { toggleScaleX, toggleWidth } from 'Utils/ui';
 import { WalletClass } from 'Classes/Wallet';
 import UserClass       from 'Classes/User';
-
 
 //COMPONENTS
 import { TextBase }    from 'Components/TextBase';
 import { Text }        from 'Components/Text';
 import { Loading }     from 'Components/Loading';
 //PRIVATE COMPONENTS
+import PanelLeft       from './PanelLeft/index';
 import PanelRight      from './PanelRight/index';
-import Coins           from './Coins/index';
 
-const Panels = styled.div`
+//______INDEX
+let Panels = styled.div`
 	width: 100%;
 	height: 100%;
 	display: flex;
 `;
-
-const PanelLeft = styled.div.attrs({
-	state: 'visible'
-})`
-  background: ${style.normalLilac};
-  box-shadow: 30px 0 40px rgba(0,0,0,.2);
-	height: 100%;
-  max-width: 280px;
-  width: 30%;
-  min-width: 130px;
-  position: relative;
-	z-index: 2;
-
-	transform-origin: left;
-	transform: scaleX(1);
-	opacity: 1;
-
-	// transition: transform 0.3s, opacity 0.5s;
-	transition: width .3s, max-width .5s;
-`;
-
-const TogglePanelLeft = styled.div`
-	position: absolute;
-	right: -25px;
-	bottom: 50%;
-	width: 25px;
-	height: 25px;
-	background: white;
-	cursor: pointer;
-	visibility: visible!important;
-`;
-
-
 
 class Wallet extends React.Component {
 	constructor(props) {
@@ -67,48 +33,34 @@ class Wallet extends React.Component {
 			coinsPrice: undefined
 		};
 	}
-	setBalance = () => {
-
-	}
 	componentDidMount = async () => {
 		let cookies = new CookieClass;
-    // let user    = cookies.getCookie('user').user;
+	    // let user    = cookies.get('user').user.toString();
 		let userObj = new UserClass;
 		let user    = await userObj.login({email: '', password: ''});
-		if (!user) {
-			return;
-		}
-		let wallet     = new WalletClass;
+
+		console.log(user, "containers/Wallet -> USER");
+		if (!user) { return; }
+
+		let wallet = new WalletClass;
 		let balance;
 		try {
 			balance = await wallet.getBalance(user);
 		} catch(e) {
-			console.log(e);
+			console.error(e, "containers/Wallet componentDidMount error");
 			return;
 		}
-		let coinsPrice = wallet.coinsPrice;
+		let coinsPrice = await wallet.getCoinsPrice();
+		console.log(coinsPrice, "COINS PRICE <><><><><><<><><><><><><><><><><");
 
 		this.props.setBalance({balance, coinsPrice});
 	}
-	handleTogglePanelLeft = (event) => {
-		let panelLeftEl = event.currentTarget.parentElement;
-		toggleWidth({
-			element: panelLeftEl,
-			visible: '30%',
-			hidden: '0px'
-		});
-	}
 
 	render() {
-		let { coinsPrice, balance, status } = this.props.wallet.panelLeft;
 		return(
 			<Panels>
-				<PanelLeft>
-					<TogglePanelLeft onClick={this.handleTogglePanelLeft}/>
-					<Coins balance={balance} coinsPrice={coinsPrice}/>
-				</PanelLeft>
+				<PanelLeft/>
 
-				{/*<div className={"wrap-right-panel"}></div>*/}
 				<PanelRight/>
 			</Panels>
 		);

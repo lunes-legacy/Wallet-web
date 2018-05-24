@@ -4,5 +4,6 @@ import style from 'Shared/style-variables';
 import { TextBase } from './TextBase';
 
 export let Text = styled.div`
-	${TextBase}
+	${TextBase};
+	${props => props.css ? props.css : ''};
 `;
