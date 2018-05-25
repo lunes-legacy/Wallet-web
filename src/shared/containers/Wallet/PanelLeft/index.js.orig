@@ -17,6 +17,7 @@ let StyledPanelLeft = styled.div.attrs({
   min-width: 130px;
 	position: relative;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	width: 31.66666%;
 	overflow: visible;
 	user-select: none;
@@ -24,6 +25,15 @@ let StyledPanelLeft = styled.div.attrs({
   width: 30%;
 	z-index: 2;
 >>>>>>> cf72dbb7088583a4e71499dd7a8d6e9598a7498e
+=======
+  width: 30%;
+	z-index: 2;
+=======
+	width: 31.66666%;
+	overflow: visible;
+	user-select: none;
+>>>>>>> Arrumei o overflow/scroll das moedas estaticas, panelleft
+>>>>>>> new
 
 	transform-origin: left;
 	transform: scaleX(1);
