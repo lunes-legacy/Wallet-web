@@ -16,6 +16,8 @@ let StyledPanelLeft = styled.div.attrs({
 	z-index: 2;
 	position: relative;
 	width: 31.66666%;
+	overflow: visible;
+	user-select: none;
 
 	transform-origin: left;
 	transform: scaleX(1);
