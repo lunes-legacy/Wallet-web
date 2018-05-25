@@ -34,11 +34,14 @@ let DivCarrousel = styled.div`
 let P = styled.div`
   position: center;
   color: white;
-  font-size: 12pt;
-  margin-left: 3%;
+  font-size: 10pt;
+  margin-left: 5%;
   width: 100%;
+  padding-left:15%;
+  padding-right:15%;
   margin-top: 4%;
   margin-bottom: 4%;
+  text-align: center;
 `;
 let DivParagraph = styled.div`
   position: center;
