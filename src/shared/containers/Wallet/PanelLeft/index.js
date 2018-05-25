@@ -10,12 +10,14 @@ let StyledPanelLeft = styled.div.attrs({
 	state: 'visible'
 })`
 	background: ${style.normalLilac};
-	max-width: 90%;
+  box-shadow: 30px 0 40px rgba(0,0,0,.2);
+  color: #fff;
 	height: 100%;
-	box-shadow: 30px 0 40px rgba(0,0,0,.2);
-	z-index: 2;
+	max-width: 280px;
+  min-width: 130px;
 	position: relative;
-	width: 31.66666%;
+  width: 30%;
+	z-index: 2;
 
 	transform-origin: left;
 	transform: scaleX(1);
@@ -32,7 +34,7 @@ let TogglePanelLeft = styled.div`
 	height: 25px;
 	background: white;
 	cursor: pointer;
-	visibility: visible!important;
+	visibility: visible !important;
 `;
 
 class PanelLeft extends React.Component {
@@ -40,7 +42,7 @@ class PanelLeft extends React.Component {
 		let panelLeftEl = event.currentTarget.parentElement;
 		toggleWidth({
 			element: panelLeftEl,
-			visible: '31.6666%',
+			visible: '30%',
 			hidden: '0px'
 		});
 	}

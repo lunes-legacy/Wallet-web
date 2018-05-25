@@ -46,14 +46,17 @@ const CoinsHeader = styled.div`
   ${TextBase}
   display: flex;
   align-items: center;
-  background: #654fa4;
-  font-size: 1.2rem;
-  height: 60px;
+  background-image: url(/img/app_wallet/rectangle-wallet.svg);
+  background-size: 100% 100%;
+  font-size: 1.1rem;
+  height: 75px;
   justify-content: center;
+  padding-bottom: 2rem;
   width: 100%;
 
   @media (${style.media.tablet2}) {
     font-size: 1.4rem;
+    height: 95px;
   }
 `;
 
@@ -149,8 +152,6 @@ class Coins extends React.Component {
     return (
       <StyledCoins>
         <CoinsHeader>MINHAS CARTEIRAS</CoinsHeader>
-
-        <img src={"/img/wave-my-wallets.png"} style={{ width: "100%" }} />
 
         { this.renderCoins() }
       </StyledCoins>
