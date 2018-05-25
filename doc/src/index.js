@@ -16,7 +16,7 @@ class Index extends React.Component {
 		super(props);
 		//componente que o usuario clicou no menu vai ser chamado
 		//de acordo com o objeto pego do Components
-		let InitialComponent = Routes.Pages.Grids;
+		let InitialComponent = Routes.Pages.Texts;
 		this.state = {
 			currentComponent: <InitialComponent handleButtonMenu={() => this.handleButtonMenu}/>
 		}
