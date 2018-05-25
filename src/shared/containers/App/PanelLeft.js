@@ -57,7 +57,13 @@ const CustomText = styled.div`
 class PanelLeft extends React.Component {
 	render() {
 		return(
-			<StyledPanelLeft>
+      <StyledPanelLeft>
+        <WrapLink>
+					<CustomLink to={"/app/home"}>
+            <Icon src={'/img/app_panel_left/fake.png'} alt="Home"/>
+            <CustomText size={'1.4rem'}>Home</CustomText>
+          </CustomLink>
+				</WrapLink>
 				<WrapLink>
 					<CustomLink to={"/app/portfolio"}>
             <Icon src={'/img/app_panel_left/fake.png'} alt="Portfólio"/>
@@ -80,6 +86,24 @@ class PanelLeft extends React.Component {
 					<CustomLink to={"/app/ticket"}>
             <Icon src={'/img/app_panel_left/fake.png'} alt="Boleto"/>
             <CustomText size={'1.4rem'}>Boleto</CustomText>
+          </CustomLink>
+        </WrapLink>
+        <WrapLink>
+					<CustomLink to={"/app/buy"}>
+            <Icon src={'/img/app_panel_left/fake.png'} alt="Compras"/>
+            <CustomText size={'1.4rem'}>Compras</CustomText>
+          </CustomLink>
+        </WrapLink>
+        <WrapLink>
+					<CustomLink to={"/app/configuration"}>
+            <Icon src={'/img/app_panel_left/fake.png'} alt="Configuração"/>
+            <CustomText size={'1.4rem'}>Configuração</CustomText>
+          </CustomLink>
+        </WrapLink>
+        <WrapLink>
+					<CustomLink to={"/app/privacy"}>
+            <Icon src={'/img/app_panel_left/fake.png'} alt="Privacidade"/>
+            <CustomText size={'1.4rem'}>Privacidade</CustomText>
           </CustomLink>
 				</WrapLink>
 			</StyledPanelLeft>
