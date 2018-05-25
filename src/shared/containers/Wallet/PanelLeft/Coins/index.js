@@ -9,6 +9,9 @@ import { Loading } from "Components/Loading";
 const StyledCoins = styled.div`
   width: auto;
   min-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
 `;
 
 const Coin = styled.div`
