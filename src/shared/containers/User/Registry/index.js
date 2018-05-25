@@ -114,7 +114,7 @@ class Registry extends React.Component {
 
           <CustomForm onSubmit={this.handleSubmit}>
             <FormBuilder inputs={inputs} />
-            <ButtonSecondary type={"submit"}>ENTRAR</ButtonSecondary>
+            <ButtonSecondary type={"submit"}>Entrar</ButtonSecondary>
           </CustomForm>
 
           <H1 className={"js-status"} txCenter clWhite margin={"50px 0 0 0"} />

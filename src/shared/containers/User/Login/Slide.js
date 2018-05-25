@@ -15,20 +15,17 @@ let images = [
   {
     link: "/img/user_panel_right/img-slide1.png",
     text: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
-    Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, 
-    pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.`
+    Cum sociis natoque penatibus et magnis dis parturient montes.`
   },
   {
     link: "/img/user_panel_right/img-slide2.png",
     text: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
-    Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, 
-    pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.`
+    Cum sociis natoque penatibus et magnis dis parturient montes.`
   },
   {
     link: "/img/user_panel_right/img-slide3.png",
     text: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
-    Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, 
-    pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.`
+    Cum sociis natoque penatibus et magnis dis parturient montes.`
   }
 ];
 
