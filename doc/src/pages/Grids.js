@@ -8,15 +8,23 @@ export default class Grids extends React.Component {
 			<Row>
 				<Col s="12" m="12" l="12">
 					<H1 fontSize="2.3rem">Grids</H1>
-					<H2 fontSize="2rem">Rows</H2>
+
+					<br/>
+					<hr/>
+					<br/>
+
+					<H2 fontSize="2rem">Linhas</H2>
+					<br/>
 					<Text>
-						O esquema de linhas é feito em flex-box. Parâmetros disponíveis nas linhas são:
+						O esquema de linhas é feito em flex-box, baseado no esquema de grid do materialize, 12 colunas. Os parâmetros disponíveis nas linhas são:
 					</Text>
 					<ul>
-						<li>sAlign: [Number or String]</li>
-						<li>mAlign: [Number or String]</li>
-						<li>lAlign: [Number or String]</li>
+						<li> - sAlign: [String] (Flex box adicionado quando a tela estiver em small)</li>
+						<li> - mAlign: [String] (Flex box adicionado quando a tela estiver em medium)</li>
+						<li> - lAlign: [String] (Flex box adicionado quando a tela estiver em large)</li>
+						<li> - defaultAlign: [String] (Flex box adicionado em todas as telas por padrão)</li>
 					</ul>
+					<Text>A propriedade padrão "justify-content: center"</Text>
 					<br/>
 					<Text>Código:</Text>
 					<pre className="code">
@@ -37,7 +45,8 @@ export default class Grids extends React.Component {
 					<br/>
 					<br/>
 
-					<H2>Cols</H2>
+					<H2>Colunas</H2>
+					<br/>
 					<Text>Código:</Text>
 					<pre className="code">
 						{`
