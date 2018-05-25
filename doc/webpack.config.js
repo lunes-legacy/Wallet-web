@@ -36,6 +36,7 @@ let client = {
 		alias: {
 			DocContainers: __dirname+'/src/containers/',
 			DocComponents: __dirname+'/src/components/',
+			DocPages:      __dirname+'/src/pages/',
 			Containers:    __dirname+'/../src/shared/containers/',
 			Components:    __dirname+'/../src/shared/components/',
 			Actions:       __dirname+'/../src/shared/actions/',

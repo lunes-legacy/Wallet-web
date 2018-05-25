@@ -1,26 +1,33 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Components } from 'DocComponents';
-import { Row, Col, Button, Loading } from 'Components';
+import { Pages } from 'DocPages';
+import { Row, Col, Button, Loading, H1 } from 'Components';
 const Containers = []; //precisa ser feito ainda
+
+let Routes = {
+	Pages,
+	Components,
+	Containers
+}
 
 class Index extends React.Component {
 	constructor(props) {
 		super(props);
 		//componente que o usuario clicou no menu vai ser chamado
 		//de acordo com o objeto pego do Components
-		let InitialComponent = Components.Initial;
+		let InitialComponent = Routes.Pages.Grids;
 		this.state = {
-			currentComponent: <InitialComponent/>
+			currentComponent: <InitialComponent handleButtonMenu={() => this.handleButtonMenu}/>
 		}
 	}
 	_setCurrentComponent = (Component) => {
 		if (!Component) {
 			this._setPanelRightAsLoading(false);
-			return false;
+			return;
 		}
 		this.setState({
-			currentComponent: <Component/>,
+			currentComponent: <Component handleButtonMenu={() => this.handleButtonMenu}/>,
 			panelRightIsLoading: false
 		});
 	}
@@ -37,6 +44,7 @@ class Index extends React.Component {
 		});
 	}
 	handleButtonMenu = (event) => {
+		console.log("EU FUI");
 		this._setPanelRightAsLoading(true);
 		let clickedEl = event.currentTarget;
 		// if (!clickedEl) return;
@@ -44,14 +52,9 @@ class Index extends React.Component {
 		let arr       = raw.split('/');
 		let type      = arr[0];
 		let component = arr[1];
-		if (type === 'Components') {
-			this._setCurrentComponent(Components[component]);	
-		} else if (type === 'Containers') {
-			this._setCurrentComponent(Containers[component]);	
-		}
+		this._setCurrentComponent(Routes[type][component]);	
 	}
 	renderPanelRight = () => {
-		console.log(this.state);
 		let loading = this.state.panelRightIsLoading;
 		if (loading)
 			return <Loading/>
@@ -60,17 +63,14 @@ class Index extends React.Component {
 	}
 	render() {
 		return(
-			<Row defaultAlign="left">
+			<Row defaultAlign="left" style={{height: '100%'}}>
 				<Col s={3} m={3} l={3} className={'panel-left'}>
-					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Components/Row"}>Components/Row</button>
-					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Components/Col"}>Components/Col</button>
-					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Components/Button"}>Components/Button</button>
-					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Components/FormBuilder"}>Components/FormBuilder</button>
-					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Components/FormGroup"}>Components/FormGroup</button>
-					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Components/Form"}>Components/Form</button>
-					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Components/H1"}>Components/H1</button>
-					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Components/H2"}>Components/H2</button>
-					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Components/H3"}>Components/H3</button>
+					<H1>General Components</H1>
+					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Pages/Grids"}>Grids</button>
+					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Pages/Forms"}>Forms</button>
+					<button className={'btn'} onClick={this.handleButtonMenu} data-component={"Pages/Texts"}>Texts</button>
+
+					<H1>Containers</H1>
 				</Col>
 
 				<Col s={9} m={9} l={9} className={"panel-right"}>

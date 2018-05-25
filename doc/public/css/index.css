@@ -7,22 +7,27 @@
 }
 
 body {
-	background: lightblue;
+	background: #363636;
+	height: 100vh;
 }
 html {
 	font-size: 10px;
 }
-
+.root {
+	height: 100%;
+}
 .panel-left {
 	/*display: flex;*/
+	background: white;
+	height: 100%;
 }
 .panel-left .btn {
 	width: 100%;
 	background: transparent;
 	border: none;
 	padding: 5px;
-	border-bottom: 0.1rem solid white;
-	border-right: 0.1rem solid white;
+	/*border-bottom: 0.1rem solid white;*/
+	/*border-right: 0.1rem solid white;*/
 	color: black;
 	font-size: 2rem;
 	text-align: left;
@@ -32,9 +37,30 @@ html {
 	outline: none;
 }
 .panel-right {
-	padding: 20px 0 0 20px;
+	padding: 20px;
+	overflow: auto;
+	max-height: 100%;
+}
+.panel-right * {
+	color: white;
+}
+.panel-right hr {
+	color: white;
 }
 .doc {
 	width: 100%;
 	height: 100vh;
+}
+
+pre.code {
+	background: white;
+	border-radius: 0.7rem;
+	text-align: left;
+	color: black;
+	white-space: pre-line;
+	padding: 10px;
+}
+.link-style {
+	cursor: pointer;
+	text-decoration: underline;
 }
