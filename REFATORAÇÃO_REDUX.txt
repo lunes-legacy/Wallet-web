@@ -9,7 +9,7 @@ currencies: {
 		EUR
 	}
 },
-cryptocoins: {
+cryptocurrency: {
 	default: 'BTC', #ALGO À PENSAR
 	btc: { USD: 10000, BRL: 30000 },
 	eth: { USD: 400, BRL: 1200 }
