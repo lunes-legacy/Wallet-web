@@ -9,6 +9,9 @@ import { Loading } from "Components/Loading";
 const StyledCoins = styled.div`
   width: auto;
   min-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow-y: auto;
 `;
 
 const Coin = styled.div`
@@ -46,14 +49,17 @@ const CoinsHeader = styled.div`
   ${TextBase}
   display: flex;
   align-items: center;
-  background: #654fa4;
-  font-size: 1.2rem;
-  height: 60px;
+  background-image: url(/img/app_wallet/rectangle-wallet.svg);
+  background-size: 100% 100%;
+  font-size: 1.1rem;
+  height: 75px;
   justify-content: center;
+  padding-bottom: 2rem;
   width: 100%;
 
   @media (${style.media.tablet2}) {
     font-size: 1.4rem;
+    height: 95px;
   }
 `;
 
@@ -109,17 +115,59 @@ class Coins extends React.Component {
     };
   }
   renderCoins = () => {
-    let { balance, coinsPrice } = this.props.wallet.panelLeft;
+    // let { balance, coinsPrice } = this.props.wallet.panelLeft;
 
-    if (!coinsPrice || !balance) {
-      return <Loading />;
-    } else if (!balance.btc) {
-      return <H1>Moeda(BTC) não encontrada</H1>;
+    // if (!coinsPrice || !balance) {
+    //   return <Loading />;
+    // } else if (!balance.btc) {
+    //   return <H1>Moeda(BTC) não encontrada</H1>;
+    // }
+    // let components = [];
+    //EX: coinKey = 'btc';
+    //DINAMICO
+    // for (let coinKey in balance) {
+    //   console.log(coinsPrice, "OAIDOIASODIASIDSAIDISADIODi");
+    //   let tmp = (
+    //     <Coin
+    //       key={coinKey}
+    //       onClick={() => {
+    //         this.props.openPanelRight({ coinPrice: coinsPrice[coinKey], coinName: coinKey, isOpenModalReceive: false });
+    //       }}
+    //     >
+    //       <WrapCoinImg>
+    //         <CoinImg src="/img/bitcoin.svg" />
+    //       </WrapCoinImg>
+    //       <WrapCoinData>
+    //         <CoinAmount clWhite offSide size={"2.5rem"}>
+    //           { balance[coinKey].total_confirmed }
+    //         </CoinAmount>
+    //         <CoinValue clWhite offSide size={"2rem"}>
+    //           { `USD ${balance[coinKey].total_amount}` }
+    //         </CoinValue>
+    //       </WrapCoinData>
+    //     </Coin>
+    //   );
+    //   components.push(tmp);
+    // }
+    // return components;
+    let coinsPrice = {
+      lns:  { USD:1000,  BRL:3000  },
+      btc:  { USD:10000, BRL:30000 },
+      eth:  { USD:5000,  BRL:15000 },
+      ltc:  { USD:200,   BRL:600   },
+      dash: { USD:200,   BRL:600   },
+      nano: { USD:200,   BRL:600   }
+    };
+    let balance = {
+      lns:  { total_confirmed: 500, total_unconfirmed: 0, total_amount: 500 },
+      btc:  { total_confirmed: 2,   total_unconfirmed: 0, total_amount: 2 },
+      eth:  { total_confirmed: 3,   total_unconfirmed: 1, total_amount: 4 },
+      ltc:  { total_confirmed: 12,  total_unconfirmed: 0, total_amount: 12 },
+      dash: { total_confirmed: 30,  total_unconfirmed: 0, total_amount: 30 },
+      nano: { total_confirmed: 50,  total_unconfirmed: 0, total_amount: 50 },
     }
     let components = [];
-    //EX: coinKey = 'btc';
     for (let coinKey in balance) {
-      console.log(coinsPrice, "OAIDOIASODIASIDSAIDISADIODi");
       let tmp = (
         <Coin
           key={coinKey}
@@ -149,8 +197,6 @@ class Coins extends React.Component {
     return (
       <StyledCoins>
         <CoinsHeader>MINHAS CARTEIRAS</CoinsHeader>
-
-        <img src={"/img/wave-my-wallets.png"} style={{ width: "100%" }} />
 
         { this.renderCoins() }
       </StyledCoins>

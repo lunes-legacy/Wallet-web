@@ -24,26 +24,28 @@ import Slide from "../../../containers/User/Login/Slide";
 
 const WrapPhrases = styled.div`
   width: 100%;
-  margin-top: 70px;
+  margin-top: 160px;
 `;
 
 const CustomLogo = Logo.extend`
-  margin: 70px auto 0 auto;
+  margin: 70px auto 20px auto;
 `;
 
 const CustomLinkRight = CustomLink.extend`
   text-align: right;
+  
 `;
 
 const CustomP = P.extend`
   display: block;
-  margin: 50px auto 10px auto;
+  margin-top: 200px;
   text-align: center;
+  
 
   @media (min-width: 768px) {
-    position: absolute;
+   
     bottom: 0;
-    width: 40%;
+    
   }
 `;
 
@@ -82,14 +84,14 @@ class Login extends React.Component {
 
           <WrapPhrases>
             <H1 clNormalGreen txCenter>
-              Rápida, segura e inteligente
+              Rápida, segura e inteligente!
             </H1>
             <P clWhite txCenter margin={"20px 0 70px 0"} fontSize={"1.4rem"}>
               Entre com seus dados
             </P>
           </WrapPhrases>
 
-          <Form margin={"20px auto"} width={"80%"}>
+          <Form margin={"80px auto"} width={"80%"}>
             <FormGroup>
               <Input placeholder={"nome@email.com"} className={"login-email"} />
             </FormGroup>

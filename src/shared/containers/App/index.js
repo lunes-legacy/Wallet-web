@@ -9,10 +9,15 @@ import { createBrowserHistory } from 'history';
 
 //COMPONENTS
 import Login            from 'Containers/User/Login/index';
+import Home             from 'Containers/Home/index';
 import Portfolio        from 'Containers/Portfolio/index';
 import Wallet           from 'Containers/Wallet/index';
-import Ticket           from 'Containers/Ticket/index';
 import Recharge         from 'Containers/Recharge/index';
+import Ticket           from 'Containers/Ticket/index';
+import Buy           	  from 'Containers/Buy/index';
+import Configuration    from 'Containers/Configuration/index';
+import Privacy          from 'Containers/Privacy/index';
+
 //SUB-COMPONENTS
 import { Link }         from 'Components/Link';
 import { TextBase }     from 'Components/TextBase';
@@ -79,11 +84,15 @@ class App extends React.Component {
 
 					<PanelRight>
 						<Switch>
-							<Route exact path={"/app/"} component={Portfolio}/>
-							<Route exact path={"/app/portfolio/"} component={Portfolio}/>
+							<Route exact path={"/app/"} component={Home}/>
+							<Route exact path={"/app/home/"} component={Home}/>
+							<Route exact path={"/app/portfolio/"} component={Portfolio}/>							
 							<Route exact path={"/app/wallet/"} component={Wallet}/>
 							<Route exact path={"/app/recharge/"} component={Recharge}/>
 							<Route exact path={"/app/ticket/"} component={Ticket}/>
+							<Route exact path={"/app/buy"} component={Buy}/>
+							<Route exact path={"/app/configuration"} component={Configuration}/>
+							<Route exact path={"/app/privacy"} component={Privacy}/>																											
 						</Switch>
 					</PanelRight>
 				</Panels>
