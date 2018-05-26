@@ -15,3 +15,8 @@ export let ButtonSecondary = Button.extend`
 		background: ${style.normalGreen};
 	}
 `;
+
+export let ButtonBackgroundGreen = Button.extend`
+	background: ${style.normalGreen};
+	border: 1.5px solid ${style.normalGreen};
+`;

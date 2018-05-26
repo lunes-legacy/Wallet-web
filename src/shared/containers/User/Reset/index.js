@@ -16,6 +16,7 @@ import { P } from "Components/P";
 import { FormBuilder } from "Components/FormBuilder";
 import { ButtonSecondary } from "Components/Buttons";
 import Slide from "../../../containers/User/Login/Slide";
+import { ButtonBackgroundGreen } from "../../../components/Buttons";
 
 const CustomLogo = Logo.extend`
   margin: 70px auto 0 auto;
@@ -119,7 +120,7 @@ class Reset extends React.Component {
             <CustomLinkRight to={"/login"} margin={"0 auto 25px auto"}>
               Fazer login?
             </CustomLinkRight>
-            <ButtonSecondary type={"submit"}>Resgatar</ButtonSecondary>
+            <ButtonSecondary type={"submit"}>Redefinir senha</ButtonSecondary>
           </CustomForm>
 
           <P txCenter clWhite margin={"20px 0 0 0"} fontSize={"1.4rem"} className={"js-status"} />
