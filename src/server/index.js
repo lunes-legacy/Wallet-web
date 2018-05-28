@@ -1,3 +1,4 @@
+require('dotenv').config({path: __dirname + '/.env'});
 import React              from 'react';
 import { createStore, combineReducers } from 'redux';
 import { renderToString } from 'react-dom/server';
