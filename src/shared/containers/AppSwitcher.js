@@ -13,6 +13,7 @@ class AppSwitcher extends React.Component {
       <Switch>
         <Route strict path={"/app"} component={App} />
         <Route exact path={"/login"} component={Login} />
+        <Route exact path={"/"} component={Login} />        
         <Route exact path={"/registry"} component={Registry} />
         <Route exact path={"/reset"} component={Reset} />
       </Switch>
