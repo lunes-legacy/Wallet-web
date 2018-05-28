@@ -11,7 +11,15 @@ const StyledCoins = styled.div`
   min-width: 100%;
   height: 100%;
   max-height: 100%;
-  overflow-y: auto;
+  
+`;
+const StyledLoading = styled.div`
+
+margin-top: 115%;
+display: flex; 
+align-items: center;
+ 
+
 `;
 
 const Coin = styled.div`
@@ -24,6 +32,7 @@ const Coin = styled.div`
   min-width: 100%;
   padding: 0 1rem;
   width: auto;
+ 
 
   box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
   transform: translateX(0);
@@ -118,11 +127,11 @@ class Coins extends React.Component {
   renderCoins = () => {
     // let { balance, coinsPrice } = this.props.wallet.panelLeft;
 
-    // if (!coinsPrice || !balance) {
-    //   return <Loading />;
-    // } else if (!balance.btc) {
-    //   return <H1>Moeda(BTC) não encontrada</H1>;
-    // }
+    //  if (!coinsPrice || !balance) {
+    //    return <StyledLoading> <Loading /> </StyledLoading> ;
+    //  } else if (!balance.btc) {
+    //    return <H1>Moeda(BTC) não encontrada</H1>;
+    //  }
     // let components = [];
     //EX: coinKey = 'btc';
     //DINAMICO
