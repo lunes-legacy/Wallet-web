@@ -1,3 +1,8 @@
+/wallet/panelright/
+	index
+	histories
+	coinstatus
+	
 Wandyer, na hora do usuário fazer a transação, pode ocorrer um problema de o usuário digitar, precisamos verificar se o endereço está correto.
 
 config: {
