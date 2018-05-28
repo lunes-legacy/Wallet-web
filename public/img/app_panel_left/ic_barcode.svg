@@ -1,0 +1,21 @@
+<svg width="21" height="15" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2.1875 15H18.8125C20.0186 15 21 14.0653 21 12.9166V2.08337C21 0.934692 20.0186 0 18.8125 0H2.1875C0.981445 0 0 0.934692 0 2.08337V12.9166C0 14.0653 0.981445 15 2.1875 15ZM0.875 2.08337C0.875 1.39404 1.46387 0.833374 2.1875 0.833374H18.8125C19.5361 0.833374 20.125 1.39404 20.125 2.08337V12.9167C20.125 13.606 19.5361 14.1667 18.8125 14.1667H2.1875C1.46387 14.1667 0.875 13.606 0.875 12.9167V2.08337Z" fill="white"/>
+<path d="M0 0H0.875V10.8333H0V0Z" transform="translate(2.1875 2.08337)" fill="#4CD566"/>
+<path d="M0 0H0.875V7.91667H0V0Z" transform="translate(3.9375 2.08337)" fill="#4CD566"/>
+<path d="M0 0H0.875V7.91667H0V0Z" transform="translate(5.6875 2.08337)" fill="#4CD566"/>
+<path d="M0 0H0.875V7.91667H0V0Z" transform="translate(7.4375 2.08337)" fill="#4CD566"/>
+<path d="M0 0H0.875V7.91667H0V0Z" transform="translate(9.1875 2.08337)" fill="#4CD566"/>
+<path d="M0 0H0.875V7.91667H0V0Z" transform="translate(10.9375 2.08337)" fill="#4CD566"/>
+<path d="M0 0H0.874999V7.91667H0V0Z" transform="translate(12.6875 2.08337)" fill="#4CD566"/>
+<path d="M0 0H0.875V7.91667H0V0Z" transform="translate(14.4375 2.08337)" fill="#4CD566"/>
+<path d="M0 0H0.875V7.91667H0V0Z" transform="translate(16.1875 2.08337)" fill="#4CD566"/>
+<path d="M0 0H0.875V1.66667H0V0Z" transform="translate(3.9375 11.25)" fill="#4CD566"/>
+<path d="M0 0H0.875V1.66667H0V0Z" transform="translate(5.6875 11.25)" fill="#4CD566"/>
+<path d="M0 0H0.875V1.66667H0V0Z" transform="translate(7.4375 11.25)" fill="#4CD566"/>
+<path d="M0 0H0.875V1.66667H0V0Z" transform="translate(9.1875 11.25)" fill="#4CD566"/>
+<path d="M0 0H0.875V1.66667H0V0Z" transform="translate(10.9375 11.25)" fill="#4CD566"/>
+<path d="M0 0H0.874999V1.66667H0V0Z" transform="translate(12.6875 11.25)" fill="#4CD566"/>
+<path d="M0 0H0.875V1.66667H0V0Z" transform="translate(14.4375 11.25)" fill="#4CD566"/>
+<path d="M0 0H0.875V1.66667H0V0Z" transform="translate(16.1875 11.25)" fill="#4CD566"/>
+<path d="M0 0H0.875V10.8333H0V0Z" transform="translate(17.9375 2.08337)" fill="#4CD566"/>
+</svg>

@@ -3,24 +3,22 @@ import styled, { css } from "styled-components";
 import Carousel from "nuka-carousel";
 
 let Img = styled.img`
-  position: center;
+  
 `;
 
 let DivCarrousel = styled.div`
-  position: relative;
-  height: 40%;
-
-  & .slider {
-    width: 85% !important;
-  }
-
+  margin-top: 4%;
+  margin-bottom: 4%;
+  width: 75% !important;
+  height: 100% !important; 
+  
   & .slider-control-bottomcenter ul {
     top: 60px !important;
   }
 
   & .slider-control-bottomcenter ul li button {
-    font-size: 50px !important;
-    color: white !important;
+    font-size: 40px !important;
+    color: white !important;    
   }
 
   & .slider-control-centerright button {
@@ -32,11 +30,8 @@ let DivCarrousel = styled.div`
 `;
 
 let P = styled.div`
-  position: center;
   color: white;
   font-size: 10pt;
-  margin-left: 5%;
-  width: 100%;
   padding-left:15%;
   padding-right:15%;
   margin-top: 4%;
@@ -44,9 +39,8 @@ let P = styled.div`
   text-align: center;
 `;
 let DivParagraph = styled.div`
-  position: center;
-  width: 80%;
-  margin-left: 5%;
+  width: 650px;
+  margin-left: 10px;
 `;
 
 class Image extends React.Component {

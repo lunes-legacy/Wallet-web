@@ -3,12 +3,13 @@ import Image from "../../../components/Image";
 import styled from "styled-components";
 
 let Container = styled.div`
-  margin: 0 auto;
-  position: center;
-  margin-top: 50px;
-  margin-left: 20%;
-  margin-right: 11%;
-  width: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media screen {
+      margin-left: 20% 
+    }
 `;
 
 let images = [
@@ -32,11 +33,9 @@ let images = [
 class Slide extends React.Component {
   render() {
     return (
-      <section>
-        <Container>
-          <Image imageList={images} />
-        </Container>
-      </section>
+      <Container>
+        <Image imageList={images} />
+      </Container>
     );
   }
 }
