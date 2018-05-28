@@ -56,9 +56,9 @@ class Login extends React.Component {
   handleLogin = event => {
     event.preventDefault();
     let emailEl = document.querySelector(".login-email");
-    let passEl = document.querySelector(".login-password");
+    let passEl  = document.querySelector(".login-password");
 
-    let email = emailEl.value;
+    let email    = emailEl.value;
     let password = passEl.value;
     this.props.userLogin(email, password);
   };

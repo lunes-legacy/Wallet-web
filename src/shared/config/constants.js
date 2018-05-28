@@ -1,6 +1,9 @@
-// require('dotenv').load();
-let TESTNET = 'TRUE'; //isso deve vir do process.env
-const testnet = TESTNET === 'TRUE' ? true : false;
+let testnet   = 'TRUE';
+const TESTNET = testnet === 'TRUE' ? true : false;
+const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'
+const LUNES_LIB_LOGIN = 'manual'; //|| 'auto' || 'manual', isso serve para fazer login automático para nao ficar apertando o botão de login sempre
 export {
-	testnet
+	TESTNET,
+	LUNES_LIB_ENV,
+	LUNES_LIB_LOGIN
 }

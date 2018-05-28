@@ -68,7 +68,7 @@ class Registry extends React.Component {
       return null;
     }
     if (passEl.value !== cpassEl.value) {
-      alert("Passwords dint match");
+      alert("Passwords didnt match");
       return null;
     }
     if (passEl.value < 8) {
@@ -83,16 +83,16 @@ class Registry extends React.Component {
     });
   };
   handleStatus() {
-    let firstPanelEl = document.querySelector(".js-first-panel-left");
+    let firstPanelEl  = document.querySelector(".js-first-panel-left");
     let secondPanelEl = document.querySelector(".js-second-panel-left");
-    let statusEl = document.querySelector(".js-status");
+    let statusEl      = document.querySelector(".js-status");
 
     let { status } = this.props.user;
 
     if (status === "pending") {
       statusEl.textContent = "Aguarde...";
     } else if (status === "fulfilled") {
-      firstPanelEl.style.display = "none";
+      firstPanelEl.style.display  = "none";
       secondPanelEl.style.display = "block";
       statusEl.textContent = "Sucesso";
     } else if (status === "rejected") {

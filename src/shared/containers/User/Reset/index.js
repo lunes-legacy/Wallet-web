@@ -16,9 +16,14 @@ import { P } from "Components/P";
 import { FormBuilder } from "Components/FormBuilder";
 import { ButtonSecondary } from "Components/Buttons";
 import Slide from "../../../containers/User/Login/Slide";
+import { ButtonBackgroundGreen } from "../../../components/Buttons";
 
 const CustomLogo = Logo.extend`
   margin: 70px auto 0 auto;
+`;
+
+const MarginH1 = styled.div`
+  margin-top:30%;
 `;
 
 const CustomLinkRight = CustomLink.extend`
@@ -74,7 +79,7 @@ class Reset extends React.Component {
     let emailEl = document.querySelector(".reset-email");
     this.props.userReset(emailEl.value);
   };
-  componentDidMount() {}
+  componentDidMount() { }
   componentDidUpdate() {
     this.handleStatus();
   }
@@ -105,13 +110,15 @@ class Reset extends React.Component {
       <div>
         <PanelLeft className={"js-first-panel-left"}>
           <CustomLogo />
-
-          <H1 clNormalGreen txCenter margin={"100px auto 0 auto"}>
-            Esqueceu sua senha?
-          </H1>
-
+          <MarginH1>
+            <H1 clNormalGreen txCenter margin={"100px auto 0 auto"} fontSize={"2.5rem"}>
+              <strong>
+                Esqueceu sua senha?
+              </strong>
+            </H1>
+          </MarginH1>
           <P clWhite txCenter margin={"20px"} fontSize={"1.4rem"}>
-            Nós enviaremos suas instruções de como redefini-la.
+            Nós enviaremos suas instruções sobre como redefini-la.
           </P>
 
           <CustomForm onSubmit={this.handleSubmit}>
@@ -119,7 +126,7 @@ class Reset extends React.Component {
             <CustomLinkRight to={"/login"} margin={"0 auto 25px auto"}>
               Fazer login?
             </CustomLinkRight>
-            <ButtonSecondary type={"submit"}>Resgatar</ButtonSecondary>
+            <ButtonSecondary type={"submit"}>Redefinir senha</ButtonSecondary>
           </CustomForm>
 
           <P txCenter clWhite margin={"20px 0 0 0"} fontSize={"1.4rem"} className={"js-status"} />
