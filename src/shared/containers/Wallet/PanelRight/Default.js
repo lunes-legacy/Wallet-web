@@ -1,7 +1,8 @@
-//Aqui ficará a tela inicial, a parte, quando o usuário entra na
-//rota wallet
 import React from 'react';
 import styled from 'styled-components';
+import style from 'Shared/style-variables';
+
+import { Col, Row, Img, H3 } from 'Components';
 
 let StyledDefault = styled.div`
 	width: 100%;
@@ -10,19 +11,34 @@ let StyledDefault = styled.div`
 	justify-content: center;
 	align-items: center;
 `;
-//deve ser alterado para imagem
-//coloquei div para não ficar com icone estranho
-let Icon = styled.div`
-	width: 100px;
-	height: 100px;
-	background: dodgerblue;
-	border-radius: 10px;
+
+const Icon = Img.extend`
+  margin: 40% auto 2rem auto;
+  width: 5rem;
+
+  @media(${style.media.tablet2}) {
+    margin: 30% auto 2rem auto;
+    width: 6rem;
+  }
+
+  @media(${style.media.laptop}) {
+    width: 7rem;
+  }
 `;
+
+const CustomH3 = H3.extend`
+  color: #fff;
+  font-weight: 500;
+  margin: 1rem;
+  text-align: center;
+`;
+
 class Default extends React.Component {
 	render() {
 		return (
 			<StyledDefault>
-				<Icon/>
+				<Icon src={"/img/app_wallet/ic_default.svg"} />
+        <CustomH3>Selecione uma carteira <br />em seu portfólio.</CustomH3>
 			</StyledDefault>
 		);
 	}
