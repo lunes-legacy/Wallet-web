@@ -1,4 +1,3 @@
-require('dotenv').load();
 import React                    from 'react';
 import { hydrate }          from 'react-dom';
 import { Provider }             from 'react-redux';

@@ -25,13 +25,14 @@ const Coin = styled.div`
   padding: 0 1rem;
   width: auto;
 
-  box-shadow: 30px 0px 20px rgba(0, 0, 0, 0);
+  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
   transform: translateX(0);
   transition: transform .3s, box-shadow .4s;
 
   &:hover {
-    box-shadow: 20px 0px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 5px 0px 10px 5px rgba(51, 51, 51, 0.25);
     transform: translateX(20px);
+    z-index: 3;
   }
 
   @media (${style.media.tablet2}) {
@@ -51,7 +52,7 @@ const CoinsHeader = styled.div`
   align-items: center;
   background-image: url(/img/app_wallet/rectangle-wallet.svg);
   background-size: 100% 100%;
-  font-size: 1.1rem;
+  font-size: 1rem;
   height: 75px;
   justify-content: center;
   padding-bottom: 2rem;
