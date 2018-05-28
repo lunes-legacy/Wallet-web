@@ -19,7 +19,7 @@ import { ButtonSecondary } from "Components/Buttons";
 import Slide from "../../../containers/User/Login/Slide";
 
 import FooterUser from 'Components/FooterUser'
-import { ButtonBackgroundGreen } from "../../../components/Buttons";
+import { ButtonGreen } from "../../../components/Buttons";
 
 const CustomLogo = Logo.extend`
   margin: 70px auto 0 auto;
