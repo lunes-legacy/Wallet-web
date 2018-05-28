@@ -26,6 +26,11 @@ const MarginH1 = styled.div`
   margin-top:30%;
 `;
 
+const PaddingH1 = styled.div`
+  padding-right: 22%;
+  padding-left: 22%;
+`;
+
 const CustomLinkRight = CustomLink.extend`
   text-align: right;
 `;
@@ -142,9 +147,13 @@ class Reset extends React.Component {
         <SecondPanelLeft className={"js-second-panel-left"}>
           <CustomLogo />
           <Img src={"img/user_panel_left/ic_email.svg"} margin={"130px auto 0 auto"} width={"80px"} />
-          <H1 txCenter clWhite margin={"20px"}>
-            Uma mensagem com link de definição de senha foi enviado para o seu endereço de e-mail.
-          </H1>
+          <PaddingH1>
+            <H1 txCenter clWhite margin={"20px"} fontSize={"2rem"} >
+              <strong>
+                Uma mensagem com link de definição de senha foi enviado para o seu endereço de e-mail.
+              </strong>
+            </H1>
+          </PaddingH1>
           <CircleLink to={"/login"} margin={"50px auto 10px auto"}>
             <ArrowImg src={"img/user_panel_left/right-arrow.svg"} margin={"auto"} width={"20px"} />
           </CircleLink>
