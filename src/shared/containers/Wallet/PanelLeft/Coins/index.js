@@ -127,7 +127,7 @@ class Coins extends React.Component {
   //metodo chamado sempre que o componente é renderizado ou um
   //estado é atualizado
   _renderCoins = () => {
-    let { current_network } = this.props.component.wallet;
+    let { currentNetwork } = this.props.component.wallet;
     let { price }           = this.props.currencies;
     let { balance }         = this.props;
     if (!balance || !price) {

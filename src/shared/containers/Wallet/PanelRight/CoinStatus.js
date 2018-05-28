@@ -110,12 +110,12 @@ class CoinStatus extends React.Component {
   }
 
   calcCoinPorcent = async () => {
-    let obj = { fromSymbol: this.props.wallet.panelRight.coinName.toUpperCase(), toSymbol: "USD", range: "RANGE_1D" };
-    let wallet = await new WalletClass().getCoinHistory(obj);
+    let obj        = { fromSymbol: this.props.wallet.currentNetwork.toUpperCase(), toSymbol: "USD", range: "RANGE_1D" };
+    let wallet     = await new WalletClass().getCoinHistory(obj);
     let coinPrices = wallet.data;
 
-    let coinPriceLength = coinPrices.length;
-    let lastValueCoin = coinPrices[0].close;
+    let coinPriceLength  = coinPrices.length;
+    let lastValueCoin    = coinPrices[0].close;
     let currentValueCoin = coinPrices[coinPriceLength - 1].close;
 
     this.setState(() => {
@@ -125,9 +125,9 @@ class CoinStatus extends React.Component {
     });
   };
   render() {
-    let { coinName, coinPrice } = this.props.wallet.panelRight || { coinName: undefined, coinPrice: undefined };
-    if (!coinPrice || !coinName) {
-      console.warn("if (coinPrice || coinName); ERRO");
+    let { currentNetwork } = this.props.wallet;
+    let { price } = this.props.cryptocurrencies;
+    if (!price) {
       return null;
     }
 
@@ -146,7 +146,6 @@ class CoinStatus extends React.Component {
             </GraphContainer>
           </Col>
           <Col s={4} m={3} l={3}>
-           {(() => { console.log(this.state.coin_porcentage_price, "TESTOOOOOOOO"); })()}
             <WrapCoinPercent style={this.state.coin_porcentage_price < 0 ? {background: 'indianred'} : {background: 'lightgreen'} }>
               <CoinPercent>{ this.state.coin_porcentage_price }%</CoinPercent>
               {/*{this.state.coin_porcentage_price > 0 ? (
