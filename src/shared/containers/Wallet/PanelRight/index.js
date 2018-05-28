@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { errorPattern } from 'Utils/functions';
 import { connect } from 'react-redux';
 import { WalletClass } from 'Classes/Wallet';
+//REDUX
+import { setTxHistory } from 'Redux/actions';
 //COMPONENTS
 import { TextBase } from 'Components/TextBase';
 import { Text } from 'Components/Text';
@@ -46,20 +48,9 @@ class PanelRight extends React.Component {
 			hidden: '0'
 		});
 	}
-	getTransactionHistory  = async () => {
-		try {
-			let wallet      = new WalletClass;
-			let coinHistory = await wallet.getTxHistory({coin: this.coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
-			if (coinHistory) {
-				this.props.setCoinHistory(coinHistory);
-			}
-		} catch (e) {
-			console.error(e);
-		}
-	}
 	componentDidMount = async() => {
 		let { coinName, coinPrice } = this.props.wallet && this.props.wallet.panelRight;
-		this.getTransactionHistory();
+		this.props.setTxHistory({network: 'btc'});
 	}
 	render() {
 		let { coinName, coinPrice } = this.props.wallet && this.props.wallet.panelRight;
@@ -91,11 +82,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setCoinHistory: (coinHistory) => {
-			dispatch({
-				type: 'WALLET_SET_COIN_HISTORY',
-				payload: coinHistory
-			});
+		setTxHistory: (data) => {
+			dispatch(setTxHistory(data));
 		}
 	};
 }
