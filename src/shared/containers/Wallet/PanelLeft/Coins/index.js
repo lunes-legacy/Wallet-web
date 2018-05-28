@@ -11,14 +11,14 @@ const StyledCoins = styled.div`
   min-width: 100%;
   height: 100%;
   max-height: 100%;
-  
+
 `;
 const StyledLoading = styled.div`
 
 margin-top: 115%;
-display: flex; 
+display: flex;
 align-items: center;
- 
+
 
 `;
 
@@ -32,7 +32,7 @@ const Coin = styled.div`
   min-width: 100%;
   padding: 0 1rem;
   width: auto;
- 
+
 
   box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
   transform: translateX(0);
@@ -101,6 +101,7 @@ const WrapCoinData = styled.div`
   justify-content: center;
   align-items: center;
   align-content: center;
+  width:100%;
 `;
 
 const CoinValue = styled.div`
@@ -169,12 +170,12 @@ class Coins extends React.Component {
       nano: { USD:200,   BRL:600   }
     };
     let balance = {
-      lns:  { total_confirmed: 500, total_unconfirmed: 0, total_amount: 500 },
-      btc:  { total_confirmed: 2,   total_unconfirmed: 0, total_amount: 2 },
-      eth:  { total_confirmed: 3,   total_unconfirmed: 1, total_amount: 4 },
-      ltc:  { total_confirmed: 12,  total_unconfirmed: 0, total_amount: 12 },
-      dash: { total_confirmed: 30,  total_unconfirmed: 0, total_amount: 30 },
-      nano: { total_confirmed: 50,  total_unconfirmed: 0, total_amount: 50 },
+      lns:  { total_confirmed: 500, total_unconfirmed: 0, total_amount: 500, img: 'lns.svg' },
+      btc:  { total_confirmed: 2,   total_unconfirmed: 0, total_amount: 2, img: 'btc.svg' },
+      eth:  { total_confirmed: 3,   total_unconfirmed: 1, total_amount: 4, img: 'eth.svg' },
+      ltc:  { total_confirmed: 12,  total_unconfirmed: 0, total_amount: 12, img: 'ltc.svg' },
+      dash: { total_confirmed: 30,  total_unconfirmed: 0, total_amount: 30, img: 'dash.svg' },
+      nano: { total_confirmed: 50,  total_unconfirmed: 0, total_amount: 50, img: 'bitcoin.svg' },
     }
     let components = [];
     for (let coinKey in balance) {
@@ -186,7 +187,7 @@ class Coins extends React.Component {
           }}
         >
           <WrapCoinImg>
-            <CoinImg src="/img/bitcoin.svg" />
+            <CoinImg src={`/img/coins/${balance[coinKey].img}`} />
           </WrapCoinImg>
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>
