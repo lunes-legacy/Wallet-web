@@ -21,6 +21,7 @@ import { Logo } from "Components/Logo";
 import PanelLeft from "./PanelLeft";
 import PanelRight from "./PanelRight";
 import Slide from "../../../containers/User/Login/Slide";
+import FooterUser from 'Components/FooterUser'
 
 const WrapPhrases = styled.div`
   width: 100%;
@@ -33,20 +34,7 @@ const CustomLogo = Logo.extend`
 
 const CustomLinkRight = CustomLink.extend`
   text-align: right;
-  
-`;
 
-const CustomP = P.extend`
-  display: block;
-  margin-top: 200px;
-  text-align: center;
-  
-
-  @media (min-width: 768px) {
-   
-    bottom: 0;
-    
-  }
 `;
 
 class Login extends React.Component {
@@ -110,12 +98,8 @@ class Login extends React.Component {
 
           <H1 txCenter clWhite className={"js-status"} />
 
-          <CustomP clWhite fontSize={"1.4rem"}>
-            Não tem uma conta?{" "}
-            <CustomLink to={"/registry"} color={`${style.normalGreen}`}>
-              Inscrever-se.
-            </CustomLink>
-          </CustomP>
+          <FooterUser content="Não tem uma conta?" to="/registry" label="Inscrever-se" />
+
         </PanelLeft>
 
         <PanelRight>

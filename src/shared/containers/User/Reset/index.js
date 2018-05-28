@@ -17,6 +17,8 @@ import { P } from "Components/P";
 import { FormBuilder } from "Components/FormBuilder";
 import { ButtonSecondary } from "Components/Buttons";
 import Slide from "../../../containers/User/Login/Slide";
+
+import FooterUser from 'Components/FooterUser'
 import { ButtonBackgroundGreen } from "../../../components/Buttons";
 
 const CustomLogo = Logo.extend`
@@ -42,18 +44,6 @@ const CircleLink = CustomLink.extend`
 const ArrowImg = Img.extend`
   border-style: none;
   padding-top: 14px;
-`;
-
-const CustomP = P.extend`
-  display: block;
-  margin: 50px auto 10px auto;
-  text-align: center;
-
-  @media only screen and (min-width: 768px) {
-    position: absolute;
-    bottom: 0;
-    width: 40%;
-  }
 `;
 
 const CustomForm = styled.form`
@@ -132,12 +122,8 @@ class Reset extends React.Component {
 
           <P txCenter clWhite margin={"20px 0 0 0"} fontSize={"1.4rem"} className={"js-status"} />
 
-          <CustomP clWhite fontSize={"1.4rem"}>
-            Não tem uma conta?{" "}
-            <CustomLink to={"/registry"} color={`${style.normalGreen}`}>
-              Inscrever-se.
-            </CustomLink>
-          </CustomP>
+          <FooterUser content="Não tem uma conta?" to="/registry" label="Inscrever-se" />
+
         </PanelLeft>
 
         <SecondPanelLeft className={"js-second-panel-left"}>

@@ -14,6 +14,7 @@ import { H1 } from "Components/H1";
 import { FormBuilder } from "Components/FormBuilder";
 import { ButtonSecondary } from "Components/Buttons";
 import Slide from "../../../containers/User/Login/Slide";
+import FooterUser from 'Components/FooterUser'
 
 
 let CustomLogo = Logo.extend`
@@ -30,23 +31,7 @@ let CustomForm = styled.form`
   display: block;
   margin: 25px auto 0 auto;
 `;
-let CustomLink = styled(Link)`
-  color: white;
-  text-decoration: none;
-  text-align: center;
-  display: block;
-  margin: 10px auto 0 auto;
-  ${props => (props.margin ? "margin: " + props.margin + ";" : "")};
-`;
 
-let CustomLinkGreen = styled(Link)`
-  color: ${style.normalGreen};
-  font-size: 1.4em;
-  text-decoration: none;
-  text-align: center;
-  display: block;
-  margin: 140px auto 0px auto;
-`;
 let inputs = [
   { className: "registry-fname", placeholder: "Nome" },
   { className: "registry-lname", placeholder: "Sobrenome" },
@@ -126,10 +111,8 @@ class Registry extends React.Component {
 
           <H1 className={"js-status"} txCenter clWhite margin={"50px 0 0 0"} />
 
-          <CustomLinkGreen to={"/login"}>Já tem uma conta? Entrar</CustomLinkGreen>
+          <FooterUser content="Já tem uma conta?" to="/login" label="Entrar" />
 
-          {/* <CustomLink to={"/login"} margin={"50px 0 0 0"}>Fazer login</CustomLink>
-					<CustomLink to={"/reset"} margin={"10px 0 0 0"}>Perdi minha senha</CustomLink> */}
         </PanelLeft>
         <PanelRight>
           <Slide />
