@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { users } from "lunes-lib";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import style from "Shared/style-variables";
-
+//REDUX
+import { userCreate } from 'Redux/actions';
+//PRIVATE COMPONENTS
 import { PanelLeft } from "./PanelLeft";
 import { PanelRight } from "./PanelRight";
 import { Logo } from "Components/Logo";
@@ -13,6 +14,7 @@ import { H1 } from "Components/H1";
 import { FormBuilder } from "Components/FormBuilder";
 import { ButtonSecondary } from "Components/Buttons";
 import Slide from "../../../containers/User/Login/Slide";
+import FooterUser from 'Components/FooterUser'
 
 
 let CustomLogo = Logo.extend`
@@ -29,23 +31,7 @@ let CustomForm = styled.form`
   display: block;
   margin: 25px auto 0 auto;
 `;
-let CustomLink = styled(Link)`
-  color: white;
-  text-decoration: none;
-  text-align: center;
-  display: block;
-  margin: 10px auto 0 auto;
-  ${props => (props.margin ? "margin: " + props.margin + ";" : "")};
-`;
 
-let CustomLinkGreen = styled(Link)`
-  color: ${style.normalGreen};
-  font-size: 1.4em;
-  text-decoration: none;
-  text-align: center;
-  display: block;
-  margin: 140px auto 0px auto;
-`;
 let inputs = [
   { className: "registry-fname", placeholder: "Nome" },
   { className: "registry-lname", placeholder: "Sobrenome" },
@@ -83,24 +69,30 @@ class Registry extends React.Component {
     });
   };
   handleStatus() {
-    let firstPanelEl  = document.querySelector(".js-first-panel-left");
-    let secondPanelEl = document.querySelector(".js-second-panel-left");
-    let statusEl      = document.querySelector(".js-status");
+    try {
+      // let firstPanelEl  = document.querySelector(".js-first-panel-left");
+      // let secondPanelEl = document.querySelector(".js-second-panel-left");
+      let statusEl      = document.querySelector(".js-status");
 
-    let { status } = this.props.user;
+      let { status } = this.props.user;
 
-    if (status === "pending") {
-      statusEl.textContent = "Aguarde...";
-    } else if (status === "fulfilled") {
-      firstPanelEl.style.display  = "none";
-      secondPanelEl.style.display = "block";
-      statusEl.textContent = "Sucesso";
-    } else if (status === "rejected") {
-      statusEl.textContent = "Tente novamente";
+      if (status === "pending") {
+        statusEl.textContent = "Aguarde...";
+      } else if (status === "fulfilled") {
+        // firstPanelEl.style.display  = "none";
+        // secondPanelEl.style.display = "block";
+        statusEl.textContent = "Sucesso";
+      } else if (status === "rejected") {
+        statusEl.textContent = "Tente novamente";
+      }
+    } catch(err) {
+      console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
     }
   }
   componentDidUpdate() {
-    this.handleStatus();
+    setTimeout(() => {
+      this.handleStatus();
+    },300);
   }
   render() {
     let { status, logged } = this.props.user;
@@ -114,15 +106,13 @@ class Registry extends React.Component {
 
           <CustomForm onSubmit={this.handleSubmit}>
             <FormBuilder inputs={inputs} />
-            <ButtonSecondary type={"submit"}>Entrar</ButtonSecondary>
+            <ButtonSecondary type={"submit"}>Registrar</ButtonSecondary>
           </CustomForm>
 
           <H1 className={"js-status"} txCenter clWhite margin={"50px 0 0 0"} />
 
-          <CustomLinkGreen to={"/login"}>Já tem uma conta? Entrar</CustomLinkGreen>
+          <FooterUser content="Já tem uma conta?" to="/login" label="Entrar" />
 
-          {/* <CustomLink to={"/login"} margin={"50px 0 0 0"}>Fazer login</CustomLink>
-					<CustomLink to={"/reset"} margin={"10px 0 0 0"}>Perdi minha senha</CustomLink> */}
         </PanelLeft>
         <PanelRight>
           <Slide />
@@ -135,14 +125,7 @@ class Registry extends React.Component {
 const mapDispatchToProps = dispatch => {
   return {
     userCreate: data => {
-      dispatch({
-        type: "USER_CREATE",
-        payload: users.create({
-          email: data.email,
-          password: data.password,
-          fullname: data.fullname
-        })
-      });
+      dispatch(userCreate(data));
     }
   };
 };

@@ -9,6 +9,8 @@ import CookieClass     from 'Classes/Cookie';
 import { WalletClass } from 'Classes/Wallet';
 import UserClass       from 'Classes/User';
 
+import { setBalance, togglePanelLeft } from 'Redux/actions';
+
 //COMPONENTS
 import { TextBase }    from 'Components/TextBase';
 import { Text }        from 'Components/Text';
@@ -75,16 +77,10 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		setBalance: ({ balance, coinsPrice }) => {
-			dispatch({
-				type: 'WALLET_SET_BALANCE',
-				payload: { balance, coinsPrice }
-			});
+			dispatch(setBalance({ balance, coinsPrice }));
 		},
 		togglePanelLeft: ({status}) => {
-			dispatch({
-				type: 'WALLET_TOGGLE_PANEL_LEFT',
-				payload: status
-			});
+			dispatch(togglePanelLeft({ status }));
 		}
 	}
 }

@@ -59,7 +59,7 @@ let alias = {
 	Actions: __dirname+'/src/shared/actions/',
 	Containers: __dirname+'/src/shared/containers/',
 	Components: __dirname+'/src/shared/components/',
-	Utils: __dirname+'/src/shared/utils',
+	Utils: __dirname+'/src/shared/utils/',
 	Shared: __dirname+'/src/shared/',
 	Auth: __dirname+'/src/shared/auth/',
 	Classes: __dirname+'/src/shared/classes/',

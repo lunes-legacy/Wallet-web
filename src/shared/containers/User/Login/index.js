@@ -3,7 +3,8 @@ import { users } from "lunes-lib";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import UserClass from "Classes/User";
+//REDUX
+import { userLogin } from 'Redux/actions';
 
 //COMPONENTS
 import { Form } from "Components/Form";
@@ -21,6 +22,7 @@ import { Logo } from "Components/Logo";
 import PanelLeft from "./PanelLeft";
 import PanelRight from "./PanelRight";
 import Slide from "../../../containers/User/Login/Slide";
+import FooterUser from 'Components/FooterUser'
 
 const WrapPhrases = styled.div`
   width: 100%;
@@ -33,20 +35,7 @@ const CustomLogo = Logo.extend`
 
 const CustomLinkRight = CustomLink.extend`
   text-align: right;
-  
-`;
 
-const CustomP = P.extend`
-  display: block;
-  margin-top: 200px;
-  text-align: center;
-  
-
-  @media (min-width: 768px) {
-   
-    bottom: 0;
-    
-  }
 `;
 
 class Login extends React.Component {
@@ -60,7 +49,10 @@ class Login extends React.Component {
 
     let email    = emailEl.value;
     let password = passEl.value;
-    this.props.userLogin(email, password);
+    this.props.userLogin({
+      email, 
+      password
+    });
   };
   handleStatus() {
     let statusEl = document.querySelector(".js-status");
@@ -110,12 +102,8 @@ class Login extends React.Component {
 
           <H1 txCenter clWhite className={"js-status"} />
 
-          <CustomP clWhite fontSize={"1.4rem"}>
-            Não tem uma conta?{" "}
-            <CustomLink to={"/registry"} color={`${style.normalGreen}`}>
-              Inscrever-se.
-            </CustomLink>
-          </CustomP>
+          <FooterUser content="Não tem uma conta?" to="/registry" label="Inscrever-se" />
+
         </PanelLeft>
 
         <PanelRight>
@@ -134,11 +122,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     userLogin: (email, password) => {
-      let login = new UserClass().login;
-      dispatch({
-        type: "USER_LOGIN",
-        payload: login({ email, password })
-      });
+      dispatch(userLogin(email, password));
     }
   };
 };
