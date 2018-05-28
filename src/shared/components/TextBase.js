@@ -68,7 +68,6 @@ export let TextBase = css`
       return "font-family: OffSide";
     }
   }}
-  
   ${props => {
         if (props.backGroundRed) {
       return "background-color:" + style.normalRed;
