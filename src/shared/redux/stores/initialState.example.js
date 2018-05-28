@@ -40,11 +40,11 @@ export let initialState = {
 			total_amount: 100
 		}
 	},
-	components: {
+	component: {
 		wallet: {
 			'//':'Deve vir dinamicamente, conforme o usuário clica na moeda, veja a action: getTxHistory()',
-			_current_coin: 'BTC',
-			_current_tx_history: [
+			current_network: 'BTC',
+			current_tx_history: [
 				{
 					type: 'RECEIVED',
 					otherParams: {},

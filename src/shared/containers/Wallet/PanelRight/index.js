@@ -35,7 +35,6 @@ class PanelRight extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			coinHistory: undefined,
 			tmpCount: 1
 		}
 	}
@@ -49,21 +48,9 @@ class PanelRight extends React.Component {
 		});
 	}
 	componentDidMount = async() => {
-		let { coinName, coinPrice } = this.props.wallet && this.props.wallet.panelRight;
 		this.props.setTxHistory({network: 'btc'});
 	}
 	render() {
-		let { coinName, coinPrice } = this.props.wallet && this.props.wallet.panelRight;
-		/*
-			coinPrice: { BRL: '31.000,00', USD: '7.600,00' }
-			coiName: 'btc' || 'ltc' || 'eth'
-			status: 'open' || 'closed' (status of this panel, hidden or visible)
-		*/
-		if (!coinName || !coinPrice) {
-			console.warn(`coinName: ${coinName} - coinPrice: ${coinPrice}`,"components/Wallet -> this.props.wallet.panelRight.coinName não existe ou está undefined");
-			return <Default/>;
-		}
-		console.warn(`%ccoinName: ${coinName} - coinPrice: ${coinPrice}`,"components/Wallet -> this.props.wallet.panelRight.coinName não existe ou está undefined", "background: black; color:white;");
 		return (
 			<StyledPanelRight>
 				<CoinStatus/>
@@ -77,7 +64,7 @@ class PanelRight extends React.Component {
 }
 const mapStateToProps = (state) => {
 	return {
-		wallet: state.wallet
+		wallet: state.component.wallet
 	}
 }
 const mapDispatchToProps = (dispatch) => {

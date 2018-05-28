@@ -1,7 +1,15 @@
+//modo antigo
+	coinPrice: { BRL: '31.000,00', USD: '7.600,00' }
+	coiName: 'BTC' || 'LTC' || 'ETH'
+	status: 'open' || 'closed' (status of this panel, hidden or visible)
+
+__ARQUIVOS SENDO REFATORADOS
 /wallet/panelright/
 	index
 	histories
 	coinstatus
+/wallet/panelleft/coins
+	index
 	
 Wandyer, na hora do usuário fazer a transação, pode ocorrer um problema de o usuário digitar, precisamos verificar se o endereço está correto.
 

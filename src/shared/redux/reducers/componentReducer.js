@@ -1,8 +1,8 @@
 let initialState = {
 	wallet: {
 		'//':'Deve vir dinamicamente, conforme o usuário clica na moeda, veja a action: getTxHistory()',
-		_current_coin: 'BTC',
-		_current_tx_history: [
+		current_network: '',
+		current_tx_history: [
 			{
 				type: 'RECEIVED',
 				otherParams: {},

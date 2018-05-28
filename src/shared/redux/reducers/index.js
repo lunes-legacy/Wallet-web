@@ -1,4 +1,4 @@
-import balanceReducer    from './currenciesReducer';
+import balanceReducer    from './balanceReducer';
 import componentReducer  from './componentReducer';
 import configReducer     from './configReducer';
 import cryptocurrenciesReducer from './cryptocurrenciesReducer';
