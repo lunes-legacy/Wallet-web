@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import { users } from "lunes-lib";
 import { connect } from "react-redux";
+//REDUX
+import { userReset } from 'Redux/actions';
 
 // Components
 import PanelLeft from "./PanelLeft";
@@ -160,13 +161,8 @@ class Reset extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    userReset: email => {
-      dispatch({
-        type: "USER_RESET",
-        payload: users.resetPassword({
-          email
-        })
-      });
+    userReset: (email) => {
+      dispatch(userReset(email))
     }
   };
 };

@@ -1,6 +1,11 @@
-Wandyer, na hora do usuário fazer a transação, pode ocorrer um problema de o usuário digitar 
+Wandyer, na hora do usuário fazer a transação, pode ocorrer um problema de o usuário digitar, precisamos verificar se o endereço está correto.
 
-
+config: {
+	interface: {
+		language: 'portuguese',
+		timezone: 'BRT'
+	} 
+}
 currencies: {
 	default: 'BRL',    #BRL | USD | EUR
 	price: {
@@ -9,25 +14,28 @@ currencies: {
 		EUR
 	}
 },
-cryptocurrency: {
+cryptocurrencies: {
 	default: 'BTC', #ALGO À PENSAR
-	btc: { USD: 10000, BRL: 30000 },
-	eth: { USD: 400, BRL: 1200 }
+	price: {
+		BTC: { USD: 10000, BRL: 30000 },
+		ETH: { USD: 400, BRL: 1200    },
+		ETH: { USD: 200, BRL: 600     }
+	}
+},
+balance: { 
+	btc { 
+		total_confirmed: 2.9, 
+		total_unconfirmed: 1,
+		total_amount: 3.9
+	},
+	eth { 
+		total_confirmed: 1.2, 
+		total_unconfirmed: 1,
+		total_amount: 2.2
+	}
 },
 components: {
 	wallet: {
-		balance: { 
-			btc { 
-				total_confirmed: 2.9, 
-				total_unconfirmed: 1,
-				total_amount: 3.9
-			}
-			eth { 
-				total_confirmed: 1.2, 
-				total_unconfirmed: 1,
-				total_amount: 2.2
-			}
-		}
 		_current_coin: {
 			name,
 			price: {
@@ -48,8 +56,17 @@ components: {
 		}
 	}
 }
+
+___ACTIONS___
+
+setBalance()
+userLogin()
+userCreate()
+userReset()
+
+
 //Legenda
-Parametro com underline(_) é exclusivo para o pai, mas os outros podem usar
+Parametro com underline(_) é exclusivo para componente pai.
 
 //Explicações
 1) components.wallet._current_coin
@@ -57,3 +74,5 @@ CoinStatus/CoinControl/Histories vão estar atentos a mudanças feitas pelo o re
 
 //Questões
 1) Precisamos ver qual um bom periodo de tempo para fazer uma nova requisição no servidor para pegar o preço da moeda. Na hora da transação tem que ser obrigatório, fazer uma nova requisição para ter um preço mais atualizado possível
+
+2) Precisamos planejar o estado para os contatos do usuário em recargas. Um padrão para que já possamos começar a fazer, quando pedido.
