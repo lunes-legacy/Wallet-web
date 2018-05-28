@@ -1,4 +1,5 @@
 import { users } from 'lunes-lib';
+import UserClass from "Classes/User";
 
 export const userReset = email => {
   return {
@@ -10,8 +11,11 @@ export const userReset = email => {
 }
 
 export const userLogin = (data) => {
+	let email    = data.email;
+	let password = data.password;
 	return {
-		
+		type: "USER_LOGIN",
+		payload: new UserClass().login({ email, password })
 	}
 }
 

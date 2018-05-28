@@ -3,7 +3,8 @@ import { users } from "lunes-lib";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import UserClass from "Classes/User";
+//REDUX
+import { userLogin } from 'Redux/actions';
 
 //COMPONENTS
 import { Form } from "Components/Form";
@@ -48,7 +49,10 @@ class Login extends React.Component {
 
     let email    = emailEl.value;
     let password = passEl.value;
-    this.props.userLogin(email, password);
+    this.props.userLogin({
+      email, 
+      password
+    });
   };
   handleStatus() {
     let statusEl = document.querySelector(".js-status");
@@ -118,11 +122,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     userLogin: (email, password) => {
-      let login = new UserClass().login;
-      dispatch({
-        type: "USER_LOGIN",
-        payload: login({ email, password })
-      });
+      dispatch(userLogin(email, password));
     }
   };
 };
