@@ -11,15 +11,12 @@ const StyledCoins = styled.div`
   min-width: 100%;
   height: 100%;
   max-height: 100%;
-  
+
 `;
 const StyledLoading = styled.div`
-
-margin-top: 115%;
-display: flex; 
-align-items: center;
- 
-
+  margin-top: 115%;
+  display: flex;
+  align-items: center;
 `;
 
 const Coin = styled.div`
@@ -32,16 +29,15 @@ const Coin = styled.div`
   min-width: 100%;
   padding: 0 1rem;
   width: auto;
- 
 
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-  transform: translateX(0);
-  transition: transform .3s, box-shadow .4s;
+  margin-right:0px;
+  box-shadow: none;
+  transition: .3s;
 
   &:hover {
     box-shadow: 5px 0px 10px 5px rgba(51, 51, 51, 0.25);
-    transform: translateX(20px);
     z-index: 3;
+    margin-right: -20px;
   }
 
   @media (${style.media.tablet2}) {
@@ -101,6 +97,7 @@ const WrapCoinData = styled.div`
   justify-content: center;
   align-items: center;
   align-content: center;
+  width:100%;
 `;
 
 const CoinValue = styled.div`
@@ -124,6 +121,7 @@ class Coins extends React.Component {
       price: undefined
     };
   }
+
   //metodo chamado sempre que o componente é renderizado ou um
   //estado é atualizado
   _renderCoins = () => {
@@ -145,7 +143,7 @@ class Coins extends React.Component {
           }}
         >
           <WrapCoinImg>
-            <CoinImg src="/img/bitcoin.svg" />
+            <CoinImg src={`/img/coins/${balance[coinKey].img}`} />
           </WrapCoinImg>
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>
