@@ -1,12 +1,7 @@
 import { WalletClass } from 'Classes/Wallet';
 
 const Wallet = new WalletClass();
-export const setBalance = (data) => {
-	return {
-		type: 'WALLET_SET_BALANCE',
-		payload: { balance: data.balance, coinsPrice: data.coinsPrice }
-	}
-}
+
 export const togglePanelLeft = () => {
 	return {
 		type: 'WALLET_TOGGLE_PANEL_LEFT',

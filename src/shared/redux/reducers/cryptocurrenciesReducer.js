@@ -7,7 +7,12 @@ let initialState = {
 	}
 }
 const cryptocurrenciesReducer = (state = initialState, action) => {
-	
+	if (action.type === 'SET_CRYPTO_PRICE') {
+		return {
+			...state,
+			price: action.payload
+		}
+	}
 	return state;
 }
 

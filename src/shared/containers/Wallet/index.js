@@ -2,14 +2,16 @@ import React           from 'react';
 import ReactDOM        from 'react-dom';
 import styled          from 'styled-components';
 import style           from 'Shared/style-variables';
-import sb              from 'satoshi-bitcoin';
 import { connect }     from 'react-redux';
-import { coins }       from 'lunes-lib';
 import CookieClass     from 'Classes/Cookie';
 import { WalletClass } from 'Classes/Wallet';
 import UserClass       from 'Classes/User';
-
-import { setBalance, togglePanelLeft } from 'Redux/actions';
+import { ENV } from 'Config/constants';
+//REDUX
+import { 
+	setBalance, 
+	togglePanelLeft, 
+	setCryptoPrice } from 'Redux/actions';
 
 //COMPONENTS
 import { TextBase }    from 'Components/TextBase';
@@ -48,12 +50,11 @@ class Wallet extends React.Component {
 		let wallet     = new WalletClass;
 		let balance    = await wallet.getBalance(user);
 		let coinsPrice = await wallet.getCoinsPrice();
-		console.warn(balance, "BALANCE <<<");
 		
-		this.props.setBalance({
-			balance, 
-			coinsPrice
-		});
+		if (ENV !== 'development') {
+			this.props.setBalance(balance);
+			this.props.setCryptoPrice(coinsPrice);
+		}
 	}
 
 	render() {
@@ -76,6 +77,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		setBalance: (data) => {
 			dispatch(setBalance(data));
+		},
+		setCryptoPrice: (data) => {
+			dispatch(setCryptoPrice(data));
 		},
 		togglePanelLeft: () => {
 			dispatch(togglePanelLeft());

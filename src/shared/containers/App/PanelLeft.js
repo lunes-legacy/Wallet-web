@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import styles from 'Shared/style-variables';
 
-import { Link as TmpLink } from 'react-router-dom';
+import { NavLink as TmpLink } from 'react-router-dom';
 import { TextBase } from 'Components/TextBase';
 
 const StyledPanelLeft = styled.div`
@@ -34,11 +34,11 @@ const Icon = styled.img`
 	height: 25px;
   transition: .2s;
 
-  opacity: .2;
+  // opacity: .2;
 
-  &.Active {
-    opacity: 1;
-  }
+  // &.Active {
+  //   opacity: 1;
+  // }
 `;
 
 const CustomText = styled.div`
@@ -48,15 +48,15 @@ const CustomText = styled.div`
   font-weight: 700;
   transition: .2s;
 
-  opacity: .3;
+  opacity: 1;
 
   @media (${styles.media.tablet2}) {
     display: inline-block;
   }
 
-  &.Active {
-    opacity: 1;
-  }
+  // &.Active {
+  //   opacity: 1;
+  // }
 `;
 
 const CustomLink = styled(TmpLink)`
@@ -68,13 +68,18 @@ const CustomLink = styled(TmpLink)`
   display: flex;
   align-items: center;
 
-  &:hover ${Icon} {
+  transition: .2s;
+  opacity: 0.3;
+  &:hover {
     opacity: 1;
   }
+  // &:hover ${Icon} {
+  //   opacity: 1;
+  // }
 
-  &:hover ${CustomText} {
-    opacity: 1;
-  }
+  // &:hover ${CustomText} {
+  //   opacity: 1;
+  // }
 `;
 
 
@@ -85,10 +90,11 @@ class ItemMenuApp extends React.Component {
     if(this.props.active){
       className = 'Active'
     }
+    let activeStyle = this.props.activeStyle ? this.props.activeStyle : null;
     return (
       <div>
         <WrapLink>
-          <CustomLink to={this.props.to} >
+          <CustomLink to={this.props.to} activeStyle={activeStyle}>
             <Icon src={'/img/app_panel_left/'+this.props.icon} alt={this.props.label} className={className} />
             <CustomText size={'1.4rem'} className={className}>{this.props.label}</CustomText>
           </CustomLink>
@@ -104,14 +110,14 @@ class PanelLeft extends React.Component {
 		return(
       <StyledPanelLeft>
 
-        <ItemMenuApp label="Home"           to="/app/home"            icon="ic_home.svg" />
-        <ItemMenuApp label="Portfólio"      to="/app/portfolio"       icon="ic_portfolio.svg" />
-        <ItemMenuApp label="Wallet"         to="/app/wallet"          icon="ic_wallet.svg" />
-        <ItemMenuApp label="Recargas"       to="/app/recharge"        icon="ic_recharge.svg" />
-        <ItemMenuApp label="Boleto"         to="/app/ticket"          icon="ic_barcode.svg" />
-        <ItemMenuApp label="Compras"        to="/app/buy"             icon="ic_buy.svg" />
-        <ItemMenuApp label="Configuração"   to="/app/configuration"   icon="ic_config.svg" />
-        <ItemMenuApp label="Privacidade"    to="/app/privacy"         icon="ic_privacy.svg" />
+        <ItemMenuApp label="Home"           to="/app/home"            icon="ic_home.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Portfólio"      to="/app/portfolio"       icon="ic_portfolio.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Wallet"         to="/app/wallet"          icon="ic_wallet.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Recargas"       to="/app/recharge"        icon="ic_recharge.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Boleto"         to="/app/ticket"          icon="ic_barcode.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Compras"        to="/app/buy"             icon="ic_buy.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Configuração"   to="/app/configuration"   icon="ic_config.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Privacidade"    to="/app/privacy"         icon="ic_privacy.svg"    activeStyle={{opacity: 1}}/>
 
 			</StyledPanelLeft>
 		);
