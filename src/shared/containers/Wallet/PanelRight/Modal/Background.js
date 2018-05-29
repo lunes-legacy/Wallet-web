@@ -3,11 +3,10 @@ import style from 'Shared/style-variables';
 
 let Background = styled.div`
 	position: fixed;
-	top: 0px;
+	top: 10px;
 	left: 0px;
 	width: 100%;
 	height: 100%;
-	position: fixed;
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
