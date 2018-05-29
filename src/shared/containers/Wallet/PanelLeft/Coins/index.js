@@ -14,12 +14,9 @@ const StyledCoins = styled.div`
 
 `;
 const StyledLoading = styled.div`
-
-margin-top: 115%;
-display: flex;
-align-items: center;
-
-
+  margin-top: 115%;
+  display: flex;
+  align-items: center;
 `;
 
 const Coin = styled.div`
@@ -33,15 +30,14 @@ const Coin = styled.div`
   padding: 0 1rem;
   width: auto;
 
-
-  box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
-  transform: translateX(0);
-  transition: transform .3s, box-shadow .4s;
+  margin-right:0px;
+  box-shadow: none;
+  transition: .3s;
 
   &:hover {
     box-shadow: 5px 0px 10px 5px rgba(51, 51, 51, 0.25);
-    transform: translateX(20px);
     z-index: 3;
+    margin-right: -20px;
   }
 
   @media (${style.media.tablet2}) {
@@ -175,7 +171,7 @@ class Coins extends React.Component {
       eth:  { total_confirmed: 3,   total_unconfirmed: 1, total_amount: 4, img: 'eth.svg' },
       ltc:  { total_confirmed: 12,  total_unconfirmed: 0, total_amount: 12, img: 'ltc.svg' },
       dash: { total_confirmed: 30,  total_unconfirmed: 0, total_amount: 30, img: 'dash.svg' },
-      nano: { total_confirmed: 50,  total_unconfirmed: 0, total_amount: 50, img: 'bitcoin.svg' },
+      nano: { total_confirmed: 50,  total_unconfirmed: 0, total_amount: 50, img: 'nano.svg' },
     }
     let components = [];
     for (let coinKey in balance) {
