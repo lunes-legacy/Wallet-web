@@ -143,7 +143,7 @@ class Coins extends React.Component {
           }}
         >
           <WrapCoinImg>
-            <CoinImg src={`/img/coins/${balance[coinKey].img}`} />
+            <CoinImg src={`/img/coins/${coinKey.toLowerCase()}.svg`} />
           </WrapCoinImg>
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>

@@ -37,15 +37,18 @@ class Wallet extends React.Component {
 	}
 	componentDidMount = async () => {
 		let cookies = new CookieClass;
-	    // let user    = cookies.get('user').user.toString();
-		let userObj = new UserClass;
-		let user    = await userObj.login({email: '', password: ''});
+	    let user    = JSON.parse(cookies.get('user').user.toString());
+		if (Object.keys(user).length < 1) {
+			User    = new UserClass;
+			user    = await User.login({email: '', password: ''});
+		}
 
 		if (!user) { return; }
 
-		let wallet  = new WalletClass;
-		let balance = await wallet.getBalance(user);
+		let wallet     = new WalletClass;
+		let balance    = await wallet.getBalance(user);
 		let coinsPrice = await wallet.getCoinsPrice();
+		console.warn(balance, "BALANCE <<<");
 		
 		this.props.setBalance({
 			balance, 
@@ -74,8 +77,8 @@ const mapDispatchToProps = (dispatch) => {
 		setBalance: (data) => {
 			dispatch(setBalance(data));
 		},
-		togglePanelLeft: ({status}) => {
-			dispatch(togglePanelLeft({ status }));
+		togglePanelLeft: () => {
+			dispatch(togglePanelLeft());
 		}
 	}
 }

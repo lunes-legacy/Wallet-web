@@ -74,6 +74,8 @@ export class WalletClass {
         //addressKey = 1 (example)
         let i = 0;
         for (let addressKey in addresses[coin]) {
+          //we need to upper case it because of our pattern on redux
+          let ucCoin = coin.toUpperCase();
           if (isCoinAvaliable(coin) === false) continue;
           //it gets the current addres of the iteration
           let address = addresses[coin][addressKey];
@@ -82,23 +84,23 @@ export class WalletClass {
           if (response.data) {
             //se não temos nada no objeto
             //então colocamos valores iniciais
-            if (!balance[coin]) {
-              balance[coin] = {};
-              balance[coin]["total_confirmed"]   = sb.toSatoshi(0);
-              balance[coin]["total_unconfirmed"] = sb.toSatoshi(0);
-              balance[coin]["total_amount"]      = 0;
+            if (!balance[ucCoin]) {
+              balance[ucCoin] = {};
+              balance[ucCoin]["total_confirmed"]   = sb.toSatoshi(0);
+              balance[ucCoin]["total_unconfirmed"] = sb.toSatoshi(0);
+              balance[ucCoin]["total_amount"]      = 0;
             }
             //new total_(un)confirmed
             let confirmed   = response.data.confirmed  ? response.data.confirmed : 0;
             let unconfirmed = response.data.unconfirmed ? response.data.unconfirmed : 0;
             //it sums the old total_confirmed with the new
-            balance[coin]["total_confirmed"]   += confirmed;
-            balance[coin]["total_unconfirmed"] += unconfirmed;
+            balance[ucCoin]["total_confirmed"]   += confirmed;
+            balance[ucCoin]["total_unconfirmed"] += unconfirmed;
             //it converts total_(un)confirmed to bitcoin
-            balance[coin]["total_unconfirmed"] = sb.toBitcoin(balance[coin]["total_unconfirmed"]);
-            balance[coin]["total_confirmed"]   = sb.toBitcoin(balance[coin]["total_confirmed"]);
+            balance[ucCoin]["total_unconfirmed"] = sb.toBitcoin(balance[ucCoin]["total_unconfirmed"]);
+            balance[ucCoin]["total_confirmed"]   = sb.toBitcoin(balance[ucCoin]["total_confirmed"]);
 
-            balance[coin]["total_amount"]      = balance[coin]["total_confirmed"] + balance[coin]["total_unconfirmed"];
+            balance[ucCoin]["total_amount"]      = balance[ucCoin]["total_confirmed"] + balance[ucCoin]["total_unconfirmed"];
           }
         }
       }

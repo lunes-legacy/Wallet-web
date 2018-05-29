@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import style from 'Shared/style-variables';
 
 let Background = styled.div`
+	position: fixed;
+	top: 0px;
+	left: 0px;
 	width: 100%;
 	height: 100%;
 	position: fixed;
