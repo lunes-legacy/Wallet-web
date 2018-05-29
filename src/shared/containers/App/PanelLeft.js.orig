@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import styles from 'Shared/style-variables';
+<<<<<<< HEAD
+
+=======
+>>>>>>> stylized menu options
 import { NavLink as TmpLink } from 'react-router-dom';
 import { TextBase } from 'Components/TextBase';
 
@@ -32,6 +36,15 @@ const Icon = styled.img`
 	width: 25px;
 	height: 25px;
   transition: .2s;
+<<<<<<< HEAD
+
+  // opacity: .2;
+
+  // &.Active {
+  //   opacity: 1;
+  // }
+=======
+>>>>>>> stylized menu options
 `;
 
 const CustomText = styled.div`
@@ -41,13 +54,18 @@ const CustomText = styled.div`
   font-weight: 700;
   transition: .2s;
 
+<<<<<<< HEAD
+  opacity: 1;
+
+=======
+>>>>>>> stylized menu options
   @media (${styles.media.tablet2}) {
     display: inline-block;
   }
 
-  &.Active {
-    opacity: 1;
-  }
+  // &.Active {
+  //   opacity: 1;
+  // }
 `;
 
 const CustomLink = styled(TmpLink) `
@@ -58,17 +76,47 @@ const CustomLink = styled(TmpLink) `
   transition-delay: .2s;
   display: flex;
   align-items: center;
+<<<<<<< HEAD
+
+  transition: .2s;
+  opacity: 0.3;
+  &:hover {
+    opacity: 1;
+  }
+  // &:hover ${Icon} {
+  //   opacity: 1;
+  // }
+
+  // &:hover ${CustomText} {
+  //   opacity: 1;
+  // }
+=======
   transition: .2s;
   opacity: 0.3;
   
   &:hover {
     opacity: 1;
   }
+>>>>>>> stylized menu options
 `;
 
 
 
 class ItemMenuApp extends React.Component {
+<<<<<<< HEAD
+  render(){
+    let className = '';
+    if(this.props.active){
+      className = 'Active'
+    }
+    let activeStyle = this.props.activeStyle ? this.props.activeStyle : null;
+    return (
+      <div>
+        <WrapLink>
+          <CustomLink to={this.props.to} activeStyle={activeStyle}>
+            <Icon src={'/img/app_panel_left/'+this.props.icon} alt={this.props.label} className={className} />
+            <CustomText size={'1.4rem'} className={className}>{this.props.label}</CustomText>
+=======
   render() {
     return (
       <div>
@@ -76,6 +124,7 @@ class ItemMenuApp extends React.Component {
           <CustomLink  {...this.props}>
             <Icon src={'/img/app_panel_left/' + this.props.icon} alt={this.props.label} />
             <CustomText size={'1.4rem'} >{this.props.label}</CustomText>
+>>>>>>> stylized menu options
           </CustomLink>
         </WrapLink>
       </div>
@@ -88,6 +137,21 @@ class PanelLeft extends React.Component {
   render() {
     return (
       <StyledPanelLeft>
+<<<<<<< HEAD
+
+        <ItemMenuApp label="Home"           to="/app/home"            icon="ic_home.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Portfólio"      to="/app/portfolio"       icon="ic_portfolio.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Wallet"         to="/app/wallet"          icon="ic_wallet.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Recargas"       to="/app/recharge"        icon="ic_recharge.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Boleto"         to="/app/ticket"          icon="ic_barcode.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Compras"        to="/app/buy"             icon="ic_buy.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Configuração"   to="/app/configuration"   icon="ic_config.svg"    activeStyle={{opacity: 1}}/>
+        <ItemMenuApp label="Privacidade"    to="/app/privacy"         icon="ic_privacy.svg"    activeStyle={{opacity: 1}}/>
+
+			</StyledPanelLeft>
+		);
+	}
+=======
         <ItemMenuApp
           label="Home"
           to="/app/home"
@@ -138,6 +202,7 @@ class PanelLeft extends React.Component {
       </StyledPanelLeft>
     );
   }
+>>>>>>> stylized menu options
 }
 
 export default PanelLeft;
