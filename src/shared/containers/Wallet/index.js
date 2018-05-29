@@ -41,21 +41,16 @@ class Wallet extends React.Component {
 		let userObj = new UserClass;
 		let user    = await userObj.login({email: '', password: ''});
 
-		console.log(user, "containers/Wallet -> USER");
 		if (!user) { return; }
 
-		let wallet = new WalletClass;
-		let balance;
-		try {
-			balance = await wallet.getBalance(user);
-		} catch(e) {
-			console.error(e, "containers/Wallet componentDidMount error");
-			return;
-		}
+		let wallet  = new WalletClass;
+		let balance = await wallet.getBalance(user);
 		let coinsPrice = await wallet.getCoinsPrice();
-		console.log(coinsPrice, "COINS PRICE <><><><><><<><><><><><><><><><><");
-
-		this.props.setBalance({balance, coinsPrice});
+		
+		this.props.setBalance({
+			balance, 
+			coinsPrice
+		});
 	}
 
 	render() {
@@ -76,8 +71,8 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setBalance: ({ balance, coinsPrice }) => {
-			dispatch(setBalance({ balance, coinsPrice }));
+		setBalance: (data) => {
+			dispatch(setBalance(data));
 		},
 		togglePanelLeft: ({status}) => {
 			dispatch(togglePanelLeft({ status }));

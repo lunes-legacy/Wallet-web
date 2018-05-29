@@ -5,4 +5,4 @@ public/bundle.js
 public/*.hot-update.*
 tests/components/bundle/*
 tests/bundle/
-tests/components/index.js
+tests/components/
