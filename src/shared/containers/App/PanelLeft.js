@@ -45,9 +45,9 @@ const CustomText = styled.div`
     display: inline-block;
   }
 
-  &.Active {
-    opacity: 1;
-  }
+  // &.Active {
+  //   opacity: 1;
+  // }
 `;
 
 const CustomLink = styled(TmpLink) `

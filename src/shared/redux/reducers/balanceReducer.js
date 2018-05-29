@@ -37,7 +37,9 @@ let initialState = {
 	}
 }
 const balanceReducer = (state = initialState, action) => {
-	
+	if (action.type === 'WALLET_SET_BALANCE') {
+		state = action.payload;
+	}
 	return state;
 }
 

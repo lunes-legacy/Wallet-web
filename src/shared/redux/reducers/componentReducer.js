@@ -27,9 +27,7 @@ const componentReducer = (state = initialState, action) => {
 				}
 			}
 			return state;
-		break;
-		case '1':
-		break;
+			break;
 		default:
 			return state;
 		break;
