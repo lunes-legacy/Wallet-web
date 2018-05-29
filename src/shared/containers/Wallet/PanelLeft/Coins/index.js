@@ -127,7 +127,7 @@ class Coins extends React.Component {
   //metodo chamado sempre que o componente é renderizado ou um
   //estado é atualizado
   _renderCoins = () => {
-    let { currentNetwork } = this.props.component.wallet;
+    let { currentNetwork }  = this.props.component.wallet;
     let { price }           = this.props.currencies;
     let { balance }         = this.props;
     if (!balance || !price) {
@@ -141,7 +141,7 @@ class Coins extends React.Component {
         <Coin
           key={coinKey}
           onClick={() => {
-            this.props.openPanelRight({ coinPrice: price[coinKey], coinName: coinKey, isOpenModalReceive: false });
+            this.props.openPanelRight({ price: price[coinKey], currentNetwork: coinKey, isOpenModalReceive: false });
           }}
         >
           <WrapCoinImg>
@@ -183,10 +183,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    openPanelRight: ({ coinPrice, coinName }) => {
+    openPanelRight: ({ price, currentNetwork }) => {
       dispatch({
         type: 'WALLET_OPEN_PANELRIGHT',
-        payload: { coinPrice, coinName }
+        payload: { price, currentNetwork }
       });
     }
   };

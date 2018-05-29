@@ -34,9 +34,6 @@ const StyledPanelRight = styled.div`
 class PanelRight extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			tmpCount: 1
-		}
 	}
 	handleToggleHistory = (event) => {
 		let historyEl        = event.currentTarget.parentElement;
@@ -50,7 +47,15 @@ class PanelRight extends React.Component {
 	componentDidMount = async() => {
 		this.props.setTxHistory({network: 'btc'});
 	}
+	_shouldRender = () => {
+		let { isPanelRightVisible } = this.props.component_wallet;
+		if (!isPanelRightVisible)
+			return false;
+		return true;
+	}
 	render() {
+		if (!this._shouldRender()) return null;
+		
 		return (
 			<StyledPanelRight>
 				<CoinStatus/>
@@ -64,7 +69,7 @@ class PanelRight extends React.Component {
 }
 const mapStateToProps = (state) => {
 	return {
-		wallet: state.component.wallet
+		component_wallet: state.component.wallet
 	}
 }
 const mapDispatchToProps = (dispatch) => {

@@ -112,6 +112,7 @@ export class WalletClass {
     network = undefined,
     address = undefined
   }) => {
+    console.warn(network, address, "NETWORK | ADDRESS");
     if (!network) 
       throw errorPattern("getHistory error, you should pass through a network name", 500, "WALLET_GETHISTORY_ERROR");
     if (!address) 

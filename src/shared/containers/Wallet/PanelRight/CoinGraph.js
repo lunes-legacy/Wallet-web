@@ -18,7 +18,7 @@ class CoinGraph extends React.Component {
   }
 
   coinHistory = async () => {
-    let obj     = { fromSymbol: this.props.coinName, toSymbol: "USD", range: "RANGE_1D" };
+    let obj     = { fromSymbol: this.props.currentNetwork, toSymbol: "USD", range: "RANGE_1D" };
     let wallet  = await new WalletClass().getCoinHistory(obj);
     let walletFormatted = await this.convertTimestampToDate(wallet.data);
 

@@ -12,11 +12,28 @@ let initialState = {
 				nativeAmount: 200000000,
 				networkFee: 100000
 			}
-		]
+		],
+		isPanelRightVisible: false
 	}
 }
 const componentReducer = (state = initialState, action) => {
-	
+	switch (action.type) {
+		case 'WALLET_OPEN_PANELRIGHT':
+			state = {
+				...state,
+				wallet: {
+					...state.wallet,
+					isPanelRightVisible: true 
+				}
+			}
+			return state;
+		break;
+		case '1':
+		break;
+		default:
+			return state;
+		break;
+	}
 	return state;
 }
 

@@ -137,12 +137,12 @@ class CoinStatus extends React.Component {
           <Col s={12} m={3} l={3}>
             <CoinDetails>
               <CoinDetailsText offSide>BitCoin</CoinDetailsText>
-              <CoinDetailsText offSide>{`1 ${coinName.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText>
+              <CoinDetailsText offSide>{`1 ${currentNetwork.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText>
             </CoinDetails>
           </Col>
           <Col s={8} m={6} l={6}>
             <GraphContainer>
-              <CoinGraph width='95%' height={75} coinName={this.props.wallet.panelRight.coinName.toUpperCase()} />
+              <CoinGraph width='95%' height={75} currentNetwork={currentNetwork.toUpperCase()} />
             </GraphContainer>
           </Col>
           <Col s={4} m={3} l={3}>
@@ -163,7 +163,8 @@ class CoinStatus extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    wallet: state.wallet
+    wallet: state.component.wallet,
+    cryptocurrencies: state.cryptocurrencies
   };
 };
 const mapDispatchToProps = dispatch => {

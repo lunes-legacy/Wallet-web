@@ -1,3 +1,21 @@
+// if (action.type === 'WALLET_OPEN_PANELRIGHT') {
+// 		//action.payload: { 
+// 		// 	coinPrice: 
+// 		// 		{
+// 		// 			USD: 1, 
+// 		// 			BRL: 2
+// 		// 		}, 
+// 		// 	coinName: String() 
+// 		//}
+// 		return {
+// 			...state,
+// 			panelRight: {
+// 				...state.panelRight,
+// 				...action.payload,
+// 				status: 'open'
+// 			}
+// 		}
+// 	} else 
 const initialState = {
 	panelRight: {
 		status: 'closed'
@@ -8,24 +26,7 @@ const initialState = {
 }
 
 const walletReducer = (state = initialState, action) => {
-	if (action.type === 'WALLET_OPEN_PANELRIGHT') {
-		//action.payload: { 
-		// 	coinPrice: 
-		// 		{
-		// 			USD: 1, 
-		// 			BRL: 2
-		// 		}, 
-		// 	coinName: String() 
-		//}
-		return {
-			...state,
-			panelRight: {
-				...state.panelRight,
-				...action.payload,
-				status: 'open'
-			}
-		}
-	} else if (action.type === 'WALLET_SET_BALANCE') {
+	if (action.type === 'WALLET_SET_BALANCE') {
 		// EX: action.payload: { 
 		// 	balance, 
 		// 	coinsPrice 
