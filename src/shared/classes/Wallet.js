@@ -118,8 +118,8 @@ export class WalletClass {
     console.warn(network, address, "NETWORK | ADDRESS");
     if (!network) 
       throw errorPattern("getHistory error, you should pass through a network name", 500, "WALLET_GETHISTORY_ERROR");
-    if (!address) 
-      throw errorPattern("getHistory error, you should pass through an address", 500, "WALLET_GETHISTORY_ERROR");
+    // if (!address) 
+    //   throw errorPattern("getHistory error, you should pass through an address", 500, "WALLET_GETHISTORY_ERROR");
 
     try {
       return coins.services.history({ network: network, address, testnet: TESTNET });

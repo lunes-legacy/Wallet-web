@@ -3,8 +3,10 @@ import styled      from "styled-components";
 import style       from "Shared/style-variables";
 import { TextBase, H1 } from "Components";
 import { connect } from "react-redux";
+//REDUX
+import { openPanelRight } from 'Redux/actions';
 
-import { Loading } from "Components/Loading";
+import { Loading } from 'Components/Loading';
 
 const StyledCoins = styled.div`
   width: auto;
@@ -139,7 +141,7 @@ class Coins extends React.Component {
         <Coin
           key={coinKey}
           onClick={() => {
-            this.props.openPanelRight({ price: price[coinKey], currentNetwork: coinKey, isOpenModalReceive: false });
+            this.props.openPanelRight();
           }}
         >
           <WrapCoinImg>
@@ -181,11 +183,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    openPanelRight: ({ price, currentNetwork }) => {
-      dispatch({
-        type: 'WALLET_OPEN_PANELRIGHT',
-        payload: { price, currentNetwork }
-      });
+    openPanelRight: () => {
+      dispatch(openPanelRight());
     }
   };
 };

@@ -28,7 +28,7 @@ const StyledPanelRight = styled.div`
 	background: ${style.normalLilac};
 	width: 100%;
 	height: 100%;
-  overflow-x: auto;
+	overflow-x: auto;
 `;
 
 class PanelRight extends React.Component {
@@ -44,8 +44,8 @@ class PanelRight extends React.Component {
 			hidden: '0'
 		});
 	}
-	componentDidMount = async() => {
-		this.props.setTxHistory({network: 'btc'});
+	componentDidMount = async () => {
+		
 	}
 	_shouldRender = () => {
 		let { isPanelRightVisible } = this.props.component_wallet;
@@ -73,10 +73,6 @@ const mapStateToProps = (state) => {
 	}
 }
 const mapDispatchToProps = (dispatch) => {
-	return {
-		setTxHistory: (data) => {
-			dispatch(setTxHistory(data));
-		}
-	};
+	return {};
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PanelRight);

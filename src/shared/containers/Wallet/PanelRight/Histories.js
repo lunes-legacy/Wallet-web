@@ -6,6 +6,8 @@ import { timestampDiff } from "Utils/functions";
 import { Col, Row } from 'Components/index';
 import { WalletClass } from 'Classes/Wallet';
 import sb from 'satoshi-bitcoin';
+//REDUX
+import { setTxHistory } from 'Redux/actions';
 
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
@@ -182,10 +184,11 @@ const StatusStyle = styled.div`
 
 class Histories extends React.Component {
   constructor(props) {
+    props = {
+      ...props,
+      txHistory: []
+    }
     super(props);
-    this.state = {
-      coinHistory: []
-    };
   }
 
   timeToText = (txTime, type) => {
@@ -248,25 +251,32 @@ class Histories extends React.Component {
   };
 
   componentDidMount = async () => {
-    let { coinHistory, coinPrice, coinName } = this.props.wallet.panelRight;
-    // coinHistory = await new WalletClass().getTxHistory({coin: coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
-    coinHistory = await new WalletClass().getTxHistory({coin: coinName, address: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF'});
-    this.setState({
-      coinHistory: coinHistory.data.history
-    });
+    // this.props.setTxHistory({network: 'BTC'});
+    let { currentNetwork, price } = this.props.component_wallet;
+    // 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF';
+    // txHistory = await new WalletClass().getTxHistory({coin: coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
+    // txHistory = await new WalletClass().getTxHistory({network: currentNetwork});
+    this.props.setTxHistory({network: "BTC"});
+  }
+  _shoulRender = () => {
+    let { price, currentNetwork } = this.props.component_wallet;
+    if (!this.props.txHistory || this.props.txHistory.length < 1)
+      return false;
+    if (!price || !currentNetwork) 
+      return false;
+
+    return true;
   }
 
   render() {
-    let { coinHistory, coinPrice, coinName } = this.props.wallet.panelRight;
-    console.log(this.state, "____HISTORIES STATE_____");
+    if (!this._shoulRender()) return null;
+    
 
-    if (!coinPrice) {
-      return null;
-    }
+    console.log(this.props, "____HISTORIES PROPS_____");
     return (
       <StyledHistories>
         <Loading className="js-loading" size={'35px'} bWidth={'7px'}/>
-        {this.state.coinHistory.map((tx, key) => {
+        {this.state.txHistory.map((tx, key) => {
           return (
             <History key={key}>
               <HistoryHead onClick={this.handleToggleHistory}>
@@ -341,11 +351,15 @@ const monetaryValue = (value, options) => {
 
 const mapStateToProps = state => {
   return {
-    wallet: state.wallet
+    component_wallet: state.component.wallet
   };
 };
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    setTxHistory: (data) => {
+      dispatch(setTxHistory(data));
+    }
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Histories);

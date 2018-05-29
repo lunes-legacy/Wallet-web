@@ -1,7 +1,8 @@
 import { userReset, userLogin, userCreate } from './userActions';
 import { togglePanelLeft, setTxHistory } from './walletActions';
-import { setBalance } from './balanceActions';
+import { setBalance }     from './balanceActions';
 import { setCryptoPrice } from './cryptocurrenciesActions';
+import { openPanelRight } from './componentActions';
 
 export {
 	userReset,
@@ -10,5 +11,6 @@ export {
 	setBalance,
 	togglePanelLeft,
 	setTxHistory,
-	setCryptoPrice
+	setCryptoPrice,
+	openPanelRight
 }
