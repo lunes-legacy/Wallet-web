@@ -6,9 +6,10 @@ import {P} from 'Components/P'
 
 const CustomP = P.extend`
   display: block;
-  margin-top: 180px;
-  margin-bottom:40px;
+  margin-top: 10rem;
+  margin-bottom: 35px;
   text-align: center;
+
   @media (min-width: 768px) {
     bottom: 0;
   }

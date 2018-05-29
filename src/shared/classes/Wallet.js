@@ -1,9 +1,9 @@
 import { errorPattern } from "Utils/functions";
 import { coins }        from "lunes-lib";
 import sb               from "satoshi-bitcoin";
-import { testnet }      from 'Config/constants';
+import { TESTNET }      from 'Config/constants';
 import isCoinAvaliable  from 'Config/isCoinAvaliable';
-// console.log(testnet, "TESTNET <<<<");
+
 export class WalletClass {
   static coinsPrice;
 
@@ -78,7 +78,7 @@ export class WalletClass {
           //it gets the current addres of the iteration
           let address = addresses[coin][addressKey];
           //it returns a response object
-          let response = await coins.services.balance({ network: coin, address, testnet });
+          let response = await coins.services.balance({ network: coin, address, testnet: TESTNET });
           if (response.data) {
             //se não temos nada no objeto
             //então colocamos valores iniciais
@@ -109,18 +109,18 @@ export class WalletClass {
   };
   //"1Q7Jmho4FixWBiTVcZ5aKXv4rTMMp6CjiD"
   getTxHistory = async ({
-    coin = undefined,
+    network = undefined,
     address = undefined
   }) => {
-    if (!coin) 
-      throw errorPattern("getHistory error, you should pass through a coin name", 500, "WALLET_GETHISTORY_ERROR");
+    if (!network) 
+      throw errorPattern("getHistory error, you should pass through a network name", 500, "WALLET_GETHISTORY_ERROR");
     if (!address) 
       throw errorPattern("getHistory error, you should pass through an address", 500, "WALLET_GETHISTORY_ERROR");
 
     try {
-      return coins.services.history({ network: coin, address, testnet });
+      return coins.services.history({ network: network, address, testnet: TESTNET });
     } catch (err) {
-      return errorPattern("Error on get history", 500, "WALLET_GETHISTORY_ERROR", err);
+      throw console.error(errorPattern("Error on get history", 500, "WALLET_GETHISTORY_ERROR", err));
     }
   };
 

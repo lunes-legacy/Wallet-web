@@ -16,3 +16,11 @@ export let CustomLink = styled(TmpLink)`
 	color: ${props => props.color ? props.color : 'white'};
 	margin: ${props => props.margin ? props.margin : '10px auto 0 auto' };
 `;
+
+export let CircleLink = CustomLink.extend`
+  background-color: white;
+  border: 0;
+  border-radius: 100%;
+  height: ${props => props.height ? props.height : '40px'};
+  width: ${props => props.width ? props.width : '40px'};
+`;

@@ -9,6 +9,8 @@ import { userCreate } from 'Redux/actions';
 import { PanelLeft } from "./PanelLeft";
 import { PanelRight } from "./PanelRight";
 import { Logo } from "Components/Logo";
+import { CircleLink } from "Components/Link";
+import { Img } from "Components/Img";
 import { H3 } from "Components/H3";
 import { H1 } from "Components/H1";
 import { FormBuilder } from "Components/FormBuilder";
@@ -16,20 +18,36 @@ import { ButtonSecondary } from "Components/Buttons";
 import Slide from "../../../containers/User/Login/Slide";
 import FooterUser from 'Components/FooterUser'
 
-
 let CustomLogo = Logo.extend`
   margin: 70px auto 0 auto;
 `;
+
+let CustomH1 = H1.extend`
+  font-weight: 500;
+  margin: 2.5rem 5rem 0 5rem;
+  line-height: 25px;
+`;
+
 let CustomH3 = H3.extend`
-  margin: 25px 0 0 0;
+  margin: 2rem;
   text-align: center;
   color: white;
   font-size: 1.2em;
 `;
+
 let CustomForm = styled.form`
   width: 70%;
   display: block;
   margin: 25px auto 0 auto;
+`;
+
+const SuccessMessage = styled.div`
+  display: none;
+`;
+
+const ArrowImg = Img.extend`
+  border-style: none;
+  padding-top: 14px;
 `;
 
 let inputs = [
@@ -40,6 +58,7 @@ let inputs = [
   { className: "registry-cpass", placeholder: "Confirmar senha", type: "password" },
   { className: "registry-terms", value: " Eu aceito os Termos de Serviços", type: "checkbox" }
 ];
+
 class Registry extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
@@ -49,29 +68,35 @@ class Registry extends React.Component {
     let lnameEl = document.querySelector(".registry-lname");
     let passEl = document.querySelector(".registry-pass");
     let cpassEl = document.querySelector(".registry-cpass");
+
     if (!termsEl.checked) {
       alert("You havent agreed with our terms");
       return null;
     }
+
     if (passEl.value !== cpassEl.value) {
       alert("Passwords didnt match");
       return null;
     }
+
     if (passEl.value < 8) {
       alert("Password is less than 8 characters");
       return null;
     }
+
     let fullname = fnameEl.value + " " + lnameEl.value;
+
     this.props.userCreate({
       email: emailEl.value,
       password: passEl.value,
       fullname: fullname.replace("  ", " ")
     });
   };
+
   handleStatus() {
     try {
-      // let firstPanelEl  = document.querySelector(".js-first-panel-left");
-      // let secondPanelEl = document.querySelector(".js-second-panel-left");
+      let firstPanelEl  = document.querySelector(".js-first-panel-left");
+      let secondPanelEl = document.querySelector(".js-second-panel-left");
       let statusEl      = document.querySelector(".js-status");
 
       let { status } = this.props.user;
@@ -79,9 +104,9 @@ class Registry extends React.Component {
       if (status === "pending") {
         statusEl.textContent = "Aguarde...";
       } else if (status === "fulfilled") {
-        // firstPanelEl.style.display  = "none";
-        // secondPanelEl.style.display = "block";
-        statusEl.textContent = "Sucesso";
+        firstPanelEl.style.display  = "none";
+        secondPanelEl.style.display = "block";
+        // statusEl.textContent = "Sucesso";
       } else if (status === "rejected") {
         statusEl.textContent = "Tente novamente";
       }
@@ -89,11 +114,13 @@ class Registry extends React.Component {
       console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
     }
   }
+
   componentDidUpdate() {
     setTimeout(() => {
       this.handleStatus();
     },300);
   }
+
   render() {
     let { status, logged } = this.props.user;
 
@@ -102,18 +129,28 @@ class Registry extends React.Component {
         <PanelLeft>
           <CustomLogo />
 
-          <CustomH3>Insira os dados necessários para efetuar o seu cadastro</CustomH3>
-
-          <CustomForm onSubmit={this.handleSubmit}>
+          <CustomForm onSubmit={this.handleSubmit} className={"js-first-panel-left"}>
+            <CustomH3>Insira os dados necessários para efetuar o seu cadastro</CustomH3>
             <FormBuilder inputs={inputs} />
             <ButtonSecondary type={"submit"}>Registrar</ButtonSecondary>
           </CustomForm>
+
+          <SuccessMessage className={"js-second-panel-left"}>
+            <Img src={"img/user_panel_left/ic_email.svg"} margin={"10.5rem auto 0 auto"} width={"80px"} />
+            <CustomH1 txCenter clWhite>
+              Uma mensagem com link de ativação foi enviada para o seu endereço de e-mail.
+            </CustomH1>
+            <CircleLink to={"/login"} margin={"50px auto 10px auto"}>
+              <ArrowImg src={"img/user_panel_left/right-arrow.svg"} margin={"auto"} width={"20px"} />
+            </CircleLink>
+          </SuccessMessage>
 
           <H1 className={"js-status"} txCenter clWhite margin={"50px 0 0 0"} />
 
           <FooterUser content="Já tem uma conta?" to="/login" label="Entrar" />
 
         </PanelLeft>
+
         <PanelRight>
           <Slide />
         </PanelRight>
@@ -129,6 +166,7 @@ const mapDispatchToProps = dispatch => {
     }
   };
 };
+
 const mapStateToProps = state => {
   return {
     user: state.user

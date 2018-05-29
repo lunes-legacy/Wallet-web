@@ -9,7 +9,7 @@ import { userReset } from 'Redux/actions';
 import PanelLeft from "./PanelLeft";
 import PanelRight from "./PanelRight";
 import { Logo } from "Components/Logo";
-import { Link, CustomLink } from "Components/Link";
+import { Link, CustomLink, CircleLink } from "Components/Link";
 import { Img } from "Components/Img";
 import { H3 } from "Components/H3";
 import { H1 } from "Components/H1";
@@ -19,7 +19,7 @@ import { ButtonSecondary } from "Components/Buttons";
 import Slide from "../../../containers/User/Login/Slide";
 
 import FooterUser from 'Components/FooterUser'
-import { ButtonBackgroundGreen } from "../../../components/Buttons";
+import { ButtonGreen } from "../../../components/Buttons";
 
 const CustomLogo = Logo.extend`
   margin: 70px auto 0 auto;
@@ -31,14 +31,6 @@ const MarginH1 = styled.div`
 
 const CustomLinkRight = CustomLink.extend`
   text-align: right;
-`;
-
-const CircleLink = CustomLink.extend`
-  background-color: white;
-  border: 0;
-  border-radius: 100%;
-  height: 40px;
-  width: 40px;
 `;
 
 const ArrowImg = Img.extend`
@@ -128,7 +120,7 @@ class Reset extends React.Component {
 
         <SecondPanelLeft className={"js-second-panel-left"}>
           <CustomLogo />
-          <Img src={"img/user_panel_left/ic_email.svg"} margin={"130px auto 0 auto"} width={"80px"} />
+          <Img src={"img/user_panel_left/ic_email.svg"} margin={"10.5rem auto 0 auto"} width={"80px"} />
           <H1 txCenter clWhite margin={"20px"}>
             Uma mensagem com link de definição de senha foi enviado para o seu endereço de e-mail.
           </H1>

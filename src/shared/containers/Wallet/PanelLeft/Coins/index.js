@@ -118,10 +118,10 @@ class Coins extends React.Component {
     super(props);
     this.state = {
       balance: undefined,
-      coinsPrice: undefined
+      price: undefined
     };
   }
-  
+
   //metodo chamado sempre que o componente é renderizado ou um
   //estado é atualizado
   _renderCoins = () => {
@@ -132,12 +132,14 @@ class Coins extends React.Component {
       return <Loading />;
     }
     let components = [];
+    // EX: coinKey = 'btc';
     for (let coinKey in balance) {
+      let currentBalance = balance[coinKey];
       let tmp = (
         <Coin
           key={coinKey}
           onClick={() => {
-            this.props.openPanelRight({ coinPrice: coinsPrice[coinKey], coinName: coinKey, isOpenModalReceive: false });
+            this.props.openPanelRight({ coinPrice: price[coinKey], coinName: coinKey, isOpenModalReceive: false });
           }}
         >
           <WrapCoinImg>
@@ -145,10 +147,10 @@ class Coins extends React.Component {
           </WrapCoinImg>
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>
-              { balance[coinKey].total_confirmed }
+              { currentBalance.total_confirmed }
             </CoinAmount>
             <CoinValue clWhite offSide size={"2rem"}>
-              { `USD ${balance[coinKey].total_amount}` }
+              { `USD ${currentBalance.total_amount}` }
             </CoinValue>
           </WrapCoinData>
         </Coin>
@@ -163,7 +165,7 @@ class Coins extends React.Component {
       <StyledCoins>
         <CoinsHeader>MINHAS CARTEIRAS</CoinsHeader>
 
-        { this.renderCoins() }
+        { this._renderCoins() }
       </StyledCoins>
     );
   }
@@ -171,7 +173,9 @@ class Coins extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    wallet: state.wallet
+    component:  state.component,
+    currencies: state.currencies,
+    balance:    state.balance
   };
 };
 
@@ -179,7 +183,7 @@ const mapDispatchToProps = dispatch => {
   return {
     openPanelRight: ({ coinPrice, coinName }) => {
       dispatch({
-        type: "WALLET_OPEN_PANELRIGHT",
+        type: 'WALLET_OPEN_PANELRIGHT',
         payload: { coinPrice, coinName }
       });
     }

@@ -9,6 +9,7 @@ import sb from 'satoshi-bitcoin';
 
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
+import { Loading } from 'Components/Loading';
 
 const StyledHistories = styled.div`
   padding-top: 20px;
@@ -186,6 +187,7 @@ class Histories extends React.Component {
       coinHistory: []
     };
   }
+
   timeToText = (txTime, type) => {
     const hoursDiff = timestampDiff({ first: txTime });
     if (hoursDiff < 48) {
@@ -194,6 +196,7 @@ class Histories extends React.Component {
       return `${Math.round(hoursDiff / 24)} dias atrás`;
     }
   };
+
   icoStatusToText = type => {
     if (type === "RECEIVED") return "Recebido ";
 
@@ -262,6 +265,7 @@ class Histories extends React.Component {
     }
     return (
       <StyledHistories>
+        <Loading className="js-loading" size={'35px'} bWidth={'7px'}/>
         {this.state.coinHistory.map((tx, key) => {
           return (
             <History key={key}>

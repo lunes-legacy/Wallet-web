@@ -1,0 +1,43 @@
+// /wallet/panelleft/coins/index
+//____________________________________________________
+// let price = {
+//   LNS:  { USD:1000,  BRL:3000  },
+//   BTC:  { USD:10000, BRL:30000 },
+//   ETH:  { USD:5000,  BRL:15000 },
+//   LTC:  { USD:200,   BRL:600   },
+//   DASH: { USD:200,   BRL:600   },
+//   NANO: { USD:200,   BRL:600   }
+// };
+// let balance = {
+//   LNS:  { total_confirmed: 500, total_unconfirmed: 0, total_amount: 500 },
+//   BTC:  { total_confirmed: 2,   total_unconfirmed: 0, total_amount: 2 },
+//   ETH:  { total_confirmed: 3,   total_unconfirmed: 1, total_amount: 4 },
+//   LTC:  { total_confirmed: 12,  total_unconfirmed: 0, total_amount: 12 },
+//   DASH: { total_confirmed: 30,  total_unconfirmed: 0, total_amount: 30 },
+//   NANO: { total_confirmed: 50,  total_unconfirmed: 0, total_amount: 50 },
+// }
+// let components = [];
+// for (let coinKey in balance) {
+//   let tmp = (
+//     <Coin
+//       key={coinKey}
+//       onClick={() => {
+//         this.props.openPanelRight({ coinPrice: price[coinKey], coinName: coinKey, isOpenModalReceive: false });
+//       }}
+//     >
+//       <WrapCoinImg>
+//         <CoinImg src="/img/bitcoin.svg" />
+//       </WrapCoinImg>
+//       <WrapCoinData>
+//         <CoinAmount clWhite offSide size={"2.5rem"}>
+//           { currentBalance.total_confirmed }
+//         </CoinAmount>
+//         <CoinValue clWhite offSide size={"2rem"}>
+//           { `USD ${currentBalance.total_amount}` }
+//         </CoinValue>
+//       </WrapCoinData>
+//     </Coin>
+//   );
+//   components.push(tmp);
+// }
+// return components;
