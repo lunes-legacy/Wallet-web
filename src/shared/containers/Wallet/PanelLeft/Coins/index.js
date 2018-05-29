@@ -121,57 +121,15 @@ class Coins extends React.Component {
       coinsPrice: undefined
     };
   }
-  renderCoins = () => {
-    // let { balance, coinsPrice } = this.props.wallet.panelLeft;
-
-    //  if (!coinsPrice || !balance) {
-    //    return <StyledLoading> <Loading /> </StyledLoading> ;
-    //  } else if (!balance.btc) {
-    //    return <H1>Moeda(BTC) não encontrada</H1>;
-    //  }
-    // let components = [];
-    //EX: coinKey = 'btc';
-    //DINAMICO
-    // for (let coinKey in balance) {
-    //   console.log(coinsPrice, "OAIDOIASODIASIDSAIDISADIODi");
-    //   let tmp = (
-    //     <Coin
-    //       key={coinKey}
-    //       onClick={() => {
-    //         this.props.openPanelRight({ coinPrice: coinsPrice[coinKey], coinName: coinKey, isOpenModalReceive: false });
-    //       }}
-    //     >
-    //       <WrapCoinImg>
-    //         <CoinImg src="/img/bitcoin.svg" />
-    //       </WrapCoinImg>
-    //       <WrapCoinData>
-    //         <CoinAmount clWhite offSide size={"2.5rem"}>
-    //           { balance[coinKey].total_confirmed }
-    //         </CoinAmount>
-    //         <CoinValue clWhite offSide size={"2rem"}>
-    //           { `USD ${balance[coinKey].total_amount}` }
-    //         </CoinValue>
-    //       </WrapCoinData>
-    //     </Coin>
-    //   );
-    //   components.push(tmp);
-    // }
-    // return components;
-    let coinsPrice = {
-      lns:  { USD:1000,  BRL:3000  },
-      btc:  { USD:10000, BRL:30000 },
-      eth:  { USD:5000,  BRL:15000 },
-      ltc:  { USD:200,   BRL:600   },
-      dash: { USD:200,   BRL:600   },
-      nano: { USD:200,   BRL:600   }
-    };
-    let balance = {
-      lns:  { total_confirmed: 500, total_unconfirmed: 0, total_amount: 500, img: 'lns.svg' },
-      btc:  { total_confirmed: 2,   total_unconfirmed: 0, total_amount: 2, img: 'btc.svg' },
-      eth:  { total_confirmed: 3,   total_unconfirmed: 1, total_amount: 4, img: 'eth.svg' },
-      ltc:  { total_confirmed: 12,  total_unconfirmed: 0, total_amount: 12, img: 'ltc.svg' },
-      dash: { total_confirmed: 30,  total_unconfirmed: 0, total_amount: 30, img: 'dash.svg' },
-      nano: { total_confirmed: 50,  total_unconfirmed: 0, total_amount: 50, img: 'nano.svg' },
+  
+  //metodo chamado sempre que o componente é renderizado ou um
+  //estado é atualizado
+  _renderCoins = () => {
+    let { current_network } = this.props.component.wallet;
+    let { price }           = this.props.currencies;
+    let { balance }         = this.props;
+    if (!balance || !price) {
+      return <Loading />;
     }
     let components = [];
     for (let coinKey in balance) {
