@@ -87,9 +87,9 @@ class Registry extends React.Component {
     let fullname = fnameEl.value + " " + lnameEl.value;
 
     this.props.userCreate({
-      // email: emailEl.value,
-      // password: passEl.value,
-      // fullname: fullname.replace("  ", " ")
+      email: emailEl.value,
+      password: passEl.value,
+      fullname: fullname.replace("  ", " ")
     });
   };
 

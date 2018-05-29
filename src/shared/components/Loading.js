@@ -6,11 +6,11 @@ let rotationLoading = keyframes`
 	to { transform: rotate(360deg);	}
 `;
 export let Loading = styled.div`
-	border: 10px solid ${style.normalGreen};
+	border: ${props => props.bWidth ? props.bWidth : '10px'} solid ${style.normalGreen};
 	border-left-color: transparent;
 	border-radius: 100%;
 	animation: ${rotationLoading} 1s linear infinite;
-	width: 75px;
-	height: 75px;
+	width: ${props => props.size ? props.size : '75px'};
+	height: ${props => props.size ? props.size : '75px'};
   margin: 0 auto;
 `;
