@@ -44,10 +44,6 @@ const CustomText = styled.div`
   @media (${styles.media.tablet2}) {
     display: inline-block;
   }
-
-  // &.Active {
-  //   opacity: 1;
-  // }
 `;
 
 const CustomLink = styled(TmpLink) `
@@ -62,6 +58,10 @@ const CustomLink = styled(TmpLink) `
   opacity: 0.3;
   
   &:hover {
+    opacity: 1;
+  }
+
+  &.active {
     opacity: 1;
   }
 `;
