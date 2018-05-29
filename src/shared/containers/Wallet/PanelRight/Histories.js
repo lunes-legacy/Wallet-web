@@ -247,17 +247,10 @@ class Histories extends React.Component {
     return;
   };
 
-  hideLoading() {
-    console.log('===== HIDE LOADING =====');
-    const loadingEl = document.querySelector('.js-loading');
-    loadignEl.style.display = 'none';
-  }
-
   componentDidMount = async () => {
     let { coinHistory, coinPrice, coinName } = this.props.wallet.panelRight;
     // coinHistory = await new WalletClass().getTxHistory({coin: coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
     coinHistory = await new WalletClass().getTxHistory({coin: coinName, address: 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF'});
-    this.hideLoading();
     this.setState({
       coinHistory: coinHistory.data.history
     });
