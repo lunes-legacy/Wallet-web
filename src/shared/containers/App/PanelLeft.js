@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import styles from 'Shared/style-variables';
-
-import { Link as TmpLink } from 'react-router-dom';
+import { NavLink as TmpLink } from 'react-router-dom';
 import { TextBase } from 'Components/TextBase';
 
 const StyledPanelLeft = styled.div`
@@ -33,12 +32,6 @@ const Icon = styled.img`
 	width: 25px;
 	height: 25px;
   transition: .2s;
-
-  opacity: .2;
-
-  &.Active {
-    opacity: 1;
-  }
 `;
 
 const CustomText = styled.div`
@@ -47,8 +40,6 @@ const CustomText = styled.div`
   display: none;
   font-weight: 700;
   transition: .2s;
-
-  opacity: .3;
 
   @media (${styles.media.tablet2}) {
     display: inline-block;
@@ -59,7 +50,7 @@ const CustomText = styled.div`
   }
 `;
 
-const CustomLink = styled(TmpLink)`
+const CustomLink = styled(TmpLink) `
 	${TextBase};
   color: white;
 	line-height: 25px;
@@ -67,12 +58,10 @@ const CustomLink = styled(TmpLink)`
   transition-delay: .2s;
   display: flex;
   align-items: center;
-
-  &:hover ${Icon} {
-    opacity: 1;
-  }
-
-  &:hover ${CustomText} {
+  transition: .2s;
+  opacity: 0.3;
+  
+  &:hover {
     opacity: 1;
   }
 `;
@@ -80,17 +69,13 @@ const CustomLink = styled(TmpLink)`
 
 
 class ItemMenuApp extends React.Component {
-  render(){
-    let className = '';
-    if(this.props.active){
-      className = 'Active'
-    }
+  render() {
     return (
       <div>
         <WrapLink>
-          <CustomLink to={this.props.to} >
-            <Icon src={'/img/app_panel_left/'+this.props.icon} alt={this.props.label} className={className} />
-            <CustomText size={'1.4rem'} className={className}>{this.props.label}</CustomText>
+          <CustomLink  {...this.props}>
+            <Icon src={'/img/app_panel_left/' + this.props.icon} alt={this.props.label} />
+            <CustomText size={'1.4rem'} >{this.props.label}</CustomText>
           </CustomLink>
         </WrapLink>
       </div>
@@ -100,22 +85,59 @@ class ItemMenuApp extends React.Component {
 
 
 class PanelLeft extends React.Component {
-	render() {
-		return(
+  render() {
+    return (
       <StyledPanelLeft>
+        <ItemMenuApp
+          label="Home"
+          to="/app/home"
+          icon="ic_home.svg"
+          activeClassName="active" />
 
-        <ItemMenuApp label="Home"           to="/app/home"            icon="ic_home.svg" />
-        <ItemMenuApp label="Portfólio"      to="/app/portfolio"       icon="ic_portfolio.svg" />
-        <ItemMenuApp label="Wallet"         to="/app/wallet"          icon="ic_wallet.svg" />
-        <ItemMenuApp label="Recargas"       to="/app/recharge"        icon="ic_recharge.svg" />
-        <ItemMenuApp label="Boleto"         to="/app/ticket"          icon="ic_barcode.svg" />
-        <ItemMenuApp label="Compras"        to="/app/buy"             icon="ic_buy.svg" />
-        <ItemMenuApp label="Configuração"   to="/app/configuration"   icon="ic_config.svg" />
-        <ItemMenuApp label="Privacidade"    to="/app/privacy"         icon="ic_privacy.svg" />
+        <ItemMenuApp
+          label="Portfólio"
+          to="/app/portfolio"
+          icon="ic_portfolio.svg"
+          activeClassName="active" />
 
-			</StyledPanelLeft>
-		);
-	}
+        <ItemMenuApp
+          label="Wallet"
+          to="/app/wallet"
+          icon="ic_wallet.svg"
+          activeClassName="active" />
+
+        <ItemMenuApp
+          label="Recargas"
+          to="/app/recharge"
+          icon="ic_recharge.svg"
+          activeClassName="active" />
+
+        <ItemMenuApp
+          label="Boleto"
+          to="/app/ticket"
+          icon="ic_barcode.svg"
+          activeClassName="active" />
+
+        <ItemMenuApp
+          label="Compras"
+          to="/app/buy"
+          icon="ic_buy.svg"
+          activeClassName="active" />
+
+        <ItemMenuApp
+          label="Configuração"
+          to="/app/configuration"
+          icon="ic_config.svg"
+          activeClassName="active" />
+
+        <ItemMenuApp
+          label="Privacidade"
+          to="/app/privacy"
+          icon="ic_privacy.svg"
+          activeClassName="active" />
+      </StyledPanelLeft>
+    );
+  }
 }
 
 export default PanelLeft;
