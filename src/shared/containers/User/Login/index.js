@@ -26,7 +26,6 @@ import FooterUser from 'Components/FooterUser'
 
 const WrapPhrases = styled.div`
   width: 100%;
-  margin-top: 160px;
 `;
 
 const CustomLogo = Logo.extend`
