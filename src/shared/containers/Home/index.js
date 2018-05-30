@@ -9,7 +9,8 @@ import { ButtonGreen } from "Components/Buttons";
 
 const Container = styled.div`
   text-align: center;
-  padding: 0 50px;
+	padding: 0 50px;
+	width: 100%;
 `;
 
 const MainRectangle = styled.div`
@@ -48,7 +49,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3.3rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
@@ -64,7 +65,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3.3rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
@@ -80,7 +81,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3.3rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
@@ -96,7 +97,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3.3rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
@@ -112,7 +113,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3.3rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
@@ -128,7 +129,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3.3rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
