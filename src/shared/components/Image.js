@@ -13,7 +13,7 @@ let DivCarrousel = styled.div`
 
   
   & .slider-list {
-    height: 70vh !important;
+    height: 80vh !important;
   }
 
   & .slider-control-bottomcenter ul {
