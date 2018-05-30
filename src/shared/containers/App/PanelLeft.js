@@ -11,7 +11,6 @@ const StyledPanelLeft = styled.div`
 	display: block;
 	background: ${styles.normalLilac2};
 	z-index: 3;
-  padding-left: 1.5rem;
   transition: .2s ease-in;
 
   @media (${styles.media.tablet2}) {
@@ -25,7 +24,8 @@ const WrapLink = styled.div`
 	justify-content: flex-start;
   margin: 1rem 0;
   padding: 1rem 0;
-	width: 100%;
+  width: 100%;
+  display: 0;
 `;
 
 const Icon = styled.img`
@@ -46,6 +46,19 @@ const CustomText = styled.div`
   }
 `;
 
+let Rectangle = styled.div`
+  width: 8px;
+  height: 56px;
+  margin-right: 8px;
+  background-color: #4cd566;
+  border: solid 1px #4cd566;
+  opacity: 0;
+  
+  &.active {
+    opacity: 1;
+  } 
+`;
+
 const CustomLink = styled(TmpLink) `
 	${TextBase};
   color: white;
@@ -63,9 +76,14 @@ const CustomLink = styled(TmpLink) `
 
   &.active {
     opacity: 1;
-  }
-`;
 
+    opacity: 1;
+    width: 8px;
+    height: 56px;
+    border-left: solid 8px #4cd566;
+    padding-left: 10px;
+  } 
+`;
 
 
 class ItemMenuApp extends React.Component {
@@ -73,7 +91,8 @@ class ItemMenuApp extends React.Component {
     return (
       <div>
         <WrapLink>
-          <CustomLink  {...this.props}>
+          <CustomLink {...this.props}>
+            {/* <Rectangle className={this.props.activeClassName} /> */}
             <Icon src={'/img/app_panel_left/' + this.props.icon} alt={this.props.label} />
             <CustomText size={'1.4rem'} >{this.props.label}</CustomText>
           </CustomLink>
@@ -82,7 +101,6 @@ class ItemMenuApp extends React.Component {
     )
   }
 }
-
 
 class PanelLeft extends React.Component {
   render() {
