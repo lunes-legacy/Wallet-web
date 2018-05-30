@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
+import  { Redirect } from 'react-router-dom'
 
 //COMPONENTS
 import { H1 } from "Components/H1";
@@ -38,7 +39,8 @@ const TextRectangle = styled.div`
 class Home extends React.Component {
   render() {
     return (
-      <Container>
+			<Container>
+				<Redirect to='/app/home'/> 
         <MainRectangle>
           <Icon src={"/img/app_panel_left/ic_portfolio.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
@@ -49,10 +51,10 @@ class Home extends React.Component {
               Muito obrigado por escolher a Wallet Lunes como sua carteira multicoin. Aproveite da usabilidade e
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
-          </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
-            Entrar
-          </ButtonGreen>
+					</TextRectangle>
+							<ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={ () => this.props.history.push('/app/portfolio')}>
+								Entrar
+							</ButtonGreen>
         </MainRectangle>
 
         <MainRectangle>
@@ -66,7 +68,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
+          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={ () => this.props.history.push('/app/wallet')}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
@@ -82,7 +84,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
+          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={ () => this.props.history.push('/app/recharge')}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
@@ -98,7 +100,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
+          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={ () => this.props.history.push('/app/ticket')}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
@@ -114,7 +116,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
+          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={ () => this.props.history.push('/app/buy')}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
@@ -130,7 +132,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
+          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={ () => this.props.history.push('/app/privacy')}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
