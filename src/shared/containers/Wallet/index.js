@@ -1,17 +1,19 @@
-import React           from 'react';
-import ReactDOM        from 'react-dom';
-import styled          from 'styled-components';
-import style           from 'Shared/style-variables';
-import { connect }     from 'react-redux';
-import CookieClass     from 'Classes/Cookie';
-import { WalletClass } from 'Classes/Wallet';
-import UserClass       from 'Classes/User';
-import { ENV } from 'Config/constants';
+import React            from 'react';
+import ReactDOM         from 'react-dom';
+import styled           from 'styled-components';
+import style            from 'Shared/style-variables';
+import { connect }      from 'react-redux';
+import CookieClass      from 'Classes/Cookie';
+import { WalletClass }  from 'Classes/Wallet';
+import UserClass        from 'Classes/User';
+import { ENV }          from 'Config/constants';
+import { errorPattern } from 'Utils/functions';
 //REDUX
 import { 
 	setBalance, 
 	togglePanelLeft, 
-	setCryptoPrice } from 'Redux/actions';
+	setCryptoPrice,
+	setCurrenciesPrice } from 'Redux/actions';
 
 //COMPONENTS
 import { TextBase }    from 'Components/TextBase';
@@ -47,22 +49,23 @@ class Wallet extends React.Component {
 	    		throw errorPattern('WALLET ERROR',500,'WALELT ERROR');
 	    	user = JSON.parse(cookie.user.toString());
 	    } catch(err) {
-			user    = await User.login();
-			console.error(err, "WALLET_ERROR");
+	    	try {
+				user    = await User.login();
+	    	} catch(err2) {
+	    		throw errorPattern('An error ocurred on trying to do the login', 500, 'CONTAINERS_WALLET_ERROR', err2);
+	    	}
 	    }
-		// if (typeof user == 'object' && Object.keys(user).length < 1) {
-		// }
-		console.warn(user, "__WALLET USER__");
 
 		if (!user) { return; }
 
 		let wallet     = new WalletClass;
 		let balance    = await wallet.getBalance(user);
-		let coinsPrice = await wallet.getCoinsPrice();
+		// let coinsPrice = await wallet.getCoinsPrice();
 		
+			this.props.setCurrenciesPrice();
+			this.props.setCryptoPrice();
 		if (ENV !== 'development') {
 			this.props.setBalance(balance);
-			this.props.setCryptoPrice(coinsPrice);
 		}
 	}
 
@@ -89,6 +92,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setCryptoPrice: (data) => {
 			dispatch(setCryptoPrice(data));
+		},
+		setCurrenciesPrice: (data) => {
+			dispatch(setCurrenciesPrice(data));
 		},
 		togglePanelLeft: () => {
 			dispatch(togglePanelLeft());

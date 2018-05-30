@@ -262,6 +262,10 @@ class Histories extends React.Component {
     let address = user.wallet.coins[0].addresses[0].address;
     this.props.setTxHistory({network: 'BTC', address});
   }
+  componentDidCatch(err, info) {
+    console.error(err);
+    console.info(info);
+  }
   _renderHistories = () => {
     let { currentNetwork, currentTxHistory } = this.props.component_wallet;
     let { price } = this.props.cryptocurrencies;
@@ -291,10 +295,10 @@ class Histories extends React.Component {
                 <HistoryHeadAmount>
                   <HeadAmountCoin type={tx.type}>
                     {this.SignalControl(tx.type)}
-                    {sb.toBitcoin(tx.nativeAmount)}
+                    {tx.value}
                   </HeadAmountCoin>
                   <HeadAmountMoney>
-                    { monetaryValue(price.USD * parseFloat(sb.toBitcoin(tx.nativeAmount)), {style: 'currency',  currency: 'USD'}) }
+                    { monetaryValue(price.USD * parseFloat(tx.value), {style: 'currency',  currency: 'USD'}) }
                   </HeadAmountMoney>
                 </HistoryHeadAmount>
               </Col>
@@ -346,14 +350,18 @@ class Histories extends React.Component {
 
   render() {
     // if (!this._shouldRender()) return null;
-    
-    return (
-      <StyledHistories>
-        
-        { this._renderHistories() }
-        
-      </StyledHistories>
-    );
+    try {
+      return (
+        <StyledHistories>
+          
+          { this._renderHistories() }
+          
+        </StyledHistories>
+      );
+    } catch(e){
+      console.error(e);
+      return <h1>Aconteceu um erro</h1>
+    }
   }
 }
 

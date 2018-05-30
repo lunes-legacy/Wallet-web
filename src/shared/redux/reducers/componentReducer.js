@@ -40,7 +40,7 @@ const componentReducer = (state = initialState, action) => {
 			state = {
 				wallet: {
 					...state.wallet,
-					currentTxHistory: action.payload.data.history
+					currentTxHistory: action.payload
 				}
 			}
 		default:

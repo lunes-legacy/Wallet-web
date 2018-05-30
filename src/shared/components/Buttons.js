@@ -14,6 +14,7 @@ export let ButtonSecondary = Button.extend`
 	&:hover {
 		background: ${style.normalGreen};
 	}
+	padding: 10px 20px 10px 20px;
 `;
 
 export let ButtonGreen = Button.extend`

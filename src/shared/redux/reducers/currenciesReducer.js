@@ -7,7 +7,14 @@ let initialState = {
 	}
 }
 const currenciesReducer = (state = initialState, action) => {
-	
+	switch (action.type) {
+		case 'CURRENCIES_SET_PRICE_FULFILLED':
+			state = {
+				...state,
+				price: action.payload
+			}
+			break;
+	}
 	return state;
 }
 

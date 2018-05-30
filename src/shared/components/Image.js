@@ -3,7 +3,8 @@ import styled, { css } from "styled-components";
 import Carousel from "nuka-carousel";
 
 let Img = styled.img`
-  
+  width: 100%;
+  height: auto;
 `;
 
 let DivCarrousel = styled.div`
@@ -32,15 +33,16 @@ let DivCarrousel = styled.div`
 let P = styled.div`
   color: white;
   font-size: 10pt;
-  padding-left:15%;
-  padding-right:15%;
+  padding-left:auto;
+  padding-right:auto;
   margin-top: 4%;
   margin-bottom: 4%;
   text-align: center;
 `;
 let DivParagraph = styled.div`
-  width: 650px;
-  margin-left: 10px;
+  margin: auto;
+  width: 100%;
+  padding: 10px;
 `;
 
 class Image extends React.Component {
@@ -59,10 +61,13 @@ class Image extends React.Component {
 
   renderImage = images => {
     return images.map((photo, index) => (
-      <DivParagraph key={index}>
+      <div key={index}>
         <Img src={photo.link} />
-        <P>{photo.text}</P>
-      </DivParagraph>
+        <DivParagraph >
+          <P>{photo.text}</P>
+        </DivParagraph>
+      </div>
+
     ));
   };
 }

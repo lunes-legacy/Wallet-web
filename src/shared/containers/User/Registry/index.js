@@ -51,13 +51,18 @@ let ArrowImg = Img.extend`
   padding-top: 14px;
 `;
 
+let Anchor = styled.a `
+  color: #4cd566;
+  text-decoration: none;
+`;
+
 let inputs = [
   { className: "registry-fname", placeholder: "Nome" },
   { className: "registry-lname", placeholder: "Sobrenome" },
   { className: "registry-email", placeholder: "E-mail", type: "email" },
   { className: "registry-pass", placeholder: "Senha", type: "password" },
   { className: "registry-cpass", placeholder: "Confirmar senha", type: "password" },
-  { className: "registry-terms", value: " Eu aceito os Termos de Serviços", type: "checkbox" }
+  { className: "registry-terms", value: <span> Eu aceito os <Anchor href ="/" target ="blank_">Termos de Serviços</Anchor> </span>  , type: "checkbox" }
 ];
 
 class Registry extends React.Component {
