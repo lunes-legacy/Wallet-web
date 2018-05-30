@@ -9,12 +9,16 @@ let Img = styled.img`
 
 let DivCarrousel = styled.div`
   margin-top: 4%;
-  margin-bottom: 4%;
   width: 75% !important;
-  height: 100% !important; 
+  border: solid 2px green;
   
+  & .slider-list {
+    height: 650px !important;
+  }
+
   & .slider-control-bottomcenter ul {
-    top: 60px !important;
+    top: 10rem !important;
+    border: solid 2px green;
   }
 
   & .slider-control-bottomcenter ul li button {
@@ -25,6 +29,7 @@ let DivCarrousel = styled.div`
   & .slider-control-centerright button {
     display: none !important;
   }
+
   & .slider-control-centerleft button {
     display: none !important;
   }
@@ -43,6 +48,7 @@ let DivParagraph = styled.div`
   margin: auto;
   width: 100%;
   padding: 10px;
+  border: solid 2px green;
 `;
 
 class Image extends React.Component {
@@ -56,6 +62,7 @@ class Image extends React.Component {
           {this.renderImage(this.props.imageList)}
         </Carousel>
       </DivCarrousel>
+
     );
   }
 
@@ -63,7 +70,7 @@ class Image extends React.Component {
     return images.map((photo, index) => (
       <div key={index}>
         <Img src={photo.link} />
-        <DivParagraph >
+        <DivParagraph>
           <P>{photo.text}</P>
         </DivParagraph>
       </div>
