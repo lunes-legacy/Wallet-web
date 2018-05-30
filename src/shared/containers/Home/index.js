@@ -9,8 +9,9 @@ import { ButtonGreen } from "Components/Buttons";
 
 const Container = styled.div`
   text-align: center;
-  padding: 0 50px;
-  width: 100%;
+  padding: 50px 50px;
+	width: 100%;
+	margin-bottom: 100px;
 `;
 
 const MainRectangle = styled.div`
@@ -56,7 +57,7 @@ class Home extends React.Component {
 
         <MainRectangle>
           <Icon src={"/img/app_panel_left/ic_wallet.svg"} />
-          <H1 fontSize={"2rem"} margin={"1.6rem 0 1.6rem 0"} txBold txCenter clWhite>
+          <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Wallet
           </H1>
           <TextRectangle>
@@ -65,14 +66,14 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
 
         <MainRectangle>
           <Icon src={"/img/app_panel_left/ic_recharge.svg"} />
-          <H1 fontSize={"2rem"} margin={"1.6rem 0 1.6rem 0"} txBold txCenter clWhite>
+          <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Recarga
           </H1>
           <TextRectangle>
@@ -81,14 +82,14 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
 
         <MainRectangle>
           <Icon src={"/img/app_panel_left/ic_barcode.svg"} />
-          <H1 fontSize={"2rem"} margin={"1.6rem 0 1.6rem 0"} txBold txCenter clWhite>
+          <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Boleto
           </H1>
           <TextRectangle>
@@ -97,14 +98,14 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
 
         <MainRectangle>
           <Icon src={"/img/app_panel_left/ic_buy.svg"} />
-          <H1 fontSize={"2rem"} margin={"1.6rem 0 1.6rem 0"} txBold txCenter clWhite>
+          <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Compras
           </H1>
           <TextRectangle>
@@ -113,14 +114,14 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
 
         <MainRectangle>
           <Icon src={"/img/app_panel_left/ic_privacy.svg"} />
-          <H1 fontSize={"2rem"} margin={"1.6rem 0 1.6rem 0"} txBold txCenter clWhite>
+          <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Privacidade
           </H1>
           <TextRectangle>
@@ -129,7 +130,7 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"2.0rem auto 1.0rem auto"}>
+          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"}>
             Entrar
           </ButtonGreen>
         </MainRectangle>
