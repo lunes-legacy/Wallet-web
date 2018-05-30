@@ -51,6 +51,11 @@ let ArrowImg = Img.extend`
   padding-top: 14px;
 `;
 
+let Anchor = styled.a `
+  color: #4cd566;
+  text-decoration: none;
+`;
+
 let inputs = [
   { className: "registry-fname", placeholder: "Nome" },
   { className: "registry-lname", placeholder: "Sobrenome" },
