@@ -11,8 +11,8 @@ export class WalletClass {
   getCoinsPrice = async (data) => {
     if (!data || Object.keys(data).length < 1) {
       data = {
-        btc: {fromSymbol: 'BTC', toSymbol:'USD'},
-        eth: {fromSymbol: 'ETH', toSymbol:'USD'}
+        BTC: {fromSymbol: 'BTC', toSymbol:'USD'},
+        ETH: {fromSymbol: 'ETH', toSymbol:'USD'}
       }
     }
 
@@ -76,6 +76,7 @@ export class WalletClass {
       let balance     = {};
       //coin = 'btc' (example)
       for (let coin in addresses) {
+        coin = coin.toUpperCase();
         //addressKey = 1 (example)
         let i = 0;
         for (let addressKey in addresses[coin]) {

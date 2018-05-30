@@ -1,8 +1,9 @@
-import { userReset, userLogin, userCreate } from './userActions';
-import { togglePanelLeft } from './walletActions';
-import { setBalance }     from './balanceActions';
-import { setCryptoPrice } from './cryptocurrenciesActions';
-import { openPanelRight, setTxHistory } from './componentActions';
+import { userReset, userLogin, userCreate } from './user';
+import { togglePanelLeft }                  from './wallet';
+import { setBalance }                       from './balance';
+import { setCryptoPrice }                   from './cryptocurrencies';
+import { openPanelRight, setTxHistory }     from './component';
+import { setCurrenciesPrice }               from './currencies';
 
 export {
 	userReset,
@@ -12,5 +13,6 @@ export {
 	togglePanelLeft,
 	setTxHistory,
 	setCryptoPrice,
+	setCurrenciesPrice,
 	openPanelRight
 }
