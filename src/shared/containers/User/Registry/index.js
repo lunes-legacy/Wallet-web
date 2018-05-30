@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import validator from "validator";
 import style from "Shared/style-variables";
 //REDUX
 import { userCreate } from 'Redux/actions';
@@ -41,11 +42,11 @@ let CustomForm = styled.form`
   margin: 25px auto 0 auto;
 `;
 
-const SuccessMessage = styled.div`
+let SuccessMessage = styled.div`
   display: none;
 `;
 
-const ArrowImg = Img.extend`
+let ArrowImg = Img.extend`
   border-style: none;
   padding-top: 14px;
 `;
@@ -62,35 +63,53 @@ let inputs = [
 class Registry extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
-    let termsEl = document.querySelector(".registry-terms");
-    let emailEl = document.querySelector(".registry-email");
-    let fnameEl = document.querySelector(".registry-fname");
-    let lnameEl = document.querySelector(".registry-lname");
-    let passEl = document.querySelector(".registry-pass");
-    let cpassEl = document.querySelector(".registry-cpass");
+    const termsEl = document.querySelector(".registry-terms");
+    const emailEl = document.querySelector(".registry-email");
+    const firstNameEl = document.querySelector(".registry-fname");
+    const lastNameEl = document.querySelector(".registry-lname");
+    const passEl = document.querySelector(".registry-pass");
+    const confirmPassEl = document.querySelector(".registry-cpass");
+
+    let errors = [];
+
+    if (!validator.isLength(firstNameEl.value, {min: 3, max: undefined})) {
+      errors.push('O nome deve ter no mínimo 3 caracteres');
+    }
+
+    if (!validator.isLength(lastNameEl.value, {min: 3, max: undefined})) {
+      errors.push('O sobrenome deve ter no mínimo 3 caracteres');
+    }
+
+    if (!validator.isEmail(emailEl.value) || validator.isEmpty(emailEl.value)) {
+      errors.push('Um email válido deve ser informado');
+    }
+
+    const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;
+    if (!validator.matches(passEl.value, passRules)) {
+      errors.push('A senha deve ter mais que 8 caracteres entre letras maíusuculas e minúsculas, \n\tnúmeros e pelo menos um caracter especial');
+    }
+
+    if (passEl.value !== confirmPassEl.value) {
+      errors.push('A confirmação de senha não confere');
+    }
 
     if (!termsEl.checked) {
-      alert("You havent agreed with our terms");
-      return null;
+      errors.push('Você deve aceitar os termos para continuar');
     }
 
-    if (passEl.value !== cpassEl.value) {
-      alert("Passwords didnt match");
-      return null;
+    if (errors.length > 0) {
+      alert('- ' + errors.join('\n- '));
+      return;
     }
 
-    if (passEl.value < 8) {
-      alert("Password is less than 8 characters");
-      return null;
-    }
+    let fullname = `${firstNameEl.value} ${lastNameEl.value}`;
 
-    let fullname = fnameEl.value + " " + lnameEl.value;
-
-    this.props.userCreate({
-      email: emailEl.value,
-      password: passEl.value,
-      fullname: fullname.replace("  ", " ")
-    });
+    alert('SUCESSO!')
+    // this.props.userCreate({
+    //   email: emailEl.value,
+    //   password: passEl.value,
+    //   fullname: fullname.replace("  ", " ")
+    // });
   };
 
   handleStatus() {
