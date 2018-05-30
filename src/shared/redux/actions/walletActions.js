@@ -8,10 +8,3 @@ export const togglePanelLeft = () => {
 		payload: status
 	}
 }
-export const setTxHistory = (data) => {
-	data.address = 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH';
-	return {
-		type: 'WALLET_SET_COIN_HISTORY',
-		payload: Wallet.getTxHistory({network: data.network, address: data.address})
-	}
-}

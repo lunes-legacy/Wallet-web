@@ -13,6 +13,8 @@ import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
 import { Loading } from 'Components/Loading';
 
+import CookieClass from 'Classes/Cookie';
+
 const StyledHistories = styled.div`
   padding-top: 20px;
 `;
@@ -251,95 +253,105 @@ class Histories extends React.Component {
   };
 
   componentDidMount = async () => {
-    // this.props.setTxHistory({network: 'BTC'});
-    let { currentNetwork, price } = this.props.component_wallet;
     // 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF';
-    // txHistory = await new WalletClass().getTxHistory({coin: coinName, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
+    // txHistory = await new WalletClass().getTxHistory({coin: currentNetwork, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
     // txHistory = await new WalletClass().getTxHistory({network: currentNetwork});
-    this.props.setTxHistory({network: "BTC"});
+    let { currentNetwork, price } = this.props.component_wallet;
+    let Cookie = new CookieClass();
+    let user = JSON.parse(Cookie.get('user').user.toString());
+    let address = user.wallet.coins[0].addresses[0].address;
+    this.props.setTxHistory({network: 'BTC', address});
   }
-  _shoulRender = () => {
-    let { price, currentNetwork } = this.props.component_wallet;
-    if (!this.props.txHistory || this.props.txHistory.length < 1)
+  _renderHistories = () => {
+    let { currentNetwork, currentTxHistory } = this.props.component_wallet;
+    let { price } = this.props.cryptocurrencies;
+    console.warn(currentTxHistory.length, "__PRICE__");
+    if (currentTxHistory.length < 1) {
+      return <Loading className="js-loading" size={'35px'} bWidth={'7px'}/>;
+    }
+    return currentTxHistory.map((tx, key) => {
+      return (
+        <History key={key}>
+          <HistoryHead onClick={this.handleToggleHistory}>
+            <Row>
+              <Col s={6} m={2} l={2}>
+                <HistoryHeadStatus>
+                  <HeadStatusIcon type={tx.type} src={this.renderIcon(tx.type)} />
+                  <HeadStatusDate>25/05/2018</HeadStatusDate>
+                </HistoryHeadStatus>
+              </Col>
+              <Col s={6} m={4} l={5}>
+                <HistoryHeadText>
+                  <StatusStyle type={tx.type}>{this.icoStatusToText(tx.type)}</StatusStyle>
+                  {/*this.timeToText(tx.time)*/}
+                  90 dias atrás
+                </HistoryHeadText>
+              </Col>
+              <Col s={12} m={6} l={5}>
+                <HistoryHeadAmount>
+                  <HeadAmountCoin type={tx.type}>
+                    {this.SignalControl(tx.type)}
+                    {sb.toBitcoin(tx.nativeAmount)}
+                  </HeadAmountCoin>
+                  <HeadAmountMoney>
+                    { monetaryValue(price.USD * parseFloat(sb.toBitcoin(tx.nativeAmount)), {style: 'currency',  currency: 'USD'}) }
+                  </HeadAmountMoney>
+                </HistoryHeadAmount>
+              </Col>
+            </Row>
+          </HistoryHead>
+
+          <HistoryContent>
+            <Row>
+              <Col m={6} l={6}>
+                <HistoryContentItem clWhite>
+                  <Text size={"1.4rem"}>Enviado: </Text>
+                  <Text size={"1.4rem"} txBold>
+                    {`${tx.value} ${currentNetwork.toUpperCase()}`} ($ {monetaryValue(price.USD * parseFloat(tx.value), {style: 'decimal'})})
+                  </Text>
+                </HistoryContentItem>
+              </Col>
+              <Col  m={6} l={6}>
+                <HistoryContentItem clWhite>
+                  <Text size={"1.4rem"}>Transaction ID:</Text>
+                  <Text size={"1.4rem"} txBold>
+                    {tx.txid}
+                  </Text>
+                </HistoryContentItem>
+              </Col>
+              <Col>
+                <HistoryContentItem clWhite>
+                  <Text size={"1.4rem"}>Data: </Text>
+                  <Text size={"1.4rem"} txBold>
+                    {/*this.parseTimestampToDate(tx.time)*/}
+                    Quarta-feira 23/05/2018
+                  </Text>
+                </HistoryContentItem>
+              </Col>
+            </Row>
+          </HistoryContent>
+        </History>
+      ); //return
+    })
+  }
+  _shouldRender = () => {
+    let { currentNetwork, currentTxHistory } = this.props.component_wallet;
+    if (!currentTxHistory || currentTxHistory.length < 1)
       return false;
-    if (!price || !currentNetwork) 
-      return false;
+    // if (!price || !currentNetwork) 
+    //   return false;
 
     return true;
   }
 
   render() {
-    if (!this._shoulRender()) return null;
+    // if (!this._shouldRender()) return null;
     
-
-    console.log(this.props, "____HISTORIES PROPS_____");
     return (
       <StyledHistories>
-        <Loading className="js-loading" size={'35px'} bWidth={'7px'}/>
-        {this.state.txHistory.map((tx, key) => {
-          return (
-            <History key={key}>
-              <HistoryHead onClick={this.handleToggleHistory}>
-                <Row>
-                  <Col s={6} m={2} l={2}>
-                    <HistoryHeadStatus>
-                      <HeadStatusIcon type={tx.type} src={this.renderIcon(tx.type)} />
-                      <HeadStatusDate>25/05/2018</HeadStatusDate>
-                    </HistoryHeadStatus>
-                  </Col>
-                  <Col s={6} m={4} l={5}>
-                    <HistoryHeadText>
-                      <StatusStyle type={tx.type}>{this.icoStatusToText(tx.type)}</StatusStyle>
-                      {/*this.timeToText(tx.time)*/}
-                      90 dias atrás
-                    </HistoryHeadText>
-                  </Col>
-                  <Col s={12} m={6} l={5}>
-                    <HistoryHeadAmount>
-                      <HeadAmountCoin type={tx.type}>
-                        {this.SignalControl(tx.type)}
-                        {sb.toBitcoin(tx.nativeAmount)}
-                      </HeadAmountCoin>
-                      <HeadAmountMoney>
-                        { monetaryValue(coinPrice.USD * parseFloat(sb.toBitcoin(tx.nativeAmount)), {style: 'currency',  currency: 'USD'}) }
-                      </HeadAmountMoney>
-                    </HistoryHeadAmount>
-                  </Col>
-                </Row>
-              </HistoryHead>
-
-              <HistoryContent>
-                <Row>
-                  <Col m={6} l={6}>
-                    <HistoryContentItem clWhite>
-                      <Text size={"1.4rem"}>Enviado: </Text>
-                      <Text size={"1.4rem"} txBold>
-                        {`${tx.value} ${coinName.toUpperCase()}`} ($ {monetaryValue(coinPrice.USD * parseFloat(tx.value), {style: 'decimal'})})
-                      </Text>
-                    </HistoryContentItem>
-                  </Col>
-                  <Col  m={6} l={6}>
-                    <HistoryContentItem clWhite>
-                      <Text size={"1.4rem"}>Transaction ID:</Text>
-                      <Text size={"1.4rem"} txBold>
-                        {tx.txid}
-                      </Text>
-                    </HistoryContentItem>
-                  </Col>
-                  <Col>
-                    <HistoryContentItem clWhite>
-                      <Text size={"1.4rem"}>Data: </Text>
-                      <Text size={"1.4rem"} txBold>
-                        {/*this.parseTimestampToDate(tx.time)*/}
-                        Quarta-feira 23/05/2018
-                      </Text>
-                    </HistoryContentItem>
-                  </Col>
-                </Row>
-              </HistoryContent>
-            </History>
-          ); //return
-        })}
+        
+        { this._renderHistories() }
+        
       </StyledHistories>
     );
   }
@@ -351,7 +363,8 @@ const monetaryValue = (value, options) => {
 
 const mapStateToProps = state => {
   return {
-    component_wallet: state.component.wallet
+    component_wallet: state.component.wallet,
+    cryptocurrencies: state.cryptocurrencies
   };
 };
 const mapDispatchToProps = dispatch => {
