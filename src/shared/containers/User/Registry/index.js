@@ -22,6 +22,8 @@ let CustomLogo = Logo.extend`
   margin: 70px auto 0 auto;
 `;
 
+
+
 let CustomH1 = H1.extend`
   font-weight: 500;
   margin: 2.5rem 5rem 0 5rem;
@@ -45,6 +47,13 @@ const SuccessMessage = styled.div`
   display: none;
 `;
 
+const Anchor = styled.a `
+color: #4cd566;
+text-decoration: none;
+
+
+`;
+
 const ArrowImg = Img.extend`
   border-style: none;
   padding-top: 14px;
@@ -56,7 +65,7 @@ let inputs = [
   { className: "registry-email", placeholder: "E-mail", type: "email" },
   { className: "registry-pass", placeholder: "Senha", type: "password" },
   { className: "registry-cpass", placeholder: "Confirmar senha", type: "password" },
-  { className: "registry-terms", value: " Eu aceito os Termos de Serviços", type: "checkbox" }
+  { className: "registry-terms", value: <span> Eu aceito os <Anchor href ="/" target ="blank_">Termos de Serviços</Anchor> </span>  , type: "checkbox" }
 ];
 
 class Registry extends React.Component {
