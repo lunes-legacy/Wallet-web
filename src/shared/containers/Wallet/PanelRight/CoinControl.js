@@ -12,9 +12,11 @@ const StyledCoinControl = styled.div`
   padding: 30px 25px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 `;
+
 const WrapAmount = styled.div`
   text-align: center;
   margin-bottom: 2rem;
+  margin-top: 5px;
 
   @media (${style.media.tablet2}) {
     text-align: right;
@@ -33,7 +35,8 @@ const Amount = styled.div`
   color: white;
 
   @media (${style.media.mobile2}) {
-    font-size: 3rem;
+    font-size: 4rem;
+    margin-top: 1rem;
   }
 `;
 
@@ -43,9 +46,11 @@ const MonetaryValue = styled.div`
   display: inline-block;
   font-size: 1.5rem;
   line-height: 50px;
+  margin-top: 1rem;
 
   @media (${style.media.mobile2}) {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
+    margin-top: 1rem;
   }
 `;
 
@@ -72,10 +77,11 @@ const CoinAction = styled.div`
   width: 70px;
 
   @media (${style.media.mobile2}) {
-    border-radius: 10px;
+    border-radius: 24px;
     font-size: 1.5rem;
     padding: 20px 0;
     width: 100px;
+    height: 100px;
   }
 
   @media (${style.media.tablet2}) {
@@ -93,14 +99,14 @@ const ReceiveCoin = CoinAction.extend`
 `;
 
 const SendCoinImage = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   margin-top: 5px;
   margin-bottom: 3px;
 `;
 
 class CoinControl extends React.Component {
-  handleToggleSendModal = () => {};
+  handleToggleSendModal = () => { };
 
   constructor() {
     super();
@@ -116,13 +122,13 @@ class CoinControl extends React.Component {
   render() {
     return (
       <StyledCoinControl>
-        <Row>
+        <Row overflowHidden>
           <Col s={12} m={6} l={8}>
             <WrapAmount>
               <Amount offSide>0.00000001</Amount>
               <Usd>USD 2.00</Usd>
               <Divisor />
-              <Brl offSide>BRL 6,30</Brl>
+              <Brl>BRL 6,30</Brl>
             </WrapAmount>
           </Col>
           <Col s={6} m={3} l={2}>

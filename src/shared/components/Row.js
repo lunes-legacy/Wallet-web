@@ -17,4 +17,5 @@ export let Row = styled.div`
 	flex-flow: wrap;
 	${RowBase};
 	${props => props.css ? props.css : ''};
+	${props => props.overflowHidden ? 'overflow: hidden' : 'overflow: auto'};
 `;
