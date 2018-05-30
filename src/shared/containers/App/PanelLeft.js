@@ -76,6 +76,12 @@ const CustomLink = styled(TmpLink) `
 
   &.active {
     opacity: 1;
+
+    opacity: 1;
+    width: 8px;
+    height: 56px;
+    border-left: solid 8px #4cd566;
+    padding-left: 10px;
   } 
 `;
 
@@ -85,9 +91,8 @@ class ItemMenuApp extends React.Component {
     return (
       <div>
         <WrapLink>
-
           <CustomLink {...this.props}>
-            <Rectangle className={this.props.activeClassName} />
+            {/* <Rectangle className={this.props.activeClassName} /> */}
             <Icon src={'/img/app_panel_left/' + this.props.icon} alt={this.props.label} />
             <CustomText size={'1.4rem'} >{this.props.label}</CustomText>
           </CustomLink>
