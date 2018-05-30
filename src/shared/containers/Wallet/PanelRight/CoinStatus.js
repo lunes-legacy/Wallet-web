@@ -24,9 +24,10 @@ const CoinDetailsText = styled.div`
   width: 100%;
   font-size: 1.5rem;
   color: white;
+  text-align: left;
 
   @media (${style.media.laptop}) {
-    font-size: 2rem;
+    font-size: 	3.0rem;
   }
 `;
 
@@ -65,6 +66,7 @@ const GraphContainer = styled.div`
 `;
 
 const WrapCoinPercent = styled.div`
+  margin-left: 33%;
   display: flex;
   align-items: center;
   background: ${style.normalGreen};
@@ -86,12 +88,17 @@ const WrapCoinPercent = styled.div`
 
 const CoinPercent = styled.div`
   ${TextBase}
-  font-size: 1.5rem;
-  letter-space: 0.85px;
+  
+  width: 130px;
+  height: 52px;
+  border-radius: 10px;
+  background-color: #ff1c38;  
   color: white;
   text-align: center;
-  padding: 10px 25px;
+  padding: 15px 25px 25px 25px;
+  
 
+ 
   @media (${style.media.tablet2}) {
     font-size: 2rem;
   }
@@ -110,12 +117,12 @@ class CoinStatus extends React.Component {
   }
 
   calcCoinPorcent = async () => {
-    let obj        = { fromSymbol: this.props.wallet.currentNetwork.toUpperCase(), toSymbol: "USD", range: "RANGE_1D" };
-    let wallet     = await new WalletClass().getCoinHistory(obj);
+    let obj = { fromSymbol: this.props.wallet.currentNetwork.toUpperCase(), toSymbol: "USD", range: "RANGE_1D" };
+    let wallet = await new WalletClass().getCoinHistory(obj);
     let coinPrices = wallet.data;
 
-    let coinPriceLength  = coinPrices.length;
-    let lastValueCoin    = coinPrices[0].close;
+    let coinPriceLength = coinPrices.length;
+    let lastValueCoin = coinPrices[0].close;
     let currentValueCoin = coinPrices[coinPriceLength - 1].close;
 
     this.setState(() => {
@@ -137,7 +144,7 @@ class CoinStatus extends React.Component {
           <Col s={12} m={3} l={3}>
             <CoinDetails>
               <CoinDetailsText offSide>BitCoin</CoinDetailsText>
-              <CoinDetailsText offSide>{`1 ${currentNetwork.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText>
+              <CoinDetailsText offSide>{`1 BTC ${currentNetwork.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText>
             </CoinDetails>
           </Col>
           <Col s={8} m={6} l={6}>
@@ -146,8 +153,8 @@ class CoinStatus extends React.Component {
             </GraphContainer>
           </Col>
           <Col s={4} m={3} l={3}>
-            <WrapCoinPercent style={this.state.coin_porcentage_price < 0 ? {background: 'indianred'} : {background: 'lightgreen'} }>
-              <CoinPercent>{ this.state.coin_porcentage_price }%</CoinPercent>
+            <WrapCoinPercent style={this.state.coin_porcentage_price < 0 ? { background: 'indianred' } : { background: 'lightgreen' }}>
+              <CoinPercent>{this.state.coin_porcentage_price}%</CoinPercent>
               {/*{this.state.coin_porcentage_price > 0 ? (
                 <CoinPercent backGroundGreen txNormal>{this.state.coin_porcentage_price}%</CoinPercent>
               ) : (
