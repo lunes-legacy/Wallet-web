@@ -8,10 +8,14 @@ export class WalletClass {
   static coinsPrice;
 
   //for now, we arent using this
-  getCoinsPrice = async (data = {
-    btc: {fromSymbol: 'BTC', toSymbol:'USD'},
-    eth: {fromSymbol: 'ETH', toSymbol:'USD'}
-  }) => {
+  getCoinsPrice = async (data) => {
+    if (!data || Object.keys(data).length < 1) {
+      data = {
+        btc: {fromSymbol: 'BTC', toSymbol:'USD'},
+        eth: {fromSymbol: 'ETH', toSymbol:'USD'}
+      }
+    }
+
     try {
       let coinsPrice = {};
       for (let coinKey in data) {
