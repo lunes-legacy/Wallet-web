@@ -10,15 +10,14 @@ let Img = styled.img`
 let DivCarrousel = styled.div`
   margin-top: 4%;
   width: 75% !important;
-  border: solid 2px green;
+
   
   & .slider-list {
-    height: 650px !important;
+    height: 70vh !important;
   }
 
   & .slider-control-bottomcenter ul {
     top: 10rem !important;
-    border: solid 2px green;
   }
 
   & .slider-control-bottomcenter ul li button {
@@ -48,7 +47,6 @@ let DivParagraph = styled.div`
   margin: auto;
   width: 100%;
   padding: 10px;
-  border: solid 2px green;
 `;
 
 class Image extends React.Component {
