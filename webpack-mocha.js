@@ -7,7 +7,7 @@ let targetComponent = __dirname+'/tests/unit/index.js';
 __webpack_public_path__ = '/';
 module.exports = {
 	mode: 'development',
-	entry: [polyfill, targetComponent],
+	entry: targetComponent,
 	target: 'node',
 	output: {
 		filename: 'index.bundle.js',

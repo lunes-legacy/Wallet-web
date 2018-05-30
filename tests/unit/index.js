@@ -1,4 +1,5 @@
 import { coins } from 'lunes-lib';
+import LunesCore from 'lunes-lib';
 import { WalletClass } from 'Classes/Wallet';
 const util = require('util');
 
@@ -25,8 +26,8 @@ describe(`\x1b[42m /src/shared/classes/Wallet \x1b[0m`, function() {
 			});
 	});
 	it('TRANSACTION HISTORY - It should be normal, with no errors', function(done) {
-		// done();       // PULANDO...
-		// return false; // SÓ POR GARANTIA
+		done();       // PULANDO...
+		return false; // SÓ POR GARANTIA
 
 		Wallet.getTxHistory({
 			address: btcAddress,
@@ -91,5 +92,9 @@ describe(`\x1b[42m /src/shared/classes/Wallet \x1b[0m`, function() {
 		//   ...
 		//  ]
 		// }
+	});
+	it('Should return a coinPrice', (done) => {
+		console.log(JSON.stringify(LunesCore.coins.services, null, 2));
+		done();
 	});
 });
