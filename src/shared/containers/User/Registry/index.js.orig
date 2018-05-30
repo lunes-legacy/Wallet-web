@@ -59,7 +59,7 @@ text-decoration: none;
 `;
 
 const ArrowImg = Img.extend`
->>>>>>> stylized and added hyperlink in the terms of service in the log tab
+>>>>>>> ad1d8e6eec1df53f6523a36e45e528f8d3cec55d
   border-style: none;
   padding-top: 14px;
 `;
