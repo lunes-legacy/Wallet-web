@@ -146,7 +146,7 @@ class Reset extends React.Component {
 
         <SecondPanelLeft className={"js-second-panel-left"}>
           <CustomLogo />
-          <Img src={"img/user_panel_left/ic_email.svg"} margin={"130px auto 0 auto"} width={"80px"} />
+          <Img src={"img/user_panel_left/ic_email.svg"} margin={"22rem auto 0 auto"} width={"80px"} />
           <PaddingH1>
             <H1 txCenter clWhite margin={"20px"} fontSize={"2rem"} >
               <strong>
