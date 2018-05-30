@@ -57,7 +57,7 @@ let inputs = [
   { className: "registry-email", placeholder: "E-mail", type: "email" },
   { className: "registry-pass", placeholder: "Senha", type: "password" },
   { className: "registry-cpass", placeholder: "Confirmar senha", type: "password" },
-  { className: "registry-terms", value: " Eu aceito os Termos de Serviços", type: "checkbox" }
+  { className: "registry-terms", value: <span> Eu aceito os <Anchor href ="/" target ="blank_">Termos de Serviços</Anchor> </span>  , type: "checkbox" }
 ];
 
 class Registry extends React.Component {
