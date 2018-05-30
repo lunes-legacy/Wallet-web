@@ -41,7 +41,7 @@ const MonetaryValue = styled.div`
   ${TextBase}
   color: white;
   display: inline-block;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   line-height: 50px;
 
   @media (${style.media.mobile2}) {
@@ -74,8 +74,8 @@ const CoinAction = styled.div`
   @media (${style.media.mobile2}) {
     border-radius: 10px;
     font-size: 1.5rem;
-    padding: 10px 0;
-    width: 90px;
+    padding: 20px 0;
+    width: 100px;
   }
 
   @media (${style.media.tablet2}) {
@@ -120,7 +120,7 @@ class CoinControl extends React.Component {
           <Col s={12} m={6} l={8}>
             <WrapAmount>
               <Amount offSide>0.00000001</Amount>
-              <Usd offSide>USD 2.00</Usd>
+              <Usd>USD 2.00</Usd>
               <Divisor />
               <Brl offSide>BRL 6,30</Brl>
             </WrapAmount>
