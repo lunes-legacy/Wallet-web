@@ -24,6 +24,8 @@ export let TextBase = css`
       return "text-align: center";
     } else if (props.txRight) {
       return "text-align: right";
+    } else if (props.txLeft) {
+      return "text-align: left";
     }
   }}
 	${props => {
@@ -69,10 +71,15 @@ export let TextBase = css`
     }
   }}
   ${props => {
-        if (props.backGroundRed) {
+    if (props.backGroundRed) {
       return "background-color:" + style.normalRed;
     } else if (props.backGroundGreen) {
       return "background-color:" + style.normalGreen;
+    }
+  }}
+  ${props => {
+    if (props.width) {
+      return "width:" + props.width;
     }
   }}
 `;

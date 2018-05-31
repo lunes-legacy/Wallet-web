@@ -20,6 +20,8 @@ module.exports = {
 	normalGreen: '#4CD566',
 	normalRed: '#FF1C38',
 	normalYellow: '#F5A623',
+	lightPurple: '#654fa4',
+	defaultPurple: '#3b1878',
 	marginTopSmall: '10px',
 	marginTopNormal: '15px',
 	marginTopRegular: '20px',
