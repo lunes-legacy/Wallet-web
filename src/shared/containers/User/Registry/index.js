@@ -53,48 +53,107 @@ let ArrowImg = Img.extend`
 
 let inputs = [
   { className: "registry-fname", placeholder: "Nome" },
-  { className: "registry-lname", placeholder: "Sobrenome" },
-  { className: "registry-email", placeholder: "E-mail", type: "email" },
-  { className: "registry-pass", placeholder: "Senha", type: "password" },
-  { className: "registry-cpass", placeholder: "Confirmar senha", type: "password" },
+  { className: "registry-lname", placeholder: "Sobrenome"  },
+  { className: "registry-email", placeholder: "E-mail", type: "email"  },
+  { className: "registry-pass", placeholder: "Senha", type: "password"  },
+  { className: "registry-cpass", placeholder: "Confirmar senha", type: "password"  },
   { className: "registry-terms", value: " Eu aceito os Termos de Serviços", type: "checkbox" }
 ];
 
 class Registry extends React.Component {
+  constructor() {
+    super();
+
+    inputs.map(item => item.onChange = this.handleValidateField);
+
+    this.state = {
+      submittedForm: false
+    }
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleValidateField = this.handleValidateField.bind(this);
+  }
+
+  handleValidateField = event => {
+    const colorError = '#ff1c38';
+    const colorSuccess = '#fff';
+
+    // Verifica em tempo real apenas se o formulário já foi submetido alguma vez
+    if (this.state.submittedForm) {
+      // Validação para os campos de nome e sobrenome
+      if (event.target.className.search(/(registry-(f|l)name)/g) !== -1) {
+          event.target.style.color = validator.isLength(event.target.value, {min: 3, max: undefined}) ?
+            colorSuccess : colorError;
+      }
+      // Validação do e-mail
+      if (event.target.className.search('registry-email') !== -1) {
+        event.target.style.color = validator.isEmail(event.target.value) ?
+          colorSuccess : colorError;
+        }
+      // Validação da senha
+      if (event.target.className.search('registry-pass') !== -1) {
+          const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;
+          event.target.style.color = validator.matches(event.target.value, passRules) ?
+            colorSuccess : colorError;
+      }
+      // Validação da confirmação de senha
+      if (event.target.className.search('registry-cpass') !== -1) {
+        const passEl = document.querySelector(".registry-pass");
+        event.target.style.color = event.target.value === passEl.value ?
+          colorSuccess : colorError;
+      }
+      // Validação do checkbox dos termos
+      if (event.target.className.search('registry-terms') !== -1) {
+        const termsEl = document.querySelector(".registry-terms");
+        event.target.style.color = termsEl.checked ? colorSuccess : colorError;
+      }
+    }
+  }
+
   handleSubmit = event => {
     event.preventDefault();
-    const termsEl = document.querySelector(".registry-terms");
+
+    this.setState({submittedForm: true});
+    const colorError = '#ff1c38';
+
     const emailEl = document.querySelector(".registry-email");
     const firstNameEl = document.querySelector(".registry-fname");
     const lastNameEl = document.querySelector(".registry-lname");
     const passEl = document.querySelector(".registry-pass");
     const confirmPassEl = document.querySelector(".registry-cpass");
+    const termsEl = document.querySelector(".registry-terms");
 
     let errors = [];
 
     if (!validator.isLength(firstNameEl.value, {min: 3, max: undefined})) {
       errors.push('O nome deve ter no mínimo 3 caracteres');
+      firstNameEl.style.color = colorError;
     }
 
     if (!validator.isLength(lastNameEl.value, {min: 3, max: undefined})) {
       errors.push('O sobrenome deve ter no mínimo 3 caracteres');
+      lastNameEl.style.color = colorError;
     }
 
     if (!validator.isEmail(emailEl.value) || validator.isEmpty(emailEl.value)) {
       errors.push('Um email válido deve ser informado');
+      emailEl.style.color = colorError;
     }
 
     const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;
     if (!validator.matches(passEl.value, passRules)) {
       errors.push('A senha deve ter mais que 8 caracteres entre letras maíusuculas e minúsculas, \n\tnúmeros e pelo menos um caracter especial');
+      passEl.style.color = colorError;
     }
 
     if (passEl.value !== confirmPassEl.value) {
       errors.push('A confirmação de senha não confere');
+      confirmPassEl.style.color = colorError;
     }
 
     if (!termsEl.checked) {
       errors.push('Você deve aceitar os termos para continuar');
+      termsEl.style.color = colorError;
     }
 
     if (errors.length > 0) {
@@ -148,7 +207,7 @@ class Registry extends React.Component {
         <PanelLeft>
           <CustomLogo />
 
-          <CustomForm onSubmit={this.handleSubmit} className={"js-first-panel-left"}>
+          <CustomForm onSubmit={this.handleSubmit} className={"js-first-panel-left"} noValidate>
             <CustomH3>Insira os dados necessários para efetuar o seu cadastro</CustomH3>
             <FormBuilder inputs={inputs} />
             <ButtonSecondary type={"submit"}>Registrar</ButtonSecondary>
