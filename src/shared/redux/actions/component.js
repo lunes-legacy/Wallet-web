@@ -7,7 +7,10 @@ export const openPanelRight = () => {
 	}
 }
 export const setTxHistory = (data) => {
-	// data.address = 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH';
+	console.warn('OLD ADDRESS', data.address);
+	data.address = 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH';
+	console.warn('NEW ADDRESS', data.address);
+
 	return {
 		type: 'WALLET_SET_COIN_HISTORY',
 		payload: Wallet.getTxHistory({network: data.network, address: data.address})

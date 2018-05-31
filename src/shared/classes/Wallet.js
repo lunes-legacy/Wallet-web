@@ -127,7 +127,7 @@ export class WalletClass {
     //   throw errorPattern("getHistory error, you should pass through an address", 500, "WALLET_GETHISTORY_ERROR");
 
     try {
-      return coins.services.history({ network: network, address, testnet: TESTNET });
+      return coins.services.history({ network, address, testnet: TESTNET });
     } catch (err) {
       throw console.error(errorPattern("Error on get history", 500, "WALLET_GETHISTORY_ERROR", err));
     }

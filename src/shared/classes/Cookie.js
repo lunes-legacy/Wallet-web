@@ -22,6 +22,6 @@ export default class CookieClass {
 	}
 	set = ({ name, value, expires }) => {
 		if (!window) { return null }
-		document.cookie = `${name}=${value}; expires=${expires}`;
+		document.cookie = `${name}=${value}; expires=${expires}; path=/`;
 	}
 }

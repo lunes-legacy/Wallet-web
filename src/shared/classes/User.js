@@ -4,13 +4,13 @@ import { LUNES_LIB_ENV, LUNES_LIB_LOGIN } from 'Config/constants';
 
 let defaultEmail    = 'wandyer1@lunes.io';
 let defaultPassword = 'Lunes123#@!';
-if (LUNES_LIB_ENV === 'production') {
-	defaultEmail    = 'marcelosmtp@gmail.com';
-	defaultPassword = '123123123';
-} else if (LUNES_LIB_ENV === 'staging') {
-	defaultEmail    = 'wandyer1@lunes.io';
-	defaultPassword = 'Lunes123#@!';
-}
+// if (LUNES_LIB_ENV === 'production') {
+// 	defaultEmail    = 'marcelosmtp@gmail.com';
+// 	defaultPassword = '123123123';
+// } else if (LUNES_LIB_ENV === 'staging') {
+// 	defaultEmail    = 'wandyer1@lunes.io';
+// 	defaultPassword = 'Lunes123#@!';
+// }
 
 export default class UserClass {
 	login = async ({ email, password }) => {
