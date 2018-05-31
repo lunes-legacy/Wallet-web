@@ -1,8 +1,8 @@
 {
   "name": "lunes-wallet-web",
+  "private":true,
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "build": "webpack",
     "dev-doc": "webpack --watch --hot --progress --config ./doc/webpack.config.js",

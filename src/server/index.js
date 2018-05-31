@@ -89,8 +89,11 @@ const render = (html, styleTags) => {
 				<div class="root">${html}</div>
 
 				<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-				<script src="/bundle.js" refer></script>
+				<script src="/js/bundle.js" refer></script>
 			</body>
 		</html>
 	`;
 }
+
+
+module.exports.walletWeb = app;
