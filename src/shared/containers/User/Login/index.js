@@ -51,7 +51,7 @@ color: white;
 width: 100%;
 text-align: center;
 font-size: 1.5rem;
-font-family: Roboto;
+
 
 `;
 
