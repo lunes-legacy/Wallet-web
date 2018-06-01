@@ -104,8 +104,8 @@ class Registry extends React.Component {
       }
       // Validação do checkbox dos termos
       if (event.target.className.search('registry-terms') !== -1) {
-        const termsEl = document.querySelector(".registry-terms");
-        event.target.style.color = termsEl.checked ? colorSuccess : colorError;
+        const termsLabelEl = document.querySelector("label");
+        termsLabelEl.style.color = event.target.checked ? colorSuccess : colorError;
       }
     }
   }
@@ -142,7 +142,7 @@ class Registry extends React.Component {
 
     const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;
     if (!validator.matches(passEl.value, passRules)) {
-      errors.push('A senha deve ter mais que 8 caracteres entre letras maíusuculas e minúsculas, \n\tnúmeros e pelo menos um caracter especial');
+      errors.push('A senha deve ter pelo menos 8 caracteres entre letras maíusuculas e minúsculas, \n\tnúmeros e pelo menos um caracter especial');
       passEl.style.color = colorError;
     }
 
@@ -152,8 +152,9 @@ class Registry extends React.Component {
     }
 
     if (!termsEl.checked) {
+      const termsLabelEl = document.querySelector('label');
       errors.push('Você deve aceitar os termos para continuar');
-      termsEl.style.color = colorError;
+      termsLabelEl.style.color = colorError;
     }
 
     if (errors.length > 0) {
