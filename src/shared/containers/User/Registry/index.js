@@ -58,19 +58,11 @@ let Anchor = styled.a `
 
 let inputs = [
   { className: "registry-fname", placeholder: "Nome" },
-<<<<<<< HEAD
   { className: "registry-lname", placeholder: "Sobrenome" },
   { className: "registry-email", placeholder: "E-mail", type: "email" },
   { className: "registry-pass", placeholder: "Senha", type: "password" },
   { className: "registry-cpass", placeholder: "Confirmar senha", type: "password" },
   { className: "registry-terms", value: <span> Eu aceito os <Anchor href ="/" target ="blank_">Termos de Serviços</Anchor> </span>  , type: "checkbox" }
-=======
-  { className: "registry-lname", placeholder: "Sobrenome"  },
-  { className: "registry-email", placeholder: "E-mail", type: "email"  },
-  { className: "registry-pass", placeholder: "Senha", type: "password"  },
-  { className: "registry-cpass", placeholder: "Confirmar senha", type: "password"  },
-  { className: "registry-terms", value: " Eu aceito os Termos de Serviços", type: "checkbox" }
->>>>>>> WW-17
 ];
 
 class Registry extends React.Component {
@@ -177,12 +169,11 @@ class Registry extends React.Component {
 
     let fullname = `${firstNameEl.value} ${lastNameEl.value}`;
 
-    alert('SUCESSO!')
-    // this.props.userCreate({
-    //   email: emailEl.value,
-    //   password: passEl.value,
-    //   fullname: fullname.replace("  ", " ")
-    // });
+    this.props.userCreate({
+      email: emailEl.value,
+      password: passEl.value,
+      fullname: fullname.replace("  ", " ")
+    });
   };
 
   handleStatus() {
