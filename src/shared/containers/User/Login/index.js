@@ -2,6 +2,7 @@ import React from "react";
 import { users } from "lunes-lib";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import validator from "validator";
 import style from "Shared/style-variables";
 //REDUX
 import { userLogin } from 'Redux/actions';
@@ -62,29 +63,58 @@ class Login extends React.Component {
   }
   handleLogin = event => {
     event.preventDefault();
-    let emailEl = document.querySelector(".login-email");
-    let passEl  = document.querySelector(".login-password");
 
-    let email    = emailEl.value;
+    let emailEl = document.querySelector(".login-email");
+    let passEl = document.querySelector(".login-password");
+
+    let email = emailEl.value;
     let password = passEl.value;
+
     this.props.userLogin({
-      email, 
+      email,
       password
     });
-  };
-  handleStatus() {
-    let statusEl = document.querySelector(".js-status");
 
-    let { status } = this.props.user;
-
-    if (status === "pending") {
-      statusEl.textContent = "Aguarde...";
-    } else if (status === "fulfilled") {
-      statusEl.textContent = "Sucesso";
-    } else if (status === "rejected") {
-      statusEl.textContent = "Tente novamente";
+    let errors = [];
+    if (!validator.isEmail(emailEl.value)) {
+      errors.push('Um email válido deve ser informado');
     }
+    const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;
+    if (!validator.matches(passEl.value, passRules)) {
+      errors.push('Senha inválida');
+    }
+    if (errors.length > 0) {
+      alert('- ' + errors.join('\n- '));
+      return;
+    }
+  };
+
+  handleStatus() {
+    try {
+      let statusEl = document.querySelector(".js-status");
+      let { status } = this.props.user;
+
+      if (status === "pending") {
+        statusEl.textContent = "Aguarde...";
+      } else if (status === "fulfilled") {
+        statusEl.textContent = "Sucesso";
+      } else if (status === "rejected") {
+        statusEl.textContent = "Tente novamente";
+      }
+    }
+    catch (err) {
+      console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
+    }
+
   }
+
+  componentDidUpdate() {
+    setTimeout(() => {
+      this.handleStatus();
+    }, 300);
+  }
+
+
   render() {
     let { status, logged } = this.props.user;
     return (
@@ -103,10 +133,10 @@ class Login extends React.Component {
 
           <Form margin={"80px auto"} width={"80%"}>
             <FormGroup>
-              <Input placeholder={"nome@email.com"} className={"login-email"} />
+              <Input placeholder={"nome@email.com"} className={"login-email"} placeholder={"E-mail"} type={"email"} required />
             </FormGroup>
             <FormGroup>
-              <Input type="password" placeholder={"Senha"} className={"login-password"} />
+              <Input placeholder={"Senha"} className={"login-password"} placeholder={"Senha"} type={"password"} required />
             </FormGroup>
 
             <CustomLinkRight to={"/reset"} margin={"0 auto 20px auto"}>
