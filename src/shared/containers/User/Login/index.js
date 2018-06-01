@@ -60,19 +60,23 @@ class Login extends React.Component {
     if (!validator.isEmail(emailEl.value)) {
       errors.push('Um email válido deve ser informado');
     }
-    console.log("erro", errors)
-    if (errors.length = " ") { //length
-      alert('- ' + errors.push('\n- '));
+
+    const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;
+    if (!validator.matches(passEl.value, passRules)) {
+      errors.push('Senha inválida');
+    }
+
+
+    if (errors.length > 0) {
+      alert('- ' + errors.join('\n- '));
       return;
     }
+
   };
 
-
   handleStatus() {
-    try {
-      console.log("qq coisa")
+    try {      
       let statusEl = document.querySelector(".js-status");
-
       let { status } = this.props.user;
 
       if (status === "pending") {
@@ -86,6 +90,7 @@ class Login extends React.Component {
    catch(err) {
     console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
   }
+  
 }
 
 componentDidUpdate() {
