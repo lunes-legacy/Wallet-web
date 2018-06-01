@@ -24,7 +24,16 @@ import Slide from "../../../containers/User/Login/Slide";
 
 const WrapPhrases = styled.div`
   width: 100%;
-  margin-top: 160px;
+  margin-top: 100px;
+`;
+const Paragraph = styled.div `
+margin-top: 12px;
+color: white;
+width: 100%;
+text-align: center;
+font-size: 1.5rem;
+font-family: Roboto;
+
 `;
 
 const CustomLogo = Logo.extend`
@@ -35,6 +44,7 @@ const CustomLinkRight = CustomLink.extend`
   text-align: right;
   
 `;
+
 
 const CustomP = P.extend`
   display: block;
@@ -83,12 +93,12 @@ class Login extends React.Component {
           <CustomLogo />
 
           <WrapPhrases>
-            <H1 clNormalGreen txCenter>
+            <H1 clNormalGreen txCenter margin-top = {"60px"}>
               Rápida, segura e inteligente!
             </H1>
-            <P clWhite txCenter margin={"20px 0 70px 0"} fontSize={"1.4rem"}>
+            <Paragraph clWhite txCenter margin={"20px 0 70px 0"} fontSize={"1.4rem"}>
               Entre com seus dados
-            </P>
+            </Paragraph>
           </WrapPhrases>
 
           <Form margin={"80px auto"} width={"80%"}>
