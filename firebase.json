@@ -6,9 +6,11 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites":[{
-    	"source":"**",
-    	"function":"walletWeb"
-    }]
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }

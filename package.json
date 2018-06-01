@@ -1,6 +1,6 @@
 {
   "name": "lunes-wallet-web",
-  "private":true,
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -32,6 +32,9 @@
     "babel-preset-stage-0": "^6.24.1",
     "browser-sync": "^2.24.4",
     "browser-sync-webpack-plugin": "^2.2.2",
+    "firebase-admin": "^5.12.1",
+    "firebase-functions": "^1.0.3",
+    "firebase-tools": "^3.18.5",
     "hard-source-webpack-plugin": "^0.6.4",
     "mocha": "^5.2.0",
     "webpack": "^4.6.0",

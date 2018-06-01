@@ -1,5 +1,5 @@
 require('dotenv').load();
-const HardSourcePlugin = require('hard-source-webpack-plugin');
+// const HardSourcePlugin = require('hard-source-webpack-plugin');
 var nodeExternals = require('webpack-node-externals');
 
 webpackEnv = process.env.WEBPACK_ENV;
@@ -46,16 +46,16 @@ let client = {
 		]
 	},
 	plugins: [
-		new HardSourcePlugin()
+		// new HardSourcePlugin()
 	]
 };
 
+// externals: [nodeExternals()], 
 let server = {
 	entry: ['babel-polyfill',serverEntry],
 	target: 'node',
 	output: serverOutput,
 	mode: webpackEnv,
-	externals: [nodeExternals()], 
 	module: {
 		rules: [
 			{
@@ -69,7 +69,7 @@ let server = {
 		]
 	},
 	plugins: [
-		new HardSourcePlugin()
+		// new HardSourcePlugin()
 	]
 }
 let alias = {

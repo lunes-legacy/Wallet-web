@@ -9,8 +9,31 @@
     "logs": "firebase functions:log"
   },
   "dependencies": {
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
     "firebase-admin": "~5.12.1",
-    "firebase-functions": "^1.0.3"
+    "firebase-functions": "^1.0.3",
+    "firebase-tools": "^3.18.5",
+    "history": "^4.7.2",
+    "instascan": "^1.0.0",
+    "lunes-lib": "https://github.com/Lunes-platform/lunes-lib/archive/571ffaa11f865727ff52f5fc15de782c757d915a.tar.gz",
+    "money-formatter": "^0.1.4",
+    "nuka-carousel": "^4.0.2",
+    "qrcode-generator": "^1.4.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-materialize": "^2.2.0",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "recharts": "^1.0.0-beta.10",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-promise-middleware": "^5.1.1",
+    "redux-thunk": "^2.2.0",
+    "satoshi-bitcoin": "^1.0.4",
+    "styled-components": "^3.2.6",
+    "validator": "^10.2.0"
   },
   "private": true
 }
