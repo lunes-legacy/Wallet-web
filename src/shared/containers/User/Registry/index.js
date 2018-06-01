@@ -85,6 +85,7 @@ class Registry extends React.Component {
 
     // Verifica em tempo real apenas se o formulário já foi submetido alguma vez
     if (this.state.submittedForm) {
+      console.log('teste');
       // Validação para os campos de nome e sobrenome
       if (event.target.className.search(/(registry-(f|l)name)/g) !== -1) {
           event.target.style.color = validator.isLength(event.target.value, {min: 3, max: undefined}) ?
@@ -212,7 +213,7 @@ class Registry extends React.Component {
         <PanelLeft>
           <CustomLogo />
 
-          <CustomForm onSubmit={this.handleSubmit} className={"js-first-panel-left"} noValidate>
+          <CustomForm onSubmit={this.handleSubmit} className={"js-first-panel-left"}>
             <CustomH3>Insira os dados necessários para efetuar o seu cadastro</CustomH3>
             <FormBuilder inputs={inputs} />
             <ButtonSecondary type={"submit"}>Registrar</ButtonSecondary>
