@@ -52,6 +52,11 @@ const HeadStatusIcon = styled.img`
   display: block;
   margin: 2px auto;
 `;
+const TextSend = styled.div `
+margin-left: 20px;
+font-weight: bold; 
+
+`
 
 const HeadStatusDate = styled.div`
   ${TextBase}
@@ -131,15 +136,16 @@ const HeadAmountMoney = styled.div`
 
 const HistoryContent = styled.div.attrs({
   className: "js-history-content"
-})`
+}) `
   display: flex;
   background: ${style.normalLilac};
   flex-flow: nowrap;
-  left: 0px;
+  margin-left: 1%;
   padding: 1rem 30% 1rem 3rem;
   top: 100%;
   width: 100%;
   word-wrap: break-word;
+  
 
   height: 0;
   max-height: 0;
@@ -161,6 +167,14 @@ const HistoryContentItem = styled.div`
   ${TextBase}
   width: 100%;
   padding-bottom: 5px;
+  
+  
+`;
+
+const TransactionId = styled.div`
+text-decoration: underline;
+font-weight: bold; 
+margin-top: 10px;
 `;
 
 const StatusStyle = styled.div`
@@ -239,9 +253,9 @@ class Histories extends React.Component {
         weekDay = "Domingo";
         break;
     }
-    let day   = date.getDate();
+    let day = date.getDate();
     let month = date.getMonth() + 1;
-    let year  = date.getYear();
+    let year = date.getYear();
     return `${weekDay} ${day}/${month}/${year}`;
   };
 
@@ -257,18 +271,18 @@ class Histories extends React.Component {
     // txHistory = await new WalletClass().getTxHistory({coin: currentNetwork, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
     // txHistory = await new WalletClass().getTxHistory({network: currentNetwork});
     let { currentNetwork, price } = this.props.component_wallet;
-    let Cookie  = new CookieClass();
-    let user    = JSON.parse(Cookie.get('user').user);
+    let Cookie = new CookieClass();
+    let user = JSON.parse(Cookie.get('user').user);
     console.warn("_USER_", user);
     let address = user.wallet.coins[0].addresses[0].address;
-    this.props.setTxHistory({network: 'BTCTESTNET', address});
+    this.props.setTxHistory({ network: 'BTCTESTNET', address });
   }
   _renderHistories = () => {
     let { currentNetwork, currentTxHistory } = this.props.component_wallet;
     let { price } = this.props.cryptocurrencies;
     console.warn(currentTxHistory.length, "__PRICE__");
     if (currentTxHistory.length < 1) {
-      return <Loading className="js-loading" size={'35px'} bWidth={'7px'}/>;
+      return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
     }
     return currentTxHistory.map((tx, key) => {
       return (
@@ -295,7 +309,7 @@ class Histories extends React.Component {
                     {tx.value}
                   </HeadAmountCoin>
                   <HeadAmountMoney>
-                    { monetaryValue(price.USD * parseFloat(tx.value), {style: 'currency',  currency: 'USD'}) }
+                    {monetaryValue(price.USD * parseFloat(tx.value), { style: 'currency', currency: 'USD' })}
                   </HeadAmountMoney>
                 </HistoryHeadAmount>
               </Col>
@@ -306,26 +320,26 @@ class Histories extends React.Component {
             <Row>
               <Col m={6} l={6}>
                 <HistoryContentItem clWhite>
-                  <Text size={"1.4rem"}>Enviado: </Text>
+                  <Text size={"1.4rem"}> </Text>
                   <Text size={"1.4rem"} txBold>
-                    {`${tx.value} ${currentNetwork.toUpperCase()}`} ($ {monetaryValue(price.USD * parseFloat(tx.value), {style: 'decimal'})})
+                  <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} ($ {monetaryValue(price.USD * parseFloat(tx.value), { style: 'decimal' })})
                   </Text>
                 </HistoryContentItem>
               </Col>
-              <Col  m={6} l={6}>
+              <Col m={6} l={6}>
                 <HistoryContentItem clWhite>
-                  <Text size={"1.4rem"}>Transaction ID:</Text>
+                  <Text size={"1.4rem"}>Transaction ID</Text>
                   <Text size={"1.4rem"} txBold>
-                    {tx.txid}
+                    <TransactionId > {tx.txid} </TransactionId>
                   </Text>
                 </HistoryContentItem>
               </Col>
               <Col>
                 <HistoryContentItem clWhite>
-                  <Text size={"1.4rem"}>Data: </Text>
+                  <Text size={"1.4rem"}></Text>
                   <Text size={"1.4rem"} txBold>
-                    {/*this.parseTimestampToDate(tx.time)*/}
-                    Quarta-feira 23/05/2018
+                   <span>Data:  </span> {"Segunda-Feira, Abril, 04, 2018 - 10:32 AM"}
+                    {/* Quarta-feira 23/05/2018 */}
                   </Text>
                 </HistoryContentItem>
               </Col>
@@ -350,12 +364,12 @@ class Histories extends React.Component {
     try {
       return (
         <StyledHistories>
-          
-          { this._renderHistories() }
-          
+
+          {this._renderHistories()}
+
         </StyledHistories>
       );
-    } catch(e){
+    } catch (e) {
       console.error(e);
       return <h1>Aconteceu um erro</h1>
     }
