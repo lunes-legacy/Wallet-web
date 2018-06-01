@@ -26,6 +26,7 @@ import FooterUser from 'Components/FooterUser'
 
 const WrapPhrases = styled.div`
   width: 100%;
+  margin-top: 100px;
 `;
 
 const CustomLogo = Logo.extend`
@@ -44,6 +45,16 @@ const CustomP = P.extend`
   
 
 `;
+const Paragraph = styled.div `
+margin-top: 12px;
+color: white;
+width: 100%;
+text-align: center;
+font-size: 1.5rem;
+font-family: Roboto;
+
+`;
+
 
 class Login extends React.Component {
   componentDidUpdate() {
