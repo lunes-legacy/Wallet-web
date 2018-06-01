@@ -58,7 +58,7 @@ class Send extends React.Component {
 		this.sendButton      = ReactDOM.findDOMNode(this.ref.sendButton.current);
 		this.wrapper         = ReactDOM.findDOMNode(this.ref.wrapper.current);
 
-		this.makeQrCode();
+		// this.makeQrCode();
 		this.arrangeAmountType();
 		setTimeout(() => {
 			this.animThisComponentIn();
@@ -81,16 +81,17 @@ class Send extends React.Component {
 	}
 	toggleModal = (event) => {
 	}
-	makeQrCode = () => {
-		let qr = qrcode(4, 'L');
-		qr.addData('Marcelo Rafael');
-		qr.make();
-		let img   = qr.createSvgTag();
-		this.wrapperQr.innerHTML = img;
-		let imgEl = this.wrapperQr.children[0];
-		imgEl.style.width  = '90%';
-		imgEl.style.height = 'auto';
-	}
+	// makeQrCode = () => {
+	// 	let qr = qrcode(4, 'L');
+	// 	qr.addData('Marcelo Rafael');
+	// 	qr.make();
+	// 	let img   = qr.createSvgTag();
+	// 	this.wrapperQr.innerHTML = img;
+	// 	let imgEl = this.wrapperQr.children[0];
+	// 	imgEl.style.width  = '90%';
+	// 	imgEl.style.height = 'auto';
+	// }
+	
 	// toggleStateButtonSend = (text, disabled) => {
 	// 	if (disabled)
 	// 		this.sendButton.style.pointerEvents = 'none';
@@ -120,7 +121,6 @@ class Send extends React.Component {
 				}
 			}
 		});
-		console.log('----------------------------');
 	}
 	handleOnPercentChange = (event) => {
 		let element = event.currentTarget;

@@ -86,15 +86,15 @@ let props = {
   }
 };
 
-// const toRender = () => {
-//   return(
-//     <Modal {...props}/> 
-//   );
-// }
 const toRender = () => {
-	return(
-		<Receive isShow={true}/>
-	);
+  return(
+    <Modal {...props}/> 
+  );
 }
+// const toRender = () => {
+// 	return(
+// 		<Receive isShow={true}/>
+// 	);
+// }
 
 export default toRender;
