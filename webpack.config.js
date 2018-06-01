@@ -56,6 +56,7 @@ let server = {
 	target: 'node',
 	output: serverOutput,
 	mode: webpackEnv,
+	externals: [nodeExternals()], 
 	module: {
 		rules: [
 			{
