@@ -56,18 +56,30 @@ const Coin = styled.div`
 const CoinsHeader = styled.div`
   ${TextBase}
   display: flex;
-  align-items: center;
+  align-items: none;
   background-image: url(/img/app_wallet/rectangle-wallet.svg);
-  background-size: 100% 100%;
+  background-size: 110%;
   font-size: 1rem;
+  letter-spacing: 1.3px;
   height: 75px;
-  justify-content: center;
+  
+  padding-top: none;
+  padding-left: 3rem;
   padding-bottom: 2rem;
   width: 100%;
+
+  background-position: -5px 0px;
+  background-repeat: no-repeat;
+
+  border-top: solid 20px #654fa4;
 
   @media (${style.media.tablet2}) {
     font-size: 1.4rem;
     height: 95px;
+
+    align-items: center;
+    padding-top: none;
+    border-top: none;
   }
 `;
 
@@ -165,7 +177,7 @@ class Coins extends React.Component {
   render() {
     return (
       <StyledCoins>
-        <CoinsHeader>MINHAS CARTEIRAS</CoinsHeader>
+        <CoinsHeader txLight>MINHAS CARTEIRAS</CoinsHeader>
 
         { this._renderCoins() }
       </StyledCoins>
