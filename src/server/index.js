@@ -74,15 +74,14 @@ app.get('*', (req, res) => {
 	}
 });
 
-// let webpackEnv = process.env.WEBPACK_ENV;
-// if (webpackEnv !== 'production') {
-// 	app.listen(3002, () => {
-// 		console.log('Server is running on port 3002');
-// 	});
-// } else {
-// 	// exports.app = functions.onRequest(app);
-// }
-exports.ssr = functions.https.onRequest(app);
+let webpackEnv = process.env.WEBPACK_ENV;
+if (webpackEnv !== 'production') {
+	app.listen(3002, () => {
+		console.log('Server is running on port 3002');
+	});
+} else {
+	exports.ssr = functions.https.onRequest(app);
+}
 
 const render = (html, styleTags) => {
 	return `
