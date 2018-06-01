@@ -13,6 +13,8 @@ const StyledPanelLeft = styled.div`
 	z-index: 3;
   transition: .2s ease-in;
 
+  padding-top:4rem;
+
   @media (${styles.media.tablet2}) {
     width: 160px;
   }
@@ -22,10 +24,10 @@ const WrapLink = styled.div`
   display: flex;
   flex-wrap: nowrap;
 	justify-content: flex-start;
-  margin: 1rem 0;
-  padding: 1rem 0;
+  //margin: 1rem 0;
+  //padding: 1rem 0;
   width: 100%;
-  display: 0;
+  //display: 0;
 `;
 
 const Icon = styled.img`
@@ -38,50 +40,52 @@ const CustomText = styled.div`
   ${TextBase};
   margin-left: 1rem;
   display: none;
-  font-weight: 700;
-  transition: .2s;
+  font-family: Roboto;
+
+  font-size: 12px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
 
   @media (${styles.media.tablet2}) {
     display: inline-block;
   }
 `;
 
-let Rectangle = styled.div`
-  width: 8px;
-  height: 56px;
-  margin-right: 8px;
-  background-color: #4cd566;
-  border: solid 1px #4cd566;
-  opacity: 0;
-  
-  &.active {
-    opacity: 1;
-  } 
-`;
-
 const CustomLink = styled(TmpLink) `
-	${TextBase};
+  ${TextBase};
+  
   color: white;
-	line-height: 25px;
   text-decoration: none;
   transition-delay: .2s;
   display: flex;
   align-items: center;
   transition: .2s;
   opacity: 0.3;
+
+  border-left: solid 8px rgba(0,0,0,0);
+  padding-left: 10px;
+  height: 56px;
+
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
   
   &:hover {
     opacity: 1;
+
+    -webkit-filter: none;
+    filter: none;
   }
 
   &.active {
     opacity: 1;
-
-    opacity: 1;
-    width: 8px;
-    height: 56px;
     border-left: solid 8px #4cd566;
     padding-left: 10px;
+
+    -webkit-filter: none;
+    filter: none;
   } 
 `;
 
@@ -92,7 +96,6 @@ class ItemMenuApp extends React.Component {
       <div>
         <WrapLink>
           <CustomLink {...this.props}>
-            {/* <Rectangle className={this.props.activeClassName} /> */}
             <Icon src={'/img/app_panel_left/' + this.props.icon} alt={this.props.label} />
             <CustomText size={'1.4rem'} >{this.props.label}</CustomText>
           </CustomLink>
@@ -143,7 +146,7 @@ class PanelLeft extends React.Component {
           activeClassName="active" />
 
         <ItemMenuApp
-          label="Configuração"
+          label="Configurações"
           to="/app/configuration"
           icon="ic_config.svg"
           activeClassName="active" />

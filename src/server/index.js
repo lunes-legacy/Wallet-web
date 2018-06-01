@@ -1,4 +1,5 @@
-require('dotenv').config({path: __dirname + '/.env'});
+require('dotenv').load();
+// const functions   = require('firebase-functions');
 import React              from 'react';
 import { createStore, combineReducers } from 'redux';
 import { renderToString } from 'react-dom/server';
@@ -72,9 +73,16 @@ app.get('*', (req, res) => {
 		console.log(errorPattern(err));
 	}
 });
-app.listen(3002, () => {
-	console.log('Server is running on port 3002');
-});
+
+let webpackEnv = process.env.WEBPACK_ENV;
+if (webpackEnv !== 'production') {
+	app.listen(3002, () => {
+		console.log('Server is running on port 3002');
+	});
+} else {
+	console.log('\x1b[42m env.WEBPACK_ENV está em servidor, por isso nao vai rodar \x1b[0m');
+	// exports.ssr = functions.https.onRequest(app);
+}
 
 const render = (html, styleTags) => {
 	return `
@@ -94,6 +102,3 @@ const render = (html, styleTags) => {
 		</html>
 	`;
 }
-
-
-module.exports.walletWeb = app;
