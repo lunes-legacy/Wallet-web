@@ -45,7 +45,7 @@ class PanelRight extends React.Component {
 		});
 	}
 	componentDidMount = async () => {
-		
+
 	}
 	_shouldRender = () => {
 		let { isPanelRightVisible } = this.props.component_wallet;
@@ -54,8 +54,8 @@ class PanelRight extends React.Component {
 		return true;
 	}
 	render() {
-		if (!this._shouldRender()) return null;
-		
+		if (!this._shouldRender()) return <Default />;
+
 		return (
 			<StyledPanelRight>
 				<CoinStatus/>
