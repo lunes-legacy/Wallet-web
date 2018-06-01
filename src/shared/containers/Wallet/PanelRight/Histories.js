@@ -258,7 +258,8 @@ class Histories extends React.Component {
     // txHistory = await new WalletClass().getTxHistory({network: currentNetwork});
     let { currentNetwork, price } = this.props.component_wallet;
     let Cookie  = new CookieClass();
-    let user    = JSON.parse(Cookie.get('user').user.toString());
+    let user    = JSON.parse(Cookie.get('user').user);
+    console.warn("_USER_", user);
     let address = user.wallet.coins[0].addresses[0].address;
     this.props.setTxHistory({network: 'BTCTESTNET', address});
   }

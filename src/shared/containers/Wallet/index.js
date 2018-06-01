@@ -40,22 +40,22 @@ class Wallet extends React.Component {
 		};
 	}
 	componentDidMount = async () => {
-		let Cookies = new CookieClass;
+		// let Cookies = new CookieClass;
 		let User    = new UserClass;
-		let user;
-	    let cookie = Cookies.get('user');
-	    try {
-	    	if (!cookie)
-	    		throw errorPattern('WALLET ERROR',500,'WALELT ERROR');
-	    	user = JSON.parse(cookie.user.toString());
-	    } catch(err) {
-	    	try {
-				user    = await User.login();
-	    	} catch(err2) {
-	    		throw errorPattern('An error ocurred on trying to do the login', 500, 'CONTAINERS_WALLET_ERROR', err2);
-	    	}
-	    }
-
+		// let user;
+	    // let cookie = Cookies.get('user');
+	   //  try {
+	   //  	if (!cookie)
+	   //  		throw errorPattern('WALLET ERROR',500,'WALELT ERROR');
+	   //  	user = JSON.parse(cookie.user.toString());
+	   //  } catch(err) {
+	   //  	try {
+				// user    = await User.login();
+	   //  	} catch(err2) {
+	   //  		throw errorPattern('An error ocurred on trying to do the login', 500, 'CONTAINERS_WALLET_ERROR', err2);
+	   //  	}
+	   //  }
+		let user    = await User.login({email:'',password:''});
 		if (!user) { return; }
 
 		let wallet     = new WalletClass;

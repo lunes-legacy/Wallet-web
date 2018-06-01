@@ -50,12 +50,12 @@ let client = {
 	]
 };
 
+// externals: [nodeExternals()], 
 let server = {
 	entry: ['babel-polyfill',serverEntry],
 	target: 'node',
 	output: serverOutput,
 	mode: webpackEnv,
-	externals: [nodeExternals()], 
 	module: {
 		rules: [
 			{
