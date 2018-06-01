@@ -1,2 +1,6 @@
-import CryptoTransaction from './CryptoTransaction';
+import EstimateFee from './crypto/Transaction';
+
+export { 
+	EstimateFee
+};
 

@@ -45,7 +45,7 @@
     "express": "^4.16.3",
     "history": "^4.7.2",
     "instascan": "^1.0.0",
-    "lunes-lib": "https://github.com/Lunes-platform/lunes-lib/archive/571ffaa11f865727ff52f5fc15de782c757d915a.tar.gz",
+    "lunes-lib": "https://github.com/Lunes-platform/lunes-lib/archive/e02e079d3efed732db9eb5327bb2a94a37e0db9e.tar.gz",
     "money-formatter": "^0.1.4",
     "nuka-carousel": "^4.0.2",
     "qrcode-generator": "^1.4.0",

@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect }          from 'react-redux';
 import { errorPattern }     from 'Utils/functions';
 import styled               from 'styled-components';
-import { users }            from 'lunes-lib';
+import { users,coins }            from 'lunes-lib';
 import { createBrowserHistory } from 'history';
 
 //COMPONENTS
@@ -59,7 +59,7 @@ let Balance = styled.div`
 	${TextBase}
 `;
 class App extends React.Component {
-	componentDidMount() {
+	componentDidMount = async () => {
 	}
 	componentDidUpdate() {
 	}
