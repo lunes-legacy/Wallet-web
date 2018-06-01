@@ -42,17 +42,33 @@ class Login extends React.Component {
     this.handleStatus();
   }
   handleLogin = event => {
-    event.preventDefault();
-    let emailEl = document.querySelector(".login-email");
-    let passEl  = document.querySelector(".login-password");
+    event.preventDefault();    
+   
+    let  emailEl = document.querySelector(".login-email");
+    let  passEl  = document.querySelector(".login-password");    
 
     let email    = emailEl.value;
     let password = passEl.value;
+    
     this.props.userLogin({
       email, 
-      password
+      password      
     });
+   
+    let errors = [];
+    if (!validator.isEmail(emailEl.value) || validator.isEmpty(emailEl.value)) {
+      errors.push('Um email válido deve ser informado');
+    }
+    const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;    
+    if (!validator.matches(passEl.value, passRules)) {
+      errors.push('Senha inválida');
+    }
+    if (errors.length > 0) {
+      alert('- ' + errors.join('\n- '));
+      return;
+    }
   };
+  
   handleStatus() {
     let statusEl = document.querySelector(".js-status");
 
@@ -66,6 +82,7 @@ class Login extends React.Component {
       statusEl.textContent = "Tente novamente";
     }
   }
+
   render() {
     let { status, logged } = this.props.user;
     return (
@@ -84,10 +101,10 @@ class Login extends React.Component {
 
           <Form margin={"80px auto"} width={"80%"}>
             <FormGroup>
-              <Input placeholder={"nome@email.com"} className={"login-email"} />
+              <Input placeholder={"nome@email.com"} className={"login-email"} placeholder={"E-mail"} type={"E-mail"} />
             </FormGroup>
             <FormGroup>
-              <Input type="password" placeholder={"Senha"} className={"login-password"} />
+              <Input type="password" placeholder={"Senha"} className={"login-password"} placeholder={"Senha"} type={"password"} />
             </FormGroup>
 
             <CustomLinkRight to={"/reset"} margin={"0 auto 20px auto"}>
