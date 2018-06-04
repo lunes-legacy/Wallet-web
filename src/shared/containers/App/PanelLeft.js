@@ -40,9 +40,7 @@ const CustomText = styled.div`
   ${TextBase};
   margin-left: 1rem;
   display: none;
-  font-family: Roboto;
-
-  font-size: 12px;
+  font-size: 1.2rem;
   font-weight: bold;
   font-style: normal;
   font-stretch: normal;
