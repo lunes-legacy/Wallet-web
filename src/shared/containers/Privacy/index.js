@@ -28,6 +28,7 @@ const Phrase = styled.div`
 `;
 
 const Addresses = styled.div`
+	margin-bottom: 60px;
 `;
 
 const Tab = styled.div`

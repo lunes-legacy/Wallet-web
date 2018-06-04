@@ -33,9 +33,8 @@ class CoinsAddress extends React.Component {
 	render() {
 		return (
 			coins.map( coin => {
-        console.log(coin);
         return (
-					<CoinAddress>
+					<CoinAddress key={coin}>
 						<Row defaultAlign="left">
 							<H1 txBold clWhite width={'65px'} padding={'1.2rem 0 0 0'}> 
 								{coin}
