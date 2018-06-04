@@ -29,11 +29,6 @@ const HistoryHead = styled.div`
   display: flex;
   cursor: pointer;
   padding: 10px 0;
-  &:hover + .js-history-content {
-    max-height: 300px;
-    height: 100%;
-    box-shadow: 0 5px 7px inset rgba(0,0,0,.2);
-  }
   width: 100%;
 `;
 
@@ -52,10 +47,10 @@ const HeadStatusIcon = styled.img`
   display: block;
   margin: 2px auto;
 `;
-const TextSend = styled.div `
-margin-left: 20px;
-font-weight: bold; 
 
+const TextSend = styled.div `
+  margin-left: 20px;
+  font-weight: bold; 
 `
 
 const HeadStatusDate = styled.div`
@@ -134,9 +129,7 @@ const HeadAmountMoney = styled.div`
   }
 `;
 
-const HistoryContent = styled.div.attrs({
-  className: "js-history-content"
-}) `
+const HistoryContent = styled.div`
   display: flex;
   background: ${style.normalLilac};
   flex-flow: nowrap;
@@ -145,10 +138,6 @@ const HistoryContent = styled.div.attrs({
   top: 100%;
   width: 100%;
   word-wrap: break-word;
-  
-
-  height: 0;
-  max-height: 0;
 
   transition: all 1s;
 
@@ -156,7 +145,11 @@ const HistoryContent = styled.div.attrs({
     padding: 1rem 2rem;
   }
 
-  &:hover {
+  &.js-history-content {
+    height: 0;
+    max-height: 0;
+  }
+  &.js-history-content-active {
     height: 100%;
     max-height: 300px;
     box-shadow: 0 5px 7px inset rgba(0,0,0,.2);
@@ -167,14 +160,12 @@ const HistoryContentItem = styled.div`
   ${TextBase}
   width: 100%;
   padding-bottom: 5px;
-  
-  
 `;
 
 const TransactionId = styled.div`
-text-decoration: underline;
-font-weight: bold; 
-margin-top: 10px;
+  text-decoration: underline;
+  font-weight: bold; 
+  margin-top: 10px;
 `;
 
 const StatusStyle = styled.div`
@@ -185,9 +176,9 @@ const StatusStyle = styled.div`
   margin-right: 5px;
   ${props => {
     if (props.type === "SPENT") {
-      return `color: #ff1c38;`;
+      return `color: ${style.normalRed};`;
     } else if (props.type === "RECEIVED") {
-      return `color: #4cd566;`;
+      return `color: ${style.normalGreen};`;
     } else {
       return `background: ${style.normalLilac};`;
     }
@@ -205,6 +196,10 @@ class Histories extends React.Component {
       txHistory: []
     }
     super(props);
+    this.state = {
+      activeIndex: null
+    }
+    this.handleToggleHistory = this.handleToggleHistory.bind(this);
   }
 
   timeToText = (txTime, type) => {
@@ -266,6 +261,11 @@ class Histories extends React.Component {
     return;
   };
 
+  // action click history
+  handleToggleHistory = item => {
+    this.setState({activeIndex:item})
+  };
+
   componentDidMount = async () => {
     // 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF';
     // txHistory = await new WalletClass().getTxHistory({coin: currentNetwork, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
@@ -287,7 +287,7 @@ class Histories extends React.Component {
     return currentTxHistory.map((tx, key) => {
       return (
         <History key={key}>
-          <HistoryHead onClick={this.handleToggleHistory}>
+          <HistoryHead onClick={()=>this.handleToggleHistory(key)}>
             <Row>
               <Col s={6} m={2} l={2}>
                 <HistoryHeadStatus>
@@ -316,7 +316,7 @@ class Histories extends React.Component {
             </Row>
           </HistoryHead>
 
-          <HistoryContent>
+          <HistoryContent className={this.state.activeIndex===key ? 'js-history-content-active' : 'js-history-content'}>
             <Row>
               <Col m={6} l={6}>
                 <HistoryContentItem clWhite>
