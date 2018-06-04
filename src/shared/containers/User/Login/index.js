@@ -60,9 +60,8 @@ class Login extends React.Component {
     if (!validator.isEmail(emailEl.value)) {
       errors.push('Um email válido deve ser informado');
     }
-    const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;
-    if (!validator.matches(passEl.value, passRules)) {
-      errors.push('Senha inválida');
+    if (validator.isEmpty(passEl.value)) {
+      errors.push('Campo de senha vazio');
     }
     if (errors.length > 0) {
       alert('- ' + errors.join('\n- '));
