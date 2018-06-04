@@ -1,31 +1,31 @@
 require('dotenv').load();
 import React, { PropTypes } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { connect }          from 'react-redux';
-import { errorPattern }     from 'Utils/functions';
-import styled               from 'styled-components';
-import { users }            from 'lunes-lib';
+import { connect } from 'react-redux';
+import { errorPattern } from 'Utils/functions';
+import styled from 'styled-components';
+import { users } from 'lunes-lib';
 import { createBrowserHistory } from 'history';
 
 //COMPONENTS
-import Login            from 'Containers/User/Login/index';
-import Home             from 'Containers/Home/index';
-import Portfolio        from 'Containers/Portfolio/index';
-import Wallet           from 'Containers/Wallet/index';
-import Recharge         from 'Containers/Recharge/index';
-import Ticket           from 'Containers/Ticket/index';
-import Buy           	  from 'Containers/Buy/index';
-import Configuration    from 'Containers/Configuration/index';
-import Privacy          from 'Containers/Privacy/index';
+import Login from 'Containers/User/Login/index';
+import Home from 'Containers/Home/index';
+import Portfolio from 'Containers/Portfolio/index';
+import Wallet from 'Containers/Wallet/index';
+import Recharge from 'Containers/Recharge/index';
+import Ticket from 'Containers/Ticket/index';
+import Buy from 'Containers/Buy/index';
+import Configuration from 'Containers/Configuration/index';
+import Privacy from 'Containers/Privacy/index';
 
 //SUB-COMPONENTS
-import { Link }         from 'Components/Link';
-import { TextBase }     from 'Components/TextBase';
-import { Text }         from 'Components/Text';
-import Header           from './Header';
-import PanelLeft        from './PanelLeft';
-import PanelRight       from './PanelRight';
-import { AuthRoute }    from 'Components/AuthRoute';
+import { Link } from 'Components/Link';
+import { TextBase } from 'Components/TextBase';
+import { Text } from 'Components/Text';
+import Header from './Header';
+import PanelLeft from './PanelLeft';
+import PanelRight from './PanelRight';
+import { AuthRoute } from 'Components/AuthRoute';
 // import { checkAuth }    from 'Auth/index';
 
 let Panels = styled.div`
@@ -58,41 +58,43 @@ let WrapBalance = styled.div`
 let Balance = styled.div`
 	${TextBase}
 `;
+
+
 class App extends React.Component {
 	componentDidMount() {
 	}
 	componentDidUpdate() {
 	}
 	render() {
-		return(
+		return (
 			<WrapApp>
 				<Header>
 					<WrapLogo>
-						<Logo src={'/img/logo.svg'}/>
+						<Logo src={'/img/logo.svg'} />
 					</WrapLogo>
 					<WrapBalance>
 						<Balance>
-							<Text clWhite txLight txInline offSide >Balance: </Text>
-							<Text clNormalGreen txNormal txInline offSide >LNS </Text>
-							<Text clWhite txNormal txInline offSide>1,300.00</Text>
+						<Text clWhite txLight txInline size={'1.8rem'}> Balance: </Text>
+							<Text clNormalGreen txNormal txInline offSide size={'2.3rem'} >LNS </Text>
+							<Text clWhite txNormal txInline offSide size={'2.0rem'}>1.300.00</Text>
 						</Balance>
-						<Text clNormalGreen txBold txRight size={'1.6rem'}>$ 130.00</Text>
+						<Text clNormalGreen txBold txRight size={'1.2rem'}>$ 130,00</Text>
 					</WrapBalance>
 				</Header>
 				<Panels>
-					<PanelLeft/>
+					<PanelLeft />
 
 					<PanelRight>
 						<Switch>
-							<Route exact path={"/app/"} component={Home}/>
-							<Route exact path={"/app/home/"} component={Home}/>
-							<Route exact path={"/app/portfolio/"} component={Portfolio}/>							
-							<Route exact path={"/app/wallet/"} component={Wallet}/>
-							<Route exact path={"/app/recharge/"} component={Recharge}/>
-							<Route exact path={"/app/ticket/"} component={Ticket}/>
-							<Route exact path={"/app/buy"} component={Buy}/>
-							<Route exact path={"/app/configuration"} component={Configuration}/>
-							<Route exact path={"/app/privacy"} component={Privacy}/>																											
+							<Route exact path={"/app/"} component={Home} />
+							<Route exact path={"/app/home/"} component={Home} />
+							<Route exact path={"/app/portfolio/"} component={Portfolio} />
+							<Route exact path={"/app/wallet/"} component={Wallet} />
+							<Route exact path={"/app/recharge/"} component={Recharge} />
+							<Route exact path={"/app/ticket/"} component={Ticket} />
+							<Route exact path={"/app/buy"} component={Buy} />
+							<Route exact path={"/app/configuration"} component={Configuration} />
+							<Route exact path={"/app/privacy"} component={Privacy} />
 						</Switch>
 					</PanelRight>
 				</Panels>
@@ -117,7 +119,7 @@ const mapDispatchToProps = (dispatch) => {
 	}
 }
 const userLogin = (email, password) => {
-	return users.login({email, password});
+	return users.login({ email, password });
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
