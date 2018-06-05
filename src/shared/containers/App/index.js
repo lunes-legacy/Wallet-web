@@ -15,6 +15,7 @@ import Wallet from 'Containers/Wallet/index';
 import Recharge from 'Containers/Recharge/index';
 import Ticket from 'Containers/Ticket/index';
 import Buy from 'Containers/Buy/index';
+import Leasing from 'Containers/Leasing/index'
 import Configuration from 'Containers/Configuration/index';
 import Privacy from 'Containers/Privacy/index';
 
@@ -93,6 +94,7 @@ class App extends React.Component {
 							<Route exact path={"/app/recharge/"} component={Recharge} />
 							<Route exact path={"/app/ticket/"} component={Ticket} />
 							<Route exact path={"/app/buy"} component={Buy} />
+							<Route exact path={"/app/leasing"} component={Leasing} />
 							<Route exact path={"/app/configuration"} component={Configuration} />
 							<Route exact path={"/app/privacy"} component={Privacy} />
 						</Switch>
