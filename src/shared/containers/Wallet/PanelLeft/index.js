@@ -47,19 +47,7 @@ class PanelLeft extends React.Component {
 		super(props);
 	}
 
-	handleTogglePanelLeft = () => {
-		this.props.togglePanelLeft();
-		// let panelLeftEl = event.currentTarget.parentElement;
-		// toggleWidth({
-		// 	element: panelLeftEl,
-		// 	visible: '30%',
-		// 	hidden: '0px'
-		// });
-	}
-	
-	componentWillUpdate = () => {
-		// use condition storage or function toggleWidth ?
-		//if(this.props.wallet.panelLeft.status==="open"){
+	_showPanel = () => {
 		let panelLeftEl = document.getElementById("myPanelLeft");
 		toggleWidth({
 			element: panelLeftEl,
@@ -68,10 +56,21 @@ class PanelLeft extends React.Component {
 		});
 	}
 
+	componentDidMount = () => {
+		if(this.props.wallet.panelLeft.status==="closed"){
+			this._showPanel();
+		}
+	}
+	
+	componentWillUpdate = () => {
+		// use condition storage or function toggleWidth ?
+		this._showPanel();
+	}
+
 	render(){
 		return(
 			<StyledPanelLeft id="myPanelLeft">
-				<TogglePanelLeft onClick={this.handleTogglePanelLeft} />
+				<TogglePanelLeft onClick={()=>this.props.togglePanelLeft()} />
 				<Coins/>
 			</StyledPanelLeft>
 		);

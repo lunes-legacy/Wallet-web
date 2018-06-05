@@ -174,7 +174,7 @@ class Coins extends React.Component {
         <Coin
           key={coinKey}
           onClick={() => {
-            this.props.openPanelRight();
+            this.props.openPanelRight({currentNetwork: coinKey.toLowerCase()}); 
             this.props.togglePanelLeft();
           }}
         >
@@ -218,9 +218,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    openPanelRight: () => {
-      dispatch(openPanelRight());
-    },
+    openPanelRight: (data) => {
+      dispatch(openPanelRight(data));
+    }, 
     togglePanelLeft: () => {
       dispatch(togglePanelLeft());
     }
