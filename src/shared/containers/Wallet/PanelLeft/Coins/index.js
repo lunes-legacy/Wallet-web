@@ -33,8 +33,9 @@ const Coin = styled.div`
   padding: 0 1rem;
   width: auto;
 
-  margin-right:0px;
   box-shadow: none;
+  margin-right: 0px;
+  margin-bottom: 10px;
   transition: .3s;
 
   &:hover {
@@ -170,7 +171,7 @@ class Coins extends React.Component {
         <Coin
           key={coinKey}
           onClick={() => {
-            this.props.openPanelRight(); 
+            this.props.openPanelRight();
             this.props.togglePanelLeft();
           }}
         >
@@ -216,7 +217,7 @@ const mapDispatchToProps = dispatch => {
   return {
     openPanelRight: () => {
       dispatch(openPanelRight());
-    }, 
+    },
     togglePanelLeft: () => {
       dispatch(togglePanelLeft());
     }
