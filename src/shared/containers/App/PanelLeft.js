@@ -113,11 +113,11 @@ class PanelLeft extends React.Component {
           icon="ic_home.svg"
           activeClassName="active" />
 
-        <ItemMenuApp
+        {/* <ItemMenuApp
           label="Portfólio"
           to="/app/portfolio"
           icon="ic_portfolio.svg"
-          activeClassName="active" />
+          activeClassName="active" /> */}
 
         <ItemMenuApp
           label="Wallet"
@@ -126,28 +126,28 @@ class PanelLeft extends React.Component {
           activeClassName="active" />
 
         <ItemMenuApp
-          label="Recargas"
+          label="Leasing"
           to="/app/recharge"
           icon="ic_recharge.svg"
           activeClassName="active" />
 
-        <ItemMenuApp
+        {/* <ItemMenuApp
           label="Boleto"
           to="/app/ticket"
           icon="ic_barcode.svg"
-          activeClassName="active" />
+          activeClassName="active" /> */}
 
-        <ItemMenuApp
+        {/* <ItemMenuApp
           label="Compras"
           to="/app/buy"
           icon="ic_buy.svg"
-          activeClassName="active" />
+          activeClassName="active" /> */}
 
-        <ItemMenuApp
+        {/* <ItemMenuApp
           label="Configurações"
           to="/app/configuration"
           icon="ic_config.svg"
-          activeClassName="active" />
+          activeClassName="active" /> */}
 
         <ItemMenuApp
           label="Privacidade"
