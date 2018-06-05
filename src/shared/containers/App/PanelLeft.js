@@ -113,12 +113,6 @@ class PanelLeft extends React.Component {
           icon="ic_home.svg"
           activeClassName="active" />
 
-        {/* <ItemMenuApp
-          label="Portfólio"
-          to="/app/portfolio"
-          icon="ic_portfolio.svg"
-          activeClassName="active" /> */}
-
         <ItemMenuApp
           label="Wallet"
           to="/app/wallet"
@@ -127,9 +121,21 @@ class PanelLeft extends React.Component {
 
         <ItemMenuApp
           label="Leasing"
-          to="/app/recharge"
+          to="/app/leasing"
           icon="ic_recharge.svg"
           activeClassName="active" />
+
+        <ItemMenuApp
+          label="Privacidade"
+          to="/app/privacy"
+          icon="ic_privacy.svg"
+          activeClassName="active" />
+
+        {/* <ItemMenuApp
+          label="Recharge"
+          to="/app/recharge"
+          icon="ic_recharge.svg"
+          activeClassName="active" /> */}
 
         {/* <ItemMenuApp
           label="Boleto"
@@ -149,11 +155,13 @@ class PanelLeft extends React.Component {
           icon="ic_config.svg"
           activeClassName="active" /> */}
 
-        <ItemMenuApp
-          label="Privacidade"
-          to="/app/privacy"
-          icon="ic_privacy.svg"
-          activeClassName="active" />
+        {/* <ItemMenuApp
+          label="Portfólio"
+          to="/app/portfolio"
+          icon="ic_portfolio.svg"
+          activeClassName="active" /> */}
+
+
       </StyledPanelLeft>
     );
   }
