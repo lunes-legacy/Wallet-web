@@ -1,12 +1,12 @@
 let initialState = { 
 	BTC: { 
-		total_confirmed: 2.9, 
+		total_confirmed: 2.09, 
 		total_unconfirmed: 1,
 		total_amount: 3.9, 
 		img: 'btc.svg'
 	},
 	ETH: { 
-		total_confirmed: 1.2, 
+		total_confirmed: 1.02, 
 		total_unconfirmed: 1,
 		total_amount: 2.2, 
 		img: 'eth.svg'
