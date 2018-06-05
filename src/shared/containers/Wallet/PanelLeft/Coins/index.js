@@ -33,8 +33,9 @@ const Coin = styled.div`
   padding: 0 1rem;
   width: auto;
 
-  margin-right:0px;
   box-shadow: none;
+  margin-right: 0px;
+  margin-bottom: 10px;
   transition: .3s;
 
   &:hover {
