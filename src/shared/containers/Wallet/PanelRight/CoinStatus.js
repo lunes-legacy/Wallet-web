@@ -143,8 +143,8 @@ class CoinStatus extends React.Component {
         <Row>
           <Col s={12} m={3} l={3}>
             <CoinDetails>
-              <CoinDetailsText offSide>BitCoin</CoinDetailsText>
-              <CoinDetailsText offSide>{`1 BTC ${currentNetwork.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText>
+              <CoinDetailsText offSide>{currentNetwork.toUpperCase()}</CoinDetailsText>
+              <CoinDetailsText offSide>{`1 ${currentNetwork.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText>
             </CoinDetails>
           </Col>
           <Col s={8} m={6} l={6}>
