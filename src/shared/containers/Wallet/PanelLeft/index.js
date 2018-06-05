@@ -13,7 +13,7 @@ let StyledPanelLeft = styled.div.attrs({
 	state: 'visible'
 })`
 	background: ${style.normalLilac};
-  	box-shadow: 30px 0 40px rgba(0,0,0,.2);
+  	box-shadow: 30px 0 40px rgba(0,0,0,.09);
   	color: #fff;
 	height: 100%;
 	max-width: 280px;

@@ -38,14 +38,17 @@ const Coin = styled.div`
   transition: .3s;
 
   &:hover {
-    box-shadow: 5px 0px 10px 5px rgba(51, 51, 51, 0.25);
-    z-index: 3;
+    -webkit-transform:scale(1); 
+    -moz-transform:scale(1); 
+    -o-transform:scale(1); 
+    transform:scale(1);
+    box-shadow: 5px 0px 22px 5px rgba(0, 0, 0, 0.09);
     margin-right: -20px;
   }
 
   @media (${style.media.tablet2}) {
     padding: 0 2rem;
-    height: 85px;
+    height: 70px;
   }
 
   @media (${style.media.laptop}) {
