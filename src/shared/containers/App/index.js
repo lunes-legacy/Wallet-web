@@ -46,7 +46,7 @@ let WrapApp = styled.div`
 	// }
 `;
 let WrapLogo = styled.div`
-	padding: 0 50px 0 50px;
+	padding: 2.4rem;
 `;
 let Logo = styled.img`
 	width: 100px;
