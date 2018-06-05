@@ -9,9 +9,9 @@ import UserClass        from 'Classes/User';
 import { ENV }          from 'Config/constants';
 import { errorPattern } from 'Utils/functions';
 //REDUX
-import { 
-	setBalance, 
-	togglePanelLeft, 
+import {
+	setBalance,
+	togglePanelLeft,
 	setCryptoPrice,
 	setCurrenciesPrice } from 'Redux/actions';
 
@@ -26,7 +26,6 @@ import PanelRight      from './PanelRight/index';
 //______INDEX
 let Panels = styled.div`
 	width: 100%;
-	height: 100%;
 	display: flex;
 `;
 
@@ -61,7 +60,7 @@ class Wallet extends React.Component {
 		let wallet     = new WalletClass;
 		let balance    = await wallet.getBalance(user);
 		// let coinsPrice = await wallet.getCoinsPrice();
-		
+
 			this.props.setCurrenciesPrice();
 			this.props.setCryptoPrice();
 		if (ENV !== 'development') {
