@@ -3,6 +3,9 @@ import { toggleWidth } from 'Utils/ui';
 import styled from 'styled-components';
 import style from 'Shared/style-variables';
 
+import {connect} from "react-redux";
+import {togglePanelLeft} from 'Redux/actions';
+
 //PRIVATE COMPONENTS
 import Coins from './Coins';
 
@@ -10,13 +13,13 @@ let StyledPanelLeft = styled.div.attrs({
 	state: 'visible'
 })`
 	background: ${style.normalLilac};
-  box-shadow: 30px 0 40px rgba(0,0,0,.2);
-  color: #fff;
+  	box-shadow: 30px 0 40px rgba(0,0,0,.2);
+  	color: #fff;
 	height: 100%;
 	max-width: 280px;
-  min-width: 130px;
+  	min-width: 130px;
 	position: relative;
-  width: 30%;
+  	width: 30%;
 	z-index: 2;
 	position: relative;
 	width: 31.66666%;
@@ -40,22 +43,54 @@ let TogglePanelLeft = styled.div`
 `;
 
 class PanelLeft extends React.Component {
-	handleTogglePanelLeft = (event) => {
-		let panelLeftEl = event.currentTarget.parentElement;
+	constructor(props){
+		super(props);
+	}
+
+	handleTogglePanelLeft = () => {
+		this.props.togglePanelLeft();
+		// let panelLeftEl = event.currentTarget.parentElement;
+		// toggleWidth({
+		// 	element: panelLeftEl,
+		// 	visible: '30%',
+		// 	hidden: '0px'
+		// });
+	}
+	
+	componentWillUpdate = () => {
+		// use condition storage or function toggleWidth ?
+		//if(this.props.wallet.panelLeft.status==="open"){
+		let panelLeftEl = document.getElementById("myPanelLeft");
 		toggleWidth({
 			element: panelLeftEl,
 			visible: '30%',
 			hidden: '0px'
 		});
 	}
+
 	render(){
 		return(
-			<StyledPanelLeft>
-				<TogglePanelLeft onClick={this.handleTogglePanelLeft}/>
+			<StyledPanelLeft id="myPanelLeft">
+				<TogglePanelLeft onClick={this.handleTogglePanelLeft} />
 				<Coins/>
 			</StyledPanelLeft>
 		);
 	}
 }
 
-export default PanelLeft;
+const mapStateToProps = state => {
+	return {
+		wallet: state.wallet
+	}
+}
+
+const mapDispatchToProps = dispatch => {
+	return {
+		togglePanelLeft: () => {
+			dispatch(togglePanelLeft());
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PanelLeft);
+//export default PanelLeft;

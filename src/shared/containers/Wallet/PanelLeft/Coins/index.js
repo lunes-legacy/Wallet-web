@@ -5,6 +5,7 @@ import { TextBase, H1 } from "Components";
 import { connect } from "react-redux";
 //REDUX
 import { openPanelRight } from 'Redux/actions';
+import { togglePanelLeft } from 'Redux/actions';
 
 import { Loading } from 'Components/Loading';
 
@@ -153,7 +154,8 @@ class Coins extends React.Component {
         <Coin
           key={coinKey}
           onClick={() => {
-            this.props.openPanelRight();
+            this.props.openPanelRight(); 
+            this.props.togglePanelLeft();
           }}
         >
           <WrapCoinImg>
@@ -197,6 +199,9 @@ const mapDispatchToProps = dispatch => {
   return {
     openPanelRight: () => {
       dispatch(openPanelRight());
+    }, 
+    togglePanelLeft: () => {
+      dispatch(togglePanelLeft());
     }
   };
 };
