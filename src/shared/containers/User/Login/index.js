@@ -27,7 +27,15 @@ import FooterUser from 'Components/FooterUser'
 
 const WrapPhrases = styled.div`
   width: 100%;
-  margin-top: 100px;
+  margin-top: 10%;
+
+  @media (${style.media.tablet2}) {
+    margin-top: 12%;
+  }
+
+  @media (${style.media.desktop}) {
+    margin-top: 25%;
+  }
 `;
 
 const CustomLogo = Logo.extend`
@@ -36,24 +44,20 @@ const CustomLogo = Logo.extend`
 
 const CustomLinkRight = CustomLink.extend`
   text-align: right;
-  
 `;
 
 const CustomP = P.extend`
   display: block;
   margin-top: 200px;
   text-align: center;
-  
-
 `;
+
 const Paragraph = styled.div `
-margin-top: 12px;
-color: white;
-width: 100%;
-text-align: center;
-font-size: 1.5rem;
-
-
+  margin-top: 12px;
+  color: white;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
 `;
 
 
@@ -122,7 +126,7 @@ class Login extends React.Component {
           <CustomLogo />
 
           <WrapPhrases>
-            <H1 clNormalGreen txCenter margin-top = {"60px"}>
+            <H1 clNormalGreen txCenter margin-top = {"10%"}>
               Rápida, segura e inteligente!
             </H1>
             <Paragraph clWhite txCenter margin={"20px 0 70px 0"} fontSize={"1.4rem"}>
@@ -130,7 +134,7 @@ class Login extends React.Component {
             </Paragraph>
           </WrapPhrases>
 
-          <Form margin={"80px auto"} width={"80%"}>
+          <Form margin={"10% auto"} width={"80%"}>
             <FormGroup>
               <Input placeholder={"nome@email.com"} className={"login-email"} placeholder={"E-mail"} type={"email"} required />
             </FormGroup>
