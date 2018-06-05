@@ -133,7 +133,6 @@ const HistoryContent = styled.div`
   display: flex;
   background: ${style.normalLilac};
   flex-flow: nowrap;
-  margin-left: 1%;
   padding: 1rem 30% 1rem 3rem;
   top: 100%;
   width: 100%;
@@ -152,7 +151,7 @@ const HistoryContent = styled.div`
   &.js-history-content-active {
     height: 100%;
     max-height: 300px;
-    box-shadow: 0 5px 7px inset rgba(0,0,0,.2);
+    box-shadow: 0 5px 7px inset rgba(0,0,0,.08);
   }
 `;
 
