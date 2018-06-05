@@ -17,6 +17,8 @@ import CookieClass from 'Classes/Cookie';
 
 const StyledHistories = styled.div`
   padding-top: 20px;
+  height: 30rem;
+  overflow: auto;
 `;
 
 const History = styled.div`
@@ -50,7 +52,7 @@ const HeadStatusIcon = styled.img`
 
 const TextSend = styled.div `
   margin-left: 20px;
-  font-weight: bold; 
+  font-weight: bold;
 `
 
 const HeadStatusDate = styled.div`
@@ -163,7 +165,7 @@ const HistoryContentItem = styled.div`
 
 const TransactionId = styled.div`
   text-decoration: underline;
-  font-weight: bold; 
+  font-weight: bold;
   margin-top: 10px;
 `;
 
@@ -352,7 +354,7 @@ class Histories extends React.Component {
     let { currentNetwork, currentTxHistory } = this.props.component_wallet;
     if (!currentTxHistory || currentTxHistory.length < 1)
       return false;
-    // if (!price || !currentNetwork) 
+    // if (!price || !currentNetwork)
     //   return false;
 
     return true;
