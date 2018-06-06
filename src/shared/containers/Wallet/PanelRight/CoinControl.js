@@ -80,7 +80,7 @@ const CoinAction = styled.div`
     border-radius: 24px;
     font-size: 1.5rem;
     padding: 20px 0;
-    width: 100px;
+    width: 108px;
     height: 100px;
   }
 
