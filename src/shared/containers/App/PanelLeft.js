@@ -8,8 +8,8 @@ const StyledPanelLeft = styled.div`
   width: 65px;
   min-width: 65px;
 	height: 100%;
-	display: block;
-	background: ${styles.normalLilac2};
+  display: block;
+  background: ${styles.normalLilac2};
 	z-index: 3;
   transition: .2s ease-in;
 
@@ -41,11 +41,11 @@ const CustomText = styled.div`
   margin-left: 1rem;
   display: none;
   font-size: 1.2rem;
-  font-weight: bold;
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
-  letter-spacing: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 
   @media (${styles.media.tablet2}) {
     display: inline-block;
