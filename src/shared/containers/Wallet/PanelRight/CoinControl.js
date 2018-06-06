@@ -21,7 +21,8 @@ const WrapAmount = styled.div`
   @media (${style.media.tablet2}) {
     text-align: right;
     margin-bottom: 0;
-    margin-right: 2rem;
+    margin-right: 2rem;    
+    padding-right: 10px;
   }
 
   @media (min-width: 900px) {
