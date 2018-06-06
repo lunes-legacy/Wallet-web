@@ -21,7 +21,8 @@ const WrapAmount = styled.div`
   @media (${style.media.tablet2}) {
     text-align: right;
     margin-bottom: 0;
-    margin-right: 2rem;
+    margin-right: 2rem;    
+    padding-right: 10px;
   }
 
   @media (min-width: 900px) {
@@ -80,7 +81,7 @@ const CoinAction = styled.div`
     border-radius: 24px;
     font-size: 1.5rem;
     padding: 20px 0;
-    width: 100px;
+    width: 108px;
     height: 100px;
   }
 
