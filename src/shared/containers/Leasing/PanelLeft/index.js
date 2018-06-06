@@ -52,9 +52,9 @@ const LeftHeader = styled.div`
 `;
 
 const CardLeasing = styled.div`
-  box-shadow: 0px 0px 20px rgba(0,0,0,.2);
-  -moz-box-shadow: 0px 0px 20px rgba(0,0,0,.2);
-  -webkit-box-shadow: 0px 0px 20px rgba(0,0,0,.2);
+  box-shadow: 0 2px 12px 9px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 2px 12px 9px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 2px 12px 9px rgba(0, 0, 0, 0.05);
 
   border-radius: 1.5rem;
   padding: 1.5rem;

@@ -17,6 +17,8 @@ export let TextBase = css`
       return `color: ${style.normalLilac}`;
     } else if (props.clLightLilac) {
       return `color: ${style.lightLilac}`;
+    } else if (props.clNormalRed) {
+      return `color: ${style.normalRed}`;
     }
   }}
 	${props => {
