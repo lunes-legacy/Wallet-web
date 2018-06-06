@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import style from 'Shared/style-variables'
 import {connect} from 'react-redux'
 import { TextBase, H1 } from "Components";
+import {ButtonGreen} from "Components/Buttons";
 
 const StyledPanelLeft = styled.div`
     background: ${style.normalLilac};
@@ -16,66 +17,116 @@ const StyledPanelLeft = styled.div`
     z-index: 2;
     position: relative;
     width: 31.66666%;
+    letter-spacing: .3px;
 `;
 
 const LeftHeader = styled.div`
   ${TextBase}
-  display: flex;
-  align-items: none;
-  font-size: 1rem;
+  background-image: url('/img/app_wallet/rectangle-wallet.svg');
+  background-repeat: no-repeat;
   letter-spacing: 1.3px;
-  height: 8rem;
-  padding-top: 1.4rem;
-  padding-left: 1.4rem;
-  width: 100%;
+  display: flex;
+  
 
-  @media (${style.media.tablet2}) {
+  @media (${style.media.mobile}) {
     font-size: 1.2rem;
     padding-top: 1.4rem;
     padding-left: 2rem;
+    padding-right: 2rem;
+    //background-size: 110% 100%;
+    background-size: cover;
+    background-position: -5px -5px;
+    height: 70px;
+  }
+
+  @media (${style.media.tablet}) {
+    font-size: 1.5rem;
+    padding-top: 2.3rem;
+    padding-left: 2.5rem;
+    height: 90px;
   }
 
   @media (${style.media.laptop}) {
-    align-items: center;
-    border-top: none;
-    padding-top: 0;
-    padding-bottom: 3rem;
-  }
-
-  @media (${style.media.desktop}) {
-    padding-bottom: 1.4rem;
-  }
-`;
-
-const LeftHeaderBg = styled.img`
-  height: 5rem;
-  left: 0;
-  margin: 0;
-  object-fit: cover;
-  padding: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: -1;
-
-  @media (${style.media.tablet2}) {
-    object-fit: content;
-    height: auto;
+    background-size: cover;
   }
 `;
 
 const CardLeasing = styled.div`
-  box-shadow: 0px 0px 10px rgba(0,0,0,.2);
-  -moz-box-shadow: 0px 0px 10px rgba(0,0,0,.2);
-  -webkit-box-shadow: 0px 0px 10px rgba(0,0,0,.2);
+  box-shadow: 0px 0px 20px rgba(0,0,0,.2);
+  -moz-box-shadow: 0px 0px 20px rgba(0,0,0,.2);
+  -webkit-box-shadow: 0px 0px 20px rgba(0,0,0,.2);
 
-  border-radius: 4rem;
-  padding: 3rem;
-  margin: 2rem;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  padding-bottom: 0px;
+  margin: 1.5rem;
 `;
 
 const TextBalance = styled.text`
   ${TextBase}
+  display: block;
+  text-align:right;
+  margin-top: 1.5rem;
+  letter-spacing: .6px;
+
+  @media (${style.media.mobile}) {
+    font-size: 1rem;
+  }
+  
+  @media (${style.media.tablet}) {
+    font-size: 2rem;
+  }
+
+  @media (${style.media.laptop}) {
+    font-size: 2.5rem;
+  }
+`;
+
+const LabelBalance = styled.text`
+  ${TextBase}
+  display:block;
+  text-align:right;
+  margin-bottom:3rem;
+`;
+
+const RowCardBalance = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  border-top: solid 1px ${style.normalLilac3};
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-left:-1.5rem;
+  margin-right:-1.5rem;
+`;
+
+const RowCardText = styled.div`
+  ${TextBase}
+  
+  display:block;
+  font-size:1rem;
+
+  @media (${style.media.mobile}) {
+    width:100%
+    text-align:left;
+  }
+  
+  @media (${style.media.tablet}) {
+    
+  }
+
+  @media (${style.media.laptop}) {
+    width:50%;
+
+    ${props => {
+      if(props.alignRight){
+        return `text-align: right`;
+      }else{
+        return `text-align: default;`;
+      }
+    }};
+  }
 
 `;
 
@@ -87,28 +138,26 @@ class PanelLeft extends React.Component {
     render() {
         return (
             <StyledPanelLeft>
-                <LeftHeaderBg src="/img/app_wallet/rectangle-wallet.svg" />
                 <LeftHeader txLight>LEASING LUNES</LeftHeader>
 
                 <CardLeasing>
-                        <span>Seu Saldo</span>
-                        <TextBalance fontSize='3rem' clNormalGreen txBold>300000.000000</TextBalance>
+                  <span>Seu Saldo:</span>
+                  <TextBalance clNormalGreen txBold>300000.000000</TextBalance>
+                  <LabelBalance fontSize='1rem' txBold>LNS</LabelBalance>
 
+                  <RowCardBalance>
+                    <RowCardText>Rendimentos</RowCardText>
+                    <RowCardText alignRight>000000000000</RowCardText>
+                  </RowCardBalance>
+                  <RowCardBalance>
+                    <RowCardText>Total</RowCardText>
+                    <RowCardText alignRight>000000000000</RowCardText>
+                  </RowCardBalance>
                 </CardLeasing>
+
+                <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'}>INICIAR LEASING</ButtonGreen>
             </StyledPanelLeft>
         );
-    }
-}
-
-const mapStateToProps = (state) => {
-    return {
-
-    }
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        
     }
 }
 
