@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import style from 'Shared/style-variables';
 //
 import PanelLeft from './PanelLeft';
-//import PanelRight from './PanelRight';
+import PanelRight from './PanelRight';
 
 let Panels = styled.div`
 	width: 100%;
@@ -22,7 +22,7 @@ class Leasing extends React.Component {
 		return(
 			<Panels>
 				<PanelLeft />
-				
+				<PanelRight />
 			</Panels>
 		);
 	}
