@@ -19,6 +19,10 @@ const StyledHistories = styled.div`
   padding-top: 20px;
   height: 30rem;
   overflow: auto;
+
+  @media (${style.media.desktop2}) {
+    height: 65rem;
+  }
 `;
 
 const History = styled.div`
