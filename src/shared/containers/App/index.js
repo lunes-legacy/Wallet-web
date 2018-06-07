@@ -29,6 +29,24 @@ import PanelRight from './PanelRight';
 import { AuthRoute } from 'Components/AuthRoute';
 // import { checkAuth }    from 'Auth/index';
 
+import {numeral} from 'Utils/numeral';
+
+// numeral.register('locale', 'pt-br', {
+// 	delimiters: {
+// 		thousands: '.',
+// 		decimal: ','
+// 	},
+// 	abbreviations: {
+//         thousand: 'mil',
+//         million: 'mi',
+//         billion: 'bi',
+//         trillion: 'tri'
+//     },
+// 	currency: {
+// 		symbol: 'R$'
+// 	}
+// });
+
 let Panels = styled.div`
 	width: 100%;
 	height: 100%;
@@ -62,6 +80,10 @@ let Balance = styled.div`
 
 
 class App extends React.Component {
+	constructor(props){
+		super(props);
+		numeral.locale(this.props.currencies.locale);
+	}
 	componentDidMount() {
 	}
 	componentDidUpdate() {
@@ -77,9 +99,9 @@ class App extends React.Component {
 						<Balance>
 						<Text clWhite txLight txInline size={'1.8rem'}> Balance: </Text>
 							<Text clNormalGreen txNormal txInline offSide size={'2.3rem'} >LNS </Text>
-							<Text clWhite txNormal txInline offSide size={'2.0rem'}>1.300.00</Text>
+							<Text clWhite txNormal txInline offSide size={'2.0rem'}>{`${numeral(1300).format()}`}</Text>
 						</Balance>
-						<Text clNormalGreen txBold txRight size={'1.2rem'}>$ 130,00</Text>
+						<Text clNormalGreen txBold txRight size={'1.2rem'}>{numeral(130.10).format('$0,0.00')}</Text>
 					</WrapBalance>
 				</Header>
 				<Panels>
@@ -107,7 +129,8 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user
+		user: state.user, 
+		currencies: state.currencies
 	}
 }
 const mapDispatchToProps = (dispatch) => {

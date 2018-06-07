@@ -15,6 +15,8 @@ import { Loading } from 'Components/Loading';
 
 import CookieClass from 'Classes/Cookie';
 
+import {numeral} from 'Utils/numeral';
+
 const StyledHistories = styled.div`
   padding-top: 20px;
   height: 30rem;
@@ -201,6 +203,7 @@ class Histories extends React.Component {
       activeIndex: null
     }
     this.handleToggleHistory = this.handleToggleHistory.bind(this);
+    numeral.locale(this.props.currencies.locale);
   }
 
   timeToText = (txTime, type) => {
@@ -310,7 +313,8 @@ class Histories extends React.Component {
                     {tx.value}
                   </HeadAmountCoin>
                   <HeadAmountMoney>
-                    {monetaryValue(price.USD * parseFloat(tx.value), { style: 'currency', currency: 'USD' })}
+                    {/* {monetaryValue(price.USD * parseFloat(tx.value), { style: 'currency', currency: 'USD' })} */}
+                    ${numeral(price.BTC.USD * tx.value).format('0,0.00')}
                   </HeadAmountMoney>
                 </HistoryHeadAmount>
               </Col>
@@ -323,7 +327,8 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"}> </Text>
                   <Text size={"1.4rem"} txBold>
-                  <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} ($ {monetaryValue(price.USD * parseFloat(tx.value), { style: 'decimal' })})
+                  {/* <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} ($ {monetaryValue(price.USD * parseFloat(tx.value), { style: 'decimal' })}) */}
+                  <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} (${numeral(price.BTC.USD * tx.value).format('0,0.00')})
                   </Text>
                 </HistoryContentItem>
               </Col>
@@ -384,7 +389,8 @@ const monetaryValue = (value, options) => {
 const mapStateToProps = state => {
   return {
     component_wallet: state.component.wallet,
-    cryptocurrencies: state.cryptocurrencies
+    cryptocurrencies: state.cryptocurrencies, 
+    currencies: state.currencies
   };
 };
 const mapDispatchToProps = dispatch => {
