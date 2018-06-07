@@ -20,7 +20,7 @@ const StyledHistories = styled.div`
   height: 30rem;
   overflow: auto;
 
-  @media (${style.media.desktop2}) {
+  @media (${style.media.desktop}) {
     height: 65rem;
   }
 `;
