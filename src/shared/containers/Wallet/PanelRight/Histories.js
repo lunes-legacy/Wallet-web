@@ -17,12 +17,8 @@ import CookieClass from 'Classes/Cookie';
 
 const StyledHistories = styled.div`
   padding-top: 20px;
-  height: 30rem;
+  height: 75vh;
   overflow: auto;
-
-  @media (${style.media.desktop}) {
-    height: 65rem;
-  }
 `;
 
 const History = styled.div`
