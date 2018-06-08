@@ -4,6 +4,7 @@ import style from 'Shared/style-variables'
 import {connect} from 'react-redux'
 import { TextBase, H1 } from "Components";
 import {ButtonGreen} from "Components/Buttons";
+import {numeral} from 'Utils/numeral';
 
 const StyledPanelLeft = styled.div`
     background: ${style.normalLilac};

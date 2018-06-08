@@ -9,6 +9,8 @@ import { togglePanelLeft } from 'Redux/actions';
 
 import { Loading } from 'Components/Loading';
 
+import {numeral} from 'Utils/numeral';
+
 const StyledCoins = styled.div`
   width: auto;
   min-width: 100%;
@@ -155,6 +157,7 @@ class Coins extends React.Component {
       balance: undefined,
       price: undefined
     };
+    numeral.locale(this.props.currencies.locale);
   }
 
   //metodo chamado sempre que o componente é renderizado ou um
@@ -183,10 +186,11 @@ class Coins extends React.Component {
           </WrapCoinImg>
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>
-              { currentBalance.total_confirmed }
+              { numeral(currentBalance.total_confirmed).format('0.00') }
             </CoinAmount>
             <CoinValue clWhite offSide size={"2rem"}>
-              { `USD ${currentBalance.total_amount}` }
+              {/* { `USD ${currentBalance.total_amount}` } */}
+              { `USD ${numeral(currentBalance.total_amount).format('0,0.00')}`}
             </CoinValue>
           </WrapCoinData>
         </Coin>
