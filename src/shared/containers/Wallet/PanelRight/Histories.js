@@ -36,10 +36,10 @@ const HistoryHead = styled.div`
 
 const HistoryHeadStatus = styled.div`
   float: left;
-  
-  // @media (${style.media.laptop}) {
-  // margin-left: 4rem;      
-  // }
+    
+  @media (${style.media.desktop2}) {
+  margin-left: -3rem;      
+  }
 `;
 
 const HeadStatusIcon = styled.img`
@@ -80,7 +80,11 @@ const HistoryHeadText = styled.div`
 
   @media (${style.media.tablet2}) {
     font-size: 1.4rem;
-    margin: 1rem 0 0 1rem;
+    margin: 1rem 0 0 1rem; 
+  }
+
+  @media (${style.media.desktop2}) {   
+    margin-left: -5rem;
   }
 `;
 
