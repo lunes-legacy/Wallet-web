@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import validator from "validator";
 import style from "Shared/style-variables";
+import Route from "react-router";
+import Home from 'Containers/Home/index';
 //REDUX
 import { userLogin } from 'Redux/actions';
 
@@ -52,7 +54,7 @@ const CustomP = P.extend`
   text-align: center;
 `;
 
-const Paragraph = styled.div `
+const Paragraph = styled.div`
   margin-top: 12px;
   color: white;
   width: 100%;
@@ -100,11 +102,15 @@ class Login extends React.Component {
       if (status === "pending") {
         statusEl.textContent = "Aguarde...";
       } else if (status === "fulfilled") {
-        statusEl.textContent = "Sucesso";
-      } else if (status === "rejected") {
+           
+        this.props.history.push('/app/home');
+      }
+      else if (status === "rejected") {
         statusEl.textContent = "Tente novamente";
       }
     }
+
+
     catch (err) {
       console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
     }
@@ -126,7 +132,7 @@ class Login extends React.Component {
           <CustomLogo />
 
           <WrapPhrases>
-            <H1 clNormalGreen txCenter margin-top = {"10%"}>
+            <H1 clNormalGreen txCenter margin-top={"10%"}>
               Rápida, segura e inteligente!
             </H1>
             <Paragraph clWhite txCenter margin={"20px 0 70px 0"} fontSize={"1.4rem"}>
