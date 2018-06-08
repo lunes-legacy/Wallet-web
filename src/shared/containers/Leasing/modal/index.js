@@ -36,7 +36,7 @@ class LeasingModal extends Component {
                             <Close>x</Close>
 
                             <Image src="/img/coins/lns.svg" />
-                            <CoinValue offside>250000.0054248</CoinValue>
+                            <CoinValue offSide>250000.0054248</CoinValue>
 
                             <Rectangle>
                                 <Row>
@@ -60,7 +60,7 @@ class LeasingModal extends Component {
                         </Row>
                         <Row>
                             <DivText>
-                                <TextLeft clWhite>Destinatario</TextLeft>
+                                <TextLeft clWhite>Destinatário</TextLeft>
                                 <Textphrase clWhite>3P2HNUd5VUPLMQkJmctTPEeeHumiPN2GkTb</Textphrase>
                                 <LineText />
                             </DivText>

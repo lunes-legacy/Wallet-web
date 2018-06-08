@@ -54,7 +54,7 @@ export let LeasingStyleModalCss = styled.div`
 
   @media (min-width: 601px) {
     width: 25%;
-    height: 40%;
+    height: 56%;
     margin-top: 75px;
   }
 `;
@@ -90,15 +90,15 @@ export let Rectangle = styled.div`
 `;
 
 export let Image = styled.img`
-	width: 41px;
+	width: 96px;
 	height: 34px;
-	text-align: left
+	text-align: left;
 `;
 
 export let CoinValue = styled.div`
+	${TextBase};
 	width: 220px;
 	height: 55px;
-	font-family: Offside;
 	font-size: 29px;
 	color: white;
 	text-align: right;
@@ -120,7 +120,6 @@ export let NumberPorcent = styled.div`
 	}}
 `;
 
-
 export let Line = styled.hr`
 	margin-top: 30px;
 	border: 0.7px solid #654fa4;
@@ -138,11 +137,11 @@ export let DivButton = styled.div`
 
 export let DivText = styled.div`
  margin-top: 30px;
- width: 62% 
+ width: 62%;
  ${props => {
-	 if(props.inline)
-	 	return "float: left";
- }};
+		if (props.inline)
+			return "float: left";
+	}};
 `;
 
 export let TextLeft = styled.div`
@@ -156,8 +155,8 @@ ${TextBase};
 	font-size: 12px;
 	font-weight: bold;
 	margin-top: 9px;
-	margin-bottom: 9px;
- 
+	margin-bottom: 9px; 
+	text-align: center;
 `;
 
 export let TextFee = styled.div`
