@@ -16,17 +16,18 @@ const Input = styled.input`
 	color: ${style.normalGreen};
 	font-Size: 1.6rem;
 	height: 44px;
+	text-align: center;
 	padding: 20px;
 	width: 80%;
 `;
 
 const coins = [
 	'LNS',
-	'BTC', 
-	'ETH',
-	'LTC',
-	'DASH',
-	'NANO',	
+	// 'BTC', 
+	// 'ETH',
+	// 'LTC',
+	// 'DASH',
+	// 'NANO',	
 ]
 
 class CoinsAddress extends React.Component {  

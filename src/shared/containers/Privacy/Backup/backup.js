@@ -9,7 +9,7 @@ import { H1 } from "Components/H1";
 
 const Line = styled.div`
   border-bottom: 1px dotted ${style.lightPurple};
-  margin: 20px 0;
+  margin: 30px 0;
   width: 100%;
 `;
 
@@ -29,8 +29,9 @@ const Input = styled.input`
   background-color: ${style.defaultPurple};
   border-radius: 6px;
   color: ${style.normalGreen};
-  font-size: 1.6rem;
-  margin: 10px 0;
+	font-size: 1.6rem;
+	text-align: center;
+  margin: 25px 0 0 0;
   padding: 20px;
   width: 100%;
 `;
