@@ -35,12 +35,11 @@ const HistoryHead = styled.div`
 `;
 
 const HistoryHeadStatus = styled.div`
-  float: right;
-  margin-right: 1rem;
-
-  @media (${style.media.tablet2}) {
-    float: center;
-  }
+  float: left;
+  
+  // @media (${style.media.laptop}) {
+  // margin-left: 4rem;      
+  // }
 `;
 
 const HeadStatusIcon = styled.img`
@@ -50,7 +49,7 @@ const HeadStatusIcon = styled.img`
   margin: 2px auto;
 `;
 
-const TextSend = styled.div `
+const TextSend = styled.div`
   margin-left: 20px;
   font-weight: bold;
 `
@@ -264,7 +263,7 @@ class Histories extends React.Component {
 
   // action click history
   handleToggleHistory = item => {
-    this.setState({activeIndex:item})
+    this.setState({ activeIndex: item })
   };
 
   componentDidMount = async () => {
@@ -288,9 +287,9 @@ class Histories extends React.Component {
     return currentTxHistory.map((tx, key) => {
       return (
         <History key={key}>
-          <HistoryHead onClick={()=>this.handleToggleHistory(key)}>
+          <HistoryHead onClick={() => this.handleToggleHistory(key)}>
             <Row>
-              <Col s={6} m={2} l={2}>
+              <Col s={4} m={6} l={1}>
                 <HistoryHeadStatus>
                   <HeadStatusIcon type={tx.type} src={this.renderIcon(tx.type)} />
                   <HeadStatusDate>12/Mar</HeadStatusDate>
@@ -317,13 +316,13 @@ class Histories extends React.Component {
             </Row>
           </HistoryHead>
 
-          <HistoryContent className={this.state.activeIndex===key ? 'js-history-content-active' : 'js-history-content'}>
+          <HistoryContent className={this.state.activeIndex === key ? 'js-history-content-active' : 'js-history-content'}>
             <Row>
               <Col m={6} l={6}>
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"}> </Text>
                   <Text size={"1.4rem"} txBold>
-                  <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} ($ {monetaryValue(price.USD * parseFloat(tx.value), { style: 'decimal' })})
+                    <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} ($ {monetaryValue(price.USD * parseFloat(tx.value), { style: 'decimal' })})
                   </Text>
                 </HistoryContentItem>
               </Col>
@@ -339,7 +338,7 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"}></Text>
                   <Text size={"1.4rem"} txBold>
-                   <span>Data:  </span> {"Segunda-Feira, Abril, 04, 2018 - 10:32 AM"}
+                    <span>Data:  </span> {"Segunda-Feira, Abril, 04, 2018 - 10:32 AM"}
                     {/* Quarta-feira 23/05/2018 */}
                   </Text>
                 </HistoryContentItem>
