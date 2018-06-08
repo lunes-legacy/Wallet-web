@@ -64,7 +64,7 @@ const tabStyleLi = {
 class TabsBuilder extends React.Component {
   constructor() {
     super();
-    this.state = { tabIndex: 0 };
+    this.state = { tabIndex: 1 };
   }
   
   renderTabList() {
