@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import style from 'Shared/style-variables';
+import { TextBase } from "Components";
+
 
 
 export let Background = styled.div`
@@ -22,14 +24,14 @@ export let Background = styled.div`
 `;
 
 export let TextCenter = styled.div`
+	${TextBase};
 	font-size: 12px;
 	font-weight: bold;
 	text-align: center;
-	color: #ffffff;
 `;
 
-export let Amount = styled.div`
-  
+export let QuantityAmount = styled.div`
+  ${TextBase};	
 	font-size: 12px;
   font-weight: 300;
 	color: #4cd566;
@@ -42,20 +44,14 @@ export let Amount = styled.div`
 `;
 
 export let LeasingStyleModalCss = styled.div`
-  width: 1223px;
-  height: 863px;
-  background-color: #4b2c82;
+	position: relative;	
+  background-color: #442181;
 	box-shadow: 19px 1px 22px 0 rgba(0, 0, 0, 0.09);
-	
-	
-  min-width: 320px;
-  min-height: 414px;
-  position: relative;
-  background: #3a1777;
+
+  min-width: 583px;
+  min-height: 506px; 
   border-radius: 10px;
 	padding: 3rem;
-  border-radius: 10px;
-	background-color: #442181;	
 
   @media (min-width: 601px) {
     width: 25%;
@@ -63,6 +59,7 @@ export let LeasingStyleModalCss = styled.div`
     margin-top: 75px;
   }
 `;
+
 
 export let Close = styled.div`
 	position: absolute;
@@ -82,8 +79,52 @@ export let ReceiveContentCss = styled.div`
 `;
 
 export let Rectangle = styled.div`
-	width: 363px;
-  height: 114px;
+	width: 323px;
+  height: 94px;
   border-radius: 6px;
-  border: solid 1px #4cd566;
-`; 
+	border: solid 1px #4cd566;
+	margin-top: 20px
+	padding-top: 10px;
+	padding-right: 20px;
+	padding-bottom:  20px;
+	padding-left: 20px;
+`;
+
+export let Image = styled.img`
+	width: 41px;
+	height: 34px;
+	text-align: left
+`;
+
+export let CoinValue = styled.div`
+	width: 220px;
+	height: 55px;
+	font-family: Offside;
+	font-size: 29px;
+	color: white;
+	text-align: right;
+`;
+
+export let NumberPorcent = styled.div`
+	${TextBase};
+	font-weight: 300;
+	float: left; 
+  
+`;
+
+export let Line = styled.hr`
+	margin-top: 20px;
+	border: 0.7px solid #654fa4;
+`;
+
+export let Div = styled.div`
+ margin: 0 auto;
+ width: 62%;
+ border: 3px solid green;
+ padding: 10px;
+`;
+
+export let DivNumber = styled.div`
+	 display: inline;
+	 text-align: center;
+`;
