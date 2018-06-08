@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Col, Row } from "Components/index";
+import { ButtonGreen } from "Components/Buttons";
 
 import {
     Background,
@@ -15,7 +16,8 @@ import {
     Line,
     NumberPorcent,
     Div,
-    DivNumber
+    DivNumber,
+    DivButton
 } from "./css";
 
 import Hr from "../../Wallet/PanelRight/Modal/Hr";
@@ -42,16 +44,17 @@ class LeasingModal extends Component {
                             </Rectangle>
                         </Row>
 
-
-                        <Div>
+                        <Row>
                             <DivNumber>
-                                <NumberPorcent roboto clNormalGreen>25%</NumberPorcent>
-                                <NumberPorcent roboto clMostard>50%</NumberPorcent>
-                                <NumberPorcent roboto clNormalRed>100%</NumberPorcent>
+                                <NumberPorcent roboto clNormalGreen marginRight={"36%"}>25%</NumberPorcent>
+                                <NumberPorcent roboto clMostard marginRight={"30%"}>50%</NumberPorcent>
+                                <NumberPorcent roboto clNormalRed left>100%</NumberPorcent>
+                                <Line />
                             </DivNumber>
-                            <Line />
-
-                        </Div>
+                            <DivButton>
+                                <ButtonGreen>INICIAR LEASING</ButtonGreen>
+                            </DivButton>
+                        </Row>
                     </Col>
                 </LeasingStyleModalCss>
             </Background>

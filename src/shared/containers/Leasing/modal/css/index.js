@@ -60,7 +60,6 @@ export let LeasingStyleModalCss = styled.div`
   }
 `;
 
-
 export let Close = styled.div`
 	position: absolute;
 	right: 10px;
@@ -88,6 +87,7 @@ export let Rectangle = styled.div`
 	padding-right: 20px;
 	padding-bottom:  20px;
 	padding-left: 20px;
+	margin-bottom: 40px;
 `;
 
 export let Image = styled.img`
@@ -108,8 +108,17 @@ export let CoinValue = styled.div`
 export let NumberPorcent = styled.div`
 	${TextBase};
 	font-weight: 300;
-	float: left; 
-  
+	float: left;
+	${props => {
+		if (props.marginRight)
+			return `margin-right ${props.marginRight}`;
+
+		else if (props.left)
+			return "text-align: left";
+
+		else if (props.center)
+			return "text-align: center";
+	}}
 `;
 
 export let Line = styled.hr`
@@ -117,14 +126,13 @@ export let Line = styled.hr`
 	border: 0.7px solid #654fa4;
 `;
 
-export let Div = styled.div`
- margin: 0 auto;
- width: 62%;
- border: 3px solid green;
- padding: 10px;
+export let DivNumber = styled.div`
+	margin: 0 auto;
+	width: 62%; 
 `;
 
-export let DivNumber = styled.div`
-	 display: inline;
-	 text-align: center;
+export let DivButton = styled.div`
+ margin-top: 30px;
+ width: 241px;
+  
 `;
