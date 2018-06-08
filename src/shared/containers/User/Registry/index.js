@@ -52,8 +52,9 @@ let ArrowImg = Img.extend`
 `;
 
 let Anchor = styled.a `
-  color: #4cd566;
+  color: ${style.normalGreen};
   text-decoration: none;
+  font-style: italic;
 `;
 
 let inputs = [
