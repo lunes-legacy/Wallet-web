@@ -3,7 +3,6 @@ import style from 'Shared/style-variables';
 import { TextBase } from "Components";
 
 
-
 export let Background = styled.div`
 	position: fixed;
 	top: 0px;
@@ -121,8 +120,9 @@ export let NumberPorcent = styled.div`
 	}}
 `;
 
+
 export let Line = styled.hr`
-	margin-top: 20px;
+	margin-top: 30px;
 	border: 0.7px solid #654fa4;
 `;
 
@@ -133,6 +133,40 @@ export let DivNumber = styled.div`
 
 export let DivButton = styled.div`
  margin-top: 30px;
- width: 241px;
-  
+ width: 241px;  
+`;
+
+export let DivText = styled.div`
+ margin-top: 30px;
+ width: 62% 
+ ${props => {
+	 if(props.inline)
+	 	return "float: left";
+ }};
+`;
+
+export let TextLeft = styled.div`
+	${TextBase}; 
+	font-size: 12px;
+	font-weight: bold;
+`;
+
+export let Textphrase = styled.div`
+${TextBase}; 
+	font-size: 12px;
+	font-weight: bold;
+	margin-top: 9px;
+	margin-bottom: 9px;
+ 
+`;
+
+export let TextFee = styled.div`
+${TextBase}; 
+	font-size: 21px;
+	float: right;	
+`;
+
+export let LineText = styled.hr` 
+	border: 0.7px solid #654fa4;
+	margin-top: 14px
 `;

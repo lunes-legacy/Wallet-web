@@ -15,9 +15,13 @@ import {
     CoinValue,
     Line,
     NumberPorcent,
-    Div,
     DivNumber,
-    DivButton
+    DivButton,
+    DivText,
+    TextLeft,
+    LineText,
+    Textphrase,
+    TextFee
 } from "./css";
 
 import Hr from "../../Wallet/PanelRight/Modal/Hr";
@@ -32,25 +36,46 @@ class LeasingModal extends Component {
                             <Close>x</Close>
 
                             <Image src="/img/coins/lns.svg" />
-                            <CoinValue>250000.0054248</CoinValue>
+                            <CoinValue offside>250000.0054248</CoinValue>
 
                             <Rectangle>
                                 <Row>
-                                    <TextCenter clWhite>Quantidade</TextCenter>
+                                    <div>
+                                        <TextCenter clWhite>Quantidade</TextCenter>
+                                    </div>
                                 </Row>
                                 <Row>
-                                    <QuantityAmount roboto>50.000000</QuantityAmount>
+                                    <QuantityAmount >50.000000</QuantityAmount>
                                 </Row>
                             </Rectangle>
                         </Row>
 
                         <Row>
                             <DivNumber>
-                                <NumberPorcent roboto clNormalGreen marginRight={"36%"}>25%</NumberPorcent>
-                                <NumberPorcent roboto clMostard marginRight={"30%"}>50%</NumberPorcent>
-                                <NumberPorcent roboto clNormalRed left>100%</NumberPorcent>
+                                <NumberPorcent clNormalGreen marginRight={"35%"}>25%</NumberPorcent>
+                                <NumberPorcent clMostard marginRight={"28%"}>50%</NumberPorcent>
+                                <NumberPorcent clNormalRed>100%</NumberPorcent>
                                 <Line />
                             </DivNumber>
+                        </Row>
+                        <Row>
+                            <DivText>
+                                <TextLeft clWhite>Destinatario</TextLeft>
+                                <Textphrase clWhite>3P2HNUd5VUPLMQkJmctTPEeeHumiPN2GkTb</Textphrase>
+                                <LineText />
+                            </DivText>
+                        </Row>
+
+                        <Row>
+                            <DivText inline>
+                                <TextLeft clWhite>Fee
+                                    <TextFee>0.000900</TextFee>
+                                </TextLeft>
+
+                                <LineText />
+                            </DivText>
+                        </Row>
+                        <Row>
                             <DivButton>
                                 <ButtonGreen>INICIAR LEASING</ButtonGreen>
                             </DivButton>
