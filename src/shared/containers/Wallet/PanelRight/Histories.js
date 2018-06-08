@@ -299,7 +299,7 @@ class Histories extends React.Component {
               <Col s={4} m={6} l={1}>
                 <HistoryHeadStatus>
                   <HeadStatusIcon type={tx.type} src={this.renderIcon(tx.type)} />
-                  <HeadStatusDate> 12/Mar </HeadStatusDate>
+                  <HeadStatusDate>12/Mar</HeadStatusDate>
                 </HistoryHeadStatus>
               </Col>
               <Col s={6} m={4} l={5}>
