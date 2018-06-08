@@ -26,16 +26,10 @@ const tabTitle = [
 ]
 
 class Privacy extends React.Component {
-	renderRescue() {
-		return (
-			<H1>Teste</H1>
-		);
-	}
-
   render() {
     return (
       <Container>
-        <TabsBuilder tabTitle={tabTitle} tabContent={[<Backup/>, this.renderRescue()]}/>
+        <TabsBuilder tabTitle={tabTitle} tabContent={[<Backup/>, <Rescue/>]}/>
       </Container>
     );
   }
