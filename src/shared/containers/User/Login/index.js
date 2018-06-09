@@ -1,12 +1,13 @@
 import React from "react";
 import { users } from "lunes-lib";
-import { connect } from "react-redux";
 import styled from "styled-components";
 import validator from "validator";
 import style from "Shared/style-variables";
 
 //REDUX
+import { connect } from "react-redux";
 import { userLogin } from 'Redux/actions';
+import { setWalletInfo } from 'Redux/actions';
 
 //COMPONENTS
 import { Form } from "Components/Form";
@@ -66,6 +67,25 @@ class Login extends React.Component {
   componentDidUpdate() {
     this.handleStatus();
   }
+
+  getSeed() {
+    let walletInfo = localStorage.getItem('WALLET-INFO');
+    if (walletInfo) {
+      this.props.setWalletInfo(JSON.parse(walletInfo));
+      return this.props.history.push('/app/home');
+    } else {
+      let walletInfo = {
+        seed: 'fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish',
+        addresses: {
+          LNS: '161cmLgavNNkWTjR61RnNqtejFeB88X6FM'
+        }
+      };
+      localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));
+      this.props.setWalletInfo(walletInfo);
+      this.props.history.push('/app/privacy');
+    }
+  }
+
   handleLogin = event => {
     event.preventDefault();
 
@@ -101,6 +121,7 @@ class Login extends React.Component {
       if (status === "pending") {
         statusEl.textContent = "Aguarde...";
       } else if (status === "fulfilled") {
+        this.getSeed();
         statusEl.textContent = "Sucesso";
       } else if (status === "rejected") {
         statusEl.textContent = "Tente novamente";
@@ -168,13 +189,17 @@ class Login extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    walletInfo: state.walletInfo
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     userLogin: (email, password) => {
       dispatch(userLogin(email, password));
+    },
+    setWalletInfo: data => {
+      dispatch(setWalletInfo(data));
     }
   };
 };

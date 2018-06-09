@@ -94,11 +94,10 @@ class TabsBuilder extends React.Component {
 
   render() {
     return (
-        <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
-          <DivTab> <TabList style={tabStyleUl}> { this.renderTabList() } </TabList> </DivTab>
-          <Div> { this.renderTabPanel() } </Div>
-        </Tabs>
-      
+      <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+        <DivTab> <TabList style={tabStyleUl}> { this.renderTabList() } </TabList> </DivTab>
+        <Div> { this.renderTabPanel() } </Div>
+      </Tabs> 
     );
   }
 }

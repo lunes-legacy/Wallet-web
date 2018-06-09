@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
+// REDUX
+import { connect } from 'react-redux';
+import { getWalletInfo } from 'Redux/actions';
+
 //COMPONENTS
 import TabsBuilder from "Components/Tabs";
 
@@ -20,13 +24,10 @@ const tabTitle = [
 
 class Privacy extends React.Component {
 	componentDidMount() {
-		this.getSeed();
+		this.props.getWalletInfo()
+		console.log(this.props.walletInfo)
 	}
 
-	getSeed() {
-		console.log(this.props)
-  }
-  
   render() {
     return (
       <Container>
@@ -36,4 +37,19 @@ class Privacy extends React.Component {
   }
 }
 
-export default Privacy;
+// REDUX
+const mapStateToProps = state => {
+  return {
+    walletInfo: state.walletInfo,
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getWalletInfo: (data) => {
+      dispatch(getWalletInfo(data));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Privacy);
+

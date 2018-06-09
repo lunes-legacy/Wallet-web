@@ -3,7 +3,7 @@ import styled from "styled-components";
 import style from "Shared/style-variables";
 
 // REDUX
-import { connect }      from 'react-redux';
+import { connect } from 'react-redux';
 import { setWalletInfo } from 'Redux/actions';
 
 // COMPONENTS
@@ -35,6 +35,7 @@ class Rescue extends React.Component {
 	constructor(){
 		super();
 		this.state = {
+			notification: null,
 			walletInfo: {
 				seed: null,
 				addresses: {
@@ -45,25 +46,37 @@ class Rescue extends React.Component {
 	}
 
 	setSeed() {
-		let walletInfo = {
-			seed: this.state.walletInfo.seed,
-			addresses: {
-				LNS: '161cmLgavNNkWTjR61RnNqtejFeB88X6FM'
+		try {
+			let walletInfo = {
+				seed: this.state.walletInfo.seed,
+				addresses: {
+					LNS: '161cmLgavNNkWTjR61RnNqtejFeB88X6FM'
+				}
 			}
+			if (this.state.walletInfo.seed) {
+				this.props.setWalletInfo(walletInfo);
+				localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));	
+				this.setState({ ...this.state, notification: 'Success' })
+			} else {
+				this.setState({ ...this.state, notification: 'Campo vazio' })
+			}
+		} catch (error) {
+			this.setState({ ...this.state, notification: error })
+			console.log(error)
 		}
-		
-		this.props.setWalletInfo(walletInfo);
+
 	}
 
 	renderMsg() {
-		// let walletInfo = localStorage.getItem('WALLET-INFO');
-		// if (this.state.walletInfo.seed) {
-		// 	return (
-		// 		<H1 isShow={false} fontSize={"2.5rem"} margin={"2rem 0 0 0"} offSide clNormalGreen> Sucesso </H1>
-		// 	);
-		// } else {
-		// 	return null;
-		// }
+		if (this.state.notification && this.state.notification === 'Success') {
+			return (
+				<H1 fontSize={"2.2rem"} margin={"2rem 0 0 0"} offSide clNormalGreen> Importado com sucesso! </H1>
+			);
+		} else if (this.state.notification && this.state.notification !== 'Success') {
+			return (
+				<H1 fontSize={"2.2rem"} margin={"2rem 0 0 0"} offSide clNormalRed> { this.state.notification } </H1>
+			);
+		}
 	}
 
 	render() {
@@ -72,7 +85,7 @@ class Rescue extends React.Component {
 				<H1 fontSize={"1.6rem"} txBold clWhite>
 					Digite suas palavras
 				</H1>
-				<Input onClick={ (seed) => { this.setState({ walletInfo: { seed: seed.target.value } }) } } placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish"/>
+				<Input onChange={ (seed) => { this.setState({ ...this.state, walletInfo: { seed: seed.target.value }, notification: null }) } } placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish"/>
 				<Row>
 					<H2 fontSize={"1.6rem"} margin={"0 0 2.0rem 0"} padding={"1.0rem 0 0 0"} clNormalGreen>
 					</H2>
