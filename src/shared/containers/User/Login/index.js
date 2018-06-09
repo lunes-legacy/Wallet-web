@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import validator from "validator";
 import style from "Shared/style-variables";
+
 //REDUX
 import { userLogin } from 'Redux/actions';
 

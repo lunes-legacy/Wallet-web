@@ -6,7 +6,6 @@ import style from "Shared/style-variables";
 import CoinsAddress from "./coinsAddress";
 import { H1 } from "Components/H1";
 
-
 const Line = styled.div`
   border-bottom: 1px dotted ${style.lightPurple};
   margin: 30px 0;
@@ -36,7 +35,23 @@ const Input = styled.input`
   width: 100%;
 `;
 
-class Backup extends React.Component {  
+class Backup extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	
+	componentDidMount() {
+		// this.getSeed();
+	}
+
+	getSeed() {
+		// let seed = localStorage.getItem('WALLET-INFO');
+		
+		// if (seed) {
+		// 	this.setState({ walletInfo: JSON.parse(seed) });
+		// }
+	}
+
 	render() {
 		return (
       <div>
@@ -47,7 +62,8 @@ class Backup extends React.Component {
 					<Input
 						disabled
 						type="text"
-						value="fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish"
+						// value={ this.state.walletInfo.seed }
+						// placeholder={ this.state.walletInfo.seed ? "" : "Nenhuma seed cadastrada"}
 					/>
 				</Phrase>
 		

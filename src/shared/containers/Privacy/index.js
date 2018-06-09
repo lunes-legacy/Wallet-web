@@ -19,6 +19,14 @@ const tabTitle = [
 ]
 
 class Privacy extends React.Component {
+	componentDidMount() {
+		this.getSeed();
+	}
+
+	getSeed() {
+		console.log(this.props)
+  }
+  
   render() {
     return (
       <Container>
