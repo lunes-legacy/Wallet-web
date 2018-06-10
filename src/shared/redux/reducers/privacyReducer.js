@@ -18,7 +18,6 @@ const privacyReducer = (state = initialState, action) => {
       let walletInfo = JSON.parse(localStorage.getItem('WALLET-INFO'));
 
       if (walletInfo) {
-        console.log('1')
         return {
           seed:  walletInfo.seed,
           addresses:  walletInfo.addresses
