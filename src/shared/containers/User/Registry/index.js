@@ -52,8 +52,9 @@ let ArrowImg = Img.extend`
 `;
 
 let Anchor = styled.a `
-  color: #4cd566;
+  color: ${style.normalGreen};
   text-decoration: none;
+  font-style: italic;
 `;
 
 let inputs = [
@@ -66,40 +67,101 @@ let inputs = [
 ];
 
 class Registry extends React.Component {
+  constructor() {
+    super();
+
+    inputs.map(item => item.onChange = this.handleValidateField);
+
+    this.state = {
+      submittedForm: false
+    }
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleValidateField = this.handleValidateField.bind(this);
+  }
+
+  handleValidateField = event => {
+    const colorError = '#ff1c38';
+    const colorSuccess = '#fff';
+
+    // Verifica em tempo real apenas se o formulário já foi submetido alguma vez
+    if (this.state.submittedForm) {
+      console.log('teste');
+      // Validação para os campos de nome e sobrenome
+      if (event.target.className.search(/(registry-(f|l)name)/g) !== -1) {
+          event.target.style.color = validator.isLength(event.target.value, {min: 3, max: undefined}) ?
+            colorSuccess : colorError;
+      }
+      // Validação do e-mail
+      if (event.target.className.search('registry-email') !== -1) {
+        event.target.style.color = validator.isEmail(event.target.value) ?
+          colorSuccess : colorError;
+        }
+      // Validação da senha
+      if (event.target.className.search('registry-pass') !== -1) {
+          const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;
+          event.target.style.color = validator.matches(event.target.value, passRules) ?
+            colorSuccess : colorError;
+      }
+      // Validação da confirmação de senha
+      if (event.target.className.search('registry-cpass') !== -1) {
+        const passEl = document.querySelector(".registry-pass");
+        event.target.style.color = event.target.value === passEl.value ?
+          colorSuccess : colorError;
+      }
+      // Validação do checkbox dos termos
+      if (event.target.className.search('registry-terms') !== -1) {
+        const termsLabelEl = document.querySelector("label");
+        termsLabelEl.style.color = event.target.checked ? colorSuccess : colorError;
+      }
+    }
+  }
+
   handleSubmit = event => {
     event.preventDefault();
-    const termsEl = document.querySelector(".registry-terms");
+
+    this.setState({submittedForm: true});
+    const colorError = '#ff1c38';
+
     const emailEl = document.querySelector(".registry-email");
     const firstNameEl = document.querySelector(".registry-fname");
     const lastNameEl = document.querySelector(".registry-lname");
     const passEl = document.querySelector(".registry-pass");
     const confirmPassEl = document.querySelector(".registry-cpass");
+    const termsEl = document.querySelector(".registry-terms");
 
     let errors = [];
 
     if (!validator.isLength(firstNameEl.value, {min: 3, max: undefined})) {
       errors.push('O nome deve ter no mínimo 3 caracteres');
+      firstNameEl.style.color = colorError;
     }
 
     if (!validator.isLength(lastNameEl.value, {min: 3, max: undefined})) {
       errors.push('O sobrenome deve ter no mínimo 3 caracteres');
+      lastNameEl.style.color = colorError;
     }
 
     if (!validator.isEmail(emailEl.value) || validator.isEmpty(emailEl.value)) {
       errors.push('Um email válido deve ser informado');
+      emailEl.style.color = colorError;
     }
 
     const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;
     if (!validator.matches(passEl.value, passRules)) {
-      errors.push('A senha deve ter mais que 8 caracteres entre letras maíusuculas e minúsculas, \n\tnúmeros e pelo menos um caracter especial');
+      errors.push('A senha deve ter pelo menos 8 caracteres entre letras maíusuculas e minúsculas, \n\tnúmeros e pelo menos um caracter especial');
+      passEl.style.color = colorError;
     }
 
     if (passEl.value !== confirmPassEl.value) {
       errors.push('A confirmação de senha não confere');
+      confirmPassEl.style.color = colorError;
     }
 
     if (!termsEl.checked) {
+      const termsLabelEl = document.querySelector('label');
       errors.push('Você deve aceitar os termos para continuar');
+      termsLabelEl.style.color = colorError;
     }
 
     if (errors.length > 0) {
@@ -109,12 +171,11 @@ class Registry extends React.Component {
 
     let fullname = `${firstNameEl.value} ${lastNameEl.value}`;
 
-    alert('SUCESSO!')
-    // this.props.userCreate({
-    //   email: emailEl.value,
-    //   password: passEl.value,
-    //   fullname: fullname.replace("  ", " ")
-    // });
+    this.props.userCreate({
+      email: emailEl.value,
+      password: passEl.value,
+      fullname: fullname.replace("  ", " ")
+    });
   };
 
   handleStatus() {

@@ -17,6 +17,10 @@ export let TextBase = css`
       return `color: ${style.normalLilac}`;
     } else if (props.clLightLilac) {
       return `color: ${style.lightLilac}`;
+    } else if (props.clNormalRed) {
+      return `color: ${style.normalRed}`;
+    }else if (props.clMostard) {
+      return `color: #f5a623`;
     }
   }}
 	${props => {
@@ -68,6 +72,9 @@ export let TextBase = css`
   ${props => {
     if (props.offSide) {
       return "font-family: OffSide";
+    }
+    else if (props.roboto) {
+      return "font-family: roboto";
     }
   }}
   ${props => {

@@ -148,7 +148,7 @@ class Reset extends React.Component {
           <CustomLogo />
           <Img src={"img/user_panel_left/ic_email.svg"} margin={"22rem auto 0 auto"} width={"80px"} />
           <PaddingH1>
-            <H1 txCenter clWhite margin={"20px"} fontSize={"2rem"} >
+            <H1 txCenter clWhite clWhite margin={"2rem 0 0 0"} fontSize={"2rem"} >
               <strong>
                 Uma mensagem com link de definição de senha foi enviado para o seu endereço de e-mail.
               </strong>

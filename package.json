@@ -1,8 +1,8 @@
 {
   "name": "lunes-wallet-web",
+  "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "build": "webpack",
     "dev-doc": "webpack --watch --hot --progress --config ./doc/webpack.config.js",
@@ -48,8 +48,10 @@
     "lunes-lib": "https://github.com/Lunes-platform/lunes-lib/archive/571ffaa11f865727ff52f5fc15de782c757d915a.tar.gz",
     "money-formatter": "^0.1.4",
     "nuka-carousel": "^4.0.2",
+    "numeral": "^2.0.6",
     "qrcode-generator": "^1.4.0",
     "react": "^16.3.2",
+    "react-tabs": "^2.2.2",
     "react-dom": "^16.3.2",
     "react-materialize": "^2.2.0",
     "react-redux": "^5.0.7",

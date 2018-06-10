@@ -2,7 +2,10 @@ import React from "react";
 import { users } from "lunes-lib";
 import { connect } from "react-redux";
 import styled from "styled-components";
+import validator from "validator";
 import style from "Shared/style-variables";
+import Route from "react-router";
+import Home from 'Containers/Home/index';
 //REDUX
 import { userLogin } from 'Redux/actions';
 
@@ -26,6 +29,15 @@ import FooterUser from 'Components/FooterUser'
 
 const WrapPhrases = styled.div`
   width: 100%;
+  margin-top: 10%;
+
+  @media (${style.media.tablet2}) {
+    margin-top: 12%;
+  }
+
+  @media (${style.media.desktop}) {
+    margin-top: 25%;
+  }
 `;
 
 const CustomLogo = Logo.extend`
@@ -34,8 +46,22 @@ const CustomLogo = Logo.extend`
 
 const CustomLinkRight = CustomLink.extend`
   text-align: right;
-
 `;
+
+const CustomP = P.extend`
+  display: block;
+  margin-top: 200px;
+  text-align: center;
+`;
+
+const Paragraph = styled.div`
+  margin-top: 12px;
+  color: white;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+`;
+
 
 class Login extends React.Component {
   componentDidUpdate() {
@@ -43,29 +69,61 @@ class Login extends React.Component {
   }
   handleLogin = event => {
     event.preventDefault();
-    let emailEl = document.querySelector(".login-email");
-    let passEl  = document.querySelector(".login-password");
 
-    let email    = emailEl.value;
+    let emailEl = document.querySelector(".login-email");
+    let passEl = document.querySelector(".login-password");
+
+    let email = emailEl.value;
     let password = passEl.value;
+
     this.props.userLogin({
-      email, 
+      email,
       password
     });
-  };
-  handleStatus() {
-    let statusEl = document.querySelector(".js-status");
 
-    let { status } = this.props.user;
-
-    if (status === "pending") {
-      statusEl.textContent = "Aguarde...";
-    } else if (status === "fulfilled") {
-      statusEl.textContent = "Sucesso";
-    } else if (status === "rejected") {
-      statusEl.textContent = "Tente novamente";
+    let errors = [];
+    if (!validator.isEmail(emailEl.value)) {
+      errors.push('Um email válido deve ser informado');
     }
+    if (validator.isEmpty(passEl.value)) {
+      errors.push('Campo de senha vazio');
+    }
+    if (errors.length > 0) {
+      alert('- ' + errors.join('\n- '));
+      return;
+    }
+  };
+
+  handleStatus() {
+    try {
+      let statusEl = document.querySelector(".js-status");
+      let { status } = this.props.user;
+
+      if (status === "pending") {
+        statusEl.textContent = "Aguarde...";
+      } else if (status === "fulfilled") {
+           
+        this.props.history.push('/app/home');
+      }
+      else if (status === "rejected") {
+        statusEl.textContent = "Tente novamente";
+      }
+    }
+
+
+    catch (err) {
+      console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
+    }
+
   }
+
+  componentDidUpdate() {
+    setTimeout(() => {
+      this.handleStatus();
+    }, 300);
+  }
+
+
   render() {
     let { status, logged } = this.props.user;
     return (
@@ -74,20 +132,20 @@ class Login extends React.Component {
           <CustomLogo />
 
           <WrapPhrases>
-            <H1 clNormalGreen txCenter>
+            <H1 clNormalGreen txCenter margin-top={"10%"}>
               Rápida, segura e inteligente!
             </H1>
-            <P clWhite txCenter margin={"20px 0 70px 0"} fontSize={"1.4rem"}>
+            <Paragraph clWhite txCenter margin={"20px 0 70px 0"} fontSize={"1.4rem"}>
               Entre com seus dados
-            </P>
+            </Paragraph>
           </WrapPhrases>
 
-          <Form margin={"80px auto"} width={"80%"}>
+          <Form margin={"10% auto"} width={"80%"}>
             <FormGroup>
-              <Input placeholder={"nome@email.com"} className={"login-email"} />
+              <Input placeholder={"nome@email.com"} className={"login-email"} placeholder={"E-mail"} type={"email"} required />
             </FormGroup>
             <FormGroup>
-              <Input type="password" placeholder={"Senha"} className={"login-password"} />
+              <Input placeholder={"Senha"} className={"login-password"} placeholder={"Senha"} type={"password"} required />
             </FormGroup>
 
             <CustomLinkRight to={"/reset"} margin={"0 auto 20px auto"}>

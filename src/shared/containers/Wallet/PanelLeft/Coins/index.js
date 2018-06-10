@@ -5,8 +5,11 @@ import { TextBase, H1 } from "Components";
 import { connect } from "react-redux";
 //REDUX
 import { openPanelRight } from 'Redux/actions';
+import { togglePanelLeft } from 'Redux/actions';
 
 import { Loading } from 'Components/Loading';
+
+import {numeral} from 'Utils/numeral';
 
 const StyledCoins = styled.div`
   width: auto;
@@ -32,19 +35,23 @@ const Coin = styled.div`
   padding: 0 1rem;
   width: auto;
 
-  margin-right:0px;
   box-shadow: none;
+  margin-right: 0px;
+  margin-bottom: 10px;
   transition: .3s;
 
   &:hover {
-    box-shadow: 5px 0px 10px 5px rgba(51, 51, 51, 0.25);
-    z-index: 3;
+    -webkit-transform:scale(1); 
+    -moz-transform:scale(1); 
+    -o-transform:scale(1); 
+    transform:scale(1);
+    box-shadow: 5px 0px 22px 5px rgba(0, 0, 0, 0.09);
     margin-right: -20px;
   }
 
   @media (${style.media.tablet2}) {
     padding: 0 2rem;
-    height: 85px;
+    height: 70px;
   }
 
   @media (${style.media.laptop}) {
@@ -56,18 +63,46 @@ const Coin = styled.div`
 const CoinsHeader = styled.div`
   ${TextBase}
   display: flex;
-  align-items: center;
-  background-image: url(/img/app_wallet/rectangle-wallet.svg);
-  background-size: 100% 100%;
+  align-items: none;
   font-size: 1rem;
-  height: 75px;
-  justify-content: center;
-  padding-bottom: 2rem;
+  letter-spacing: 1.3px;
+  height: 8rem;
+  padding-top: 1.4rem;
+  padding-left: 1.4rem;
   width: 100%;
 
   @media (${style.media.tablet2}) {
-    font-size: 1.4rem;
-    height: 95px;
+    font-size: 1.2rem;
+    padding-top: 1.4rem;
+    padding-left: 2rem;
+  }
+
+  @media (${style.media.laptop}) {
+    align-items: center;
+    border-top: none;
+    padding-top: 0;
+    padding-bottom: 3rem;
+  }
+
+  @media (${style.media.desktop}) {
+    padding-bottom: 1.4rem;
+  }
+`;
+
+const CoinHeaderBg = styled.img`
+  height: 5rem;
+  left: 0;
+  margin: 0;
+  object-fit: cover;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: -1;
+
+  @media (${style.media.tablet2}) {
+    object-fit: content;
+    height: auto;
   }
 `;
 
@@ -122,6 +157,7 @@ class Coins extends React.Component {
       balance: undefined,
       price: undefined
     };
+    numeral.locale(this.props.currencies.locale);
   }
 
   //metodo chamado sempre que o componente é renderizado ou um
@@ -141,7 +177,8 @@ class Coins extends React.Component {
         <Coin
           key={coinKey}
           onClick={() => {
-            this.props.openPanelRight();
+            this.props.openPanelRight({currentNetwork: coinKey.toLowerCase()}); 
+            this.props.togglePanelLeft();
           }}
         >
           <WrapCoinImg>
@@ -149,10 +186,11 @@ class Coins extends React.Component {
           </WrapCoinImg>
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>
-              { currentBalance.total_confirmed }
+              { numeral(currentBalance.total_confirmed).format('0.00') }
             </CoinAmount>
             <CoinValue clWhite offSide size={"2rem"}>
-              { `USD ${currentBalance.total_amount}` }
+              {/* { `USD ${currentBalance.total_amount}` } */}
+              { `USD ${numeral(currentBalance.total_amount).format('0,0.00')}`}
             </CoinValue>
           </WrapCoinData>
         </Coin>
@@ -165,7 +203,8 @@ class Coins extends React.Component {
   render() {
     return (
       <StyledCoins>
-        <CoinsHeader>MINHAS CARTEIRAS</CoinsHeader>
+        <CoinHeaderBg src="/img/app_wallet/rectangle-wallet.svg" />
+        <CoinsHeader txLight>MINHAS CARTEIRAS</CoinsHeader>
 
         { this._renderCoins() }
       </StyledCoins>
@@ -183,8 +222,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    openPanelRight: () => {
-      dispatch(openPanelRight());
+    openPanelRight: (data) => {
+      dispatch(openPanelRight(data));
+    }, 
+    togglePanelLeft: () => {
+      dispatch(togglePanelLeft());
     }
   };
 };

@@ -6,6 +6,8 @@ import { Text } from "Components/Text";
 import { Col, Row } from "Components/index"
 import ModalSend from "./Modal/Send/index";
 import ModalReceive from "./Modal/Receive/index";
+import {connect} from "react-redux";
+import {numeral} from 'Utils/numeral';
 
 const StyledCoinControl = styled.div`
   width: 100%;
@@ -21,7 +23,8 @@ const WrapAmount = styled.div`
   @media (${style.media.tablet2}) {
     text-align: right;
     margin-bottom: 0;
-    margin-right: 2rem;
+    margin-right: 2rem;    
+    padding-right: 10px;
   }
 
   @media (min-width: 900px) {
@@ -80,7 +83,7 @@ const CoinAction = styled.div`
     border-radius: 24px;
     font-size: 1.5rem;
     padding: 20px 0;
-    width: 100px;
+    width: 108px;
     height: 100px;
   }
 
@@ -108,9 +111,10 @@ const SendCoinImage = styled.img`
 class CoinControl extends React.Component {
   handleToggleSendModal = () => { };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = { isOpenModalReceived: false };
+    numeral.locale(this.props.currencies.locale);
   }
 
   showModalReceived = () => {
@@ -126,9 +130,9 @@ class CoinControl extends React.Component {
           <Col s={12} m={6} l={8}>
             <WrapAmount>
               <Amount offSide>0.00000001</Amount>
-              <Usd>USD 2.00</Usd>
+              <Usd>USD {numeral(2).format('0,0.00')}</Usd>
               <Divisor />
-              <Brl>BRL 6,30</Brl>
+              <Brl>BRL {numeral(6.3).format('0,0.00')}</Brl>
             </WrapAmount>
           </Col>
           <Col s={6} m={3} l={2}>
@@ -152,4 +156,14 @@ class CoinControl extends React.Component {
   }
 }
 
-export default CoinControl;
+const mapStateToProps = (state) => {
+	return {
+		currencies: state.currencies
+	}
+}
+const mapDispatchToProps = (dispatch) => {
+	return { }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoinControl);
+//export default CoinControl;

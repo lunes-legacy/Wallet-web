@@ -1,17 +1,38 @@
+require('dotenv').load();
 const HardSourcePlugin = require('hard-source-webpack-plugin');
 var nodeExternals = require('webpack-node-externals');
 
+webpackEnv = process.env.WEBPACK_ENV;
+let clientEntry  = __dirname+'/src/client/index.js';
+let clientOutput = {
+	path: __dirname+'/public/js/',
+	filename: 'bundle.js'
+};
+let serverEntry  = __dirname+'/src/server/index.js';
+let serverOutput;
+if (webpackEnv === 'production') {
+	serverOutput = {
+		path: __dirname+'/functions/',
+		filename: 'index.js',
+		libraryTarget: 'commonjs2'
+	};
+} else if (webpackEnv === 'development') {
+	serverOutput = {
+		path: __dirname+'/src/server/bundle/',
+		filename: 'index.bundle.js',
+		libraryTarget: 'commonjs2'
+	};
+}
+
+
 let client = {
 	target: 'web',
-	entry: ['babel-polyfill',__dirname+'/src/client/index.js'],
-	output: {
-		path: __dirname+'/public/',
-		filename: 'bundle.js'
-	},
+	entry: ['babel-polyfill',clientEntry],
+	output: clientOutput,
 	node: {
 		fs: 'empty'
 	}, 
-	mode: 'development',
+	mode: webpackEnv,
 	module: {
 		rules: [
 			{
@@ -29,15 +50,12 @@ let client = {
 	]
 };
 
+// externals: [nodeExternals()], 
 let server = {
-	entry: ['babel-polyfill',__dirname+'/src/server/index.js'],
+	entry: ['babel-polyfill',serverEntry],
 	target: 'node',
-	output: {
-		path: __dirname+'/src/server/bundle/',
-		filename: 'index.bundle.js',
-		libraryTarget: 'commonjs2'
-	},
-	mode: 'development',
+	output: serverOutput,
+	mode: webpackEnv,
 	externals: [nodeExternals()], 
 	module: {
 		rules: [

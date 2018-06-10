@@ -6,12 +6,15 @@ import {P} from 'Components/P'
 
 const CustomP = P.extend`
   display: block;
-  margin-top: 10rem;
-  margin-bottom: 35px;
+  margin-top: 20%;
   text-align: center;
 
-  @media (min-width: 768px) {
-    bottom: 0;
+  @media (${style.media.tablet2}) {
+    margin-top: 12%;
+  }
+
+  @media (${style.media.desktop}) {
+    margin-top: 25%;
   }
 `;
 

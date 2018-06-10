@@ -5,3 +5,6 @@ public/bundle.js
 public/*.hot-update.*
 tests/components/bundle/*
 tests/bundle/
+functions/index.js
+public/js/bundle.js
+.DS_Store
