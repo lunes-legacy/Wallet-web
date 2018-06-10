@@ -55,7 +55,7 @@ class Backup extends React.Component {
 						disabled
 						type="text"
 						value={ this.props.walletInfo.seed ? this.props.walletInfo.seed : "" }
-						placeholder={ this.props.walletInfo.seed ? "" : "Nenhuma seed cadastrada!"}
+						placeholder={ this.props.walletInfo.seed ? "" : "Carregando..."}
 					/>
 				</Phrase>
 		
@@ -65,7 +65,7 @@ class Backup extends React.Component {
 					<H1 fontSize={"1.6rem"} txBold clWhite>
 						Endereços das Carteiras
 					</H1>
-					<CoinsAddress />
+					<CoinsAddress  walletInfo={ this.props.walletInfo } />
 				</Addresses>
 			</div>
 		);

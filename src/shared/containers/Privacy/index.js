@@ -23,7 +23,7 @@ class Privacy extends React.Component {
   render() {
     return (
       <Container>
-        <TabsBuilder tabTitle={tabTitle} tabContent={[<Backup />, <Rescue/>]}/>
+        <TabsBuilder tabTitle={tabTitle} tabContent={[<Backup />, <Rescue />]}/>
       </Container>
     );
   }
