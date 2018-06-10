@@ -50,11 +50,11 @@ class Rescue extends React.Component {
 
 	getAddress(seed) {
 		try {
-			if (seed.split(" ").length > 5) {
+			if (seed.split(" ").length >= 12) {
 				let address = services.wallet.lns.wallet.newAddress(seed, networks.LNS);
 				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: address } }, notification: null })
 			} else {
-				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Mínimo 6 palavras' } }, notification: null })
+				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Mínimo 12 palavras' } }, notification: null })
 			}
 		} catch (error) {
 			this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Palavras inválidas' } }, notification: null })
@@ -68,7 +68,7 @@ class Rescue extends React.Component {
 			let walletInfo = {
 				seed: this.state.walletInfo.seed,
 				addresses: {
-					LNS: '161cmLgavNNkWTjR61RnNqtejFeB88X6FM'
+					LNS: this.state.walletInfo.addresses.LNS
 				}
 			}
 			if (this.state.walletInfo.seed) {
