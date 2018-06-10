@@ -2,6 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
 
+// REDUX
+import { connect } from 'react-redux';
+import { getWalletInfo } from 'Redux/actions';
+
 // COMPONENTS
 import CoinsAddress from "./coinsAddress";
 import { H1 } from "Components/H1";
@@ -36,20 +40,8 @@ const Input = styled.input`
 `;
 
 class Backup extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	
 	componentDidMount() {
-		// this.getSeed();
-	}
-
-	getSeed() {
-		// let seed = localStorage.getItem('WALLET-INFO');
-		
-		// if (seed) {
-		// 	this.setState({ walletInfo: JSON.parse(seed) });
-		// }
+		this.props.getWalletInfo()
 	}
 
 	render() {
@@ -62,8 +54,8 @@ class Backup extends React.Component {
 					<Input
 						disabled
 						type="text"
-						// value={ this.state.walletInfo.seed }
-						// placeholder={ this.state.walletInfo.seed ? "" : "Nenhuma seed cadastrada"}
+						value={ this.props.walletInfo.seed ? this.props.walletInfo.seed : "" }
+						placeholder={ this.props.walletInfo.seed ? "" : "Nenhuma seed cadastrada!"}
 					/>
 				</Phrase>
 		
@@ -80,4 +72,18 @@ class Backup extends React.Component {
 	}
 }
 
-export default Backup;
+// REDUX
+const mapStateToProps = state => {
+  return {
+    walletInfo: state.walletInfo,
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getWalletInfo: (data) => {
+      dispatch(getWalletInfo(data));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Backup);

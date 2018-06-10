@@ -2,13 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
 
+// LIBS
+import { services, networks } from 'lunes-lib';
+
 // REDUX
 import { connect } from 'react-redux';
 import { setWalletInfo } from 'Redux/actions';
 
 // COMPONENTS
 import { Col, H1, H2 } from 'Components';
-import { ButtonGreen } from "Components/Buttons";
+import { ButtonGreen, ButtonDisabled } from "Components/Buttons";
 
 
 const Content = styled.div`
@@ -45,6 +48,21 @@ class Rescue extends React.Component {
 		}
 	}
 
+	getAddress(seed) {
+		try {
+			if (seed.split(" ").length > 5) {
+				let address = services.wallet.lns.wallet.newAddress(seed, networks.LNS);
+				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: address } }, notification: null })
+			} else {
+				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Mínimo 6 palavras' } }, notification: null })
+			}
+		} catch (error) {
+			this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Palavras inválidas' } }, notification: null })
+			console.log(error);
+		}
+	}
+		
+
 	setSeed() {
 		try {
 			let walletInfo = {
@@ -67,6 +85,18 @@ class Rescue extends React.Component {
 
 	}
 
+	renderImport() {
+		if (this.state.walletInfo.addresses.LNS && this.state.walletInfo.addresses.LNS.charAt(0) === '3') {
+			return (
+				<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={ () => { this.setSeed() } }>Importar</ButtonGreen>
+			);
+		} else {
+			return (
+				<ButtonDisabled width="130px" fontSize={'0.8rem'}>Importar</ButtonDisabled>
+			)
+		}
+	}
+
 	renderMsg() {
 		if (this.state.notification && this.state.notification === 'Success') {
 			return (
@@ -85,11 +115,12 @@ class Rescue extends React.Component {
 				<H1 fontSize={"1.6rem"} txBold clWhite>
 					Digite suas palavras
 				</H1>
-				<Input onChange={ (seed) => { this.setState({ ...this.state, walletInfo: { seed: seed.target.value }, notification: null }) } } placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish"/>
+				<Input onChange={ (seed) => { this.getAddress(seed.target.value) } } placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish"/>
 				<Row>
 					<H2 fontSize={"1.6rem"} margin={"0 0 2.0rem 0"} padding={"1.0rem 0 0 0"} clNormalGreen>
+						{ this.state.walletInfo.addresses.LNS }
 					</H2>
-					<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={ () => { this.setSeed() } }>Importar</ButtonGreen>
+					{ this.renderImport() }
 				</Row>
 				<Row>
 					{ this.renderMsg() }

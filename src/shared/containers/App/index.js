@@ -85,6 +85,10 @@ class App extends React.Component {
 		numeral.locale(this.props.currencies.locale);
 	}
 	componentDidMount() {
+		let walletInfo = JSON.parse(localStorage.getItem('WALLET-INFO'));
+		if (!walletInfo) {
+			this.props.history.push('/');
+		}
 	}
 	componentDidUpdate() {
 	}

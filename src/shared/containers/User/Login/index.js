@@ -82,7 +82,7 @@ class Login extends React.Component {
       };
       localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));
       this.props.setWalletInfo(walletInfo);
-      this.props.history.push('/app/privacy');
+      return this.props.history.push('/app/privacy');
     }
   }
 
@@ -132,13 +132,6 @@ class Login extends React.Component {
     }
 
   }
-
-  componentDidUpdate() {
-    setTimeout(() => {
-      this.handleStatus();
-    }, 300);
-  }
-
 
   render() {
     let { status, logged } = this.props.user;
