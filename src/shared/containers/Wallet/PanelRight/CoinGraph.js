@@ -59,11 +59,11 @@ class CoinGraph extends React.Component {
         <ResponsiveContainer width={this.props.width} height={this.props.height}>
           <LineChart data={this.state.history_time_price}
             margin={{ right: 0, left: 0, }}>
-            <CartesianGrid stroke="#4b2c82" vertical={false} />
+            <CartesianGrid stroke="#4b2c82" vertical={false} strokeWidth={3}/>
             <XAxis hide dataKey="time" />
             <YAxis hide domain={["dataMin", "dataMax"]} />
             <Tooltip wrapperStyle={styleWrapper} labelStyle={fontStyle} itemStyle={fontStyle} separator={": $"} />
-            <Line dataKey="close" dot={false} stroke="#4cd566" />
+            <Line dataKey="close" dot={false} stroke="#49d168" strokeWidth={3}/>
           </LineChart>
         </ResponsiveContainer>
       </div>
