@@ -43,7 +43,7 @@ class Home extends React.Component {
     return (
       <Container>
         <Redirect to='/app/home' />
-        
+
         <MainRectangle>
           <Icon src={"/img/app_panel_left/ic_wallet.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
@@ -51,8 +51,7 @@ class Home extends React.Component {
           </H1>
           <TextRectangle>
             <P fontSize={"1.4rem"} txCenter clWhite>
-              Muito obrigado por escolher a Wallet Lunes como sua carteira multicoin. Aproveite da usabilidade e
-              tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
+              Meet the most well-designed wallets. <br /> Send, receive, and view the transaction history in a unique way.
             </P>
           </TextRectangle>
           <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={() => this.props.history.push('/app/wallet')}>
@@ -67,8 +66,7 @@ class Home extends React.Component {
           </H1>
           <TextRectangle>
             <P fontSize={"1.4rem"} txCenter clWhite>
-              Muito obrigado por escolher a Wallet Lunes como sua carteira multicoin. Aproveite da usabilidade e
-              tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
+              Lend the forging power of your LNS to nodes and guarantee up to 5% per year with no risk.
             </P>
           </TextRectangle>
           <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={() => this.props.history.push('/app/leasing')}>
@@ -83,8 +81,7 @@ class Home extends React.Component {
           </H1>
           <TextRectangle>
             <P fontSize={"1.4rem"} txCenter clWhite>
-              Muito obrigado por escolher a Wallet Lunes como sua carteira multicoin. Aproveite da usabilidade e
-              tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
+              Access and restore your wallet information at any time through the backup system.
             </P>
           </TextRectangle>
           <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={() => this.props.history.push('/app/privacy')}>
