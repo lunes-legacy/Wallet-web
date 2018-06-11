@@ -24,9 +24,24 @@ const StyledCoinStatus = styled.div`
 const CoinDetailsText = styled.div`
   ${TextBase}
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 2.3rem;
   color: white;
   text-align: left;
+  font-weight: 300;
+  @media (${style.media.laptop}) {
+    font-size: 	3.0rem;
+  }
+`;
+
+const TextValue = styled.div`
+  ${TextBase}
+  width: 100%;
+  font-size: 2.3rem;
+  color: white;
+  text-align: left;
+  font-weight: 100 !important; 
+  display: inline; 
+
 
   @media (${style.media.laptop}) {
     font-size: 	3.0rem;
@@ -137,6 +152,7 @@ class CoinStatus extends React.Component {
   render() {
     let { currentNetwork } = this.props.wallet;
     let { price } = this.props.cryptocurrencies;
+    let { balance } = this.props;
     if (!price) {
       return null;
     }
@@ -146,9 +162,10 @@ class CoinStatus extends React.Component {
         <Row>
           <Col s={12} m={3} l={3}>
             <CoinDetails>
-              <CoinDetailsText offSide>{currentNetwork.toUpperCase()}</CoinDetailsText>
+              <CoinDetailsText offSide>{balance[currentNetwork.toUpperCase()].coinName}</CoinDetailsText>
               {/* <CoinDetailsText offSide>{`1 ${currentNetwork.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText> */}
-              <CoinDetailsText offSide>{`1 ${currentNetwork.toUpperCase()} ${numeral(31000.15).format('$0,0.00')}`}</CoinDetailsText>
+              <CoinDetailsText >{`1 ${currentNetwork.toUpperCase()} ${numeral(31000.15).format('$0,0.00')}`}</CoinDetailsText>
+              
             </CoinDetails>
           </Col>
           <Col s={8} m={6} l={6}>
@@ -176,7 +193,8 @@ const mapStateToProps = state => {
   return {
     wallet: state.component.wallet,
     cryptocurrencies: state.cryptocurrencies,
-    currencies: state.currencies
+    currencies: state.currencies,
+    balance:    state.balance
   };
 };
 const mapDispatchToProps = dispatch => {

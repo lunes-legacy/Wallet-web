@@ -3,37 +3,45 @@ let initialState = {
 	// 	total_confirmed: 2.09, 
 	// 	total_unconfirmed: 1,
 	// 	total_amount: 3.9, 
-	// 	img: 'btc.svg'
+	// 	img: 'btc.svg',
+	// 	coinName: 'Bitcoin'
 	// },
 	// ETH: { 
 	// 	total_confirmed: 1.02, 
 	// 	total_unconfirmed: 1,
 	// 	total_amount: 2.2, 
-	// 	img: 'eth.svg'
+	// 	img: 'eth.svg',
+	// 	coinName: 'Ethereum'
+		
 	// },
 	LNS: {
 		total_confirmed: 100, 
 		total_unconfirmed: 0,
 		total_amount: 100, 
-		img: 'lns.svg'
-	}
+		img: 'lns.svg',
+		coinName: 'Lunes'
+	},
 	// LTC: {
 	// 	total_confirmed: 100, 
 	// 	total_unconfirmed: 0,
 	// 	total_amount: 100, 
-	// 	img: 'ltc.svg'
+	// 	img: 'ltc.svg', 
+	// 	coinName: 'Litecoin'
+
 	// },
 	// DASH: {
 	// 	total_confirmed: 100, 
 	// 	total_unconfirmed: 0,
 	// 	total_amount: 100, 
-	// 	img: 'dash.svg'
+	// 	img: 'dash.svg',
+	// 	coinName: 'Dashcoin'
 	// },
 	// NANO: {
 	// 	total_confirmed: 100, 
 	// 	total_unconfirmed: 0,
 	// 	total_amount: 100, 
-	// 	img: 'nano.svg'
+	// 	img: 'nano.svg',
+	// 	coinName: 'Nano'
 	// }
 }
 const balanceReducer = (state = initialState, action) => {
