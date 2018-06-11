@@ -64,38 +64,36 @@ const Paragraph = styled.div`
   font-size: 1.5rem;
 `;
 
-const SecondPanelLeft = PanelLeft.extend`
-  display: none;
-`;
 
 class Login extends React.Component {
   componentDidUpdate() {
     this.handleStatus();
   }
 
+  componentDidMount() {
+    localStorage.removeItem('WALLET-INFO');
+    localStorage.removeItem('ACCESS-TOKEN');
+  }
+
   getSeed() {
     let walletInfo = localStorage.getItem('WALLET-INFO');
+    localStorage.setItem('ACCESS-TOKEN', JSON.stringify(this.props.user.data.accessToken));
     if (walletInfo) {
       this.props.setWalletInfo(JSON.parse(walletInfo));
-
       return this.props.history.push('/app/home');
     } else {
-      let walletInfo = {
-        accessToken: '123',
-        seed: 'fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish',
-        addresses: {
-          LNS: '161cmLgavNNkWTjR61RnNqtejFeB88X6FM'
-        }
-      };
-      localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));
-      this.props.setWalletInfo(walletInfo);
-
-      return this.props.history.push('/import');
+      return this.props.history.push('/import');      
+      // localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));
+      // this.props.setWalletInfo(walletInfo);
+      // return this.props.history.push('/app/privacy');
     }
   }
 
   handleLogin = event => {
     event.preventDefault();
+
+    let emailEl = document.querySelector(".login-email");
+    let passEl = document.querySelector(".login-password");
 
     let email = emailEl.value;
     let password = passEl.value;
@@ -122,25 +120,19 @@ class Login extends React.Component {
     try {
       let statusEl = document.querySelector(".js-status");
       let { status } = this.props.user;
-
+      console.log(status)
       if (status === "pending") {
         statusEl.textContent = "Aguarde...";
       } else if (status === "fulfilled") {
-        firstPanelEl.style.display = "none";
-        secondPanelEl.style.display = "block";
         this.getSeed();
-        // this.props.history.push('/app/home');
       }
       else if (status === "rejected") {
         statusEl.textContent = "Tente novamente";
       }
     }
-
-
     catch (err) {
       console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
     }
-
   }
 
   render() {

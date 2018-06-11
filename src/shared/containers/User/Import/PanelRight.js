@@ -1,15 +1,16 @@
 import styled from 'styled-components';
 import style from 'Shared/style-variables';
 
-export let PanelRight = styled.aside`
+let PanelRight = styled.main`
 	background: ${style.normalLilac};
 	display: none;
 	float: left;
 	height: 100vh;
-	width: 60%;
+	width: 50%;
 
-	@media only screen and (min-width: 768px) {
+	@media only screen and (${style.media.tablet2}) {
 		display: block;
 	}
-
 `;
+
+export default PanelRight;

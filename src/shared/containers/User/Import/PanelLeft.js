@@ -1,15 +1,16 @@
 import styled from 'styled-components';
 import style from 'Shared/style-variables';
 
-export let PanelLeft = styled.aside`
+let PanelLeft = styled.aside`
 	background: ${style.darkLilac};
 	float: left;
-	width: 100%;
-	height: 100vh;
+  height: 100vh;
 	padding-bottom: 50px;
+	width: 100%;
 
-	@media only screen and (min-width: 768px) {
-		width: 40%;
+	@media (${style.media.tablet2}) {
+    width: 50%;
 	}
-
 `;
+
+export default PanelLeft;

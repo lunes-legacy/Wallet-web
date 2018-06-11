@@ -14,7 +14,18 @@ export let ButtonSecondary = Button.extend`
 	&:hover {
 		background: ${style.normalGreen};
 	}
-	padding: 10px 20px 10px 20px;
+  padding: 10px 20px 10px 20px;
+  ${props => {
+    if (props.width) {
+      return `width: ${props.width};`;
+    }
+    return "width: 100%;";
+  }}
+  ${props => {
+    if (props.margin && props.margin.indexOf('rem') !== -1) {
+      return `margin: ${props.margin};`;
+    }
+  }}
 `;
 
 export let ButtonDisabled = Button.extend`
