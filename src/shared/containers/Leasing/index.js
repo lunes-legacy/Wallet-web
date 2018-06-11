@@ -6,6 +6,7 @@ import style from 'Shared/style-variables';
 //
 import PanelLeft from './PanelLeft';
 import PanelRight from './PanelRight';
+import ModalLeasing from "./modal/index";
 
 let Panels = styled.div`
 	width: 100%;
