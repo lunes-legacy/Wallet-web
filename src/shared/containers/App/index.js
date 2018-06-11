@@ -15,7 +15,7 @@ import Wallet from 'Containers/Wallet/index';
 import Recharge from 'Containers/Recharge/index';
 import Ticket from 'Containers/Ticket/index';
 import Buy from 'Containers/Buy/index';
-import Leasing from 'Containers/Leasing/index'
+import Leasing from 'Containers/Leasing/index';
 import Configuration from 'Containers/Configuration/index';
 import Privacy from 'Containers/Privacy/index';
 
@@ -28,6 +28,9 @@ import PanelLeft from './PanelLeft';
 import PanelRight from './PanelRight';
 import { AuthRoute } from 'Components/AuthRoute';
 // import { checkAuth }    from 'Auth/index';
+
+//MODAL COMPONENTS
+import Send from 'Containers/Wallet/PanelRight/Modal/Send/index';
 
 import {numeral} from 'Utils/numeral';
 
@@ -119,6 +122,7 @@ class App extends React.Component {
 							<Route exact path={"/app/leasing"} component={Leasing} />
 							<Route exact path={"/app/configuration"} component={Configuration} />
 							<Route exact path={"/app/privacy"} component={Privacy} />
+							<Route exact path={"/app/send"} component={Send} />
 						</Switch>
 					</PanelRight>
 				</Panels>
