@@ -5,6 +5,7 @@
  * isOpen: true | false. Passar função que altera o estado
  * width: default 40%
  * height: default 50%
+ * type: 'success' | 'error'. Exibe um ícone verde para sucesso e vermelho para erro
  * header: texto do cabeçalho da modal
  * headerAlign: alinhamento do cabeçalho (left, center, right, justify). Default: center
  * title: título do conteúdo
@@ -31,7 +32,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 // Private components
-import style from 'Components/style-variables';
+import style from 'Shared/style-variables';
 import { H1, H3, TextBase } from 'Components/index';
 
 const ModalScreen = styled.div`
@@ -48,11 +49,11 @@ const ModalScreen = styled.div`
 const ModalBox = styled.div`
   background-color: #442181;
   color: #fff;
-  margin: 10% auto;
+  margin: 5% auto 0 auto;
   padding: 2rem;
   box-shadow: 0px 0px 5px 0px rgba(51,51,51,.1);
-  width: 80%;
-  height: 85%;
+  width: 60%;
+  height: 45%;
   border-radius: 5px;
 
   @media (${style.media.tablet2}) {
@@ -86,12 +87,12 @@ const ContentH1 = H1.extend`
   font-size: 3rem;
 
   @media (${style.media.tablet2}) {
-    font-size: 5rem;
+    font-size: 4rem;
   }
 `;
 
 const Content = styled.div`
-  height: 70%;
+  height: 75%;
   width: 100%;
   text-align: ${props => props.align ? props.align : 'center'}
 `;
@@ -103,15 +104,53 @@ const P = styled.p`
 
 const Hr = styled.hr`
   border: solid 1px #654fa4;
-  margin: 1rem 25%;
+  margin: 2rem 25%;
   width: 50%;
 `;
 
 const Footer = styled.div`
-  height: 10%;
+  height: 20%;
   margin: 1rem 0;
   width: 100%;
   text-align: ${props => props.align ? props.align : 'center'}
+`;
+
+const Icon = styled.div`
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  margin: 0 1rem;
+  background-color: ${props => props.color};
+  left: calc(50% - 37px);
+  margin-bottom: 1rem;
+
+  @media (${style.media.tablet2}) {
+    width: 7rem;
+    height: 7rem;
+  }
+`
+
+const SuccessContent = styled.div`
+  width: 0.8rem;
+  height: 1.5rem;
+  border-bottom: 3px solid #fff;
+  border-right: 3px solid #fff;
+  transform: rotate(45deg);
+  position: relative;
+  top: calc(50% - 1rem);
+  left: calc(50% - 0.4rem);
+
+  @media (${style.media.tablet2}) {
+    width: 1rem;
+    height: 2rem;
+    top: calc(50% - 1.5rem);
+    left: calc(50% - 0.5rem);
+  }
+`;
+
+const Error = styled.div`
+  color: #d22;
 `;
 
 
@@ -120,7 +159,7 @@ class Modal extends React.Component {
     super(props);
 
     this.state = {
-      isModalOpen: this.props.isOpen || true
+      isModalOpen: this.props.isOpen || false
     }
   }
 
@@ -129,12 +168,12 @@ class Modal extends React.Component {
   };
 
   render() {
-    const types = {
-      success: 'sucesso',
-      error: 'erro'
-    }
-
     if (!this.state.isModalOpen) return null;
+
+    const types = {
+      success: <Icon color="#2d2"><SuccessContent /></Icon>,
+      error: <Icon color="#d22"><SuccessContent /></Icon>
+    };
 
     return (
       <ModalScreen>
@@ -144,8 +183,8 @@ class Modal extends React.Component {
             <H3>{this.props.header || ''}</H3>
           </Header>
           <Content align={this.props.contentAlign}>
-            {/* {types[this.props.type] || ''} */}
-            <ContentH1 fontSize={'4rem'} txLight>{this.props.title || ''}</ContentH1>
+            {types[this.props.type] || ''}
+            <ContentH1 txLight>{this.props.title || ''}</ContentH1>
             {this.props.hr ? <Hr /> : ''}
             <P fontSize={'1.4rem'}>{this.props.text || ''}</P>
           </Content>
