@@ -83,7 +83,7 @@ const GraphContainer = styled.div`
 `;
 
 const WrapCoinPercent = styled.div`
-  margin-left: 33%;
+  margin-left: 20%;
   display: flex;
   align-items: center;
   background: ${style.normalGreen};
@@ -168,12 +168,12 @@ class CoinStatus extends React.Component {
               
             </CoinDetails>
           </Col>
-          <Col s={8} m={6} l={6}>
+          <Col s={8} m={6} l={7}>
             <GraphContainer>
               <CoinGraph width='95%' height={80} currentNetwork={currentNetwork.toUpperCase()} />
             </GraphContainer>
           </Col>
-          <Col s={4} m={3} l={3}>
+          <Col s={4} m={3} l={2}>
             <WrapCoinPercent style={this.state.coin_porcentage_price < 0 ? { background: 'indianred' } : { background: 'lightgreen' }}>
               <CoinPercent>{this.state.coin_porcentage_price}%</CoinPercent>
               {/*{this.state.coin_porcentage_price > 0 ? (
