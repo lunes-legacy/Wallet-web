@@ -64,6 +64,9 @@ const Paragraph = styled.div`
   font-size: 1.5rem;
 `;
 
+const SecondPanelLeft = PanelLeft.extend`
+  display: none;
+`;
 
 class Login extends React.Component {
   componentDidUpdate() {
@@ -74,9 +77,11 @@ class Login extends React.Component {
     let walletInfo = localStorage.getItem('WALLET-INFO');
     if (walletInfo) {
       this.props.setWalletInfo(JSON.parse(walletInfo));
+
       return this.props.history.push('/app/home');
     } else {
       let walletInfo = {
+        accessToken: '123',
         seed: 'fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish',
         addresses: {
           LNS: '161cmLgavNNkWTjR61RnNqtejFeB88X6FM'
@@ -84,15 +89,13 @@ class Login extends React.Component {
       };
       localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));
       this.props.setWalletInfo(walletInfo);
-      return this.props.history.push('/app/privacy');
+
+      return this.props.history.push('/import');
     }
   }
 
   handleLogin = event => {
     event.preventDefault();
-
-    let emailEl = document.querySelector(".login-email");
-    let passEl = document.querySelector(".login-password");
 
     let email = emailEl.value;
     let password = passEl.value;
@@ -119,12 +122,14 @@ class Login extends React.Component {
     try {
       let statusEl = document.querySelector(".js-status");
       let { status } = this.props.user;
-      console.log(status)
+
       if (status === "pending") {
         statusEl.textContent = "Aguarde...";
       } else if (status === "fulfilled") {
+        firstPanelEl.style.display = "none";
+        secondPanelEl.style.display = "block";
         this.getSeed();
-        this.props.history.push('/app/home');
+        // this.props.history.push('/app/home');
       }
       else if (status === "rejected") {
         statusEl.textContent = "Tente novamente";
