@@ -153,7 +153,7 @@ class CoinStatus extends React.Component {
           </Col>
           <Col s={8} m={6} l={6}>
             <GraphContainer>
-              <CoinGraph width='95%' height={75} currentNetwork={currentNetwork.toUpperCase()} />
+              <CoinGraph width='95%' height={80} currentNetwork={currentNetwork.toUpperCase()} />
             </GraphContainer>
           </Col>
           <Col s={4} m={3} l={3}>
