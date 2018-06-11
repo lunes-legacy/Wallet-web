@@ -11,7 +11,7 @@ import {numeral} from 'Utils/numeral';
 
 const StyledCoinControl = styled.div`
   width: 100%;
-  padding: 30px 25px;
+  padding: 30px 0px 30px 0px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 `;
 

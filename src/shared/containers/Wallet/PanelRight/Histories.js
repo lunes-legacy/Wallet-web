@@ -140,15 +140,18 @@ const HistoryContent = styled.div`
   display: flex;
   background: ${style.normalLilac};
   flex-flow: nowrap;
-  padding: 1rem 30% 1rem 3rem;
   top: 100%;
   width: 100%;
   word-wrap: break-word;
 
-  transition: all 1s;
+  transition: all .3s;
 
   @media (${style.media.tablet2}) {
     padding: 1rem 2rem;
+  }
+
+  @media (${style.media.laptop}) {
+    padding: 1rem 32px 20px 45px; //top right bottom left
   }
 
   &.js-history-content {
