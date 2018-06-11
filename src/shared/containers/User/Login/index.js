@@ -1,11 +1,15 @@
 import React from "react";
 import { users } from "lunes-lib";
-import { connect } from "react-redux";
 import styled from "styled-components";
 import validator from "validator";
 import style from "Shared/style-variables";
+import Route from "react-router";
+import Home from 'Containers/Home/index';
+
 //REDUX
+import { connect } from "react-redux";
 import { userLogin } from 'Redux/actions';
+import { setWalletInfo } from 'Redux/actions';
 
 //COMPONENTS
 import { Form } from "Components/Form";
@@ -52,7 +56,7 @@ const CustomP = P.extend`
   text-align: center;
 `;
 
-const Paragraph = styled.div `
+const Paragraph = styled.div`
   margin-top: 12px;
   color: white;
   width: 100%;
@@ -65,6 +69,25 @@ class Login extends React.Component {
   componentDidUpdate() {
     this.handleStatus();
   }
+
+  getSeed() {
+    let walletInfo = localStorage.getItem('WALLET-INFO');
+    if (walletInfo) {
+      this.props.setWalletInfo(JSON.parse(walletInfo));
+      return this.props.history.push('/app/home');
+    } else {
+      let walletInfo = {
+        seed: 'fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish',
+        addresses: {
+          LNS: '161cmLgavNNkWTjR61RnNqtejFeB88X6FM'
+        }
+      };
+      localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));
+      this.props.setWalletInfo(walletInfo);
+      return this.props.history.push('/app/privacy');
+    }
+  }
+
   handleLogin = event => {
     event.preventDefault();
 
@@ -96,27 +119,24 @@ class Login extends React.Component {
     try {
       let statusEl = document.querySelector(".js-status");
       let { status } = this.props.user;
-
+      console.log(status)
       if (status === "pending") {
         statusEl.textContent = "Aguarde...";
       } else if (status === "fulfilled") {
-        statusEl.textContent = "Sucesso";
-      } else if (status === "rejected") {
+        this.getSeed();
+        this.props.history.push('/app/home');
+      }
+      else if (status === "rejected") {
         statusEl.textContent = "Tente novamente";
       }
     }
+
+
     catch (err) {
       console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
     }
 
   }
-
-  componentDidUpdate() {
-    setTimeout(() => {
-      this.handleStatus();
-    }, 300);
-  }
-
 
   render() {
     let { status, logged } = this.props.user;
@@ -126,7 +146,7 @@ class Login extends React.Component {
           <CustomLogo />
 
           <WrapPhrases>
-            <H1 clNormalGreen txCenter margin-top = {"10%"}>
+            <H1 clNormalGreen txCenter margin-top={"10%"}>
               Rápida, segura e inteligente!
             </H1>
             <Paragraph clWhite txCenter margin={"20px 0 70px 0"} fontSize={"1.4rem"}>
@@ -167,13 +187,17 @@ class Login extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    walletInfo: state.walletInfo
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     userLogin: (email, password) => {
       dispatch(userLogin(email, password));
+    },
+    setWalletInfo: data => {
+      dispatch(setWalletInfo(data));
     }
   };
 };

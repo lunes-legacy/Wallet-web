@@ -80,7 +80,9 @@ if (webpackEnv !== 'production') {
 		console.log('Server is running on port 3002');
 	});
 } else {
-	console.log('\x1b[42m env.WEBPACK_ENV está em servidor, por isso nao vai rodar \x1b[0m');
+	app.listen(3010, () => {
+		console.log('Server is running on port 3002');
+	});
 	// exports.ssr = functions.https.onRequest(app);
 }
 

@@ -5,7 +5,7 @@ import { errorPattern } from 'Utils/functions';
 
 import { FormGroup } from './FormGroup';
 import { Form }      from './Form';
-import { Input }     from './Input';
+import { Input, Checkbox } from './Input';
 import { ButtonSecondary } from './Buttons';
 
 // import { Checkbox } from 'react-materialize';
@@ -28,7 +28,7 @@ export class FormBuilder extends React.Component {
 				return (
 					<FormGroupCheck key={index}>
 						<label style={{color: 'white', fontSize: '1.4em'}}>
-						<input {...input} />
+						<Checkbox {...input} />
 						{ input.value }
 						</label>
 					</FormGroupCheck>

@@ -9,7 +9,7 @@ export let ButtonBase = css`
 
 	font-size: 16px;
 	text-align: center;
-	border-radius: 4px;
+	border-radius: 6px;
 	border: none;
 	cursor: pointer;
 	&:focus {

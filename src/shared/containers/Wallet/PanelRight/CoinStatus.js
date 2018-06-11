@@ -10,6 +10,8 @@ import { Text } from "Components/Text";
 import { Loading } from "Components/Loading";
 import { Col, Row } from 'Components/index';
 
+import {numeral} from 'Utils/numeral';
+
 const StyledCoinStatus = styled.div`
   width: 100%;
   display: flex;
@@ -105,9 +107,10 @@ const CoinPercent = styled.div`
 `;
 
 class CoinStatus extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
+    numeral.locale(this.props.currencies.locale);
     this.state = {
       coin_porcentage_price: []
     };
@@ -144,12 +147,13 @@ class CoinStatus extends React.Component {
           <Col s={12} m={3} l={3}>
             <CoinDetails>
               <CoinDetailsText offSide>{currentNetwork.toUpperCase()}</CoinDetailsText>
-              <CoinDetailsText offSide>{`1 ${currentNetwork.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText>
+              {/* <CoinDetailsText offSide>{`1 ${currentNetwork.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText> */}
+              <CoinDetailsText offSide>{`1 ${currentNetwork.toUpperCase()} ${numeral(31000.15).format('$0,0.00')}`}</CoinDetailsText>
             </CoinDetails>
           </Col>
           <Col s={8} m={6} l={6}>
             <GraphContainer>
-              <CoinGraph width='95%' height={75} currentNetwork={currentNetwork.toUpperCase()} />
+              <CoinGraph width='95%' height={80} currentNetwork={currentNetwork.toUpperCase()} />
             </GraphContainer>
           </Col>
           <Col s={4} m={3} l={3}>
@@ -171,7 +175,8 @@ class CoinStatus extends React.Component {
 const mapStateToProps = state => {
   return {
     wallet: state.component.wallet,
-    cryptocurrencies: state.cryptocurrencies
+    cryptocurrencies: state.cryptocurrencies,
+    currencies: state.currencies
   };
 };
 const mapDispatchToProps = dispatch => {
