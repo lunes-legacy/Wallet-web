@@ -33,20 +33,21 @@ import styled from 'styled-components';
 
 // Private components
 import style from 'Shared/style-variables';
-import { H1, H3, TextBase } from 'Components/index';
+import { H3, TextBase } from 'Components/index';
 
 const ModalScreen = styled.div`
   position: fixed;
-  z-index: 1;
+  z-index: 98;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0,0,0,0.3);
 `;
 
 const ModalBox = styled.div`
+  z-index: 99;
   background-color: #442181;
   color: #fff;
   margin: 5% auto 0 auto;
@@ -88,7 +89,8 @@ const Header = styled.div`
   text-align: ${props => props.align ? props.align : 'center'}
 `;
 
-const ContentH1 = H1.extend`
+const ContentH1 = styled.h1`
+  ${TextBase};
   font-size: 3rem;
 
   @media (${style.media.tablet2}) {
@@ -169,15 +171,17 @@ class Modal extends React.Component {
   }
 
   toggleModal = () => {
-    this.setState({ isModalOpen: false });
+    this.setState( prevState => ({
+      isModalOpen: !prevState.isModalOpen
+    }));
   };
 
   render() {
     if (!this.state.isModalOpen) return null;
 
     const types = {
-      success: <Icon color="#2d2"><SuccessContent /></Icon>,
-      error: <Icon color="#d22"><SuccessContent /></Icon>
+      success: <Icon color={style.normalGreen}><SuccessContent /></Icon>,
+      error: <Icon color={style.normalRed}><SuccessContent /></Icon>
     };
 
     return (

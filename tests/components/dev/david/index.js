@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 // Private components
+import style from 'Shared/style-variables';
 import Modal from 'Components/Modal';
 import { H3, Text } from 'Components/index';
 import { ButtonGreen } from 'Components/Buttons';
 
 const Green = styled.span`
-  color: #2d2;
+  color: ${style.normalGreen};
 `;
 
 const toRender = () => {
