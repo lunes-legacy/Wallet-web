@@ -10,6 +10,7 @@ import { H3 }         from './H3';
 import { Text }       from './Text';
 import { Img }        from './Img';
 import { Loading }    from './Loading';
+import Modal          from './Modal';
 
 
 export {
@@ -24,5 +25,6 @@ export {
 	H3,
 	Text,
 	Img,
-	Loading
+  Loading,
+  Modal
 }
