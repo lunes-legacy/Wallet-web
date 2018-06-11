@@ -52,13 +52,18 @@ const ModalBox = styled.div`
   margin: 5% auto 0 auto;
   padding: 2rem;
   box-shadow: 0px 0px 5px 0px rgba(51,51,51,.1);
-  width: 60%;
-  height: 45%;
+  width: 65%;
+  height: 50%;
   border-radius: 5px;
 
   @media (${style.media.tablet2}) {
     width: ${props => props.width ? props.width : '40%'};
     height: ${props => props.height ? props.height : '50%'};
+  }
+
+  @media (${style.media.desktop2}) {
+    width: 40%;
+    height: 45%;
   }
 `;
 
@@ -97,14 +102,14 @@ const Content = styled.div`
   text-align: ${props => props.align ? props.align : 'center'}
 `;
 
-const P = styled.p`
+const P = styled.div`
   ${TextBase};
   margin: 1rem 0;
 `;
 
 const Hr = styled.hr`
   border: solid 1px #654fa4;
-  margin: 2rem 25%;
+  margin: 1.5rem 25%;
   width: 50%;
 `;
 
