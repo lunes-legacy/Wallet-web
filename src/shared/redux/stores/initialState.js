@@ -8,6 +8,7 @@
 import { 
 	userReducer,
 	walletReducer,
+	privacyReducer,
 	balanceReducer,
 	currenciesReducer,
 	cryptocurrenciesReducer,
@@ -17,6 +18,7 @@ import {
 export let initialState = {
 	user:             userReducer,
 	wallet:           walletReducer,
+	walletInfo:				privacyReducer,
 	config:           configReducer,
 	currencies:       currenciesReducer,
 	cryptocurrencies: cryptocurrenciesReducer,

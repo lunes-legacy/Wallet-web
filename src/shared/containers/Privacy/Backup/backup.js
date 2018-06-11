@@ -2,14 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
 
+// REDUX
+import { connect } from 'react-redux';
+import { getWalletInfo } from 'Redux/actions';
+
 // COMPONENTS
 import CoinsAddress from "./coinsAddress";
 import { H1 } from "Components/H1";
 
-
 const Line = styled.div`
   border-bottom: 1px dotted ${style.lightPurple};
-  margin: 20px 0;
+  margin: 30px 0;
   width: 100%;
 `;
 
@@ -29,13 +32,18 @@ const Input = styled.input`
   background-color: ${style.defaultPurple};
   border-radius: 6px;
   color: ${style.normalGreen};
-  font-size: 1.6rem;
-  margin: 10px 0;
+	font-size: 1.6rem;
+	text-align: center;
+  margin: 25px 0 0 0;
   padding: 20px;
   width: 100%;
 `;
 
-class Backup extends React.Component {  
+class Backup extends React.Component {
+	componentDidMount() {
+		this.props.getWalletInfo()
+	}
+
 	render() {
 		return (
       <div>
@@ -46,7 +54,8 @@ class Backup extends React.Component {
 					<Input
 						disabled
 						type="text"
-						value="fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish"
+						value={ this.props.walletInfo.seed ? this.props.walletInfo.seed : "" }
+						placeholder={ this.props.walletInfo.seed ? "" : "Carregando..."}
 					/>
 				</Phrase>
 		
@@ -56,11 +65,25 @@ class Backup extends React.Component {
 					<H1 fontSize={"1.6rem"} txBold clWhite>
 						Endereços das Carteiras
 					</H1>
-					<CoinsAddress />
+					<CoinsAddress  walletInfo={ this.props.walletInfo } />
 				</Addresses>
 			</div>
 		);
 	}
 }
 
-export default Backup;
+// REDUX
+const mapStateToProps = state => {
+  return {
+    walletInfo: state.walletInfo,
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+    getWalletInfo: (data) => {
+      dispatch(getWalletInfo(data));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Backup);
