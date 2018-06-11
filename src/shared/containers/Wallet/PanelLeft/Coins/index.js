@@ -61,32 +61,34 @@ const Coin = styled.div`
 `;
 
 const CoinsHeader = styled.div`
-  ${TextBase}
-  display: flex;
-  align-items: none;
-  font-size: 1rem;
-  letter-spacing: 1.3px;
-  height: 8rem;
+${TextBase}
+background-image: url('/img/app_wallet/rectangle-wallet.svg');
+background-repeat: no-repeat;
+letter-spacing: 1.3px;
+display: flex;
+
+
+@media (${style.media.mobile}) {
+  font-size: 1.2rem;
   padding-top: 1.4rem;
-  padding-left: 1.4rem;
-  width: 100%;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  //background-size: 110% 100%;
+  background-size: cover;
+  background-position: -5px -5px;
+  height: 70px;
+}
 
-  @media (${style.media.tablet2}) {
-    font-size: 1.2rem;
-    padding-top: 1.4rem;
-    padding-left: 2rem;
-  }
+@media (${style.media.tablet}) {
+  font-size: 1.5rem;
+  padding-top: 2.3rem;
+  padding-left: 2.5rem;
+  height: 90px;
+}
 
-  @media (${style.media.laptop}) {
-    align-items: center;
-    border-top: none;
-    padding-top: 0;
-    padding-bottom: 3rem;
-  }
-
-  @media (${style.media.desktop}) {
-    padding-bottom: 1.4rem;
-  }
+@media (${style.media.laptop}) {
+  background-size: cover;
+}
 `;
 
 const CoinHeaderBg = styled.img`
@@ -203,7 +205,7 @@ class Coins extends React.Component {
   render() {
     return (
       <StyledCoins>
-        <CoinHeaderBg src="/img/app_wallet/rectangle-wallet.svg" />
+        {/* <CoinHeaderBg src="/img/app_wallet/rectangle-wallet.svg" /> */}
         <CoinsHeader txLight>MINHAS CARTEIRAS</CoinsHeader>
 
         { this._renderCoins() }
