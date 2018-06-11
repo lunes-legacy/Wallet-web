@@ -270,7 +270,11 @@ class Histories extends React.Component {
 
   // action click history
   handleToggleHistory = item => {
-    this.setState({ activeIndex: item })
+    if(this.state.activeIndex===item){
+      this.setState({...this.state, activeIndex: null});
+    }else{
+      this.setState({...this.state, activeIndex: item });
+    }
   };
 
   componentDidMount = async () => {
