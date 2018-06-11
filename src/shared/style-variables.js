@@ -23,6 +23,8 @@ module.exports = {
 	lightPurple: '#654fa4',
 	defaultPurple: '#3b1878',
 	marginTopSmall: '10px',
+	disabledGray: '#eeefee',
+	disabledText: '#bfbebe',
 	marginTopNormal: '15px',
 	marginTopRegular: '20px',
 	marginTopBig: '30px',

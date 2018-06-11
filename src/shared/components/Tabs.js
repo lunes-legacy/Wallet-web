@@ -6,10 +6,7 @@ import style from "Shared/style-variables";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 
 // COMPONENTS
-import { TextBase } from "./TextBase";
-import { H1 } from "Components/H1";
 import { H2 } from "Components/H2";
-import { P } from "Components/P";
 
 const Div = styled.div`
   display: inline-block;
@@ -33,17 +30,17 @@ const TabContent = styled.div`
 `;
 
 const tabContentEnabled = {
-  'background-color': style.defaultPurple,
-  'border-bottom': '5px solid ' + style.normalGreen,
+  'backgroundColor': style.defaultPurple,
+  'borderBottom': '5px solid ' + style.normalGreen,
   'float': 'left',
-  'text-align': 'center',
+  'textAlign': 'center',
   'padding': '20px',
   'width': '200px'
 }
 
 const tabContentDisabled = {
   'float': 'left',
-  'text-align': 'center',
+  'textAlign': 'center',
   'padding': '20px',
   'width': '200px'
 }
@@ -97,11 +94,10 @@ class TabsBuilder extends React.Component {
 
   render() {
     return (
-        <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
-          <DivTab> <TabList style={tabStyleUl}> { this.renderTabList() } </TabList> </DivTab>
-          <Div> { this.renderTabPanel() } </Div>
-        </Tabs>
-      
+      <Tabs selectedIndex={this.state.tabIndex} onSelect={tabIndex => this.setState({ tabIndex })}>
+        <DivTab> <TabList style={tabStyleUl}> { this.renderTabList() } </TabList> </DivTab>
+        <Div> { this.renderTabPanel() } </Div>
+      </Tabs> 
     );
   }
 }

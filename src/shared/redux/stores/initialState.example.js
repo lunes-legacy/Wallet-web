@@ -1,6 +1,7 @@
 export let initialState = {
 	user: userReducer,
 	wallet: walletReducer,
+	walletInfo: privacyReducer,
 	config: {
 		interface: {
 			language: 'portuguese',
