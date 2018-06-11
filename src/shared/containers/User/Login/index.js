@@ -119,11 +119,11 @@ class Login extends React.Component {
     try {
       let statusEl = document.querySelector(".js-status");
       let { status } = this.props.user;
-
+      console.log(status)
       if (status === "pending") {
         statusEl.textContent = "Aguarde...";
       } else if (status === "fulfilled") {
-           
+        this.getSeed();
         this.props.history.push('/app/home');
       }
       else if (status === "rejected") {
