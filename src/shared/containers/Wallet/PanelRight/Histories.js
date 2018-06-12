@@ -168,7 +168,12 @@ const HistoryContent = styled.div`
 const HistoryContentItem = styled.div`
   ${TextBase}
   width: 100%;
-  padding-bottom: 5px;
+  padding-bottom: 5px; 
+
+  @media (${style.media.tablet}) {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
 `;
 
 const TransactionId = styled.div`
@@ -333,12 +338,16 @@ class Histories extends React.Component {
 
           <HistoryContent className={this.state.activeIndex === key ? 'js-history-content-active' : 'js-history-content'}>
             <Row>
-              <Col m={6} l={6}>
-                <HistoryContentItem clWhite>
+              <Col s={12} m={6} l={6}>
+                <HistoryContentItem clWhite >
                   <Text size={"1.4rem"}> </Text>
                   <Text size={"1.4rem"} txBold>
                   {/* <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} ($ {monetaryValue(price.USD * parseFloat(tx.value), { style: 'decimal' })}) */}
                   <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} (${numeral(price.BTC.USD * tx.value).format('0,0.00')})
+                  </Text>
+                  <Text size={"1.4rem"} txBold margin={"1rem 0 0 0"} >
+                    <span>Data:  </span> {"Segunda-Feira, Abril, 04, 2018 - 10:32 AM"}
+                    {/* Quarta-feira 23/05/2018 */}
                   </Text>
                 </HistoryContentItem>
               </Col>
@@ -349,16 +358,7 @@ class Histories extends React.Component {
                     <TransactionId > {tx.txid} </TransactionId>
                   </Text>
                 </HistoryContentItem>
-              </Col>
-              <Col>
-                <HistoryContentItem clWhite>
-                  <Text size={"1.4rem"}></Text>
-                  <Text size={"1.4rem"} txBold>
-                    <span>Data:  </span> {"Segunda-Feira, Abril, 04, 2018 - 10:32 AM"}
-                    {/* Quarta-feira 23/05/2018 */}
-                  </Text>
-                </HistoryContentItem>
-              </Col>
+              </Col>             
             </Row>
           </HistoryContent>
         </History>

@@ -1,3 +1,5 @@
+import { decrypt } from '../../utils/crypt'
+
 let initialState = { 
   seed: null,
   addresses: {
@@ -15,15 +17,13 @@ const privacyReducer = (state = initialState, action) => {
       }
 
     case 'WALLET_GET_INFO':
-      let walletInfo = JSON.parse(localStorage.getItem('WALLET-INFO'));
-
+      let walletInfo = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')));
       if (walletInfo) {
         return {
           seed:  walletInfo.seed,
           addresses:  walletInfo.addresses
         }  
       } else {
-        console.log('2')
         return {
           seed:  null,
           addresses:  {}

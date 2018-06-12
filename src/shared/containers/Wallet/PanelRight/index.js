@@ -1,7 +1,6 @@
 import React from 'react';
 import style from 'Shared/style-variables';
 import styled from 'styled-components';
-import { errorPattern } from 'Utils/functions';
 import { connect } from 'react-redux';
 import { WalletClass } from 'Classes/Wallet';
 //REDUX
