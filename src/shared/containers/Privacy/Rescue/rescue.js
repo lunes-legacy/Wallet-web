@@ -88,11 +88,11 @@ class Rescue extends React.Component {
 	renderImport() {
 		if (this.state.walletInfo.addresses.LNS && this.state.walletInfo.addresses.LNS.charAt(0) === '3') {
 			return (
-				<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={ () => { this.setSeed() } }>Importar</ButtonGreen>
+				<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={ () => { this.setSeed() } }>IMPORTAR</ButtonGreen>
 			);
 		} else {
 			return (
-				<ButtonDisabled width="130px" fontSize={'0.8rem'}>Importar</ButtonDisabled>
+				<ButtonDisabled width="130px" fontSize={'0.8rem'}>IMPORTAR</ButtonDisabled>
 			)
 		}
 	}

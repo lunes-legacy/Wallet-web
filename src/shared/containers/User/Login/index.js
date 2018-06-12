@@ -71,8 +71,11 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
-    localStorage.removeItem('WALLET-INFO');
-    localStorage.removeItem('ACCESS-TOKEN');
+    let walletInfo = localStorage.getItem('WALLET-INFO');
+    let accessToken = localStorage.getItem('ACCESS-TOKEN');      
+    if (walletInfo && accessToken) {
+      return this.props.history.push('/app/home');
+    }
   }
 
   getSeed() {
@@ -82,10 +85,7 @@ class Login extends React.Component {
       this.props.setWalletInfo(JSON.parse(walletInfo));
       return this.props.history.push('/app/home');
     } else {
-      return this.props.history.push('/import');      
-      // localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));
-      // this.props.setWalletInfo(walletInfo);
-      // return this.props.history.push('/app/privacy');
+      return this.props.history.push('/import');
     }
   }
 
