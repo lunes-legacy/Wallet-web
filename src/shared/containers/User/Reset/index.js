@@ -81,7 +81,7 @@ const inputs = [
 class Reset extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
-    let emailEl = document.querySelector(".reset-email");
+    let emailEl = document.body.querySelector(".reset-email");
     this.props.userReset(emailEl.value);
   };
   componentDidMount() { }
