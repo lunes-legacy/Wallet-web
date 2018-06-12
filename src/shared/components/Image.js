@@ -45,7 +45,7 @@ let P = styled.div`
 `;
 let DivParagraph = styled.div`
   margin: auto;
-  width: 100%;
+  width: 80%;
   padding: 10px;
 `;
 
