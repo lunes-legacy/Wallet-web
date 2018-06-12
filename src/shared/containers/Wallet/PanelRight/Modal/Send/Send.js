@@ -49,6 +49,7 @@ class Send extends React.Component {
 			stateButtonSend: 'Enviar'
 		}
 	}
+
 	componentDidMount() {
 		this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
@@ -61,6 +62,8 @@ class Send extends React.Component {
 		this.wrapper = ReactDOM.findDOMNode(this.ref.wrapper.current);
 
 		this.makeQrCode();
+		this.arrangeAmountType();
+
 		setTimeout(() => {
 			this.animThisComponentIn();
 		}, 500);
@@ -80,8 +83,10 @@ class Send extends React.Component {
 		// 	console.log(`%c ${err}`, 'background: red; color: white;');
 		// });
 	}
+
 	toggleModal = (event) => {
 	}
+
 	makeQrCode = () => {
 		let qr = qrcode(4, 'L');
 		qr.addData('Marcelo Rafael');
@@ -92,6 +97,7 @@ class Send extends React.Component {
 		imgEl.style.width = '90%';
 		imgEl.style.height = 'auto';
 	}
+
 	// toggleStateButtonSend = (text, disabled) => {
 	// 	if (disabled)
 	// 		this.sendButton.style.pointerEvents = 'none';
@@ -99,6 +105,30 @@ class Send extends React.Component {
 	// 		this.sendButton.style.pointerEvents = '';
 	// 	this.setState({stateButtonSend: text});
 	// }
+
+	arrangeAmountType = () => {
+		let radios = document.getElementsByName('amount-type');
+		Array.from(radios).map((radio) => {
+			if (radio.checked) {
+				let inputCOIN = document.querySelector('.input-amount.coin');
+				let inputBRL = document.querySelector('.input-amount.brl');
+				let inputUSD = document.querySelector('.input-amount.usd');
+				if (radio.value === 'coin') {
+					inputCOIN.removeAttribute('disabled');
+					inputBRL.setAttribute('disabled', true);
+					inputUSD.setAttribute('disabled', true);
+				} else if (radio.value === 'brl') {
+					inputBRL.removeAttribute('disabled');
+					inputUSD.setAttribute('disabled', true);
+					inputCOIN.setAttribute('disabled', true);
+				} else if (radio.value === 'usd') {
+					inputUSD.removeAttribute('disabled');
+					inputBRL.setAttribute('disabled', true);
+					inputCOIN.setAttribute('disabled', true);
+				}
+			}
+		});
+	}
 
 	handleOnPercentChange = (event) => {
 		let element = event.currentTarget;
@@ -109,6 +139,7 @@ class Send extends React.Component {
 		this.coinAmount.value = result;
 		this.handleOnAmountChange();
 	}
+
 	handleOnAmountChange = (event) => {
 		let element;
 		if (!event) {
@@ -169,12 +200,14 @@ class Send extends React.Component {
 			this.coinAmount.value = coinResult.toFixed(8);
 		}
 	}
+
 	animThisComponentIn = () => {
 		this.wrapper.style.transform = 'translateY(0px)';
 	}
 	animThisComponentOut = () => {
 		this.wrapper.style.transform = 'translateY(-100%)';
 	}
+
 	handleSend = () => {
 		// this.toggleStateButtonSend('Carregando...', true);
 		let coinAmount = this.coinAmount.value;
@@ -192,6 +225,7 @@ class Send extends React.Component {
 		}, 500);
 		this.animThisComponentOut();
 	}
+
 	render() {
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
@@ -203,11 +237,12 @@ class Send extends React.Component {
 								<WrapRadio>
 									<InputRadio
 										name={'amount-type'}
+										onChange={this.arrangeAmountType}
 										value={'coin'}
 										unique={'true'}
 									/>
 									<RadioCheckmark />
-									<LabelRadio clWhite >Quantidade em BTC</LabelRadio>
+									<LabelRadio clWhite>Quantidade em BTC</LabelRadio>
 								</WrapRadio>
 							</div>
 						</Col>
@@ -230,6 +265,7 @@ class Send extends React.Component {
 								<WrapRadio>
 									<InputRadio
 										type={'radio'}
+										onChange={this.arrangeAmountType}
 										value={25}
 										name={'percent'}
 										unique={'true'}
@@ -241,6 +277,7 @@ class Send extends React.Component {
 								<WrapRadio>
 									<InputRadio
 										type={'radio'}
+										onChange={this.arrangeAmountType}
 										value={50}
 										name={'percent'}
 										unique={'true'}
@@ -283,20 +320,22 @@ class Send extends React.Component {
 							<WrapRadio>
 								<InputRadio
 									name={'amount-type'}
+									onChange={this.arrangeAmountType}
 									value={'brl'}
 									unique={'true'}
 								/>
 								<RadioCheckmark />
-								<LabelRadio clWhite >Quantidade em real</LabelRadio>
+								<LabelRadio clWhite>Valor em Reais</LabelRadio>
 							</WrapRadio>
 							<WrapRadio css={css`margin: 4rem 0 0 0;`}>
 								<InputRadio
+									onChange={this.arrangeAmountType}
 									name={'amount-type'}
 									value={'usd'}
 									unique={'true'}
 								/>
 								<RadioCheckmark />
-								<LabelRadio clWhite >Quantidade em dólar</LabelRadio>
+								<LabelRadio clWhite >Valor em Dolar</LabelRadio>
 							</WrapRadio>
 						</Col>
 						<Col s={6} m={6} l={6}>
@@ -319,10 +358,10 @@ class Send extends React.Component {
 								<InputText
 									huge
 									phRight
-									phWeightLight
-									whiteTheme
 									txRight
 									noBorder
+									grayTheme
+									phMediumFont
 									type={'text'}
 									ref={this.ref.usdAmount}
 									onChange={this.handleOnAmountChange}
@@ -339,6 +378,7 @@ class Send extends React.Component {
 						<Col s={12} m={12} l={12}>
 							<InputText
 								normal
+								noBorder
 								whiteTheme
 								type={'text'}
 								ref={this.ref.address}
@@ -349,7 +389,9 @@ class Send extends React.Component {
 					<Hr />
 					{/*FOURTH ROW*/}
 					<Row>
-						<Col></Col>
+						<Col>
+
+						</Col>
 					</Row>
 				</Col>
 
