@@ -86,7 +86,8 @@ class App extends React.Component {
 	}
 	componentDidMount() {
 		let walletInfo = JSON.parse(localStorage.getItem('WALLET-INFO'));
-		if (!walletInfo) {
+		let accessToken = localStorage.getItem('ACCESS-TOKEN');
+		if (!walletInfo || !accessToken) {
 			this.props.history.push('/');
 		}
 	}

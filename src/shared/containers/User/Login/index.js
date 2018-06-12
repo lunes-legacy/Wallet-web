@@ -70,21 +70,22 @@ class Login extends React.Component {
     this.handleStatus();
   }
 
+  componentDidMount() {
+    let walletInfo = localStorage.getItem('WALLET-INFO');
+    let accessToken = localStorage.getItem('ACCESS-TOKEN');      
+    if (walletInfo && accessToken) {
+      return this.props.history.push('/app/home');
+    }
+  }
+
   getSeed() {
     let walletInfo = localStorage.getItem('WALLET-INFO');
+    localStorage.setItem('ACCESS-TOKEN', JSON.stringify(this.props.user.data.accessToken));
     if (walletInfo) {
       this.props.setWalletInfo(JSON.parse(walletInfo));
       return this.props.history.push('/app/home');
     } else {
-      let walletInfo = {
-        seed: 'fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish',
-        addresses: {
-          LNS: '161cmLgavNNkWTjR61RnNqtejFeB88X6FM'
-        }
-      };
-      localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));
-      this.props.setWalletInfo(walletInfo);
-      return this.props.history.push('/app/privacy');
+      return this.props.history.push('/import');
     }
   }
 
@@ -124,18 +125,14 @@ class Login extends React.Component {
         statusEl.textContent = "Aguarde...";
       } else if (status === "fulfilled") {
         this.getSeed();
-        this.props.history.push('/app/home');
       }
       else if (status === "rejected") {
         statusEl.textContent = "Tente novamente";
       }
     }
-
-
     catch (err) {
       console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
     }
-
   }
 
   render() {
