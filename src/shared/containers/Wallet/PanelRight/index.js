@@ -16,6 +16,7 @@ import Histories from './Histories';
 import CoinControl from './CoinControl';
 import CoinStatus from './CoinStatus';
 import Default from './Default';
+import ModalSend from "./modal/Send/index";
 
 const TextBold = Text.extend`
 	${TextBase}
@@ -36,7 +37,7 @@ class PanelRight extends React.Component {
 		super(props);
 	}
 	handleToggleHistory = (event) => {
-		let historyEl        = event.currentTarget.parentElement;
+		let historyEl = event.currentTarget.parentElement;
 		let historyContentEl = historyEl.querySelector(':nth-child(2)');
 		toggleScaleY({
 			element: historyContentEl,
@@ -58,11 +59,11 @@ class PanelRight extends React.Component {
 
 		return (
 			<StyledPanelRight>
-				<CoinStatus/>
+				<CoinStatus />
+				<ModalSend />
+				<CoinControl />
 
-				<CoinControl/>
-
-				<Histories/>
+				<Histories />
 			</StyledPanelRight>
 		);
 	}
