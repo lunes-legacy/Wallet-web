@@ -103,7 +103,7 @@ class ItemMenuApp extends React.Component {
   }
 }
 
-class PanelLeft extends React.Component {
+class PanelLeft extends React.Component {  
   render() {
     return (
       <StyledPanelLeft>
