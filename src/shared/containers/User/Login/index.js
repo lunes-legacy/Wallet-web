@@ -78,8 +78,8 @@ class Login extends React.Component {
 
   getSeed() {
     let walletInfo = localStorage.getItem('WALLET-INFO');
-    localStorage.setItem('ACCESS-TOKEN', encrypt(JSON.stringify(this.props.user.data.accessToken)));
-
+    let emailEl = document.querySelector(".login-email");
+    localStorage.setItem('ACCESS-TOKEN', encrypt(JSON.stringify({ email: emailEl.value, accessToken: this.props.user.data.accessToken })));
     walletInfo ? (
       this.props.history.push('/app/home')
     ) : (
