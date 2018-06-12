@@ -1,3 +1,4 @@
+import { LUNES_USD_PRICE } from 'Config/constants';
 let initialState = {
 	default: 'BTC',
 	price: {
@@ -12,6 +13,21 @@ const cryptocurrenciesReducer = (state = initialState, action) => {
 			return {
 				...state,
 				price: action.payload
+			}
+			break;
+		case 'CRYPTO_SET_LUNES_PRICE':
+			let USD = action.payload.USD;
+			let LNS = {
+				USD: LUNES_USD_PRICE,
+				BRL: LUNES_USD_PRICE * USD.BRL,
+				EUR: LUNES_USD_PRICE * USD.EUR
+			}
+			state = {
+				...state,
+				price: {
+					...state.price,
+					LNS: LNS
+				}
 			}
 			break;
 	}

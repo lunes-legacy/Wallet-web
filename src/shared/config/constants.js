@@ -3,9 +3,11 @@ const ENV             = 'development'; //|| 'production'
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'
 const LUNES_LIB_LOGIN = 'auto'//| 'auto' || 'manual', isso serve para fazer login automático para nao ficar apertando o botão de login sempre
+const LUNES_USD_PRICE = 0.8;
 export {
 	TESTNET,
 	LUNES_LIB_ENV,
 	LUNES_LIB_LOGIN,
-	ENV
+	ENV,
+	LUNES_USD_PRICE
 }

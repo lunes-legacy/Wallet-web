@@ -10,6 +10,7 @@ import { ENV }          from 'Config/constants';
 import { errorPattern } from 'Utils/functions';
 //REDUX
 import { 
+	setLunesPrice,
 	setBalance, 
 	togglePanelLeft, 
 	setCryptoPrice,
@@ -55,15 +56,16 @@ class Wallet extends React.Component {
 	   //  		throw errorPattern('An error ocurred on trying to do the login', 500, 'CONTAINERS_WALLET_ERROR', err2);
 	   //  	}
 	   //  }
-		let user    = await User.login({email:'',password:''});
+		let user    = await User.login({email:'', password:''});
 		if (!user) { return; }
 
 		let wallet     = new WalletClass;
 		let balance    = await wallet.getBalance(user);
 		// let coinsPrice = await wallet.getCoinsPrice();
 		
-			this.props.setCurrenciesPrice();
-			this.props.setCryptoPrice();
+		this.props.setCurrenciesPrice();
+		this.props.setCryptoPrice();
+		// this.props.setLunesPrice('agua');
 		if (ENV !== 'development') {
 			this.props.setBalance(balance);
 		}
@@ -92,6 +94,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setCryptoPrice: (data) => {
 			dispatch(setCryptoPrice(data));
+		},
+		setLunesPrice: (data) => {
+			dispatch(setLunesPrice(data));
 		},
 		setCurrenciesPrice: (data) => {
 			dispatch(setCurrenciesPrice(data));

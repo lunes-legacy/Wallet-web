@@ -1,6 +1,7 @@
 import { WalletClass } from 'Classes/Wallet';
 const Wallet = new WalletClass();
 
+
 export const setCryptoPrice = (price) => {
 	let toSymbol = 'USD,EUR,BRL';
 
@@ -12,11 +13,18 @@ export const setCryptoPrice = (price) => {
 				ETH:  { fromSymbol:'ETH',  toSymbol },
 				DASH: { fromSymbol:'DASH', toSymbol },
 				LTC:  { fromSymbol:'LTC',  toSymbol },
+				NANO: { fromSymbol:'NANO', toSymbol },
 			})
 		}
 	}
 	return {
 		type: 'CRYTPO_SET_PRICE_FULFILLED',
+		payload: price
+	}
+}
+export const setLunesPrice = (price) => {
+	return {
+		type: 'CRYPTO_SET_LUNES_PRICE',
 		payload: price
 	}
 }

@@ -8,6 +8,8 @@ import { createLogger } from "redux-logger";
 import promise          from "redux-promise-middleware";
 import thunk            from "redux-thunk";
 import { initialState } from './initialState';
+//PRIVATE MIDDLEWARES
+import { setLunesPriceMiddleware } from './middlewares.js';
 
 // combineReducers({
 // 		user: userReducer,
@@ -16,7 +18,7 @@ import { initialState } from './initialState';
 let store = createStore(
 	combineReducers(initialState), 
 	{},
-	applyMiddleware(createLogger(), thunk, promise())
+	applyMiddleware(createLogger(), thunk, promise(), setLunesPriceMiddleware('Mordecai'))
 );
 
 export {

@@ -27,7 +27,6 @@ import PanelLeft        from './PanelLeft';
 import PanelRight       from './PanelRight';
 import { AuthRoute }    from 'Components/AuthRoute';
 // import { checkAuth }    from 'Auth/index';
-
 let Panels = styled.div`
 	width: 100%;
 	height: 100%;
