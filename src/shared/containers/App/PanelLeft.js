@@ -1,11 +1,16 @@
 import React from 'react';
+import { Route, Redirect } from 'react-router-dom'
 import styled from 'styled-components';
 import styles from 'Shared/style-variables';
 import { NavLink as TmpLink } from 'react-router-dom';
 import { TextBase } from 'Components/TextBase';
 import {ButtonGreen} from "Components/Buttons";
-
 import Modal from 'Components/Modal';
+//REDUX
+import { connect } from "react-redux";
+import { setWalletInfo, getWalletInfo } from 'Redux/actions';
+
+import CookieClass        from 'Classes/Cookie';
 
 const StyledPanelLeft = styled.div`
   width: 65px;
@@ -50,6 +55,17 @@ const CustomText = styled.div`
   @media (${styles.media.tablet2}) {
     display: inline-block;
   }
+`;
+
+const CustomTextPopup = styled.div`
+  ${TextBase};
+  display: block;
+  font-size: 1.4rem;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  //font-weight: 600;
+  letter-spacing: 0.5px;
 `;
 
 const CustomLink = styled(TmpLink) `
@@ -143,7 +159,18 @@ class PanelLeft extends React.Component {
   }
 
   logoutAction = () => {
-    alert('saiu');
+    // apagar o cookie
+    let cookie = new CookieClass;
+    cookie.set({name: 'user', value: null, expires: -1});
+
+    // apagar o redux 
+    this.props.setWalletInfo({});
+
+    // apagar o localstorage
+    localStorage.removeItem('WALLET-INFO');
+
+    // redirecionar para login 
+    return this.props.history.push('/');
   }
 
   render() {
@@ -216,7 +243,7 @@ class PanelLeft extends React.Component {
             header={''}
             headerAlign={'justify'}
             text={<div>
-              If you sign out, the next time you log in the seed will be asked. 
+              <CustomTextPopup>If you sign out, the next time you log in the seed will be asked.</CustomTextPopup>
               <ButtonGreen onClick={()=>this.logoutAction()}width="70%" margin={"3rem auto 3rem auto"} fontSize={'1rem'}>Ok, I want to sign out</ButtonGreen>
               </div>}
           />
@@ -227,4 +254,23 @@ class PanelLeft extends React.Component {
   }
 }
 
-export default PanelLeft;
+const mapStateToProps = state => {
+  return {
+    walletInfo: state.walletInfo
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setWalletInfo: data => {
+      dispatch(setWalletInfo(data));
+    }, 
+    getWalletInfo: (data) => {
+      dispatch(getWalletInfo(data));
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PanelLeft);
+
+//export default PanelLeft;

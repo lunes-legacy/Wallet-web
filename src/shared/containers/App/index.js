@@ -118,7 +118,7 @@ class App extends React.Component {
 					</WrapBalance>
 				</Header>
 				<Panels>
-					<PanelLeft />
+					<PanelLeft history={this.props.history} />
 
 					<PanelRight>
 						<Switch>
