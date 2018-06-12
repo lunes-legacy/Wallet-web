@@ -4,6 +4,7 @@ import style from "Shared/style-variables";
 
 // LIBS
 import { services, networks } from 'lunes-lib';
+import { encrypt } from '../../../utils/crypt'
 
 // REDUX
 import { connect } from 'react-redux';
@@ -73,7 +74,7 @@ class Rescue extends React.Component {
 			}
 			if (this.state.walletInfo.seed) {
 				this.props.setWalletInfo(walletInfo);
-				localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));	
+				localStorage.setItem('WALLET-INFO', encrypt(JSON.stringify(walletInfo)));	
 				this.setState({ ...this.state, notification: 'Success' })
 			} else {
 				this.setState({ ...this.state, notification: 'Campo vazio' })

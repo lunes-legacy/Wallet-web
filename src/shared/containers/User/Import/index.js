@@ -4,7 +4,7 @@ import style from "Shared/style-variables";
 
 // LIBS
 import { services, networks } from 'lunes-lib';
-import { CustomLink } from "Components/Link";
+import { encrypt } from '../../../utils/crypt'
 
 // REDUX
 import { connect } from 'react-redux';
@@ -79,7 +79,7 @@ class Import extends React.Component {
 				}
       }
       
-      localStorage.setItem('WALLET-INFO', JSON.stringify(walletInfo));
+      localStorage.setItem('WALLET-INFO', encrypt(JSON.stringify(walletInfo)));
       return this.props.history.push('/app/home');
       
 		} catch (error) {
@@ -118,7 +118,7 @@ class Import extends React.Component {
                 <P fontSize={"1.4rem"} margin={"0 0 1.0rem 0"} clWhite>If it's your first time, then generate the seed</P>
                 <P fontSize={"1.9rem"} margin={"4.0rem 0 1.0rem 0"} txBold clNormalGreen>Insert your seedwords</P>
               </Row>
-              <Textarea type={"textarea"} value={this.state.walletInfo.seed} onChange={ (seed) => { this.getAddress(seed.target.value) } } required />
+              <Textarea type={"textarea"} value={this.state.walletInfo.seed ? this.state.walletInfo.seed : ""} onChange={ (seed) => { this.getAddress(seed.target.value) } } required />
             </FormGroup>
             </Form>
             <ButtonsRow>

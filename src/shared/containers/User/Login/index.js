@@ -3,6 +3,9 @@ import styled from "styled-components";
 import validator from "validator";
 import style from "Shared/style-variables";
 
+// LIBS
+import { encrypt } from '../../../utils/crypt'
+
 //REDUX
 import { connect } from "react-redux";
 import { userLogin } from 'Redux/actions';
@@ -75,7 +78,7 @@ class Login extends React.Component {
 
   getSeed() {
     let walletInfo = localStorage.getItem('WALLET-INFO');
-    localStorage.setItem('ACCESS-TOKEN', JSON.stringify(this.props.user.data.accessToken));
+    localStorage.setItem('ACCESS-TOKEN', encrypt(JSON.stringify(this.props.user.data.accessToken)));
 
     walletInfo ? (
       this.props.history.push('/app/home')
