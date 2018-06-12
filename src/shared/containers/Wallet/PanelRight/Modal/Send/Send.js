@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import qrcode from 'qrcode-generator';
 // import Instascan   from 'instascan';
 
-
 import {
 	InputRadio,
 	WrapRadio,
@@ -28,6 +27,13 @@ let CssWrapper = css`
 	transform-origin: top;
 	transform: translateY(-100%);
 	transition: all 0.3s;
+`;
+
+let Image = styled.img`
+  width: 32px;
+  height: 32px;
+  margin-top: 5px;
+  margin-bottom: 3px;
 `;
 
 class Send extends React.Component {
@@ -397,9 +403,7 @@ class Send extends React.Component {
 
 
 				{/*BUTTONS COL*/}
-				<Col
-					defaultAlign={'center'}
-					s={3} m={3} l={3}>
+				<Col defaultAlign={'center'} s={6} m={3} l={2}>
 					<Row>
 						<Button
 							css={SendButtonCss}

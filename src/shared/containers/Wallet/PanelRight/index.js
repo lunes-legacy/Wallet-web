@@ -59,8 +59,8 @@ class PanelRight extends React.Component {
 
 		return (
 			<StyledPanelRight>
+				{/* <ModalSend/> */}
 				<CoinStatus />
-				<ModalSend />
 				<CoinControl />
 
 				<Histories />
