@@ -65,7 +65,6 @@ class Wallet extends React.Component {
 		
 		this.props.setCurrenciesPrice();
 		this.props.setCryptoPrice();
-		// this.props.setLunesPrice('agua');
 		if (ENV !== 'development') {
 			this.props.setBalance(balance);
 		}
@@ -94,9 +93,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setCryptoPrice: (data) => {
 			dispatch(setCryptoPrice(data));
-		},
-		setLunesPrice: (data) => {
-			dispatch(setLunesPrice(data));
 		},
 		setCurrenciesPrice: (data) => {
 			dispatch(setCurrenciesPrice(data));
