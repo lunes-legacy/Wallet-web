@@ -111,9 +111,9 @@ class ModalReceive extends React.Component {
               <ReceiveButtonModalCss>
                 <IconAction src={"/img/app_wallet/modal_receive/ic_email.svg"} />
               </ReceiveButtonModalCss>
-              <ReceiveButtonModalCss>
+              {/* <ReceiveButtonModalCss>
                 <IconAction src={"/img/app_wallet/modal_receive/ic_link.svg"} />
-              </ReceiveButtonModalCss>
+              </ReceiveButtonModalCss> */}
             </Row>
           </Foot>
         </ReceiveStyleModalCss>

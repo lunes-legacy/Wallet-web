@@ -84,14 +84,23 @@ class App extends React.Component {
 		super(props);
 		numeral.locale(this.props.currencies.locale);
 	}
+
 	componentDidMount() {
+		this.checkAccess();
+	}
+
+	componentDidUpdate() {
+		this.checkAccess();
+	}
+
+	checkAccess() {
 		let walletInfo = JSON.parse(localStorage.getItem('WALLET-INFO'));
-		if (!walletInfo) {
+		let accessToken = localStorage.getItem('ACCESS-TOKEN');
+		if (!walletInfo || !accessToken) {
 			this.props.history.push('/');
 		}
 	}
-	componentDidUpdate() {
-	}
+	
 	render() {
 		return (
 			<WrapApp>

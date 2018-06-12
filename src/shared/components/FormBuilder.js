@@ -5,12 +5,18 @@ import { errorPattern } from 'Utils/functions';
 
 import { FormGroup } from './FormGroup';
 import { Form }      from './Form';
-import { Input, Checkbox } from './Input';
+import { Input, Checkbox, Textarea } from './Input';
 import { ButtonSecondary } from './Buttons';
 
 // import { Checkbox } from 'react-materialize';
 
 let FormGroupCheck =  FormGroup.extend`
+	text-align: center;
+	display: block;
+	margin: 10px auto 0 auto;
+`;
+
+let FormGroupTextarea =  FormGroup.extend`
 	text-align: center;
 	display: block;
 	margin: 10px auto 0 auto;
@@ -33,6 +39,10 @@ export class FormBuilder extends React.Component {
 						</label>
 					</FormGroupCheck>
 				);
+			} else if (input.type == 'textarea') {
+				<FormGroupTextarea key={index}>
+					<Textarea {...input}>{ input.value }</Textarea>
+				</FormGroupTextarea>
 			}
 			return (
 				<FormGroup key={index}>

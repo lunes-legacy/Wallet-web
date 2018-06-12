@@ -88,11 +88,11 @@ class Rescue extends React.Component {
 	renderImport() {
 		if (this.state.walletInfo.addresses.LNS && this.state.walletInfo.addresses.LNS.charAt(0) === '3') {
 			return (
-				<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={ () => { this.setSeed() } }>Importar</ButtonGreen>
+				<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={ () => { this.setSeed() } }>IMPORTAR</ButtonGreen>
 			);
 		} else {
 			return (
-				<ButtonDisabled width="130px" fontSize={'0.8rem'}>Importar</ButtonDisabled>
+				<ButtonDisabled width="130px" fontSize={'0.8rem'}>IMPORTAR</ButtonDisabled>
 			)
 		}
 	}
@@ -117,7 +117,7 @@ class Rescue extends React.Component {
 				</H1>
 				<Input onChange={ (seed) => { this.getAddress(seed.target.value) } } placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish"/>
 				<Row>
-					<H2 fontSize={"1.6rem"} margin={"0 0 2.0rem 0"} padding={"1.0rem 0 0 0"} clNormalGreen>
+					<H2 fontSize={"1.6rem"} margin={"0 0 2.0rem 0"} padding={"1.0rem 0 0 0"} clWhite>
 						{ this.state.walletInfo.addresses.LNS }
 					</H2>
 					{ this.renderImport() }

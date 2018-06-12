@@ -24,6 +24,31 @@ export let Input = styled.input`
 	}
 `;
 
+export let Textarea = styled.textarea`
+	padding: 40px;
+	width: 100%;
+	height: 150px;
+	background: ${style.normalLilac};
+	border: none;
+	border-radius: 4px;
+	color: white;
+	text-align: center;
+	font-size: 18px;
+	resize: none;
+	&:focus {
+		outline: none;
+	}
+	&::-webkit-input-placeholder {
+		color: #ccc;
+	}
+	&::-moz-placeholder {
+		color: #ccc;
+	}
+	&:-ms-placeholder {
+		color: #ccc;
+	}
+`;
+
 export let Checkbox = styled.input`
 	cursor: pointer;
 	-webkit-appearance: none;
