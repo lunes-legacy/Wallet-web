@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import styles from 'Shared/style-variables';
 import { NavLink as TmpLink } from 'react-router-dom';
 import { TextBase } from 'Components/TextBase';
+import {ButtonGreen} from "Components/Buttons";
+
+import Modal from 'Components/Modal';
 
 const StyledPanelLeft = styled.div`
   width: 65px;
@@ -21,13 +24,10 @@ const StyledPanelLeft = styled.div`
 `;
 
 const WrapLink = styled.div`
-  display: flex;
+  display: block; //flex
   flex-wrap: nowrap;
 	justify-content: flex-start;
-  //margin: 1rem 0;
-  //padding: 1rem 0;
   width: 100%;
-  //display: 0;
 `;
 
 const Icon = styled.img`
@@ -87,6 +87,32 @@ const CustomLink = styled(TmpLink) `
   } 
 `;
 
+const LinkLogout = styled.div`
+  ${TextBase};
+  
+  color: white;
+  text-decoration: none;
+  transition-delay: .2s;
+  display: block;
+  text-align:center;
+  transition: .2s;
+  opacity: 0.3;
+
+  padding: 10px;
+  
+  &:hover {
+    opacity: 1;
+  }
+
+  position: absolute;
+  top: 100%;
+  margin-top:-56px;
+
+  margin-left: 20px;
+
+  cursor: pointer;
+`;
+
 
 class ItemMenuApp extends React.Component {
   render() {
@@ -104,6 +130,22 @@ class ItemMenuApp extends React.Component {
 }
 
 class PanelLeft extends React.Component {
+  constructor(props){
+    super(props);
+    //
+    this.state = {
+      isOpenSignout: false
+    };
+  }
+
+  openModalSignout = () => {
+    this.setState({isOpenSignout:!this.state.isOpenSignout});
+  }
+
+  logoutAction = () => {
+    alert('saiu');
+  }
+
   render() {
     return (
       <StyledPanelLeft>
@@ -161,6 +203,24 @@ class PanelLeft extends React.Component {
           icon="ic_portfolio.svg"
           activeClassName="active" /> */}
 
+        
+        <LinkLogout onClick={()=>this.openModalSignout()}>
+          <CustomText size={'1.4rem'}>Sign out</CustomText>
+        </LinkLogout>
+        {
+          this.state.isOpenSignout && 
+          <Modal
+            isOpen={true}
+            height={'30%'}
+            width={'40%'}
+            header={''}
+            headerAlign={'justify'}
+            text={<div>
+              If you sign out, the next time you log in the seed will be asked. 
+              <ButtonGreen onClick={()=>this.logoutAction()}width="70%" margin={"3rem auto 3rem auto"} fontSize={'1rem'}>Ok, I want to sign out</ButtonGreen>
+              </div>}
+          />
+        }
 
       </StyledPanelLeft>
     );
