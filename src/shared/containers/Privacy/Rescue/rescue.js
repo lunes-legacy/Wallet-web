@@ -117,7 +117,7 @@ class Rescue extends React.Component {
 				</H1>
 				<Input onChange={ (seed) => { this.getAddress(seed.target.value) } } placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish"/>
 				<Row>
-					<H2 fontSize={"1.6rem"} margin={"0 0 2.0rem 0"} padding={"1.0rem 0 0 0"}>
+					<H2 fontSize={"1.6rem"} margin={"0 0 2.0rem 0"} padding={"1.0rem 0 0 0"} clWhite>
 						{ this.state.walletInfo.addresses.LNS }
 					</H2>
 					{ this.renderImport() }
