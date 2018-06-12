@@ -30,16 +30,12 @@ const History = styled.div`
 const HistoryHead = styled.div`
   display: flex;
   cursor: pointer;
-  padding: 10px 0;
   width: 100%;
 `;
 
 const HistoryHeadStatus = styled.div`
   float: left;
-    
-  @media (${style.media.desktop2}) {
-  margin-left: -3rem;      
-  }
+  margin: 0 5rem 0 5rem;
 `;
 
 const HeadStatusIcon = styled.img`
@@ -74,17 +70,8 @@ const HistoryHeadText = styled.div`
   font-size: 1.2rem;
   margin: 1.5rem 0 0 1rem;
 
-  @media (${style.media.mobile2}) {
-    margin: 2.4rem 0 0 1rem;
-  }
-
   @media (${style.media.tablet2}) {
     font-size: 1.4rem;
-    margin: 1rem 0 0 1rem; 
-  }
-
-  @media (${style.media.desktop2}) {   
-    margin-left: -5rem;
   }
 `;
 
@@ -166,8 +153,8 @@ const HistoryContentItem = styled.div`
   padding-bottom: 5px; 
 
   @media (${style.media.tablet}) {
-    padding-left: 4rem;
-    padding-right: 4rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
   }
 `;
 
@@ -298,20 +285,19 @@ class Histories extends React.Component {
         <History key={key}>
           <HistoryHead onClick={() => this.handleToggleHistory(key)}>
             <Row>
-              <Col s={4} m={6} l={1}>
+              <Col s={6} m={6} l={6}>
                 <HistoryHeadStatus>
                   <HeadStatusIcon type={tx.type} src={this.renderIcon(tx.type)} />
                   <HeadStatusDate> 12/Mar </HeadStatusDate>
                 </HistoryHeadStatus>
-              </Col>
-              <Col s={6} m={4} l={5}>
                 <HistoryHeadText>
                   <StatusStyle type={tx.type}>{this.icoStatusToText(tx.type)}</StatusStyle>
                   {/*this.timeToText(tx.time)*/}
                   90 dias atrás
                 </HistoryHeadText>
               </Col>
-              <Col s={12} m={6} l={5}>
+              
+              <Col s={6} m={6} l={6}>
                 <HistoryHeadAmount>
                   <HeadAmountCoin type={tx.type}>
                     {this.SignalControl(tx.type)}
