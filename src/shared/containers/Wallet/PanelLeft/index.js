@@ -15,7 +15,6 @@ let StyledPanelLeft = styled.div.attrs({
 	background: ${style.normalLilac};
   	box-shadow: 30px 0 40px rgba(0,0,0,.09);
   	color: #fff;
-	height: 100%;
 	max-width: 280px;
   	min-width: 130px;
 	position: relative;

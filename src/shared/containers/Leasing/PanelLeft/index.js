@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import style from 'Shared/style-variables'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { TextBase, H1 } from "Components";
-import {ButtonGreen} from "Components/Buttons";
-import {numeral} from 'Utils/numeral';
+import { ButtonGreen } from "Components/Buttons";
+import { numeral } from 'Utils/numeral';
+import ModalLeasing from "../modal/index";
 
 const StyledPanelLeft = styled.div`
     background: ${style.normalLilac};
@@ -121,45 +122,83 @@ const RowCardText = styled.div`
     width:50%;
 
     ${props => {
-      if(props.alignRight){
-        return `text-align: right`;
-      }else{
-        return `text-align: default;`;
-      }
-    }};
+    if (props.alignRight) {
+      return `text-align: right`;
+    } else {
+      return `text-align: default;`;
+    }
+  }};
   }
 
 `;
 
+
 class PanelLeft extends React.Component {
-    constructor(props){
-        super(props)
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: hidden
+      
+    };
+  }
+
+  // toogleModal = () => {
+  //   console.log("TESTE DO LEONARDO");
+  //   let statusModalLeasing = document.querySelector(".leasingVisible");
+
+  //   if (this.state.visible === false) {
+  //     this.setState({
+  //       visible: true
+  //     });
+  //   }
+  //   else {
+  //     this.setState({
+  //       visible: false
+  //     });
+  //   }
+  // }
+
+  toggleModal = ({element, from, to}) => {
+    let state = element.getAttribute('state');
+
+    if (this.state === 'visible') {
+        element.style.transform = 'translateX(-100%)';
+        document.querySelector('.modal').style.transform = 'translate(0)';
+        visibilityAllChildren({element, value: 'hidden'});
+    } else {
+        element.style.transform = 'translateX(0px)';
+        document.querySelector('.modal').setAttribute('state','visible');
+        visibilityAllChildren({element, value: 'visible'});
     }
+  }
 
-    render() {
-        return (
-            <StyledPanelLeft>
-                <LeftHeader txLight>LEASING LUNES</LeftHeader>
+  render() {
+    return (
+      <StyledPanelLeft>
+       
+        <LeftHeader txLight>LEASING LUNES</LeftHeader>
 
-                <CardLeasing>
-                  <span>Seu Saldo:</span>
-                  <TextBalance clNormalGreen txBold>300000.000000</TextBalance>
-                  <LabelBalance fontSize='1rem' txBold>LNS</LabelBalance>
+        <CardLeasing>
+          <span>Seu Saldo:</span>
+          <TextBalance clNormalGreen txBold>300000.000000</TextBalance>
+          <LabelBalance fontSize='1rem' txBold>LNS</LabelBalance>
 
-                  <RowCardBalance>
-                    <RowCardText>Rendimentos</RowCardText>
-                    <RowCardText alignRight>000000000000</RowCardText>
-                  </RowCardBalance>
-                  <RowCardBalance>
-                    <RowCardText>Total</RowCardText>
-                    <RowCardText alignRight>000000000000</RowCardText>
-                  </RowCardBalance>
-                </CardLeasing>
+          <RowCardBalance>
+            <RowCardText>Rendimentos</RowCardText>
+            <RowCardText alignRight>000000000000</RowCardText>
+          </RowCardBalance>
+          <RowCardBalance>
+            <RowCardText>Total</RowCardText>
+            <RowCardText alignRight>000000000000</RowCardText>
+          </RowCardBalance>
+        </CardLeasing>
+        
+        
 
-                <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'}>INICIAR LEASING</ButtonGreen>
-            </StyledPanelLeft>
-        );
-    }
+        <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'} onClick={this.toogleModal}>INICIAR LEASING</ButtonGreen>
+      </StyledPanelLeft>
+    );
+  }
 }
 
 export default PanelLeft;
