@@ -29,6 +29,12 @@ const History = styled.div`
   position: relative;
 `;
 
+const TextT = styled.div `
+  letter-spacing: 0.2rem;
+  font-weight: bold;
+  display: inline;  
+`;
+
 const HistoryHead = styled.div`
   display: flex;
   cursor: pointer;
@@ -48,10 +54,6 @@ const HeadStatusIcon = styled.img`
   margin: 2px auto;
 `;
 
-const TextSend = styled.div`
-  margin-left: 20px;
-  font-weight: bold;
-`
 
 const HeadStatusDate = styled.div`
   ${TextBase}
@@ -171,7 +173,11 @@ const TransactionId = styled.div`
   font-weight: bold;
   margin-top: 10px;
 `;
-
+ 
+const Span = styled.div `
+  margin-top: 16%;
+  display: inline;
+`;
 const StatusStyle = styled.div`
   color: white;
   text-align: center;
@@ -330,19 +336,19 @@ class Histories extends React.Component {
               <Col s={12} m={6} l={6}>
                 <HistoryContentItem clWhite >
                   <Text size={"1.4rem"}> </Text>
-                  <Text size={"1.4rem"} txBold>
+                  <Text size={"1.4rem"} txBold margin={"2.5rem 0 0 0"}>
                   {/* <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} ($ {monetaryValue(price.USD * parseFloat(tx.value), { style: 'decimal' })}) */}
-                  <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} (${numeral(price.BTC.USD * tx.value).format('0,0.00')})
+                  <Span> Enviado:</Span> <TextT> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} (${numeral(price.BTC.USD * tx.value).format('0,0.00')}) </TextT>
                   </Text>
-                  <Text size={"1.4rem"} txBold margin={"1rem 0 0 0"} >
-                    <span>Data:  </span> {"Segunda-Feira, Abril, 04, 2018 - 10:32 AM"}
+                  <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
+                    <span>Data:  </span> <TextT>{"Segunda-Feira, Abril, 04, 2018 - 10:32 AM"} </TextT>
                     {/* Quarta-feira 23/05/2018 */}
                   </Text>
                 </HistoryContentItem>
               </Col>
               <Col m={6} l={6}>
                 <HistoryContentItem clWhite>
-                  <Text size={"1.4rem"}>Transaction ID</Text>
+                  <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID</Text>
                   <Text size={"1.4rem"} txBold>
                     <TransactionId > {tx.txid} </TransactionId>
                   </Text>
