@@ -4,6 +4,8 @@ import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { connect } from 'react-redux';
 import qrcode from 'qrcode-generator';
+import { decrypt } from '../../../../../utils/crypt';
+let { networks } = require('lunes-lib')
 // import Instascan   from 'instascan';
 
 import {
@@ -22,6 +24,7 @@ import {
 	FirstRowCss,
 	ThirdRowCss
 } from './css';
+import { WalletClass } from '../../../../../classes/Wallet';
 
 let CssWrapper = css`
 	transform-origin: top;
@@ -74,6 +77,8 @@ class Send extends React.Component {
 			this.animThisComponentIn();
 		}, 500);
 
+		this.validateAddress();
+
 		//__________________________________-
 		// let scanner = new Instascan.Scanner(document.querySelector('.scan'));
 		// scanner.addListener('scan', (content) => {
@@ -103,6 +108,7 @@ class Send extends React.Component {
 		imgEl.style.width = '90%';
 		imgEl.style.height = 'auto';
 	}
+
 
 	// toggleStateButtonSend = (text, disabled) => {
 	// 	if (disabled)
@@ -215,21 +221,34 @@ class Send extends React.Component {
 	}
 
 	handleSend = () => {
-		// this.toggleStateButtonSend('Carregando...', true);
+
 		let coinAmount = this.coinAmount.value;
 		let address = this.address.value;
+		console.log(coinAmount);
 		if (!coinAmount || !address) return;
+		
+		let data = this.validateAddress(address) ? false : true;
 
+		console.log("RESULTADO ", data);
+		return false;
 		const props = {
 			...this.props,
 			coinAmount,
 			address
 		}
-		// console.log(props, "handleSend PROPS VARIABLE");
+
 		setTimeout(() => {
 			this.props.nextStep(props);
 		}, 500);
 		this.animThisComponentOut();
+	}
+
+	validateAddress = async (address) => {
+		const wallet = new WalletClass();
+		let network = networks.LNS;
+		let data = await wallet.validateAddress(address, network)
+
+		return data
 	}
 
 	render() {
