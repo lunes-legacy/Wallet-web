@@ -161,6 +161,8 @@ const HistoryContentItem = styled.div`
   @media (${style.media.tablet}) {
     padding-left: 5rem;
     padding-right: 5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 `;
 
