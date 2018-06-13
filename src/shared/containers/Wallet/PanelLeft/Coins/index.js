@@ -5,8 +5,7 @@ import { TextBase, H1 } from "Components";
 
 //REDUX
 import { connect } from "react-redux";
-import { openPanelRight } from 'Redux/actions';
-import { togglePanelLeft } from 'Redux/actions';
+import { openPanelRight, togglePanelLeft } from 'Redux/actions';
 
 import { Loading } from 'Components/Loading';
 
@@ -166,17 +165,19 @@ class Coins extends React.Component {
   //metodo chamado sempre que o componente é renderizado ou um
   //estado é atualizado
   _renderCoins = () => {
-    let { currentNetwork }  = this.props.component.wallet;
-    let { price }           = this.props.currencies;
-    let { balance }         = this.props;
+    let { currentNetwork }     = this.props.component.wallet;
+    let { crypto, currencies } = this.props.currencies;
+    let { balance }            = this.props
 
-    if (!balance || !price) {
+    if (!balance || !crypto || !currencies) {
       return <Loading />;
     }
+    
     let components = [];
     // EX: coinKey = 'btc';
     for (let coinKey in balance) {
-      let currentBalance = balance[coinKey];
+      let coinBalance = numeral(balance[coinKey].total_confirmed).format('0,0.000');
+      let usdBalance = numeral(balance[coinKey].total_confirmed * 0.08).format('0,0.000');
       let tmp = (
         <Coin
           key={coinKey}
@@ -191,11 +192,10 @@ class Coins extends React.Component {
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>
               { coinKey } 
-              { numeral(currentBalance.total_confirmed).format('0,0.0000') }
+              { coinBalance }
             </CoinAmount>
             <CoinValue clWhite offSide size={"2rem"}>
-              {/* { `USD ${currentBalance.total_amount}` } */}
-              { `USD ${numeral(currentBalance.total_coin_dollar).format('$0,0.0000')}`}
+              { "USD " + usdBalance }
             </CoinValue>
           </WrapCoinData>
         </Coin>
@@ -208,9 +208,7 @@ class Coins extends React.Component {
   render() {
     return (
       <StyledCoins>
-        {/* <CoinHeaderBg src="/img/app_wallet/rectangle-wallet.svg" /> */}
         <CoinsHeader txLight>MINHAS CARTEIRAS</CoinsHeader>
-
         { this._renderCoins() }
       </StyledCoins>
     );
@@ -219,9 +217,9 @@ class Coins extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    balance: state.balance,
     component:  state.component,
-    currencies: state.currencies,
-    balance:    state.balance
+		currencies: state.currencies,
   };
 };
 

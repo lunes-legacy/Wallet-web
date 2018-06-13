@@ -11,7 +11,6 @@ import {
 	privacyReducer,
 	balanceReducer,
 	currenciesReducer,
-	cryptocurrenciesReducer,
 	configReducer,
 	componentReducer } from 'Redux/reducers';
 
@@ -21,7 +20,6 @@ export let initialState = {
 	walletInfo:				privacyReducer,
 	config:           configReducer,
 	currencies:       currenciesReducer,
-	cryptocurrencies: cryptocurrenciesReducer,
 	balance:          balanceReducer,
 	component:        componentReducer
 }

@@ -1,24 +1,18 @@
 import React            from 'react';
-import ReactDOM         from 'react-dom';
 import styled           from 'styled-components';
 import style            from 'Shared/style-variables';
 import { connect }      from 'react-redux';
-import CookieClass      from 'Classes/Cookie';
 import { WalletClass }  from 'Classes/Wallet';
 import UserClass        from 'Classes/User';
-import { ENV }          from 'Config/constants';
-import { errorPattern } from 'Utils/functions';
+
 //REDUX
 import {
 	togglePanelLeft,
+	setBalance,
 	setCryptoPrice,
 	setCurrenciesPrice } from 'Redux/actions';
 
 //COMPONENTS
-import { TextBase }    from 'Components/TextBase';
-import { Text }        from 'Components/Text';
-import { Loading }     from 'Components/Loading';
-//PRIVATE COMPONENTS
 import PanelLeft       from './PanelLeft/index';
 import PanelRight      from './PanelRight/index';
 
@@ -37,6 +31,13 @@ class Wallet extends React.Component {
 			coinsPrice: undefined
 		};
 	}
+
+	componentWillMount() {
+		this.props.setBalance();
+		this.props.setCurrenciesPrice();
+		this.props.setCryptoPrice();
+	}
+
 	componentDidMount = async () => {
 		// let Cookies = new CookieClass;
 		let User    = new UserClass;
@@ -77,20 +78,27 @@ class Wallet extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		wallet: state.wallet
+		wallet: state.wallet,
+		balance: state.balance,
+		currencies: state.currencies,
+		cryptoPrice: state.currencies.crypto,
+    currenciePrice: state.currencies.currencies,
 	}
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setCryptoPrice: (data) => {
-			dispatch(setCryptoPrice(data));
-		},
-		setCurrenciesPrice: (data) => {
-			dispatch(setCurrenciesPrice(data));
-		},
 		togglePanelLeft: () => {
 			dispatch(togglePanelLeft());
-		}
+		},
+		setCurrenciesPrice: () => {
+			dispatch(setCurrenciesPrice());
+		},
+		setCryptoPrice: () => {
+			dispatch(setCryptoPrice());
+		},
+		setBalance: () => {
+      dispatch(setBalance());
+		},
 	}
 }
 

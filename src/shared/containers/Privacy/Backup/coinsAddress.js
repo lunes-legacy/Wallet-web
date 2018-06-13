@@ -27,9 +27,6 @@ const coins = [
 ]
 
 class CoinsAddress extends React.Component { 
-	componentDidMount() {
-		console.log('props', this.props);
-	} 
 	render() {
 		return (
 			coins.map( coin => {

@@ -2,9 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
 import { TextBase } from "Components/TextBase";
-import { Text } from "Components/Text";
 import { Col, Row } from "Components/index"
-import ModalSend from "./Modal/Send/index";
 import ModalReceive from "./Modal/Receive/index";
 import {connect} from "react-redux";
 import {numeral} from 'Utils/numeral';
@@ -129,10 +127,10 @@ class CoinControl extends React.Component {
         <Row overflowHidden>
           <Col s={12} m={6} l={8}>
             <WrapAmount>
-              <Amount offSide>0.00000001</Amount>
-              <Usd>USD {numeral(2).format('0,0.00')}</Usd>
+              <Amount offSide>{ this.props.component.wallet.currentNetwork.toUpperCase() } { numeral(this.props.balance[this.props.component.wallet.currentNetwork.toUpperCase()].total_confirmed).format('0,0.0000') }</Amount>
+              <Usd>USD {numeral(0.08).format('0,0.00')}</Usd>
               <Divisor />
-              <Brl>BRL {numeral(6.3).format('0,0.00')}</Brl>
+              <Brl>BRL {numeral(0.08 / 3.70).format('0,0.00')}</Brl>
             </WrapAmount>
           </Col>
           <Col s={6} m={3} l={2}>
@@ -158,7 +156,9 @@ class CoinControl extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		currencies: state.currencies
+    currencies: state.currencies,
+    component: state.component,
+    balance: state.balance
 	}
 }
 const mapDispatchToProps = (dispatch) => {

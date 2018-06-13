@@ -16,14 +16,6 @@ export let initialState = {
 			EUR: { USD: 0.8, BRL: 4 }
 		}
 	},
-	cryptocurrencies: {
-		default: 'BTC',
-		price: {
-			BTC: { USD: 10000, BRL: 30000, EUR: 8000 },
-			ETH: { USD: 400,   BRL: 1200,  EUR: 380  },
-			LNS: { USD: 2,     BRL: 6,     EUR: 1.8  }
-		}
-	},
 	balance: { 
 		BTC: { 
 			total_confirmed: 2.9, 

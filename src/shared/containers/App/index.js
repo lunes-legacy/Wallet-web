@@ -6,7 +6,7 @@ import { users, coins } from 'lunes-lib';
 
 // REDUX
 import { connect } from 'react-redux';
-import { setBalance } from 'Redux/actions';
+import { setBalance, setCurrenciesPrice, setCryptoPrice } from 'Redux/actions';
 
 //COMPONENTS
 import Home from 'Containers/Home/index';
@@ -84,9 +84,14 @@ class App extends React.Component {
 		numeral.locale(this.props.currencies.locale);
 	}
 	
+	componentWillMount() {
+		this.props.setBalance();
+		this.props.setCurrenciesPrice();
+		this.props.setCryptoPrice();
+	}
+
 	componentDidMount() {
 		this.checkAccess();
-		this.props.setBalance();
 	}
 
 	componentDidUpdate() {
@@ -97,11 +102,18 @@ class App extends React.Component {
 		let walletInfo = localStorage.getItem('WALLET-INFO');
 		let accessToken = localStorage.getItem('ACCESS-TOKEN');
 		if (!walletInfo || !accessToken) {
-			this.props.history.push('/');
+			return this.props.history.push('/');
 		}
 	}
 	
+	calcBalance() {
+
+	}
+
 	render() {
+		let lnsBalance = numeral(this.props.balance.LNS.total_confirmed).format('0,0.00000000');
+		let usdBalance = numeral(this.props.balance.LNS.total_confirmed * 0.08).format('$0,0.00')
+
 		return (
 			<WrapApp>
 				<Header>
@@ -112,9 +124,9 @@ class App extends React.Component {
 						<Balance>
 						<Text clWhite txLight txInline size={'1.8rem'}> Balance: </Text>
 							<Text clNormalGreen txNormal txInline offSide size={'2.3rem'} >LNS </Text>
-							<Text clWhite txNormal txInline offSide size={'2.0rem'}>{numeral(this.props.balance.LNS.total_confirmed).format('0,0.0000')}</Text>
+							<Text clWhite txNormal txInline offSide size={'2.0rem'}>{ lnsBalance }</Text>
 						</Balance>
-						<Text clNormalGreen txBold txRight size={'1.2rem'}>{numeral(this.props.balance.LNS.total_coin_dollar).format('$0,0.0000')}</Text>
+						<Text clNormalGreen txBold txRight size={'1.2rem'}>{ usdBalance }</Text>
 					</WrapBalance>
 				</Header>
 				<Panels>
@@ -143,25 +155,33 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user, 
+		balance: state.balance,
 		currencies: state.currencies,
-		balance: state.balance
+		cryptoPrice: state.currencies.crypto,
+    currenciePrice: state.currencies.currencies,		
 	}
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		userLogin: (email, password) => {
-			dispatch({
-				type: 'USER_LOGIN',
-				payload: userLogin(email, password)
-			});
+		// userLogin: (email, password) => {
+		// 	dispatch({
+		// 		type: 'USER_LOGIN',
+		// 		payload: userLogin(email, password)
+		// 	});
+		// },
+		setCurrenciesPrice: () => {
+			dispatch(setCurrenciesPrice());
+		},
+		setCryptoPrice: () => {
+			dispatch(setCryptoPrice());
 		},
 		setBalance: () => {
       dispatch(setBalance());
-    }
+		},
 	}
 }
-const userLogin = (email, password) => {
-	return users.login({ email, password });
-}
+// const userLogin = (email, password) => {
+// 	return users.login({ email, password });
+// }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
