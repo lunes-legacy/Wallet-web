@@ -24,7 +24,8 @@ html {
   background: #725c98;
 }
 .root {
-  height: 100vh;
+	height: 100vh;
+	background: #3b1878;
 }
 /*.app {
 	height: 100vh;
