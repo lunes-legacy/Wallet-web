@@ -18,7 +18,6 @@ import { Input } from "Components/Input";
 import { ButtonSecondary } from "Components/Buttons";
 import { CustomLink } from "Components/Link";
 import { H1 } from "Components/H1";
-import { P } from "Components/P";
 import { Logo } from "Components/Logo";
 
 //PRIVATE COMPONENTS
@@ -46,12 +45,6 @@ const CustomLogo = Logo.extend`
 
 const CustomLinkRight = CustomLink.extend`
   text-align: right;
-`;
-
-const CustomP = P.extend`
-  display: block;
-  margin-top: 200px;
-  text-align: center;
 `;
 
 const Paragraph = styled.div`

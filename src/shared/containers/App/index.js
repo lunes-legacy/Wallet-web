@@ -1,5 +1,5 @@
 require('dotenv').load();
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import { users, coins } from 'lunes-lib';

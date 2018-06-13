@@ -136,6 +136,7 @@ const RowCardText = styled.div`
 
 `;
 
+
 class PanelLeft extends React.Component {
   constructor(props) {
     super(props)

@@ -60,9 +60,12 @@ class Wallet extends React.Component {
 		let wallet     = new WalletClass;
 		let balance    = await wallet.getBalance(user);
 		// let coinsPrice = await wallet.getCoinsPrice();
-
-			this.props.setCurrenciesPrice();
-			this.props.setCryptoPrice();
+		
+		this.props.setCurrenciesPrice();
+		this.props.setCryptoPrice();
+		if (ENV !== 'development') {
+			this.props.setBalance(balance);
+		}
 	}
 
 	render() {
@@ -87,6 +90,18 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
+<<<<<<< HEAD
+=======
+		setBalance: (data) => {
+			dispatch(setBalance(data));
+		},
+		setCryptoPrice: (data) => {
+			dispatch(setCryptoPrice(data));
+		},
+		setCurrenciesPrice: (data) => {
+			dispatch(setCurrenciesPrice(data));
+		},
+>>>>>>> 1886f9e87e007150c429c5d990671aadee703995
 		togglePanelLeft: () => {
 			dispatch(togglePanelLeft());
 		},

@@ -1,3 +1,4 @@
+import { store } from 'Redux/stores';
 let initialState = {
 	default: 'BRL',
 	locale: 'en', // this used for numeral lib - pt-br, en ...

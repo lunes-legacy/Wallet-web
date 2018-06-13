@@ -16,5 +16,6 @@ export {
 	setTxHistory,
 	setCryptoPrice,
 	setCurrenciesPrice,
-	openPanelRight
+	openPanelRight,
+	setLunesPrice
 }

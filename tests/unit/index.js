@@ -7,7 +7,7 @@ let dev = process.env.MOCHA_DEVELOPER;
 switch (dev) {
 	case 'marcelo':
 		console.log(`\x1b[42m ${dev.toUpperCase()}'s TESTS \x1b[0m`);
-		require('./marcelo/lunes-lib/index.js'); break;
+		require('./marcelo/index.js'); break;
 }
 
 const util = require('util');
