@@ -2,6 +2,7 @@ import React      from 'react';
 import { render } from 'react-dom';
 import Modal      from 'Containers/Wallet/PanelRight/Modal/Send/index';
 import Receive    from 'Containers/Wallet/PanelRight/Modal/Receive/index';
+import LeasingModal    from 'Containers/leasing/modal/index';
 import Input      from 'Components/forms/Input';
 import { Col, Row } from 'Components/index';
 
@@ -86,15 +87,15 @@ let props = {
   }
 };
 
-const toRender = () => {
-  return(
-    <Modal {...props}/> 
-  );
-}
 // const toRender = () => {
-// 	return(
-// 		<Receive isShow={true}/>
-// 	);
+//   return(
+//     <Modal {...props}/> 
+//   );
 // }
+const toRender = () => {
+	return(
+		<LeasingModal isShow={true}/>
+	);
+}
 
 export default toRender;

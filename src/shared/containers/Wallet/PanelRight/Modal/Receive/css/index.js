@@ -1,16 +1,15 @@
 import styled, { css } from "styled-components";
-import style from "Shared/style-variables";
 import { TextBase } from "Components/TextBase.js";
 import BackgroundBase from "Components/bases/BackgroundBase.js";
 
 export let ReceiveStyleModalCss = styled.div`
   width: 100%;
   height: calc(100% - 75px);
-  min-width: 320px;
-  min-height: 414px;
+  min-width: 470px;
+  min-height: 380px;
   position: relative;
   background: #3a1777;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 3rem;
   @media (min-width: 601px) {
     width: 25%;
@@ -20,14 +19,17 @@ export let ReceiveStyleModalCss = styled.div`
 `;
 
 export let ReceiveButtonQrCodeCss = styled.div`
-  height: 20rem;
-  width: 20rem;
-  border-radius: 20px;
+  
+  width: 19rem;
+  height: 19rem;
+  border-radius: 48px;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  box-shadow: inset 0 1px 8px 0 #4b2c82;
   user-select: none;
+  align-items: center; 
+  justify-content: center;
+  
+
 
   ${TextBase};
   ${BackgroundBase};
@@ -41,6 +43,7 @@ export let ReceiveContentCss = styled.div`
   margin: 12px 0 0 0;
   max-height: calc(100% - 75px);
   overflow: auto;
+  
 `;
 
 export let FirstRowCss = css`
@@ -52,37 +55,52 @@ export let ThirdRowCss = css`
 `;
 
 export let ReceiveLabelCss = styled.label`
-  position: relative;
-  top: 10px;
-  color: #fff;
-  font-size: 12pt;
+  
+  margin-top: 3%;
+  color: #ffffff;
+  font-size: 1.8rem;
   position: center;
 `;
 
 export let ReceiveLabelTextCss = styled.label`
   position: relative;
-  top: 10px;
+  margin-top: 5%;
   font-weight: bold;
   color: #4cd566;
-  font-size: 14pt;
+  font-size: 1.8rem;
   position: center;
 `;
 
 export let ReceiveButtonModalCss = styled.div`
-  width: 80px;
-  height: 80px;
-  background-color: #f7931a;
-  border-radius: 60%;
-  align-items: center;
-  margin-top: 19%;
-  margin-right: 10px;
-  padding: 14px;
+  
+   width: 90px;
+   height: 90px;
+   background-color: #4cd566;
+   border-radius: 60%;
+   align-items: center;
+   margin-top: 8%;
+   margin-right: 5%;
+   padding: 14px;
+   
+   &:hover {
+    box-shadow: 0px 2px 30px 0px #4cd566;
+    cursor: pointer;
+  }
 `;
 
 export let IconAction = styled.img`
-  margin-top: 6px;
-  width: 40px;
-  height: 40px;
-  min-width: 50px;
-  position: center;
-`;
+  
+  margin-left: 0.6rem;
+  margin-top: 1.6rem;
+  width: 2.7rem;
+  height: 3.0rem;
+  min-width: 5.0rem;
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 1;
+  }
+
+
+  
+  `;

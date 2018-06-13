@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import { WalletClass } from "Classes/Wallet";
 
 class CoinGraph extends React.Component {
@@ -18,8 +18,8 @@ class CoinGraph extends React.Component {
   }
 
   coinHistory = async () => {
-    let obj     = { fromSymbol: this.props.currentNetwork, toSymbol: "USD", range: "RANGE_1D" };
-    let wallet  = await new WalletClass().getCoinHistory(obj);
+    let obj = { fromSymbol: this.props.currentNetwork, toSymbol: "USD", range: "RANGE_1D" };
+    let wallet = await new WalletClass().getCoinHistory(obj);
     let walletFormatted = await this.convertTimestampToDate(wallet.data);
 
     this.setState(() => {
@@ -57,11 +57,13 @@ class CoinGraph extends React.Component {
     return (
       <div>
         <ResponsiveContainer width={this.props.width} height={this.props.height}>
-          <LineChart data={this.state.history_time_price}>
+          <LineChart data={this.state.history_time_price}
+            margin={{ right: 0, left: 0, }}>
+            <CartesianGrid stroke="#4b2c82" vertical={false} strokeWidth={3}/>
             <XAxis hide dataKey="time" />
             <YAxis hide domain={["dataMin", "dataMax"]} />
             <Tooltip wrapperStyle={styleWrapper} labelStyle={fontStyle} itemStyle={fontStyle} separator={": $"} />
-            <Line dataKey="close" dot={false} stroke="#4cd566" />
+            <Line dataKey="close" dot={false} stroke="#49d168" strokeWidth={3}/>
           </LineChart>
         </ResponsiveContainer>
       </div>

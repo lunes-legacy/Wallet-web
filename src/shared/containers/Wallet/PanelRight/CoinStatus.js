@@ -10,6 +10,8 @@ import { Text } from "Components/Text";
 import { Loading } from "Components/Loading";
 import { Col, Row } from 'Components/index';
 
+import {numeral} from 'Utils/numeral';
+
 const StyledCoinStatus = styled.div`
   width: 100%;
   display: flex;
@@ -22,9 +24,24 @@ const StyledCoinStatus = styled.div`
 const CoinDetailsText = styled.div`
   ${TextBase}
   width: 100%;
-  font-size: 1.5rem;
+  font-size: 2.3rem;
   color: white;
   text-align: left;
+  font-weight: 300;
+  @media (${style.media.laptop}) {
+    font-size: 	3.0rem;
+  }
+`;
+
+const TextValue = styled.div`
+  ${TextBase}
+  width: 100%;
+  font-size: 2.3rem;
+  color: white;
+  text-align: left;
+  font-weight: 100 !important; 
+  display: inline; 
+
 
   @media (${style.media.laptop}) {
     font-size: 	3.0rem;
@@ -66,7 +83,7 @@ const GraphContainer = styled.div`
 `;
 
 const WrapCoinPercent = styled.div`
-  margin-left: 33%;
+  margin-left: 20%;
   display: flex;
   align-items: center;
   background: ${style.normalGreen};
@@ -105,9 +122,10 @@ const CoinPercent = styled.div`
 `;
 
 class CoinStatus extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
+    numeral.locale(this.props.currencies.locale);
     this.state = {
       coin_porcentage_price: []
     };
@@ -134,6 +152,8 @@ class CoinStatus extends React.Component {
   render() {
     let { currentNetwork } = this.props.wallet;
     let { price } = this.props.cryptocurrencies;
+    let { balance } = this.props;
+    console.log(price)
     if (!price) {
       return null;
     }
@@ -143,16 +163,18 @@ class CoinStatus extends React.Component {
         <Row>
           <Col s={12} m={3} l={3}>
             <CoinDetails>
-              <CoinDetailsText offSide>BitCoin</CoinDetailsText>
-              <CoinDetailsText offSide>{`1 BTC ${currentNetwork.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText>
+              <CoinDetailsText offSide>{balance[currentNetwork.toUpperCase()].coinName}</CoinDetailsText>
+              {/* <CoinDetailsText offSide>{`1 ${currentNetwork.toUpperCase()} R$${'31.000,00'}`}</CoinDetailsText> */}
+              <CoinDetailsText >{`1 ${currentNetwork.toUpperCase()} ${numeral(31000.15).format('$0,0.00')}`}</CoinDetailsText>
+              
             </CoinDetails>
           </Col>
-          <Col s={8} m={6} l={6}>
+          <Col s={8} m={6} l={7}>
             <GraphContainer>
-              <CoinGraph width='95%' height={75} currentNetwork={currentNetwork.toUpperCase()} />
+              <CoinGraph width='95%' height={80} currentNetwork={currentNetwork.toUpperCase()} />
             </GraphContainer>
           </Col>
-          <Col s={4} m={3} l={3}>
+          <Col s={4} m={3} l={2}>
             <WrapCoinPercent style={this.state.coin_porcentage_price < 0 ? { background: 'indianred' } : { background: 'lightgreen' }}>
               <CoinPercent>{this.state.coin_porcentage_price}%</CoinPercent>
               {/*{this.state.coin_porcentage_price > 0 ? (
@@ -171,7 +193,9 @@ class CoinStatus extends React.Component {
 const mapStateToProps = state => {
   return {
     wallet: state.component.wallet,
-    cryptocurrencies: state.cryptocurrencies
+    cryptocurrencies: state.cryptocurrencies,
+    currencies: state.currencies,
+    balance:    state.balance
   };
 };
 const mapDispatchToProps = dispatch => {

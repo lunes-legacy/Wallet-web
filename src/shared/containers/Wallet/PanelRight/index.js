@@ -1,7 +1,6 @@
 import React from 'react';
 import style from 'Shared/style-variables';
 import styled from 'styled-components';
-import { errorPattern } from 'Utils/functions';
 import { connect } from 'react-redux';
 import { WalletClass } from 'Classes/Wallet';
 //REDUX
@@ -16,6 +15,7 @@ import Histories from './Histories';
 import CoinControl from './CoinControl';
 import CoinStatus from './CoinStatus';
 import Default from './Default';
+import ModalSend from "./modal/Send/index";
 
 const TextBold = Text.extend`
 	${TextBase}
@@ -36,7 +36,7 @@ class PanelRight extends React.Component {
 		super(props);
 	}
 	handleToggleHistory = (event) => {
-		let historyEl        = event.currentTarget.parentElement;
+		let historyEl = event.currentTarget.parentElement;
 		let historyContentEl = historyEl.querySelector(':nth-child(2)');
 		toggleScaleY({
 			element: historyContentEl,
@@ -45,7 +45,7 @@ class PanelRight extends React.Component {
 		});
 	}
 	componentDidMount = async () => {
-		
+
 	}
 	_shouldRender = () => {
 		let { isPanelRightVisible } = this.props.component_wallet;
@@ -54,15 +54,15 @@ class PanelRight extends React.Component {
 		return true;
 	}
 	render() {
-		if (!this._shouldRender()) return null;
-		
+		if (!this._shouldRender()) return <Default />;
+
 		return (
 			<StyledPanelRight>
-				<CoinStatus/>
+				{/* <ModalSend/> */}
+				<CoinStatus />
+				<CoinControl />
 
-				<CoinControl/>
-
-				<Histories/>
+				<Histories />
 			</StyledPanelRight>
 		);
 	}

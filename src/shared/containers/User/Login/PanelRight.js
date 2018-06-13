@@ -9,8 +9,8 @@ export const PanelRight = styled.main`
 	float: left;
 	height: 100vh;
 	width: 60%;
-	
-	@media only screen and (min-width: 768px) {
+
+	@media only screen and (${variables.media.tablet2}) {
 		display: block;
 	}
 `;

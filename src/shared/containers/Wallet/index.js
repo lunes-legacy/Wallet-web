@@ -27,7 +27,6 @@ import PanelRight      from './PanelRight/index';
 //______INDEX
 let Panels = styled.div`
 	width: 100%;
-	height: 100%;
 	display: flex;
 `;
 
@@ -56,7 +55,7 @@ class Wallet extends React.Component {
 	   //  		throw errorPattern('An error ocurred on trying to do the login', 500, 'CONTAINERS_WALLET_ERROR', err2);
 	   //  	}
 	   //  }
-		let user    = await User.login({email:'', password:''});
+		let user    = await User.login({email:'',password:''});
 		if (!user) { return; }
 
 		let wallet     = new WalletClass;

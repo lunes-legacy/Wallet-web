@@ -10,6 +10,8 @@ export {
 	userLogin,
 	userCreate,
 	setBalance,
+	setWalletInfo,
+	getWalletInfo,
 	togglePanelLeft,
 	setTxHistory,
 	setCryptoPrice,

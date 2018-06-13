@@ -1,9 +1,11 @@
 import { WalletClass } from 'Classes/Wallet';
 const Wallet = new WalletClass();
-export const openPanelRight = () => {
+export const openPanelRight = (data) => {
 	return {
 		type: 'WALLET_OPEN_PANELRIGHT',
-		payload: {}
+		payload: {
+			currentNetwork: data.currentNetwork
+		}
 	}
 }
 export const setTxHistory = (data) => {

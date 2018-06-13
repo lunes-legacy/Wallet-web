@@ -23,7 +23,8 @@ const componentReducer = (state = initialState, action) => {
 				...state,
 				wallet: {
 					...state.wallet,
-					isPanelRightVisible: true 
+					currentNetwork: action.payload.currentNetwork,
+					isPanelRightVisible: true
 				}
 			}
 			return state;

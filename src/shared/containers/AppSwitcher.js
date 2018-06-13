@@ -4,6 +4,7 @@ import { createBrowserHistory } from "history";
 
 import App from "Containers/App/index";
 import Login from "Containers/User/Login/index";
+import Import from "Containers/User/Import/index";
 import Registry from "Containers/User/Registry/index";
 import Reset from "Containers/User/Reset/index";
 
@@ -14,6 +15,7 @@ class AppSwitcher extends React.Component {
         <Route strict path={"/app"} component={App} />
         <Route exact path={"/login"} component={Login} />
         <Route exact path={"/"} component={Login} />        
+        <Route exact path={"/import"} component={Import} />
         <Route exact path={"/registry"} component={Registry} />
         <Route exact path={"/reset"} component={Reset} />
       </Switch>

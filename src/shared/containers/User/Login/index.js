@@ -2,8 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import validator from "validator";
 import style from "Shared/style-variables";
-import { Redirect } from "react-router-dom";
-import { Route } from "react-router";
+
+// LIBS
+import { encrypt } from '../../../utils/crypt'
 
 //REDUX
 import { connect } from "react-redux";
@@ -71,20 +72,18 @@ class Login extends React.Component {
     let walletInfo = localStorage.getItem('WALLET-INFO');
     let accessToken = localStorage.getItem('ACCESS-TOKEN');      
     if (walletInfo && accessToken) {
-      return <Redirect to="/app/home"/>
+      this.props.history.push('/app/home')
     }
   }
 
   getSeed() {
     let walletInfo = localStorage.getItem('WALLET-INFO');
-    localStorage.setItem('ACCESS-TOKEN', JSON.stringify(this.props.user.data.accessToken));
-    console.log('1');
+    let emailEl = document.querySelector(".login-email");
+    localStorage.setItem('ACCESS-TOKEN', encrypt(JSON.stringify({ email: emailEl.value, accessToken: this.props.user.data.accessToken })));
     walletInfo ? (
-      console.log('2'),
-      <Redirect to="/app/home"/>
+      this.props.history.push('/app/home')
     ) : (
-      console.log('3'),
-      <Redirect to="/import"/>
+      this.props.history.push('/import')
     )  
   }
 

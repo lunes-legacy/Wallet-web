@@ -5,7 +5,8 @@ let initialState = {
 		BRL: { USD: 0.3, EUR: 0.2 },
 		USD: { BRL: 3, EUR: 1.2 },
 		EUR: { USD: 0.8, BRL: 4 }
-	}
+	},
+	locale: 'en' // this used for numeral lib - pt-br, en ...
 }
 const currenciesReducer = (state = initialState, action) => {
 	switch (action.type) {

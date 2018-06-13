@@ -1,30 +1,23 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import styled, { css } from "styled-components";
-import style from "Shared/style-variables";
-import { connect } from "react-redux";
 import qrcode from "qrcode-generator";
-import { Col, Row, Button } from "Components/index";
+import { Col, Row } from "Components/index";
 
 //PRIVATE COMPONENTS
 import Background from "../Background";
 import Close from "../Close";
-import Content from "../Content";
 import Foot from "../Foot";
-import Head from "../Head";
-import Hr from "../Hr";
-import StyledModal from "../StyledModal";
+
 import {
   ReceiveStyleModalCss,
   ReceiveButtonQrCodeCss,
   ReceiveContentCss,
-  ReceiveCircleButtonCss,
   ReceiveLabelCss,
   ReceiveButtonModalCss,
   IconAction,
-  ReceiveLabelTextCss
-} from "./css";
-import CookieClass from "../../../../../classes/Cookie";
+  ReceiveLabelTextCss,
+  } from "./css";
+
 
 class ModalReceive extends React.Component {
   constructor(props) {
@@ -44,7 +37,7 @@ class ModalReceive extends React.Component {
 
   getPayAddress = () => {
     // let data = new CookieClass().get("user").user.replace("; _ga", "");
-    let data = '{"_id":"5afc4dd1eb40bcbca23f92ad","accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZmM0ZGQxZWI0MGJjYmNhMjNmOTJhZCIsInBob25lVmVyaWZpZWQiOm51bGwsInBpbiI6bnVsbCwidHdvZmFFbmFibGVkIjpudWxsLCJpYXQiOjE1MjcwMDAwNTAsImV4cCI6MTUyNzAwNzI1MH0.uDQQ-pdKDhg0ebagDFVUjwiFei_QyVhlygc7uubsKyo","email":"wandyer1@lunes.io","fullname":"Wandyer Silva","avatar":{"small":""},"homeAddress":"","phoneNumber":"","city":"","state":"","country":"","birthDate":"","confirmIcoTerm":false,"ownCoupon":"5SLBR768","coupon":"","whitelist":false,"pinIsValidated":false,"phoneIsValidated":false,"twofaEnabled":false,"wallet":{"hash":"skull ticket hidden split couch orient season tooth valley learn edge truck","coins":[{"symbol":"btc","currentIndex":0,"addresses":[{"index":0,"address":"moNjrdaiwked7d8jYoNxpCTZC4CyheckQH","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"},{"symbol":"ltc","currentIndex":0,"addresses":[{"index":0,"address":"moNjrdaiwked7d8jYoNxpCTZC4CyheckQH","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"},{"symbol":"dash","currentIndex":0,"addresses":[{"index":0,"address":"yUBEQnE5Xz62qCBFFy3CsqMNSggLL2VJGQ","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"},{"symbol":"eth","currentIndex":0,"addresses":[{"index":0,"address":"0x4E3f5C5DEBf6cF3B6468407fD2D8379EB6725197","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"}]},"depositWallet":{}}';
+    let data = '{"_id":"5afc4dd1eb40bcbca23f92ad","accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZmM0ZGQxZWI0MGJjYmNhMjNmOTJhZCIsInBob25lVmVyaWZpZWQiOm51bGwsInBpbiI6bnVsbCwidHdvZmFFbmFibGVkIjpudWxsLCJpYXQiOjE1MjcwMDAwNTAsImV4cCI6MTUyNzAwNzI1MH0.uDQQ-pdKDhg0ebagDFVUjwiFei_QyVhlygc7uubsKyo","email":"wandyer1@lunes.io","fullname":"Wandyer Silva","avatar":{"small":""},"homeAddress":"","phoneNumber":"","city":"","state":"","country":"","birthDate":"","confirmIcoTerm":false,"ownCoupon":"5SLBR768","coupon":"","whitelist":false,"pinIsValidated":false,"phoneIsValidated":false,"twofaEnabled":false,"wallet":{"hash":"skull ticket hidden split couch orient season tooth valley learn edge truck","coins":[{"symbol":"btc","currentIndex":0,"addresses":[{"index":0,"address":"161cmLgavNNkWTjR61RnNqtejFeB88X6FM","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"},{"symbol":"ltc","currentIndex":0,"addresses":[{"index":0,"address":"moNjrdaiwked7d8jYoNxpCTZC4CyheckQH","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"},{"symbol":"dash","currentIndex":0,"addresses":[{"index":0,"address":"yUBEQnE5Xz62qCBFFy3CsqMNSggLL2VJGQ","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"},{"symbol":"eth","currentIndex":0,"addresses":[{"index":0,"address":"0x4E3f5C5DEBf6cF3B6468407fD2D8379EB6725197","createdAt":"2018-05-16T15:27:12.896Z"}],"createdAt":"2018-05-16T15:27:12.896Z"}]},"depositWallet":{}}';
     var address = JSON.parse(data);
     return address.wallet.coins[0].addresses[0].address;
   };
@@ -58,8 +51,9 @@ class ModalReceive extends React.Component {
     if (!this.wrapperQr) return; //precisa tirar
     this.wrapperQr.innerHTML = img;
     let imgEl = this.wrapperQr.children[0];
-    imgEl.style.width = "90%";
+    imgEl.style.width = "80%";
     imgEl.style.height = "auto";
+
   };
 
   copyPaymentAddress = () => {
@@ -111,9 +105,9 @@ class ModalReceive extends React.Component {
               <ReceiveButtonModalCss>
                 <IconAction src={"/img/app_wallet/modal_receive/ic_email.svg"} />
               </ReceiveButtonModalCss>
-              <ReceiveButtonModalCss>
+              {/* <ReceiveButtonModalCss>
                 <IconAction src={"/img/app_wallet/modal_receive/ic_link.svg"} />
-              </ReceiveButtonModalCss>
+              </ReceiveButtonModalCss> */}
             </Row>
           </Foot>
         </ReceiveStyleModalCss>
