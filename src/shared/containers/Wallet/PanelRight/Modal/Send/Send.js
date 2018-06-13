@@ -13,14 +13,15 @@ import {
 	RadioCheckmark
 } from 'Components/forms/input-radio';
 import { InputText } from 'Components/forms/input-text';
-import { Col, Row, Button } from 'Components/index';
+import { Col, Row, Button, TextBase, Text } from 'Components/index';
 //PRIVATE COMPONENTS
 import Hr from '../Hr';
 //CUSTOM CSS
 import {
 	SendButtonCss,
 	FirstRowCss,
-	ThirdRowCss
+	ThirdRowCss,
+	FourthRowCss
 } from './css';
 
 let CssWrapper = css`
@@ -35,6 +36,21 @@ let Image = styled.img`
   margin-top: 5px;
   margin-bottom: 3px;
 `;
+
+let FeeButton = styled.button`
+	${TextBase}
+	background: transparent;
+	border: none;
+	padding: 5px 10px 5px 10px;
+	cursor: pointer;
+	color: white;
+	&:focus {
+		outline: none;
+	}
+`;
+let FeeCss = css`
+`;
+
 
 class Send extends React.Component {
 	constructor(props) {
@@ -231,6 +247,22 @@ class Send extends React.Component {
 		}, 500);
 		this.animThisComponentOut();
 	}
+	_arrangeFeeButtons = (currentSelected) => {
+		let buttons = document.querySelectorAll('.fee-button');
+		Array.from(buttons).map((button) => {
+			let state = button.getAttribute('state');
+			if (state === 'selected') {
+				button.setAttribute('state','deselected');
+				button.style.borderBottom = `none`;
+			}
+		});
+		currentSelected.setAttribute('state', 'selected');
+		currentSelected.style.borderBottom = `5px solid ${style.normalGreen}`;
+	}
+	handleClickFee = (event) => {
+		let button = event.currentTarget;
+		this._arrangeFeeButtons(button);
+	}
 
 	render() {
 		return (
@@ -394,9 +426,11 @@ class Send extends React.Component {
 
 					<Hr />
 					{/*FOURTH ROW*/}
-					<Row>
+					<Row css={FourthRowCss}>
 						<Col>
-
+							<FeeButton onClick={this.handleClickFee} className="fee-button first-btn">0.0001 <Text clNormalRed>baixa</Text></FeeButton>
+							<FeeButton onClick={this.handleClickFee} className="fee-button second-btn">0.001 <Text clNormalGreen>média</Text></FeeButton>
+							<FeeButton onClick={this.handleClickFee} className="fee-button third-btn">0.01 <Text clMostard>alta</Text></FeeButton>
 						</Col>
 					</Row>
 				</Col>

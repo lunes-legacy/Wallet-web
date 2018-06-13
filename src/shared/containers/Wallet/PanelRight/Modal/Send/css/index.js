@@ -10,3 +10,7 @@ export let FirstRowCss = css`
 export let ThirdRowCss = css`
 	padding: 25px 0 25px 0;
 `;
+
+export let FourthRowCss = css`
+	padding: 20px 0 0 0;
+`;

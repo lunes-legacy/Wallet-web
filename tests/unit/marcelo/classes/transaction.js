@@ -1,9 +1,7 @@
 import { EstimateFee } from 'Classes/crypto';
 import { users, coins } from 'lunes-lib';
 
-let Estimate = new EstimateFee();
-
-
+let Estimate = new EstimateFee;
 
 let coinToTest = 'BTC'; //just change here <<<<<
 let ETHtestnetAddress = '0xf4af6cCE5c3e68a5D937FC257dDDb73ac3eF9B3A';
@@ -19,7 +17,7 @@ if (coinToTest === 'BTC') {
 	fromAddress = ETHtestnetAddress;
 }
 const calculateFee = (user) => {
-	return Promise.resolve(Estimate.estimate({
+	return Promise.resolve(Estimate.go({
 		network: coinToTest,
 		fromAddress: fromAddress,
 		toAddress: toAddress,

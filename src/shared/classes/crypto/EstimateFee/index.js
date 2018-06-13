@@ -1,5 +1,5 @@
-import { estimateBTC, estimateETH } from './families';
-import { coins } from 'lunes-lib';
+// import { estimateBTC, estimateETH } from './families';
+// import { coins } from 'lunes-lib';
 import { errorPattern } from 'Utils/functions';
 
 export default class EstimateFee {
@@ -29,7 +29,7 @@ export default class EstimateFee {
 			throw errorPattern(`An error ocurred on trying to get ${network}'s networkFees`, 500, "FEE_NETWORKFEES_ERROR", err);
 		}
 	}
-	estimate = async (data) => {
+	go = async (data) => {
 		if (!data.testnet)
 			data.testnet = true;
 		if (!data.network)
@@ -40,22 +40,44 @@ export default class EstimateFee {
 		this.data.networkFees = this.networkFees.data;
 		this.network     = data.network.toUpperCase();
 
-		return await this._switchFamily();
+		return await this._estimate();
 	}
-	_switchFamily = () => {
-		switch (this.families[this.network]) {
-			case 'BTCFamily':
-				return this._BTC(this.data);
-			case 'ETHFamily':
-				return this._ETH(this.data);
-			default:
-				throw errorPattern("Network parameter is pending",500,"FEE_CALCULATEFEE_ERROR"); break;
+	_estimate = async () => {
+		let params = {
+			high:   {},
+			medium: {},
+			low:    {}
+		};
+		let result = {
+			high:   {},
+			medium: {},
+			low:    {}	
 		}
-	}
-	_BTC = async (data) => {
-		return await estimateBTC(data);
-	}
-	_ETH = async (data) => {
-		return await estimateETH(data);
+		let { networkFees } = data;
+		let currentEstimate;
+		data.amount = coins.util.unitConverter.toSatoshi(data.amount);
+		for (let level in params) {
+			if (this.network === "ETH") {
+				params[level] = {
+					...data,
+					gasLimit: 21000,
+					gasPrice: networkFees[level]
+				}
+			} else {
+				params[level] = {
+					...data,
+					feePeerByte: networkFees[level]
+				}
+			}
+			currentEstimate = params[level];
+			// result[level] = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
+		}
+		return result;
+		// return {
+		// 	network: 'BTC',
+		// 	data: {
+		// 		fee: 100
+		// 	}
+		// }
 	}
 }
