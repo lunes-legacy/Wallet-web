@@ -42,8 +42,6 @@ class Home extends React.Component {
   render() {
     return (
       <Container>
-        <Redirect to='/app/home' />
-
         <MainRectangle>
           <Icon src={"/img/app_panel_left/ic_wallet.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
