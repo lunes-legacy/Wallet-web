@@ -5,7 +5,7 @@ import styled from "styled-components";
 import TabsBuilder from "Components/Tabs";
 
 // PAGE
-// import Backup from "./Backup/backup";
+import User from "./User/index";
 // import Rescue from "./Rescue/rescue";
 
 const Container = styled.div`
@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 const tabTitle = [
-	'User data',
+	'User',
   'Notification',
   'Account'
 ]
@@ -24,7 +24,7 @@ class Configuration extends React.Component {
   render() {
     return (
       <Container>
-        <TabsBuilder tabTitle={tabTitle} tabContent={['UserData', 'Notifications', 'Account']}/>
+        <TabsBuilder tabTitle={tabTitle} tabContent={[<User />, 'Notifications', 'Account']}/>
       </Container>
     );
   }
