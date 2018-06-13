@@ -5,6 +5,7 @@ import styled from "styled-components";
 import TabsBuilder from "Components/Tabs";
 
 // PAGE
+import Account from "./Account";
 // import Backup from "./Backup/backup";
 // import Rescue from "./Rescue/rescue";
 
@@ -24,7 +25,7 @@ class Configuration extends React.Component {
   render() {
     return (
       <Container>
-        <TabsBuilder tabTitle={tabTitle} tabContent={['UserData', 'Notifications', 'Account']}/>
+        <TabsBuilder tabTitle={tabTitle} tabContent={['UserData', 'Notifications', <Account />]}/>
       </Container>
     );
   }
