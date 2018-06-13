@@ -7,6 +7,7 @@ export let PanelLeft = styled.aside`
 	width: 100%;
 	height: 100vh;
 	padding-bottom: 50px;
+	overflow: auto;
 
 	@media only screen and (min-width: 768px) {
 		width: 40%;

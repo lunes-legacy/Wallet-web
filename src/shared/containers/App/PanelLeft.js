@@ -16,6 +16,7 @@ const StyledPanelLeft = styled.div`
   width: 65px;
   min-width: 65px;
 	height: 100%;
+  overflow: auto;
   display: block;
   background: ${styles.normalLilac2};
 	z-index: 3;
