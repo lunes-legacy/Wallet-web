@@ -1,4 +1,4 @@
-export const setLunesPriceMiddleware = (service) => {
+export const setLunesPriceMiddleware = () => {
 	return ({dispatch, getState}) => next => action => {
 		if (action.type === 'CURRENCIES_SET_PRICE_FULFILLED') {
 			dispatch({

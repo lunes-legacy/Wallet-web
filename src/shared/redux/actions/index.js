@@ -4,7 +4,7 @@ import { setBalance }                        from './balance';
 import { setCryptoPrice, setLunesPrice }     from './cryptocurrencies';
 import { openPanelRight, setTxHistory }      from './component';
 import { setCurrenciesPrice }                from './currencies';
-
+import { setWalletInfo, getWalletInfo }      from './privacy';
 export {
 	userReset,
 	userLogin,

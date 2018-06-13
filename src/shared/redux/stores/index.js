@@ -18,7 +18,7 @@ import { setLunesPriceMiddleware } from './middlewares.js';
 let store = createStore(
 	combineReducers(initialState), 
 	{},
-	applyMiddleware(createLogger(), thunk, promise(), setLunesPriceMiddleware('Mordecai'))
+	applyMiddleware(createLogger(), thunk, promise(), setLunesPriceMiddleware())
 );
 
 export {
