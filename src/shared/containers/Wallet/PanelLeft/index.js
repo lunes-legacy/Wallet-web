@@ -18,7 +18,8 @@ let StyledPanelLeft = styled.div.attrs({
 	max-width: 280px;
   	min-width: 130px;
 	position: relative;
-  	width: 30%;
+	width: 30%;
+	height: 100vh;
 	z-index: 2;
 	position: relative;
 	width: 31.66666%;
