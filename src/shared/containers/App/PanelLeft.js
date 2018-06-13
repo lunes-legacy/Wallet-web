@@ -71,7 +71,7 @@ const CustomTextPopup = styled.div`
 
 const CustomLink = styled(TmpLink) `
   ${TextBase};
-  
+
   color: white;
   text-decoration: none;
   transition-delay: .2s;
@@ -86,7 +86,7 @@ const CustomLink = styled(TmpLink) `
 
   -webkit-filter: grayscale(100%);
   filter: grayscale(100%);
-  
+
   &:hover {
     opacity: 1;
 
@@ -101,12 +101,12 @@ const CustomLink = styled(TmpLink) `
 
     -webkit-filter: none;
     filter: none;
-  } 
+  }
 `;
 
 const LinkLogout = styled.div`
   ${TextBase};
-  
+
   color: white;
   text-decoration: none;
   transition-delay: .2s;
@@ -116,7 +116,7 @@ const LinkLogout = styled.div`
   opacity: 0.3;
 
   padding: 10px;
-  
+
   &:hover {
     opacity: 1;
   }
@@ -164,14 +164,14 @@ class PanelLeft extends React.Component {
     let cookie = new CookieClass;
     cookie.set({name: 'user', value: null, expires: -1});
 
-    // apagar o redux 
+    // apagar o redux
     this.props.setWalletInfo({});
 
     // apagar o localstorage
     localStorage.removeItem('WALLET-INFO');
     localStorage.removeItem('ACCESS-TOKEN');
 
-    // redirecionar para login 
+    // redirecionar para login
     return this.props.history.push('/');
   }
 
@@ -194,6 +194,12 @@ class PanelLeft extends React.Component {
           label="Leasing"
           to="/app/leasing"
           icon="ic_recharge.svg"
+          activeClassName="active" />
+
+        <ItemMenuApp
+          label="Configurações"
+          to="/app/configuration"
+          icon="ic_config.svg"
           activeClassName="active" />
 
         <ItemMenuApp
@@ -221,23 +227,17 @@ class PanelLeft extends React.Component {
           activeClassName="active" /> */}
 
         {/* <ItemMenuApp
-          label="Configurações"
-          to="/app/configuration"
-          icon="ic_config.svg"
-          activeClassName="active" /> */}
-
-        {/* <ItemMenuApp
           label="Portfólio"
           to="/app/portfolio"
           icon="ic_portfolio.svg"
           activeClassName="active" /> */}
 
-        
+
         <LinkLogout onClick={()=>this.openModalSignout()}>
           <CustomText size={'1.4rem'}>Sign out</CustomText>
         </LinkLogout>
         {
-          this.state.isOpenSignout && 
+          this.state.isOpenSignout &&
           <Modal
             isOpen={true}
             height={'30%'}
@@ -266,7 +266,7 @@ const mapDispatchToProps = dispatch => {
   return {
     setWalletInfo: data => {
       dispatch(setWalletInfo(data));
-    }, 
+    },
     getWalletInfo: (data) => {
       dispatch(getWalletInfo(data));
     }
