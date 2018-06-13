@@ -31,6 +31,7 @@ const HistoryHead = styled.div`
   display: flex;
   cursor: pointer;
   width: 100%;
+  padding: 1rem 0;
 `;
 
 const HistoryHeadStatus = styled.div`
