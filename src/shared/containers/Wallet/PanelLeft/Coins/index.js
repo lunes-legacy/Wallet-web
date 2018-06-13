@@ -15,8 +15,8 @@ import {numeral} from 'Utils/numeral';
 const StyledCoins = styled.div`
   width: auto;
   min-width: 100%;
-  height: 100%;
-  max-height: 100%;
+  height: 100vh;
+  max-height: 100vh;
 
 `;
 const StyledLoading = styled.div`

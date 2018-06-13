@@ -13,13 +13,23 @@ let StyledPanelLeft = styled.div.attrs({
 	state: 'visible'
 })`
 	background: ${style.normalLilac};
+<<<<<<< HEAD
   box-shadow: 30px 0 40px rgba(0,0,0,.09);
   color: #fff;
 	height: 100%;
+=======
+  	box-shadow: 30px 0 40px rgba(0,0,0,.09);
+  	color: #fff;
+>>>>>>> WW-241
 	max-width: 280px;
   min-width: 130px;
 	position: relative;
+<<<<<<< HEAD
   width: 30%;
+=======
+	width: 30%;
+	height: 100vh;
+>>>>>>> WW-241
 	z-index: 2;
 	position: relative;
 	width: 31.66666%;
