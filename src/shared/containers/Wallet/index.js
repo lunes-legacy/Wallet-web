@@ -90,8 +90,6 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-<<<<<<< HEAD
-=======
 		setBalance: (data) => {
 			dispatch(setBalance(data));
 		},
@@ -101,18 +99,8 @@ const mapDispatchToProps = (dispatch) => {
 		setCurrenciesPrice: (data) => {
 			dispatch(setCurrenciesPrice(data));
 		},
->>>>>>> 1886f9e87e007150c429c5d990671aadee703995
 		togglePanelLeft: () => {
 			dispatch(togglePanelLeft());
-		},
-		setCurrenciesPrice: () => {
-			dispatch(setCurrenciesPrice());
-		},
-		setCryptoPrice: () => {
-			dispatch(setCryptoPrice());
-		},
-		setBalance: () => {
-      dispatch(setBalance());
 		},
 	}
 }
