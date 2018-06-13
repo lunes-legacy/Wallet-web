@@ -220,17 +220,18 @@ class Send extends React.Component {
 		this.wrapper.style.transform = 'translateY(-100%)';
 	}
 
-	handleSend = () => {
+	 handleSend = async() => {
 
 		let coinAmount = this.coinAmount.value;
 		let address = this.address.value;
 		console.log(coinAmount);
-		if (!coinAmount || !address) return;
-		
-		let data = this.validateAddress(address) ? false : true;
 
+		if (!coinAmount || !address ) return;
+
+		let data = await this.validateAddress(address) ;
 		console.log("RESULTADO ", data);
 		return false;
+
 		const props = {
 			...this.props,
 			coinAmount,
@@ -246,7 +247,7 @@ class Send extends React.Component {
 	validateAddress = async (address) => {
 		const wallet = new WalletClass();
 		let network = networks.LNS;
-		let data = await wallet.validateAddress(address, network)
+		let data = wallet.validateAddress(address, network)
 
 		return data
 	}
