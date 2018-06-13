@@ -19,6 +19,7 @@ const DivTab = styled.div`
   margin-bottom: 40px;
   width: 100%;
   border-bottom: 1px solid ${style.lightPurple};
+  
 `
 
 const TabContent = styled.div`
@@ -35,26 +36,22 @@ const tabContentEnabled = {
   'float': 'left',
   'textAlign': 'center',
   'padding': '20px',
-  'width': '200px'
+  'width': '200px',
+  'cursor': 'default'
 }
 
 const tabContentDisabled = {
   'float': 'left',
   'textAlign': 'center',
   'padding': '20px',
-  'width': '200px'
+  'width': '200px',
+  'cursor': 'pointer'  
 }
 
 const tabStyleUl = {
   'listStyle': 'none',
   'marginBottom': '50px',
 }
-
-const tabStyleLi = {
-  'float': 'left',
-  'marginTop': '10px',
-}
-
 
 // Propriedades: tabTitle: String <Array> tabContent: HTML Content <Array>
 

@@ -15,7 +15,7 @@ const Container = styled.div`
 
 const tabTitle = [
 	'Backup de Segurança',
-	'Resgate'
+  'Resgate'
 ]
 
 class Privacy extends React.Component {
