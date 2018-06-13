@@ -1,4 +1,5 @@
 import { WalletClass } from 'Classes/Wallet';
+
 const Wallet = new WalletClass();
 
 export const setCurrenciesPrice = (price) => {

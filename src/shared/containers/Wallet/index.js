@@ -10,7 +10,6 @@ import { ENV }          from 'Config/constants';
 import { errorPattern } from 'Utils/functions';
 //REDUX
 import {
-	setBalance,
 	togglePanelLeft,
 	setCryptoPrice,
 	setCurrenciesPrice } from 'Redux/actions';
@@ -63,9 +62,6 @@ class Wallet extends React.Component {
 
 			this.props.setCurrenciesPrice();
 			this.props.setCryptoPrice();
-		if (ENV !== 'development') {
-			this.props.setBalance(balance);
-		}
 	}
 
 	render() {
@@ -86,9 +82,6 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setBalance: (data) => {
-			dispatch(setBalance(data));
-		},
 		setCryptoPrice: (data) => {
 			dispatch(setCryptoPrice(data));
 		},
