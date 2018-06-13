@@ -6,10 +6,13 @@ import { TextBase, H1 } from "Components";
 import { ButtonGreen } from "Components/Buttons";
 import { numeral } from 'Utils/numeral';
 import ModalLeasing from "../modal/index";
+<<<<<<< HEAD
 
 const ModalStyle = styled.div`
    display: none;
 `;
+=======
+>>>>>>> WW-241
 
 const StyledPanelLeft = styled.div`
     background: ${style.normalLilac};
@@ -136,8 +139,10 @@ const RowCardText = styled.div`
 
 `;
 
+
 class PanelLeft extends React.Component {
   constructor(props) {
+<<<<<<< HEAD
     super(props)
   }
 
@@ -148,11 +153,52 @@ class PanelLeft extends React.Component {
   handleModal = () => {
     let modalClass = document.querySelector(".modal-status");
     return modalClass.style.display = "block";
+=======
+    super(props);
+    this.state = {
+      visible: hidden
+      
+    };
+  }
+
+  // toogleModal = () => {
+  //   console.log("TESTE DO LEONARDO");
+  //   let statusModalLeasing = document.querySelector(".leasingVisible");
+
+  //   if (this.state.visible === false) {
+  //     this.setState({
+  //       visible: true
+  //     });
+  //   }
+  //   else {
+  //     this.setState({
+  //       visible: false
+  //     });
+  //   }
+  // }
+
+  toggleModal = ({element, from, to}) => {
+    let state = element.getAttribute('state');
+
+    if (this.state === 'visible') {
+        element.style.transform = 'translateX(-100%)';
+        document.querySelector('.modal').style.transform = 'translate(0)';
+        visibilityAllChildren({element, value: 'hidden'});
+    } else {
+        element.style.transform = 'translateX(0px)';
+        document.querySelector('.modal').setAttribute('state','visible');
+        visibilityAllChildren({element, value: 'visible'});
+    }
+>>>>>>> WW-241
   }
 
   render() {
     return (
       <StyledPanelLeft>
+<<<<<<< HEAD
+=======
+       
+>>>>>>> WW-241
         <LeftHeader txLight>LEASING LUNES</LeftHeader>
 
         <CardLeasing>
@@ -169,11 +215,18 @@ class PanelLeft extends React.Component {
             <RowCardText alignRight>000000000000</RowCardText>
           </RowCardBalance>
         </CardLeasing>
+<<<<<<< HEAD
 
         <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'} onClick={this.handleModal}>INICIAR LEASING</ButtonGreen>
         <ModalStyle className={"modal-status"}>
           <ModalLeasing />
         </ModalStyle>
+=======
+        
+        
+
+        <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'} onClick={this.toogleModal}>INICIAR LEASING</ButtonGreen>
+>>>>>>> WW-241
       </StyledPanelLeft>
     );
   }
