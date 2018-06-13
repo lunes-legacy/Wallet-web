@@ -78,15 +78,18 @@ const GreenText = styled.div`
     }};
 `;
 
+const CancelBox = styled.div`
+    &:hover {
+        filter: hue-rotate(260deg) saturate(8);
+        -webkit-filter: hue-rotate(260deg) saturate(8);
+    }
+`;
+
 const CancelText = styled.div`
     ${TextBase}
     font-size: 1.2rem;
     display:block;
     cursor: pointer;
-
-    &:hover {
-        color: ${style.normalRed};
-    }
 
     ${props => {
         if(!props.status){
@@ -100,6 +103,38 @@ const Icon = styled.img`
     height: 25px;
 `;
 
+const IconActive = styled.div`
+    background-image: url(/img/leasing_panel_right/icon-power.svg);
+    backrgound-repeat: no-repeat;
+    background-size: cover;
+
+	width: 25px;
+    height: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom:-10px;
+
+    -webkit-animation: rotation 5s infinite linear;
+    -moz-animation: rotation 5s infinite linear;
+    animation: rotation 5s infinite linear;
+
+    @-webkit-keyframes rotation {
+        from { -webkit-transform: rotate(0deg); }
+        to {-webkit-transform: rotate(359deg); }
+    }
+    
+    @-moz-keyframes rotation {
+        from { -moz-transform: rotate(0deg); }
+        to { -moz-transform: rotate(359deg); }
+    }
+    
+    @keyframes rotation {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(359deg); }
+    }
+    
+`;
+
 const BoxLineLeasing = Row.extend`
     margin-bottom:20px; 
     border-bottom: solid 1px ${style.normalLilac3};
@@ -111,35 +146,6 @@ const BoxLineLeasing = Row.extend`
     }
 `;
 
-// const RowCardText = styled.div`
-//   ${TextBase}
-  
-//   display:block;
-//   font-size:1rem;
-
-//   @media (${style.media.mobile}) {
-//     width:100%
-//     text-align:left;
-//   }
-  
-//   @media (${style.media.tablet}) {
-    
-//   }
-
-//   @media (${style.media.laptop}) {
-//     width:50%;
-
-//     ${props => {
-//       if(props.alignRight){
-//         return `text-align: right`;
-//       }else{
-//         return `text-align: default;`;
-//       }
-//     }};
-//   }
-
-// `;
-
 class PanelRight extends React.Component {
     constructor(props){
         super(props)
@@ -149,10 +155,12 @@ class PanelRight extends React.Component {
     _buttonCancel = status => {
         if(status){
             return (
-                <CancelText clNormalGreen txCenter status={status} onClick={()=>{}}>
-                    <Icon src={'/img/leasing_panel_right/icon-power.svg'} /><br/>
-                    CANCELAR
-                </CancelText>
+                <CancelBox>
+                    <CancelText clNormalGreen txCenter status={status} onClick={()=>{}}>
+                        <IconActive /><br/>
+                        CANCELAR
+                    </CancelText>
+                </CancelBox>
             );
         }else{
             return (
@@ -168,7 +176,7 @@ class PanelRight extends React.Component {
     _renderLeasings = () => {
         // aqui, crio um vetor de objs pra ilustrar os dados carregados
         // usando status apenas para diferenciar o estado de um registro
-        let leasings = [{status:true},{status:true},{status:false},{status:false},{status:true},{status:true},{status:false}];
+        let leasings = [{status:true},{status:false},{status:true},{status:true},{status:true},{status:true},{status:true}];
 
         return leasings.map((obj, key) => {
             return (
