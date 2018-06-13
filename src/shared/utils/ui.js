@@ -60,3 +60,17 @@ export const visibilityAllChildren = ({element, value}) => {
 		child.style.visibility = value;
 	});
 }
+
+export const toggleArrowIcon = ({element}) => {
+  const direction = element.getAttribute('direction');
+
+  if (direction === 'right') {
+    element.style.transform = 'rotate(135deg)';
+    element.style.left = '2px';
+    element.setAttribute('direction', 'left');
+  } else {
+    element.style.transform = 'rotate(-45deg)';
+    element.style.left = '5px';
+		element.setAttribute('direction', 'right');
+  }
+}
