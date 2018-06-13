@@ -1,10 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import style from 'Shared/style-variables'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { TextBase, H1 } from "Components";
-import {ButtonGreen} from "Components/Buttons";
-import {numeral} from 'Utils/numeral';
+import { ButtonGreen } from "Components/Buttons";
+import { numeral } from 'Utils/numeral';
+import ModalLeasing from "../modal/index";
+
+const ModalStyle = styled.div`
+   display: none;
+`;
 
 const StyledPanelLeft = styled.div`
     background: ${style.normalLilac};
@@ -121,45 +126,57 @@ const RowCardText = styled.div`
     width:50%;
 
     ${props => {
-      if(props.alignRight){
-        return `text-align: right`;
-      }else{
-        return `text-align: default;`;
-      }
-    }};
+    if (props.alignRight) {
+      return `text-align: right`;
+    } else {
+      return `text-align: default;`;
+    }
+  }};
   }
 
 `;
 
 class PanelLeft extends React.Component {
-    constructor(props){
-        super(props)
-    }
+  constructor(props) {
+    super(props)
+  }
 
-    render() {
-        return (
-            <StyledPanelLeft>
-                <LeftHeader txLight>LEASING LUNES</LeftHeader>
+  componentDidMount() {
 
-                <CardLeasing>
-                  <span>Seu Saldo:</span>
-                  <TextBalance clNormalGreen txBold>300000.000000</TextBalance>
-                  <LabelBalance fontSize='1rem' txBold>LNS</LabelBalance>
+  }
 
-                  <RowCardBalance>
-                    <RowCardText>Rendimentos</RowCardText>
-                    <RowCardText alignRight>000000000000</RowCardText>
-                  </RowCardBalance>
-                  <RowCardBalance>
-                    <RowCardText>Total</RowCardText>
-                    <RowCardText alignRight>000000000000</RowCardText>
-                  </RowCardBalance>
-                </CardLeasing>
+  handleModal = () => {
+    let modalClass = document.querySelector(".modal-status");
+    return modalClass.style.display = "block";
+  }
 
-                <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'}>INICIAR LEASING</ButtonGreen>
-            </StyledPanelLeft>
-        );
-    }
+  render() {
+    return (
+      <StyledPanelLeft>
+        <LeftHeader txLight>LEASING LUNES</LeftHeader>
+
+        <CardLeasing>
+          <span>Seu Saldo:</span>
+          <TextBalance clNormalGreen txBold>300000.000000</TextBalance>
+          <LabelBalance fontSize='1rem' txBold>LNS</LabelBalance>
+
+          <RowCardBalance>
+            <RowCardText>Rendimentos</RowCardText>
+            <RowCardText alignRight>000000000000</RowCardText>
+          </RowCardBalance>
+          <RowCardBalance>
+            <RowCardText>Total</RowCardText>
+            <RowCardText alignRight>000000000000</RowCardText>
+          </RowCardBalance>
+        </CardLeasing>
+
+        <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'} onClick={this.handleModal}>INICIAR LEASING</ButtonGreen>
+        <ModalStyle className={"modal-status"}>
+          <ModalLeasing />
+        </ModalStyle>
+      </StyledPanelLeft>
+    );
+  }
 }
 
 export default PanelLeft;

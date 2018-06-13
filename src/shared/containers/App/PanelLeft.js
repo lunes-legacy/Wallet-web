@@ -168,6 +168,7 @@ class PanelLeft extends React.Component {
 
     // apagar o localstorage
     localStorage.removeItem('WALLET-INFO');
+    localStorage.removeItem('ACCESS-TOKEN');
 
     // redirecionar para login 
     return this.props.history.push('/');

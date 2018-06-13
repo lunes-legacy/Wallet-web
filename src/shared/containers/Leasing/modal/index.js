@@ -25,15 +25,21 @@ import {
 } from "./css";
 
 import Hr from "../../Wallet/PanelRight/Modal/Hr";
+import styled from "styled-components";
 
 class LeasingModal extends Component {
+    handleModal = () => {
+        let modalClass = document.querySelector(".modal-status");
+        return modalClass.style.display = "none";
+    }
+
     render() {
         return (
-            <Background>
+            <Background className={"modal-status"}>
                 <LeasingStyleModalCss>
                     <Col defaultAlign={"center"} s={12} m={12} l={12}>
                         <Row>
-                            <Close>x</Close>
+                            <Close onClick={this.handleModal}>x</Close>
 
                             <Image src="/img/coins/lns.svg" />
                             <CoinValue offSide>250000.0054248</CoinValue>
@@ -53,7 +59,7 @@ class LeasingModal extends Component {
                         <Row>
                             <DivNumber>
                                 <NumberPorcent clNormalGreen marginRight={"35%"}>25%</NumberPorcent>
-                                <NumberPorcent clMostard marginRight={"28%"}>50%</NumberPorcent>
+                                <NumberPorcent clMostard marginRight={"27%"}>50%</NumberPorcent>
                                 <NumberPorcent clNormalRed>100%</NumberPorcent>
                                 <Line />
                             </DivNumber>
