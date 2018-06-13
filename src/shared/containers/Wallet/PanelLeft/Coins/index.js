@@ -2,8 +2,9 @@ import React       from "react";
 import styled      from "styled-components";
 import style       from "Shared/style-variables";
 import { TextBase, H1 } from "Components";
-import { connect } from "react-redux";
+
 //REDUX
+import { connect } from "react-redux";
 import { openPanelRight } from 'Redux/actions';
 import { togglePanelLeft } from 'Redux/actions';
 
@@ -168,6 +169,7 @@ class Coins extends React.Component {
     let { currentNetwork }  = this.props.component.wallet;
     let { price }           = this.props.currencies;
     let { balance }         = this.props;
+
     if (!balance || !price) {
       return <Loading />;
     }
@@ -188,11 +190,12 @@ class Coins extends React.Component {
           </WrapCoinImg>
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>
-              { numeral(currentBalance.total_confirmed).format('0.00') }
+              { coinKey } 
+              { numeral(currentBalance.total_confirmed).format('0,0.0000') }
             </CoinAmount>
             <CoinValue clWhite offSide size={"2rem"}>
               {/* { `USD ${currentBalance.total_amount}` } */}
-              { `USD ${numeral(currentBalance.total_amount).format('0,0.00')}`}
+              { `USD ${numeral(currentBalance.total_coin_dollar).format('$0,0.0000')}`}
             </CoinValue>
           </WrapCoinData>
         </Coin>

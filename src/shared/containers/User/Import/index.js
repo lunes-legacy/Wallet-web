@@ -128,7 +128,7 @@ class Import extends React.Component {
               { this.renderImport() }
             </ButtonsRow>
           <Row>
-            <P fontSize={"1.4rem"} margin={"0 0 1.0rem 0"} clWhite>
+            <P fontSize={"1.4rem"} margin={"3.0rem 0 1.0rem 0"} clWhite>
               Address
             </P>
             <P fontSize={"1.4rem"} clWhite>

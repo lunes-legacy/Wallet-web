@@ -86,7 +86,6 @@ class Registry extends React.Component {
 
     // Verifica em tempo real apenas se o formulário já foi submetido alguma vez
     if (this.state.submittedForm) {
-      console.log('teste');
       // Validação para os campos de nome e sobrenome
       if (event.target.className.search(/(registry-(f|l)name)/g) !== -1) {
           event.target.style.color = validator.isLength(event.target.value, {min: 3, max: undefined}) ?

@@ -153,6 +153,7 @@ class CoinStatus extends React.Component {
     let { currentNetwork } = this.props.wallet;
     let { price } = this.props.cryptocurrencies;
     let { balance } = this.props;
+    console.log(price)
     if (!price) {
       return null;
     }

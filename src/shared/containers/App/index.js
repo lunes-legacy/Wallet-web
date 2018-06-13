@@ -1,14 +1,14 @@
 require('dotenv').load();
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { errorPattern } from 'Utils/functions';
 import styled from 'styled-components';
-import { users } from 'lunes-lib';
-import { createBrowserHistory } from 'history';
+import { users, coins } from 'lunes-lib';
+
+// REDUX
+import { connect } from 'react-redux';
+import { setBalance } from 'Redux/actions';
 
 //COMPONENTS
-import Login from 'Containers/User/Login/index';
 import Home from 'Containers/Home/index';
 import Portfolio from 'Containers/Portfolio/index';
 import Wallet from 'Containers/Wallet/index';
@@ -20,7 +20,6 @@ import Configuration from 'Containers/Configuration/index';
 import Privacy from 'Containers/Privacy/index';
 
 //SUB-COMPONENTS
-import { Link } from 'Components/Link';
 import { TextBase } from 'Components/TextBase';
 import { Text } from 'Components/Text';
 import Header from './Header';
@@ -84,9 +83,10 @@ class App extends React.Component {
 		super(props);
 		numeral.locale(this.props.currencies.locale);
 	}
-
+	
 	componentDidMount() {
 		this.checkAccess();
+		this.props.setBalance();
 	}
 
 	componentDidUpdate() {
@@ -112,9 +112,9 @@ class App extends React.Component {
 						<Balance>
 						<Text clWhite txLight txInline size={'1.8rem'}> Balance: </Text>
 							<Text clNormalGreen txNormal txInline offSide size={'2.3rem'} >LNS </Text>
-							<Text clWhite txNormal txInline offSide size={'2.0rem'}>{`${numeral(1300).format()}`}</Text>
+							<Text clWhite txNormal txInline offSide size={'2.0rem'}>{numeral(this.props.balance.LNS.total_confirmed).format('0,0.0000')}</Text>
 						</Balance>
-						<Text clNormalGreen txBold txRight size={'1.2rem'}>{numeral(130.10).format('$0,0.00')}</Text>
+						<Text clNormalGreen txBold txRight size={'1.2rem'}>{numeral(this.props.balance.LNS.total_coin_dollar).format('$0,0.0000')}</Text>
 					</WrapBalance>
 				</Header>
 				<Panels>
@@ -143,7 +143,8 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user, 
-		currencies: state.currencies
+		currencies: state.currencies,
+		balance: state.balance
 	}
 }
 const mapDispatchToProps = (dispatch) => {
@@ -153,7 +154,10 @@ const mapDispatchToProps = (dispatch) => {
 				type: 'USER_LOGIN',
 				payload: userLogin(email, password)
 			});
-		}
+		},
+		setBalance: () => {
+      dispatch(setBalance());
+    }
 	}
 }
 const userLogin = (email, password) => {

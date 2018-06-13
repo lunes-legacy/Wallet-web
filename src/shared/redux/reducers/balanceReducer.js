@@ -15,9 +15,10 @@ let initialState = {
 		
 	// },
 	LNS: {
-		total_confirmed: 100, 
-		total_unconfirmed: 0,
-		total_amount: 100, 
+		total_confirmed: 0, 
+		total_amount: 0,
+		total_coin_dollar: 0,
+		total_coin_local: 0,
 		img: 'lns.svg',
 		coinName: 'Lunes'
 	},
@@ -44,10 +45,27 @@ let initialState = {
 	// 	coinName: 'Nano'
 	// }
 }
+
+
+
 const balanceReducer = (state = initialState, action) => {
-	if (action.type === 'WALLET_SET_BALANCE') {
-		state = action.payload;
+	switch(action.type) {
+		case 'WALLET_SET_BALANCE':
+			state = action.payload
+
+		case 'WALLET_SET_BALANCE_FULFILLED':
+			state = {
+				LNS: {
+					total_confirmed: action.payload.data.confirmed / 100000000, 
+					total_amount: 0,
+					total_coin_dollar: (action.payload.data.confirmed / 100000000) * 0.08,
+					total_coin_local: 0,
+					img: 'lns.svg',
+					coinName: 'Lunes'
+				},
+			}
 	}
+
 	return state;
 }
 
