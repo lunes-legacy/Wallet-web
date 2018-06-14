@@ -7,7 +7,7 @@ import { TextBase, H1 } from "Components";
 import { Col, Row } from 'Components/index';
 
 import { encrypt } from '../../../utils/crypt';
-// import Leasing from 'Classes/Leasing'; // refatorar para usar a classe
+// import { LeasingClass } from 'Classes/LeasingClass'; // refatorar para usar a classe
 import { coins } from 'lunes-lib';
 
 const StyledPanelRight = styled.div`
@@ -126,21 +126,21 @@ const IconActive = styled.div`
         from { -webkit-transform: rotate(0deg); }
         to {-webkit-transform: rotate(359deg); }
     }
-    
+
     @-moz-keyframes rotation {
         from { -moz-transform: rotate(0deg); }
         to { -moz-transform: rotate(359deg); }
     }
-    
+
     @keyframes rotation {
         from { transform: rotate(0deg); }
         to { transform: rotate(359deg); }
     }
-    
+
 `;
 
 const BoxLineLeasing = Row.extend`
-    margin-bottom:20px; 
+    margin-bottom:20px;
     border-bottom: solid 1px ${style.normalLilac3};
     padding-top:20px;
     padding-bottom:20px;
@@ -159,26 +159,26 @@ class PanelRight extends React.Component {
     // consulta de leasing
     componentDidMount = async () => {
         // fazer a chamada da classe Leasing
-        // let leasing = new Leasing()
+        // let leasing = new LeasingClass()
         // let retorno = leasing.getLeaseHistory() // chamada para teste
-        let Leasing = await coins.services.leaseHistory({ 
-            address: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG', 
-            network: 'LNS', 
-            testnet: true 
+        let Leasing = await coins.services.leaseHistory({
+            address: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG',
+            network: 'LNS',
+            testnet: true
         }).then((e)=>{
             this.listLeasing = e
         }); 
         // passar os dados criptografados (verificar em privacy/rescue.js)
 
         // validar se voltou alguma coisa
-       
+
 
         // se voltou iterar
 
         // se nao voltou mostrar mensagem de vazio
     }
 
-    // normalizar status do leasing, que hoje é 8 ou 9 
+    // normalizar status do leasing, que hoje é 8 ou 9
     _normalizeStatus = status => {
         if(status===8){
             return true
@@ -225,7 +225,7 @@ class PanelRight extends React.Component {
                         <GreenText clNormalGreen txBold txCenter status={this._normalizeStatus(obj.otherParams.type)}> {obj.networkAmount} LNS</GreenText>
                     </Col>
                     <Col s={12} m={2} l={2}>
-                        {this._buttonCancel(this._normalizeStatus(obj.otherParams.type))} 
+                        {this._buttonCancel(this._normalizeStatus(obj.otherParams.type))}
                     </Col>
                 </BoxLineLeasing>
             );
@@ -249,7 +249,7 @@ class PanelRight extends React.Component {
                         Status
                     </Col>
                 </HeaderRow>
-            
+
                 {/* content da tabela */}
                 <ContentList>
                     {this._renderLeasings()}
@@ -259,6 +259,6 @@ class PanelRight extends React.Component {
     }
 }
 
-// aplicar redux 
+// aplicar redux
 
 export default PanelRight;
