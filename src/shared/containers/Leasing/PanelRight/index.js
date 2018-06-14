@@ -1,14 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
 import style from 'Shared/style-variables'
-import {connect} from 'react-redux'
+import { coins } from 'lunes-lib';
 import { TextBase, H1 } from "Components";
 //import {ButtonGreen} from "Components/Buttons";
 import { Col, Row } from 'Components/index';
+import { Loading } from 'Components/Loading';
+import {timestampToDate} from 'Utils/date';
 
-import { encrypt } from '../../../utils/crypt';
+import { encrypt, decrypt } from '../../../utils/crypt';
 // import Leasing from 'Classes/Leasing'; // refatorar para usar a classe
-import { coins } from 'lunes-lib';
+
+// REDUX
+import { connect } from 'react-redux';
+import { getWalletInfo } from 'Redux/actions';
+
 
 const StyledPanelRight = styled.div`
     position: relative;
@@ -161,21 +167,26 @@ class PanelRight extends React.Component {
         // fazer a chamada da classe Leasing
         // let leasing = new Leasing()
         // let retorno = leasing.getLeaseHistory() // chamada para teste
-        let Leasing = await coins.services.leaseHistory({ 
-            address: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG', 
+
+        // pegar os dados criptografados (verificar em privacy/rescue.js)
+        let wallet_info = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')))
+        
+        // usando endereco do localstorage
+        let address = wallet_info.addresses.LNS
+        //let address = '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG'
+
+        // consulta
+        this.listLeasing = await coins.services.leaseHistory({ 
+            address: address, 
             network: 'LNS', 
             testnet: true 
         }).then((e)=>{
-            this.listLeasing = e
-        }); 
-        // passar os dados criptografados (verificar em privacy/rescue.js)
-
+            return e
+        }).catch((e)=>{
+            return false
+        });
+            
         // validar se voltou alguma coisa
-       
-
-        // se voltou iterar
-
-        // se nao voltou mostrar mensagem de vazio
     }
 
     // normalizar status do leasing, que hoje é 8 ou 9 
@@ -194,7 +205,7 @@ class PanelRight extends React.Component {
                 <CancelBox>
                     <CancelText clNormalGreen txCenter status={status} onClick={()=>{}}>
                         <IconActive /><br/>
-                        CANCELAR
+                        CANCEL
                     </CancelText>
                 </CancelBox>
             );
@@ -202,7 +213,7 @@ class PanelRight extends React.Component {
             return (
                 <CancelText clNormalRed txCenter status={status} onClick={()=>{}}>
                     <Icon src={'/img/leasing_panel_right/icon-power-off.svg'} /><br/>
-                    CANCELADO
+                    CANCELED
                 </CancelText>
             );
         }
@@ -210,31 +221,33 @@ class PanelRight extends React.Component {
 
     // retornando os itens, de acordo com os dados no storage
     _renderLeasings = () => {
-        // aqui, crio um vetor de objs pra ilustrar os dados carregados
-        // usando status apenas para diferenciar o estado de um registro
-        //let leasings = [{status:true},{status:false},{status:true},{status:true},{status:true},{status:true},{status:true}];
-
-        return this.listLeasing.map((obj, key) => {
-            return (
-                <BoxLineLeasing key={obj.txid} >
-                    <Col s={12} m={6} l={6}>
-                        <DateText clWhite status={this._normalizeStatus(obj.otherParams.type)}> {Date.parse(obj.date)} </DateText>
-                        <HashText clWhite txBold status={this._normalizeStatus(obj.otherParams.type)}> {obj.txid} </HashText>
-                    </Col>
-                    <Col s={12} m={4} l={4}>
-                        <GreenText clNormalGreen txBold txCenter status={this._normalizeStatus(obj.otherParams.type)}> {obj.networkAmount} LNS</GreenText>
-                    </Col>
-                    <Col s={12} m={2} l={2}>
-                        {this._buttonCancel(this._normalizeStatus(obj.otherParams.type))} 
-                    </Col>
-                </BoxLineLeasing>
-            );
-        });
+        if(!this.listLeasing){
+            return <GreenText txBold txCenter>NENHUM LEASING ENCONTRADO</GreenText>
+        }
+        if (this.listLeasing.length < 1) {
+            return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
+        }else{
+            return this.listLeasing.map((obj, key) => {
+                return (
+                    <BoxLineLeasing key={obj.txid} >
+                        <Col s={12} m={6} l={6}>
+                            <DateText clWhite status={this._normalizeStatus(obj.otherParams.type)}> {new Date(obj.date).toLocaleDateString()} </DateText>
+                            <HashText clWhite txBold status={this._normalizeStatus(obj.otherParams.type)}> {obj.txid} </HashText>
+                        </Col>
+                        <Col s={12} m={4} l={4}>
+                            <GreenText clNormalGreen txBold txCenter status={this._normalizeStatus(obj.otherParams.type)}> {obj.nativeAmount} LNS</GreenText>
+                        </Col>
+                        <Col s={12} m={2} l={2}>
+                            {this._buttonCancel(this._normalizeStatus(obj.otherParams.type))} 
+                        </Col>
+                    </BoxLineLeasing>
+                );
+            });
+        }
     }
 
     // o componente
     render() {
-        console.log(this.listLeasing);
         return (
             <StyledPanelRight>
                 {/* header da tabela */}
@@ -259,6 +272,19 @@ class PanelRight extends React.Component {
     }
 }
 
-// aplicar redux 
+//aplicar redux 
+// const mapStateToProps = state => {
+//     return {
+//         walletInfo: state.walletInfo
+//     }
+// }
 
+// const mapDispatchToProps = dispatch => {
+//     return {
+//         getWalletInfo: (data) => {
+//             dispatch(getWalletInfo(data));
+//         }
+//     }
+// }
+// export default connect(mapStateToProps, mapDispatchToProps)(PanelRight);
 export default PanelRight;
