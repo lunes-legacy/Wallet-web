@@ -299,7 +299,7 @@ class Histories extends React.Component {
   };
 
   parseTimestampToDate2 = timestamp => {
-    timestamp = 835758000;
+    
     if (!timestamp) return null;
 
     timestamp = timestamp.toString();
