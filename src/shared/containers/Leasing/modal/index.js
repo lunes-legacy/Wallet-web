@@ -98,7 +98,7 @@ class LeasingModal extends Component {
                                 <NumberPorcent marginRight={"27%"} clMostard onClick={() => this.leasingPorcentCalculator(50)}>50%</NumberPorcent>
                                 <NumberPorcent clNormalRed onClick={() => this.leasingPorcentCalculator(100)}>100%</NumberPorcent> 
                                 <Line/>
-                            </DivNumber>
+                            </DivNumber> 
                         </Row>
                         <Row>
                             <DivText>
