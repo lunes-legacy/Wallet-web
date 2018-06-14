@@ -17,7 +17,7 @@ let DivCarrousel = styled.div`
   }
 
   & .slider-control-bottomcenter ul {
-    top: 10rem !important;
+    top: 1rem !important;
   }
 
   & .slider-control-bottomcenter ul li button {
@@ -42,6 +42,7 @@ let P = styled.div`
   margin-top: 4%;
   margin-bottom: 4%;
   text-align: center;
+  line-height: 1.5;
 `;
 let DivParagraph = styled.div`
   margin: auto;
