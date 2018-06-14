@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { consolidateStreamedStyles } from "styled-components";
 import style from "Shared/style-variables";
 
 // UTILS
@@ -57,7 +57,6 @@ const HeadStatusIcon = styled.img`
   display: block;
   margin: 2px auto;
 `;
-
 
 const HeadStatusDate = styled.div`
   ${TextBase}
@@ -182,6 +181,7 @@ const Span = styled.div `
   margin-top: 16%;
   display: inline;
 `;
+
 const StatusStyle = styled.div`
   color: white;
   text-align: center;
@@ -203,6 +203,12 @@ const StatusStyle = styled.div`
   }
 `;
 
+const ErrorMessage = styled.div `
+  ${TextBase};
+  color: #FFFFFF;
+  text-align: center;
+`;
+
 class Histories extends React.Component {
   constructor(props) {
     super();
@@ -220,19 +226,28 @@ class Histories extends React.Component {
     this.props.setTxHistory({ network: currentNetwork.toUpperCase(), address: this.props.walletInfo.addresses[currentNetwork.toUpperCase()] });
   }
 
-  timeToText = (txTime, type) => {
-    const hoursDiff = timestampDiff({ first: txTime });
+  timeToText = (timestamp) => {
+    timestamp = timestamp.toString();
+
+    if (timestamp.length <= 10) {
+      timestamp = timestamp + "000";
+    }
+    
+    timestamp = parseInt(timestamp);
+
+    const hoursDiff = timestampDiff({ first: timestamp });
+
     if (hoursDiff < 48) {
       return `${hoursDiff} horas atrás`;
-    } else {
-      return `${Math.round(hoursDiff / 24)} dias atrás`;
+    } else { 
+      return Math.round(hoursDiff / 24) + " dias atrás";
     }
   };
 
   icoStatusToText = type => {
-    if (type === "RECEIVED") return "Recebido ";
+    if (type === "RECEIVED") return "Received";
 
-    return "Enviado ";
+    return "Send";
   };
 
   SignalControl = type => {
@@ -241,35 +256,44 @@ class Histories extends React.Component {
 
   parseTimestampToDate = timestamp => {
     if (!timestamp) return null;
+
+    timestamp = timestamp.toString();
+
+    if (timestamp.length <= 10) {
+      timestamp = timestamp + "000";
+    }
+    
+    timestamp = parseInt(timestamp);
+
     let date = new Date(timestamp);
     let weekDay = date.getDay();
+
     switch (weekDay) {
       case 0:
-        weekDay = "Segunda-feira";
+        weekDay = "Domingo";
         break;
       case 1:
-        weekDay = "Terça-feira";
+        weekDay = "Segunda-feira";
         break;
       case 2:
-        weekDay = "Quarta-feira";
+        weekDay = "Terça-feira";
         break;
       case 3:
-        weekDay = "Quinta-feira";
+        weekDay = "Quarta-feira";
         break;
       case 4:
-        weekDay = "Sexta-feira";
+        weekDay = "Quinta-feira";
         break;
       case 5:
-        weekDay = "Sabado";
+        weekDay = "Sexta-feira";
         break;
       case 6:
-        weekDay = "Domingo";
+        weekDay = "Sabado";
         break;
     }
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getYear();
-
 
     return weekDay + " " + day + "/" + month + "/" + year;
   };
@@ -299,20 +323,19 @@ class Histories extends React.Component {
 
   _renderHistories = () => {
     let { currentNetwork, currentTxHistory } = this.props.componentWallet;
-    let { crypto } = this.props.currencies;
-
+    
+    console.log('currentTxHistory', currentTxHistory)
+    
     if (currentTxHistory.length < 1) {
       return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
+    } else if (currentTxHistory.data.history.length < 1) {
+      return <ErrorMessage> No transactions </ErrorMessage>;
     }
 
-    if (currentTxHistory.history.length < 1) {
-      return <div> No transactions </div>;
-    }
-
-    return currentTxHistory.history.map((transaction, key) => {
+    return currentTxHistory.data.history.map((transaction, key) => {
       let amount = numeral(transaction.nativeAmount / 100000000).format('0,0.00000000');
       let usdAmount = numeral( ( transaction.nativeAmount / 100000000 ) * 0.08).format('$0,0.00')
-      
+
       return (
         <History key={key}>
           <HistoryHead onClick={() => this.handleToggleHistory(key)}>
@@ -323,7 +346,9 @@ class Histories extends React.Component {
                   <HeadStatusDate>12/Mar</HeadStatusDate>
                 </HistoryHeadStatus>
                 <HistoryHeadText>
-                  <StatusStyle type={transaction.type}>{this.icoStatusToText(transaction.type)}</StatusStyle>
+                  <StatusStyle type={transaction.type}>
+                    { this.icoStatusToText(transaction.type) }
+                  </StatusStyle>
                   { this.timeToText(transaction.date) }
                 </HistoryHeadText>
               </Col>
@@ -349,7 +374,7 @@ class Histories extends React.Component {
                   <Text size={"1.4rem"}> </Text>
                   <Text size={"1.4rem"} txBold margin={"2.5rem 0 0 0"}>
                     <Span>
-                      Enviado: 
+                      { this.icoStatusToText(transaction.type) }: 
                     </Span>
                     <TextT>
                       { amount } 
@@ -358,7 +383,7 @@ class Histories extends React.Component {
                     </TextT>
                   </Text>
                   <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
-                    <span>Data: </span>
+                    <span>Date: </span>
                     <TextT>
                       { this.parseTimestampToDate(transaction.date) } 
                     </TextT>
@@ -369,7 +394,7 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID:</Text>
                   <Text size={"1.4rem"} txBold>
-                    <TransactionId > {transaction.txid} </TransactionId>
+                    <TransactionId > { transaction.txid } </TransactionId>
                   </Text>
                 </HistoryContentItem>
               </Col>             
@@ -401,7 +426,7 @@ class Histories extends React.Component {
       );
     } catch (e) {
       console.error(e);
-      return <h1>Aconteceu um erro</h1>
+      return <ErrorMessage> Error: { e } </ErrorMessage>;
     }
   }
 }
