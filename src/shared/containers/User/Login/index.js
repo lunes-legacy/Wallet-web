@@ -9,7 +9,6 @@ import { encrypt } from '../../../utils/crypt'
 //REDUX
 import { connect } from "react-redux";
 import { userLogin } from 'Redux/actions';
-import { setWalletInfo } from 'Redux/actions';
 
 //COMPONENTS
 import { Form } from "Components/Form";
@@ -183,9 +182,6 @@ const mapDispatchToProps = dispatch => {
     userLogin: (email, password) => {
       dispatch(userLogin(email, password));
     },
-    setWalletInfo: data => {
-      dispatch(setWalletInfo(data));
-    }
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

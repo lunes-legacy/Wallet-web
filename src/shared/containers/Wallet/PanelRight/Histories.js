@@ -9,7 +9,7 @@ import { timestampDiff } from "Utils/functions";
 
 //REDUX
 import { connect } from "react-redux";
-import { setTxHistory } from 'Redux/actions';
+import { setTxHistory, setWalletInfo } from 'Redux/actions';
 
 // Components
 import { Col, Row } from 'Components/index';
@@ -205,16 +205,19 @@ const StatusStyle = styled.div`
 
 class Histories extends React.Component {
   constructor(props) {
-    props = {
-      ...props,
-      txHistory: []
-    }
-    super(props);
+    super();
+
     this.state = {
       activeIndex: null
     }
     this.handleToggleHistory = this.handleToggleHistory.bind(this);
+  }
+
+  componentDidMount() {
+    let { currentNetwork } = this.props.componentWallet;
     numeral.locale(this.props.currencies.locale);
+    this.getWalletInfo();
+    this.props.setTxHistory({ network: currentNetwork.toUpperCase(), address: this.props.walletInfo.addresses[currentNetwork.toUpperCase()] });
   }
 
   timeToText = (txTime, type) => {
@@ -266,7 +269,9 @@ class Histories extends React.Component {
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getYear();
-    return `${weekDay} ${day}/${month}/${year}`;
+
+
+    return weekDay + " " + day + "/" + month + "/" + year;
   };
 
   renderIcon = type => {
@@ -285,61 +290,52 @@ class Histories extends React.Component {
     }
   };
 
-  componentDidMount = async () => {
-    // 'n4VQ5YdHf7hLQ2gWQYYrcxoE5B7nWuDFNF';
-    // txHistory = await new WalletClass().getTxHistory({coin: currentNetwork, address: 'moNjrdaiwked7d8jYoNxpCTZC4CyheckQH'});
-    // txHistory = await new WalletClass().getTxHistory({network: currentNetwork});
-    let { currentNetwork, price } = this.props.component_wallet;
-    let Cookie = new CookieClass();
-    let user = JSON.parse(Cookie.get('user').user);
-    let address = user.wallet.coins[0].addresses[0].address;
-
-    let addresses = this.getAddress();
-    this.props.setTxHistory({ network: 'BTCTESTNET', address });
-  }
-
-  getAddress() {
-    let walletInfo = localStorage.getItem('WALLET-INFO');
-    if (walletInfo) {
-      walletInfo = JSON.parse(decrypt(walletInfo));
-      console.log(walletInfo);
-      return walletInfo.adresses;
-    }
-  }
+  getWalletInfo() {
+		let walletInfo = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')));
+		if (walletInfo) {
+			this.props.setWalletInfo(walletInfo.addresses);
+		}
+	}
 
   _renderHistories = () => {
-    let { currentNetwork, currentTxHistory } = this.props.component_wallet;
-    let { price } = this.props.cryptocurrencies;
-    console.warn(currentTxHistory.length, "__PRICE__");
+    let { currentNetwork, currentTxHistory } = this.props.componentWallet;
+    let { crypto } = this.props.currencies;
+
     if (currentTxHistory.length < 1) {
       return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
     }
-    return currentTxHistory.map((tx, key) => {
+
+    if (currentTxHistory.history.length < 1) {
+      return <div> No transactions </div>;
+    }
+
+    return currentTxHistory.history.map((transaction, key) => {
+      let amount = numeral(transaction.nativeAmount / 100000000).format('0,0.00000000');
+      let usdAmount = numeral( ( transaction.nativeAmount / 100000000 ) * 0.08).format('$0,0.00')
+      
       return (
         <History key={key}>
           <HistoryHead onClick={() => this.handleToggleHistory(key)}>
             <Row>
               <Col s={6} m={6} l={6}>
                 <HistoryHeadStatus>
-                  <HeadStatusIcon type={tx.type} src={this.renderIcon(tx.type)} />
+                  <HeadStatusIcon type={transaction.type} src={this.renderIcon(transaction.type)} />
                   <HeadStatusDate>12/Mar</HeadStatusDate>
                 </HistoryHeadStatus>
                 <HistoryHeadText>
-                  <StatusStyle type={tx.type}>{this.icoStatusToText(tx.type)}</StatusStyle>
-                  {/*this.timeToText(tx.time)*/}
-                  90 dias atrás
+                  <StatusStyle type={transaction.type}>{this.icoStatusToText(transaction.type)}</StatusStyle>
+                  { this.timeToText(transaction.date) }
                 </HistoryHeadText>
               </Col>
               
               <Col s={6} m={6} l={6}>
                 <HistoryHeadAmount>
-                  <HeadAmountCoin type={tx.type}>
-                    {this.SignalControl(tx.type)}
-                    {tx.value}
+                  <HeadAmountCoin type={transaction.type}>
+                    {this.SignalControl(transaction.type)} 
+                    { amount }
                   </HeadAmountCoin>
                   <HeadAmountMoney>
-                    {/* {monetaryValue(price.USD * parseFloat(tx.value), { style: 'currency', currency: 'USD' })} */}
-                    ${numeral(price.BTC.USD * tx.value).format('0,0.00')}
+                    ({ usdAmount })
                   </HeadAmountMoney>
                 </HistoryHeadAmount>
               </Col>
@@ -352,20 +348,28 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite >
                   <Text size={"1.4rem"}> </Text>
                   <Text size={"1.4rem"} txBold margin={"2.5rem 0 0 0"}>
-                  {/* <span> Enviado: </span> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} ($ {monetaryValue(price.USD * parseFloat(tx.value), { style: 'decimal' })}) */}
-                  <Span> Enviado:</Span> <TextT> {`${tx.value + " BTC"} ${currentNetwork.toUpperCase()}`} (${numeral(price.BTC.USD * tx.value).format('0,0.00')}) </TextT>
+                    <Span>
+                      Enviado: 
+                    </Span>
+                    <TextT>
+                      { amount } 
+                      { currentNetwork.toUpperCase() } 
+                      ({ usdAmount }) 
+                    </TextT>
                   </Text>
                   <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
-                    <span>Data:  </span> <TextT>{"Segunda-Feira, Abril, 04, 2018 - 10:32 AM"} </TextT>
-                    {/* Quarta-feira 23/05/2018 */}
+                    <span>Data: </span>
+                    <TextT>
+                      { this.parseTimestampToDate(transaction.date) } 
+                    </TextT>
                   </Text>
                 </HistoryContentItem>
               </Col>
               <Col m={6} l={6}>
                 <HistoryContentItem clWhite>
-                  <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID</Text>
+                  <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID:</Text>
                   <Text size={"1.4rem"} txBold>
-                    <TransactionId > {tx.txid} </TransactionId>
+                    <TransactionId > {transaction.txid} </TransactionId>
                   </Text>
                 </HistoryContentItem>
               </Col>             
@@ -408,14 +412,18 @@ const monetaryValue = (value, options) => {
 
 const mapStateToProps = state => {
   return {
+    walletInfo: state.walletInfo,
+    currencies: state.currencies,
     componentWallet: state.component.wallet,
-    currencies: state.currencies
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     setTxHistory: (data) => {
       dispatch(setTxHistory(data));
+    },
+    setWalletInfo: (data) => {
+      dispatch(setWalletInfo(data));
     }
   };
 };

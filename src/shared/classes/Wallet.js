@@ -20,6 +20,7 @@ export class WalletClass {
       let coinsPrice = {};
       for (let coinKey in data) {
         // console.warn(data[coinKey].fromSymbol.toLowerCase(), "()()()()()()()()");
+        console.log(data)
         coinsPrice[data[coinKey].fromSymbol] = await coins.getPrice(data[coinKey]);
       }
       return coinsPrice;

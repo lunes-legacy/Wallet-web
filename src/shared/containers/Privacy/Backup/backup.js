@@ -58,7 +58,7 @@ class Backup extends React.Component {
 		let walletInfo = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')));
 		if (walletInfo) {
 			this.props.setWalletInfo(walletInfo.addresses);
-			this.setState({ seed: walletInfo.seed })
+			this.setState({ seed: walletInfo.seed });
 		}
 	}
 
