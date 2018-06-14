@@ -108,7 +108,7 @@ class LeasingModal extends Component {
                                         clWhite
                                         noBorder
                                         txCenter
-                                        placeholder={'clWhite3P2HNUd5VUPLMQkJ...'} />
+                                        placeholder={'clWhite3P2HNUd5VUPLMQkJ9stf...'} />
                                 </Textphrase>
                                 <LineText />
                             </DivText>
