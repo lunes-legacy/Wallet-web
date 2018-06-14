@@ -65,7 +65,7 @@ class CoinStatus extends React.Component {
       coin_porcentage_price: []
     };
   }
-
+  
   render() {
     let { currentNetwork }      = this.props.wallet;
     let { crypto, currencies }  = this.props.currencies;

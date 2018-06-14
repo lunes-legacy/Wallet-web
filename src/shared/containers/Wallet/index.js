@@ -1,8 +1,6 @@
 import React            from 'react';
 import styled           from 'styled-components';
-import style            from 'Shared/style-variables';
 import { connect }      from 'react-redux';
-import { WalletClass }  from 'Classes/Wallet';
 import UserClass        from 'Classes/User';
 
 //REDUX
@@ -56,16 +54,9 @@ class Wallet extends React.Component {
 	   //  }
 		let user    = await User.login({email:'',password:''});
 		if (!user) { return; }
-
-		let wallet     = new WalletClass;
-		let balance    = await wallet.getBalance(user);
-		// let coinsPrice = await wallet.getCoinsPrice();
-		
+	
 		this.props.setCurrenciesPrice();
 		this.props.setCryptoPrice();
-		if (ENV !== 'development') {
-			this.props.setBalance(balance);
-		}
 	}
 
 	render() {

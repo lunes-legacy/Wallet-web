@@ -73,43 +73,49 @@ const overflow = {
 class CoinGraph extends React.Component {
   constructor() {
     super();
-
     this.state = {
+      currentNetwork: 'LNS',
       history_time_price: []
     };
   }
 
-  componentDidMount() {
-    this.coinGraphHistory();
+  componentDidMount() {    
+    this.coinGraphHistory(this.state.currentNetwork);
   }
 
-  coinGraphHistory = async () => {
+  coinGraphHistory(currentNetwork) {
     try {
-      let currentNetwork = this.props.wallet.currentNetwork.toUpperCase();
+
+      this.setState({
+        ...this.state,
+        currentNetwork: currentNetwork
+      });  
 
       // GRAPH
       let graphData = { fromSymbol: currentNetwork, toSymbol: "USD", range: "RANGE_1D" };
-      let wallet = await new WalletClass().getCoinHistory(graphData);
-      let coinPrices = await this.convertTimestampToDate(wallet.data);
+      let wallet = new WalletClass().getCoinHistory(graphData)
+        .then((res) => {
 
-      // PERCENT
-      let coinPriceLength = coinPrices.length;
-      let firstValueCoin = coinPrices[0].close;
-      let currentValueCoin = coinPrices[coinPriceLength - 1].close;
-  
-      this.setState(() => {
-        return {
-          history_time_price: coinPrices,
-          coin_percent: (currentValueCoin * 100 / firstValueCoin - 100).toFixed(2)
-        };
-      });
-      
+          // PERCENT
+          let coinPrices = this.convertTimestampToDate(res.data)
+          let coinPriceLength = coinPrices.length;
+          let firstValueCoin = coinPrices[0].close;
+          let currentValueCoin = coinPrices[coinPriceLength - 1].close;
+
+          this.setState( () => {
+            return {
+              ...this.state,
+              history_time_price: coinPrices,
+              coin_percent: (currentValueCoin * 100 / firstValueCoin - 100).toFixed(2)
+            }
+          });
+        });
     } catch (error) {
       console.log(error)
     }
   };
 
-  convertTimestampToDate = async data => {
+  convertTimestampToDate = data => {
     data.map(timeStamp => {
       let date = new Date(timeStamp.time * 1000);
 
@@ -120,10 +126,17 @@ class CoinGraph extends React.Component {
         date.getMinutes()}`;
     });
 
-    return await data;
+    return data;
   };
 
   render() {
+    let currentNetwork = this.props.wallet.currentNetwork.toUpperCase();
+    console.log(this.state)
+
+    if (currentNetwork !== this.state.currentNetwork) {
+      this.coinGraphHistory(currentNetwork)
+    }
+
     return (
       <Row>
         <Col s={8} m={6} l={7} style={overflow}>
