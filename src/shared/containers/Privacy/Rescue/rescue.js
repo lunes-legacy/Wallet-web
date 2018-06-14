@@ -73,7 +73,7 @@ class Rescue extends React.Component {
 				}
 			}
 			if (this.state.walletInfo.seed) {
-				this.props.setWalletInfo(walletInfo);
+				this.props.setWalletInfo(walletInfo.addresses);
 				localStorage.setItem('WALLET-INFO', encrypt(JSON.stringify(walletInfo)));	
 				this.setState({ ...this.state, notification: 'Success' })
 			} else {

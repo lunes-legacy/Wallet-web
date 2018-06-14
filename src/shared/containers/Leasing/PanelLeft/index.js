@@ -171,7 +171,7 @@ class PanelLeft extends React.Component {
           </RowCardBalance>
         </CardLeasing>
 
-        <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'} onClick={this.handleModal}>INICIAR LEASING</ButtonGreen>
+        <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'} onClick={this.handleModal} >INICIAR LEASING</ButtonGreen>
         <ModalStyle className={"modal-status"}>
           <ModalLeasing />
         </ModalStyle>

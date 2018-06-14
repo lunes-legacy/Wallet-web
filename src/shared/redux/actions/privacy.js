@@ -4,9 +4,3 @@ export const setWalletInfo = (walletInfo) => {
 		payload: walletInfo
 	}
 }
-
-export const getWalletInfo = () => { 
-	return {
-		type: 'WALLET_GET_INFO',
-	}
-}

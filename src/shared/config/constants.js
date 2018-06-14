@@ -1,4 +1,4 @@
-let testnet           = 'TRUE'; //it should comes from .env, well... maybe
+let testnet           = 'FALSE'; //it should comes from .env, well... maybe
 const ENV             = 'development'; //|| 'production'
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'

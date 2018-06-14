@@ -18,6 +18,7 @@ export const setCryptoPrice = (price) => {
 	return {
 		type: 'CRYTPO_SET_PRICE',
 		payload: Wallet.getCoinsPrice({
+			LNS:  { fromSymbol:'LNS',  toSymbol },
 			BTC:  { fromSymbol:'BTC',  toSymbol },
 			ETH:  { fromSymbol:'ETH',  toSymbol },
 			LTC:  { fromSymbol:'LTC',  toSymbol },

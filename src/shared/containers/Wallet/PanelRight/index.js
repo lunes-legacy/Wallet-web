@@ -10,8 +10,9 @@ import { TextBase } from 'Components/TextBase';
 import { Text } from 'Components/Text';
 import { H1 } from 'Components/H1';
 import { Col, Row } from 'Components/index';
+
 //PRIVATE COMPONENTS
-// import Histories from './Histories';
+import Histories from './Histories';
 import CoinControl from './CoinControl';
 import CoinStatus from './CoinStatus';
 import Default from './Default';
@@ -60,6 +61,7 @@ class PanelRight extends React.Component {
 			<StyledPanelRight>
 				<CoinStatus />
 				<CoinControl />
+				<Histories />
 			</StyledPanelRight>
 		);
 	}

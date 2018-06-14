@@ -122,15 +122,23 @@ class CoinControl extends React.Component {
   };
 
   render() {
+    let { currentNetwork }      = this.props.component.wallet;
+    let { crypto, currencies }  = this.props.currencies;
+    let usdCurrent = crypto[currentNetwork.toUpperCase()].USD
+    let brlCurrent = crypto[currentNetwork.toUpperCase()].BRL
+    let coinAmount = this.props.balance[currentNetwork.toUpperCase()].total_confirmed;
+    let usdCoinAmount = numeral(usdCurrent * coinAmount).format('$0,0.00');
+    let brlCoinAmount = numeral(brlCurrent * coinAmount).format('$0,0.00');
+
     return (
       <StyledCoinControl>
         <Row overflowHidden>
           <Col s={12} m={6} l={8}>
             <WrapAmount>
               <Amount offSide>{ this.props.component.wallet.currentNetwork.toUpperCase() } { numeral(this.props.balance[this.props.component.wallet.currentNetwork.toUpperCase()].total_confirmed).format('0,0.0000') }</Amount>
-              <Usd>USD {numeral(0.08).format('0,0.00')}</Usd>
+              <Usd>USD { usdCoinAmount }</Usd>
               <Divisor />
-              <Brl>BRL {numeral(0.08 / 3.70).format('0,0.00')}</Brl>
+              <Brl>BRL { brlCoinAmount }</Brl>
             </WrapAmount>
           </Col>
           <Col s={6} m={3} l={2}>

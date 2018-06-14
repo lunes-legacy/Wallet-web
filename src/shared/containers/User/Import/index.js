@@ -85,8 +85,10 @@ class Import extends React.Component {
 					LNS: this.state.walletInfo.addresses.LNS
 				}
       }
-      
+
+      this.props.setWalletInfo(walletInfo.addresses);
       localStorage.setItem('WALLET-INFO', encrypt(JSON.stringify(walletInfo)));
+      
       return this.props.history.push('/app/home');
       
 		} catch (error) {
