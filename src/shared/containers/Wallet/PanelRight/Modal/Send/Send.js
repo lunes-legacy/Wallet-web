@@ -4,6 +4,8 @@ import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { connect } from 'react-redux';
 import qrcode from 'qrcode-generator';
+import { decrypt } from '../../../../../utils/crypt';
+let { networks } = require('lunes-lib')
 // import Instascan   from 'instascan';
 
 import {
@@ -23,12 +25,16 @@ import {
 	ThirdRowCss,
 	FourthRowCss
 } from './css';
+import { WalletClass } from '../../../../../classes/Wallet';
+import Background from '../Background';
 
 let CssWrapper = css`
 	transform-origin: top;
 	transform: translateY(-100%);
 	transition: all 0.3s;
 `;
+
+let fontAddressColor = "::placeholder {	color: red;}";
 
 let Image = styled.img`
   width: 32px;
@@ -68,7 +74,8 @@ class Send extends React.Component {
 		this.ref.wrapper = React.createRef();
 		//quantity types: real, dollar, coin
 		this.state = {
-			stateButtonSend: 'Enviar'
+			stateButtonSend: 'Enviar',
+			addressIsValid: true
 		}
 	}
 
@@ -89,6 +96,8 @@ class Send extends React.Component {
 		setTimeout(() => {
 			this.animThisComponentIn();
 		}, 500);
+
+		this.validateAddress();
 
 		//__________________________________-
 		// let scanner = new Instascan.Scanner(document.querySelector('.scan'));
@@ -119,6 +128,7 @@ class Send extends React.Component {
 		imgEl.style.width = '90%';
 		imgEl.style.height = 'auto';
 	}
+
 
 	// toggleStateButtonSend = (text, disabled) => {
 	// 	if (disabled)
@@ -230,18 +240,30 @@ class Send extends React.Component {
 		this.wrapper.style.transform = 'translateY(-100%)';
 	}
 
-	handleSend = () => {
-		// this.toggleStateButtonSend('Carregando...', true);
+	handleSend = async () => {
+
 		let coinAmount = this.coinAmount.value;
 		let address = this.address.value;
+		console.log(coinAmount);
+
 		if (!coinAmount || !address) return;
+
+		let data = await this.validateAddress(address);
+
+		if (!data) {
+			this.setState({ ...this.state, addressIsValid: false });
+
+			return false;
+		}
+
+		this.setState({ ...this.state, addressIsValid: true });
 
 		const props = {
 			...this.props,
 			coinAmount,
 			address
 		}
-		// console.log(props, "handleSend PROPS VARIABLE");
+
 		setTimeout(() => {
 			this.props.nextStep(props);
 		}, 500);
@@ -262,6 +284,14 @@ class Send extends React.Component {
 	handleClickFee = (event) => {
 		let button = event.currentTarget;
 		this._arrangeFeeButtons(button);
+	}
+
+	validateAddress = async (address) => {
+		const wallet = new WalletClass();
+		let network = networks.LNS;
+		let data = wallet.validateAddress(address, network)
+
+		return data;
 	}
 
 	render() {
@@ -415,9 +445,10 @@ class Send extends React.Component {
 					<Row css={ThirdRowCss}>
 						<Col s={12} m={12} l={12}>
 							<InputText
+								style={this.state.addressIsValid ? { color: "white" } : { color: "red" }}
+								whiteTheme
 								normal
 								noBorder
-								whiteTheme
 								type={'text'}
 								ref={this.ref.address}
 								placeholder={'Endereço'} />
