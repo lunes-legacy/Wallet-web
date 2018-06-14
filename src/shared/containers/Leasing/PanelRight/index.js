@@ -6,6 +6,10 @@ import { TextBase, H1 } from "Components";
 //import {ButtonGreen} from "Components/Buttons";
 import { Col, Row } from 'Components/index';
 
+import { encrypt } from '../../../utils/crypt';
+// import Leasing from 'Classes/Leasing'; // refatorar para usar a classe
+import { coins } from 'lunes-lib';
+
 const StyledPanelRight = styled.div`
     position: relative;
 	background: ${style.normalLilac};
@@ -149,6 +153,38 @@ const BoxLineLeasing = Row.extend`
 class PanelRight extends React.Component {
     constructor(props){
         super(props)
+        this.listLeasing = []
+    }
+
+    // consulta de leasing
+    componentDidMount = async () => {
+        // fazer a chamada da classe Leasing
+        // let leasing = new Leasing()
+        // let retorno = leasing.getLeaseHistory() // chamada para teste
+        let Leasing = await coins.services.leaseHistory({ 
+            address: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG', 
+            network: 'LNS', 
+            testnet: true 
+        }).then((e)=>{
+            this.listLeasing = e
+        }); 
+        // passar os dados criptografados (verificar em privacy/rescue.js)
+
+        // validar se voltou alguma coisa
+       
+
+        // se voltou iterar
+
+        // se nao voltou mostrar mensagem de vazio
+    }
+
+    // normalizar status do leasing, que hoje é 8 ou 9 
+    _normalizeStatus = status => {
+        if(status===8){
+            return true
+        }else{
+            return false
+        }
     }
 
     // retornando o botao de cancelar, com condicional de status
@@ -176,20 +212,20 @@ class PanelRight extends React.Component {
     _renderLeasings = () => {
         // aqui, crio um vetor de objs pra ilustrar os dados carregados
         // usando status apenas para diferenciar o estado de um registro
-        let leasings = [{status:true},{status:false},{status:true},{status:true},{status:true},{status:true},{status:true}];
+        //let leasings = [{status:true},{status:false},{status:true},{status:true},{status:true},{status:true},{status:true}];
 
-        return leasings.map((obj, key) => {
+        return this.listLeasing.map((obj, key) => {
             return (
-                <BoxLineLeasing key={key} >
+                <BoxLineLeasing key={obj.txid} >
                     <Col s={12} m={6} l={6}>
-                        <DateText clWhite status={obj.status}>16:23, 12 dec 2018</DateText>
-                        <HashText clWhite txBold status={obj.status}>1PRj85hu9RXPZTzxtko9stfs6nRo1vyrQB</HashText>
+                        <DateText clWhite status={this._normalizeStatus(obj.otherParams.type)}> {Date.parse(obj.date)} </DateText>
+                        <HashText clWhite txBold status={this._normalizeStatus(obj.otherParams.type)}> {obj.txid} </HashText>
                     </Col>
                     <Col s={12} m={4} l={4}>
-                        <GreenText clNormalGreen txBold txCenter status={obj.status}>300000.00000000 LNS</GreenText>
+                        <GreenText clNormalGreen txBold txCenter status={this._normalizeStatus(obj.otherParams.type)}> {obj.networkAmount} LNS</GreenText>
                     </Col>
                     <Col s={12} m={2} l={2}>
-                        {this._buttonCancel(obj.status)} 
+                        {this._buttonCancel(this._normalizeStatus(obj.otherParams.type))} 
                     </Col>
                 </BoxLineLeasing>
             );
@@ -198,6 +234,7 @@ class PanelRight extends React.Component {
 
     // o componente
     render() {
+        console.log(this.listLeasing);
         return (
             <StyledPanelRight>
                 {/* header da tabela */}
