@@ -2,27 +2,16 @@ import React from 'react';
 import style from 'Shared/style-variables';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { WalletClass } from 'Classes/Wallet';
-//REDUX
-import { setTxHistory } from 'Redux/actions';
+
 //COMPONENTS
 import { TextBase } from 'Components/TextBase';
 import { Text } from 'Components/Text';
-import { H1 } from 'Components/H1';
-import { Col, Row } from 'Components/index';
 
 //PRIVATE COMPONENTS
 import Histories from './Histories';
 import CoinControl from './CoinControl';
 import CoinStatus from './CoinStatus';
 import Default from './Default';
-import ModalSend from "./modal/Send/index";
-
-const TextBold = Text.extend`
-	${TextBase}
-	font-weight: bold;
-	display: inline-block;
-`;
 
 const StyledPanelRight = styled.div`
 	position: relative;
@@ -45,9 +34,7 @@ class PanelRight extends React.Component {
 			hidden: '0'
 		});
 	}
-	componentDidMount = async () => {
 
-	}
 	_shouldRender = () => {
 		let { isPanelRightVisible } = this.props.component_wallet;
 		if (!isPanelRightVisible)
@@ -61,7 +48,7 @@ class PanelRight extends React.Component {
 			<StyledPanelRight>
 				<CoinStatus />
 				<CoinControl />
-				<Histories />
+				<Histories />	 
 			</StyledPanelRight>
 		);
 	}

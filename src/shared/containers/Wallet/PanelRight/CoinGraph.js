@@ -133,7 +133,7 @@ class CoinGraph extends React.Component {
     let currentNetwork = this.props.wallet.currentNetwork.toUpperCase();
 
     if (currentNetwork !== this.state.currentNetwork) {
-      this.coinGraphHistory(currentNetwork)
+      this.coinGraphHistory(currentNetwork);
     }
 
     return (
