@@ -8,7 +8,7 @@ import {ButtonGreen} from "Components/Buttons";
 import Modal from 'Components/Modal';
 //REDUX
 import { connect } from "react-redux";
-import { setWalletInfo, getWalletInfo } from 'Redux/actions';
+import { setWalletInfo } from 'Redux/actions';
 
 import CookieClass        from 'Classes/Cookie';
 
@@ -267,9 +267,6 @@ const mapDispatchToProps = dispatch => {
     setWalletInfo: data => {
       dispatch(setWalletInfo(data));
     },
-    getWalletInfo: (data) => {
-      dispatch(getWalletInfo(data));
-    }
   };
 };
 

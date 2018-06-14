@@ -1,14 +1,18 @@
 import React from "react";
-import { connect } from "react-redux";
 import styled from "styled-components";
 import style from "Shared/style-variables";
+
+// UTILS
+import { decrypt } from "Utils/crypt";
 import { timestampDiff } from "Utils/functions";
-import { Col, Row } from 'Components/index';
-import { WalletClass } from 'Classes/Wallet';
-import sb from 'satoshi-bitcoin';
+
+
 //REDUX
+import { connect } from "react-redux";
 import { setTxHistory } from 'Redux/actions';
 
+// Components
+import { Col, Row } from 'Components/index';
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
 import { Loading } from 'Components/Loading';
@@ -288,10 +292,21 @@ class Histories extends React.Component {
     let { currentNetwork, price } = this.props.component_wallet;
     let Cookie = new CookieClass();
     let user = JSON.parse(Cookie.get('user').user);
-    console.warn("_USER_", user);
     let address = user.wallet.coins[0].addresses[0].address;
+
+    let addresses = this.getAddress();
     this.props.setTxHistory({ network: 'BTCTESTNET', address });
   }
+
+  getAddress() {
+    let walletInfo = localStorage.getItem('WALLET-INFO');
+    if (walletInfo) {
+      walletInfo = JSON.parse(decrypt(walletInfo));
+      console.log(walletInfo);
+      return walletInfo.adresses;
+    }
+  }
+
   _renderHistories = () => {
     let { currentNetwork, currentTxHistory } = this.props.component_wallet;
     let { price } = this.props.cryptocurrencies;
@@ -393,8 +408,7 @@ const monetaryValue = (value, options) => {
 
 const mapStateToProps = state => {
   return {
-    component_wallet: state.component.wallet,
-    cryptocurrencies: state.cryptocurrencies, 
+    componentWallet: state.component.wallet,
     currencies: state.currencies
   };
 };

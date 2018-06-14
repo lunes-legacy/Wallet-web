@@ -2,9 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
 
+// UTILS
+import { decrypt } from '../../../utils/crypt'
+
 // REDUX
 import { connect } from 'react-redux';
-import { getWalletInfo } from 'Redux/actions';
+import { setWalletInfo } from 'Redux/actions';
 
 // COMPONENTS
 import CoinsAddress from "./coinsAddress";
@@ -40,8 +43,23 @@ const Input = styled.input`
 `;
 
 class Backup extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			seed: ''
+		}
+	}
+	
 	componentDidMount() {
-		this.props.getWalletInfo()
+		this.getWalletInfo();
+	}
+	
+	getWalletInfo() {
+		let walletInfo = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')));
+		if (walletInfo) {
+			this.props.setWalletInfo(walletInfo.addresses);
+			this.setState({ seed: walletInfo.seed })
+		}
 	}
 
 	render() {
@@ -54,8 +72,8 @@ class Backup extends React.Component {
 					<Input
 						disabled
 						type="text"
-						value={ this.props.walletInfo.seed ? this.props.walletInfo.seed : "" }
-						placeholder={ this.props.walletInfo.seed ? "" : "Carregando..."}
+						value={ this.state.seed ? this.state.seed : "" }
+						placeholder={ this.state.seed ? "" : "Carregando..."}
 					/>
 				</Phrase>
 		
@@ -65,7 +83,7 @@ class Backup extends React.Component {
 					<H1 fontSize={"1.6rem"} txBold clWhite>
 						Endereços das Carteiras
 					</H1>
-					<CoinsAddress  walletInfo={ this.props.walletInfo } />
+					<CoinsAddress  walletInfo={ this.state.walletInfo } />
 				</Addresses>
 			</div>
 		);
@@ -80,8 +98,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    getWalletInfo: (data) => {
-      dispatch(getWalletInfo(data));
+    setWalletInfo: (data) => {
+      dispatch(setWalletInfo(data));
     }
   };
 };

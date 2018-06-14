@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import style from 'Shared/style-variables';
 
+// REDUX
+import { connect } from 'react-redux';
+
 //COMPONENTS
 import { Row, Col, H1} from 'Components';
 
@@ -45,4 +48,12 @@ class CoinsAddress extends React.Component {
 	}
 }
 
-export default CoinsAddress;
+// REDUX
+const mapStateToProps = state => {
+  return {
+    walletInfo: state.walletInfo,
+  };
+};
+const mapDispatchToProps = dispatch => { };
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoinsAddress);
