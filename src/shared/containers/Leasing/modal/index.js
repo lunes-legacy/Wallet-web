@@ -113,7 +113,7 @@ class LeasingModal extends Component {
                                 <LineText />
                             </DivText>
                         </Row>
-
+ 
                         <Row>
                             <DivText inline>
                                 <TextLeft clWhite>Fee
