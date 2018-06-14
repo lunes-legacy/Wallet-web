@@ -1,3 +1,6 @@
+import { EstimateFee } from 'Classes/crypto';
+import { users, coins } from 'lunes-lib';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled, { css } from 'styled-components';
@@ -113,6 +116,50 @@ class Send extends React.Component {
 		// }).catch((err) => {
 		// 	console.log(`%c ${err}`, 'background: red; color: white;');
 		// });
+
+
+	    //tests to here
+	    let Estimate          = new EstimateFee;
+	    let coinToTest        = 'LNS'; //just change here <<<<<
+	    let ETHtestnetAddress = '0xf4af6cCE5c3e68a5D937FC257dDDb73ac3eF9B3A';
+	    let BTCtestnetAddress = '2N1zumWWHmQnp2CycT4YPvzca57smDzWw1D';
+	    let LNStestnetAddress = '37RThBWionPuAbr8H4pzZJM6HYP2U6Y9nLr';
+	    let toAddress;
+	    let fromAddress;
+
+	    if (coinToTest === 'BTC') {
+			toAddress   = BTCtestnetAddress;
+			fromAddress = BTCtestnetAddress;
+	    } else if (coinToTest === 'ETH') {
+			toAddress   = ETHtestnetAddress;
+			fromAddress = ETHtestnetAddress;
+	    } else if (coinToTest === 'LNS') {
+			toAddress   = LNStestnetAddress;
+			fromAddress = LNStestnetAddress;
+	    }
+	    const login = () => {
+	      return users.login({ email:'marcelo@gmail.com', password:'123123123' });
+	    }
+	    const calculateFee = (user) => {
+	      return Promise.resolve(Estimate.go({
+	        network: coinToTest,
+	        fromAddress: fromAddress,
+	        toAddress: toAddress,
+	        amount: 0.01,
+	        accessToken: user.accessToken
+	      }));
+	    }
+	    login().then(user => {
+	      console.log('\x1b[32m Fiz o login \x1b[0m');
+	      calculateFee(user).then((e) => {
+	        console.log('\x1b[32m Chamei o cf \x1b[0m');
+	        console.log(e);
+	      }).catch((e) => {
+	        console.log("calculateFee error",e);
+	      });
+	    }).catch(e => {
+	      console.error("loginError", e);
+	    });
 	}
 
 	toggleModal = (event) => {
@@ -287,12 +334,14 @@ class Send extends React.Component {
 	}
 
 	validateAddress = async (address) => {
+		return true; //SHOULD BE REMOVED <<<<<<<<
 		const wallet = new WalletClass();
 		let network = networks.LNS;
 		let data = wallet.validateAddress(address, network)
 
 		return data;
 	}
+
 
 	render() {
 		return (

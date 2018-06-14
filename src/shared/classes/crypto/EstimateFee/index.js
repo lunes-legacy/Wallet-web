@@ -1,5 +1,5 @@
 // import { estimateBTC, estimateETH } from './families';
-// import { coins } from 'lunes-lib';
+import { coins } from 'lunes-lib';
 import { errorPattern } from 'Utils/functions';
 
 export default class EstimateFee {
@@ -30,6 +30,7 @@ export default class EstimateFee {
 		}
 	}
 	go = async (data) => {
+		console.warn("DATA::",data);
 		if (!data.testnet)
 			data.testnet = true;
 		if (!data.network)
@@ -39,10 +40,10 @@ export default class EstimateFee {
 		this.data        = data;
 		this.data.networkFees = this.networkFees.data;
 		this.network     = data.network.toUpperCase();
-
-		return await this._estimate();
+		console.warn("COINS:::",coins);
+		return await this._estimate(data);
 	}
-	_estimate = async () => {
+	_estimate = async (data) => {
 		let params = {
 			high:   {},
 			medium: {},
@@ -70,13 +71,27 @@ export default class EstimateFee {
 				}
 			}
 			currentEstimate = params[level];
-			// result[level] = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
+			result[level]   = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
 		}
 		return result;
-		// return {
-		// 	network: 'BTC',
-		// 	data: {
-		// 		fee: 100
+		// result = {
+		// 	high: {
+		// 		network: 'BTC',
+		// 		data: {
+		// 			fee: 100
+		// 		}
+		// 	},
+		// 	medium: {
+		// 		network: 'BTC',
+		// 		data: {
+		// 			fee: 200
+		// 		}	
+		// 	},
+		// 	low: {
+		// 		network: 'BTC',
+		// 		data: {
+		// 			fee: 200
+		// 		}		
 		// 	}
 		// }
 	}

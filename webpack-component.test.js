@@ -30,7 +30,7 @@ module.exports = {
 	plugins: [
 		new BrowserSyncPlugin({
 			host: 'localhost',
-			port: 8000,
+			port: 3002,
 			server: {
 				baseDir: ['./tests/components/', './public/']
 			}
@@ -45,8 +45,9 @@ module.exports = {
 			Stores: __dirname+'/src/shared/stores',
 			Utils: __dirname+'/src/shared/utils',
 			Shared: __dirname+'/src/shared/',
-      Auth: __dirname+'/src/shared/auth/',
-      Classes: __dirname+'/src/shared/classes'
+			Auth: __dirname+'/src/shared/auth/',
+			Classes: __dirname+'/src/shared/classes',
+			Config: __dirname+'/src/shared/config'
 		}
 	}
 };
