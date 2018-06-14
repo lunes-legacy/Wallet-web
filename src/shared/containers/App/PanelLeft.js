@@ -193,7 +193,7 @@ class PanelLeft extends React.Component {
         <ItemMenuApp
           label="Leasing"
           to="/app/leasing"
-          icon="ic_recharge.svg"
+          icon="ic_leasing.svg"
           activeClassName="active" />
 
         <ItemMenuApp
