@@ -111,8 +111,13 @@ class App extends React.Component {
 	}
 
 	render() {
-		let lnsBalance = numeral(this.props.balance.LNS.total_confirmed).format('0,0.00000000');
-		let usdBalance = numeral(this.props.balance.LNS.total_confirmed * 0.08).format('$0,0.00')
+		let { crypto }  = this.props.currencies;
+		
+    let usdCurrent = crypto.LNS.USD
+    let lunesAmount = this.props.balance.LNS.total_confirmed;
+		
+		let lnsBalance = numeral(lunesAmount).format('0,0.00000000');
+		let usdBalance = numeral(lunesAmount * usdCurrent).format('$0,0.00');
 
 		return (
 			<WrapApp>

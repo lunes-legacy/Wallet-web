@@ -71,9 +71,10 @@ class CoinStatus extends React.Component {
     let { crypto, currencies }  = this.props.currencies;
     let { balance }             = this.props;
 
-    let coinSymbol = currentNetwork.toUpperCase();
-    let coinName   = balance[currentNetwork.toUpperCase()].coinName;
-    let usdBalance = numeral(balance[currentNetwork.toUpperCase()].total_confirmed * 0.08).format('$0,0.00')
+    let coinSymbol    = currentNetwork.toUpperCase();
+    let coinName      = balance[currentNetwork.toUpperCase()].coinName;
+    let currentCurrencie = numeral(crypto[currentNetwork.toUpperCase()].USD).format('$0,0.00');
+    let usdBalance    = numeral(balance[currentNetwork.toUpperCase()].total_confirmed * crypto[currentNetwork.toUpperCase()].USD).format('$0,0.00');
 
     if (!crypto || !currencies) {
       return null;
@@ -85,7 +86,7 @@ class CoinStatus extends React.Component {
           <Col s={12} m={3} l={3}>
             <CoinDetails>
               <CoinDetailsText offSide>{ coinName }</CoinDetailsText>
-              <CoinDetailsText >{ '1 ' + coinSymbol } { usdBalance }</CoinDetailsText>
+              <CoinDetailsText >{ '1 ' + coinSymbol } { currentCurrencie }</CoinDetailsText>
             </CoinDetails>
           </Col>
           <Col s={8} m={6} l={7}>

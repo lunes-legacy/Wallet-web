@@ -323,8 +323,8 @@ class Histories extends React.Component {
 
   _renderHistories = () => {
     let { currentNetwork, currentTxHistory } = this.props.componentWallet;
-    
-    console.log('currentTxHistory', currentTxHistory)
+    let { crypto } = this.props.currencies;
+    let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD
     
     if (currentTxHistory.length < 1) {
       return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
@@ -334,7 +334,7 @@ class Histories extends React.Component {
 
     return currentTxHistory.data.history.map((transaction, key) => {
       let amount = numeral(transaction.nativeAmount / 100000000).format('0,0.00000000');
-      let usdAmount = numeral( ( transaction.nativeAmount / 100000000 ) * 0.08).format('$0,0.00')
+      let usdAmount = numeral( ( transaction.nativeAmount / 100000000 ) * currentCurrencies).format('$0,0.00')
 
       return (
         <History key={key}>
