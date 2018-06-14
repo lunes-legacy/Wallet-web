@@ -298,6 +298,62 @@ class Histories extends React.Component {
     return weekDay + " " + day + "/" + month + "/" + year;
   };
 
+  parseTimestampToDate2 = timestamp => {
+    timestamp = 835758000;
+    if (!timestamp) return null;
+
+    timestamp = timestamp.toString();
+
+    if (timestamp.length <= 10) {
+      timestamp = timestamp + "000";
+    }
+
+    timestamp = parseInt(timestamp);
+
+    let date = new Date(timestamp);
+    let yearMonth = date.getMonth();
+    switch (yearMonth) {
+      case 0:
+        yearMonth = "Jan";
+        break;
+      case 1:
+        yearMonth = "Fev";
+        break;
+      case 2:
+        yearMonth = "Mar";
+        break;
+      case 3:
+        yearMonth = "Abr";
+        break;
+      case 4:
+        yearMonth = "Mai";
+        break;
+      case 5:
+        yearMonth = "Jun";
+        break;
+      case 6:
+        yearMonth = "Jul";
+        break;
+      case 7:
+        yearMonth = "Ago";
+        break;
+      case 8:
+        yearMonth = "Set";
+        break;
+      case 9:
+        yearMonth = "Out";
+        break;
+      case 10:
+        yearMonth = "Nov";
+        break;
+      case 11:
+        yearMonth = "Dez";
+        break;
+    }
+    let day = date.getDate();
+    return day + "/" + yearMonth;
+  };
+  
   renderIcon = type => {
     if (type === "SPENT") return `/img/app_wallet/ic_enviado_.svg`;
     if (type === "RECEIVED") return `/img/app_wallet/ic_receber_.svg`;
@@ -343,7 +399,7 @@ class Histories extends React.Component {
               <Col s={6} m={6} l={6}>
                 <HistoryHeadStatus>
                   <HeadStatusIcon type={transaction.type} src={this.renderIcon(transaction.type)} />
-                  <HeadStatusDate>12/Mar</HeadStatusDate>
+                  <HeadStatusDate>{ this.parseTimestampToDate2(transaction.date) }</HeadStatusDate>
                 </HistoryHeadStatus>
                 <HistoryHeadText>
                   <StatusStyle type={transaction.type}>
