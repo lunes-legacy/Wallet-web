@@ -58,7 +58,7 @@ class Home extends React.Component {
         </MainRectangle>
 
         <MainRectangle>
-          <Icon src={"/img/app_panel_left/ic_recharge.svg"} />
+          <Icon src={"/img/app_panel_left/ic_leasing.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Leasing
           </H1>
