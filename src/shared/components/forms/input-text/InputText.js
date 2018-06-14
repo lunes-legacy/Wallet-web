@@ -12,36 +12,33 @@ let InputText = styled.input.attrs({
 	&:focus {
 		outline: none;
 	}
-	&:disabled {
-		color: #ccc;
-		font-style: italic;
-		user-select: none;
-		&::placeholder {
-			color: #ccc;
-			font-style: italic;
-			user-select: none;
-		}
-	}
+	
 	&::placeholder {
 		color: white;
 		${props => {
-			if (props.phRight) {
-				return 'text-align: right;';
-			} else if(props.phCenter) {
-				return 'text-align: center;';
-			}
-		}}
+		if (props.phRight) {
+			return 'text-align: right;';
+		} else if (props.phCenter) {
+			return 'text-align: center;';
+		}
+	}}
 		${props => {
-			if (props.phWeightBold) {
-				return 'font-weight: bold;';
-			} else if (props.phWeightLight) {
-				return 'font-weight: 100;';
-			}
-		}}
+		if (props.phWeightBold) {
+			return 'font-weight: bold;';
+		} else if (props.phWeightLight) {
+			return 'font-weight: 100;';
+		}
+	}}
 		${props => {
-			if (props.phStyleItalic)
-				return 'font-style: italic;';
-		}}
+		if (props.phStyleItalic)
+			return 'font-style: italic;';
+	}}
+		${props => {
+		if (props.phMediumFont)
+			return `color: #8975ae;
+			font-size: 23px;
+			font-weight: 300;`
+	}}
 	}
 	${InputBase};
 	${InputSizeBase}
@@ -72,6 +69,17 @@ let InputText = styled.input.attrs({
 					color: ${style.lightLilac};
 					border-color: ${style.lightLilac};
 					text-shadow: 0px 0px 0px ${style.lightLilac};
+				}`;
+		} else if (props.grayTheme) {
+			return `
+				border-color: #8975ae;
+				color: #8975ae;
+				font-size: 23px;
+  				font-weight: 300;
+				& + label {
+					color: #8975ae;
+					border-color: #8975ae;
+					text-shadow: 0px 0px 0px #8975ae;
 				}`;
 		}
 	}}

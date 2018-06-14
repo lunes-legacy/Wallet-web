@@ -1,8 +1,8 @@
 import { errorPattern } from "Utils/functions";
-import { coins }        from "lunes-lib";
-import sb               from "satoshi-bitcoin";
-import { TESTNET }      from 'Config/constants';
-import isCoinAvaliable  from 'Config/isCoinAvaliable';
+import { coins, services } from "lunes-lib";
+import sb from "satoshi-bitcoin";
+import { TESTNET } from 'Config/constants';
+import isCoinAvaliable from 'Config/isCoinAvaliable';
 
 export class WalletClass {
   static coinsPrice;
@@ -11,8 +11,8 @@ export class WalletClass {
   getCoinsPrice = async (data) => {
     if (!data || Object.keys(data).length < 1) {
       data = {
-        BTC: {fromSymbol: 'BTC', toSymbol:'USD'},
-        ETH: {fromSymbol: 'ETH', toSymbol:'USD'}
+        BTC: { fromSymbol: 'BTC', toSymbol: 'USD' },
+        ETH: { fromSymbol: 'ETH', toSymbol: 'USD' }
       }
     }
 
@@ -20,6 +20,7 @@ export class WalletClass {
       let coinsPrice = {};
       for (let coinKey in data) {
         // console.warn(data[coinKey].fromSymbol.toLowerCase(), "()()()()()()()()");
+        console.log(data)
         coinsPrice[data[coinKey].fromSymbol] = await coins.getPrice(data[coinKey]);
       }
       return coinsPrice;
@@ -72,8 +73,8 @@ export class WalletClass {
       //   { fromSymbol: "ETH", toSymbol: "BRL,USD" }
       // ]);
       // this.coinsPrice = coinsPrice;
-      let addresses   = this.getUserAddresses(user);
-      let balance     = {};
+      let addresses = this.getUserAddresses(user);
+      let balance = {};
       //coin = 'btc' (example)
       for (let coin in addresses) {
         coin = coin.toUpperCase();
@@ -92,21 +93,21 @@ export class WalletClass {
             //então colocamos valores iniciais
             if (!balance[ucCoin]) {
               balance[ucCoin] = {};
-              balance[ucCoin]["total_confirmed"]   = sb.toSatoshi(0);
+              balance[ucCoin]["total_confirmed"] = sb.toSatoshi(0);
               balance[ucCoin]["total_unconfirmed"] = sb.toSatoshi(0);
-              balance[ucCoin]["total_amount"]      = 0;
+              balance[ucCoin]["total_amount"] = 0;
             }
             //new total_(un)confirmed
-            let confirmed   = response.data.confirmed  ? response.data.confirmed : 0;
+            let confirmed = response.data.confirmed ? response.data.confirmed : 0;
             let unconfirmed = response.data.unconfirmed ? response.data.unconfirmed : 0;
             //it sums the old total_confirmed with the new
-            balance[ucCoin]["total_confirmed"]   += confirmed;
+            balance[ucCoin]["total_confirmed"] += confirmed;
             balance[ucCoin]["total_unconfirmed"] += unconfirmed;
             //it converts total_(un)confirmed to bitcoin
             balance[ucCoin]["total_unconfirmed"] = sb.toBitcoin(balance[ucCoin]["total_unconfirmed"]);
-            balance[ucCoin]["total_confirmed"]   = sb.toBitcoin(balance[ucCoin]["total_confirmed"]);
+            balance[ucCoin]["total_confirmed"] = sb.toBitcoin(balance[ucCoin]["total_confirmed"]);
 
-            balance[ucCoin]["total_amount"]      = balance[ucCoin]["total_confirmed"] + balance[ucCoin]["total_unconfirmed"];
+            balance[ucCoin]["total_amount"] = balance[ucCoin]["total_confirmed"] + balance[ucCoin]["total_unconfirmed"];
           }
         }
       }
@@ -121,7 +122,7 @@ export class WalletClass {
     address = undefined
   }) => {
     console.warn(network, address, "NETWORK | ADDRESS");
-    if (!network) 
+    if (!network)
       throw errorPattern("getHistory error, you should pass through a network name", 500, "WALLET_GETHISTORY_ERROR");
     // if (!address) 
     //   throw errorPattern("getHistory error, you should pass through an address", 500, "WALLET_GETHISTORY_ERROR");
@@ -136,4 +137,8 @@ export class WalletClass {
   getCoinHistory = async (object) => {
     return await coins.getHistory(object);
   };
+
+  validateAddress = async (address, accessToken) => {
+    return await services.wallet.lns.validateAddress(address, accessToken);
+  }
 }

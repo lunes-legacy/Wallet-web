@@ -1,35 +1,121 @@
 import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+
+// CLASSES
 import { WalletClass } from "Classes/Wallet";
+
+// LIBS
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+
+// REDUX
+import {connect} from "react-redux";
+
+// COMPONENTS
+import { Col, Row } from 'Components/index';
+import { TextBase } from "Components/TextBase";
+
+const WrapCoinPercent = styled.div`
+  margin-left: 20%;
+  display: flex;
+  align-items: center;
+  background: ${style.normalGreen};
+  border-radius: 10px;
+  justify-content: center;
+  margin-top: 1.5rem;
+  width: 4rem;
+
+  @media (${style.media.mobile2}) {
+    width: 7rem !important;
+  }
+
+  @media (${style.media.tablet2}) {
+    width: 9rem !important;
+  }
+`;
+
+const CoinPercent = styled.div`
+  ${TextBase}
+  
+  width: 130px;
+  height: 52px;
+  border-radius: 10px; 
+  color: white;
+  text-align: center;
+  padding: 15px 25px 25px 25px;
+  
+  @media (${style.media.tablet2}) {
+    font-size: 2rem;
+  }
+`;
+
+// const Chart = styled.div`
+//   margin-right: 10%;
+//   height: 80;
+//   width: 100%;
+// `;
+
+const fontStyle = {
+  fontSize: "10pt",
+  color: style.normalGreen,
+  fontWeight: "bold"
+}
+
+const styleWrapper = {
+  backgroundColor: style.darkLilac
+}
+
+const overflow = {
+  overflow: 'hidden'
+}
+
 
 class CoinGraph extends React.Component {
   constructor() {
     super();
-
     this.state = {
+      currentNetwork: 'LNS',
       history_time_price: []
     };
   }
 
-  componentWillMount() {
-    this.coinHistory();
+  componentDidMount() {    
+    this.coinGraphHistory(this.state.currentNetwork);
   }
 
-  coinHistory = async () => {
-    let obj = { fromSymbol: this.props.currentNetwork, toSymbol: "USD", range: "RANGE_1D" };
-    let wallet = await new WalletClass().getCoinHistory(obj);
-    let walletFormatted = await this.convertTimestampToDate(wallet.data);
+  coinGraphHistory(currentNetwork) {
+    try {
 
-    this.setState(() => {
-      return {
-        history_time_price: walletFormatted
-      };
-    });
+      this.setState({
+        ...this.state,
+        currentNetwork: currentNetwork
+      });  
+
+      // GRAPH
+      let graphData = { fromSymbol: currentNetwork, toSymbol: "USD", range: "RANGE_1D" };
+      let wallet = new WalletClass().getCoinHistory(graphData)
+        .then((res) => {
+
+          // PERCENT
+          let coinPrices = this.convertTimestampToDate(res.data)
+          let coinPriceLength = coinPrices.length;
+          let firstValueCoin = coinPrices[0].close;
+          let currentValueCoin = coinPrices[coinPriceLength - 1].close;
+
+          this.setState( () => {
+            return {
+              ...this.state,
+              history_time_price: coinPrices,
+              coin_percent: (currentValueCoin * 100 / firstValueCoin - 100).toFixed(2)
+            }
+          });
+        });
+    } catch (error) {
+      console.log(error)
+    }
   };
 
-  convertTimestampToDate = async data => {
+  convertTimestampToDate = data => {
     data.map(timeStamp => {
       let date = new Date(timeStamp.time * 1000);
 
@@ -40,35 +126,48 @@ class CoinGraph extends React.Component {
         date.getMinutes()}`;
     });
 
-    return await data;
+    return data;
   };
 
   render() {
-    const fontStyle = {
-      fontSize: "10pt",
-      color: "#4cd566",
-      fontWeight: "bold"
-    };
+    let currentNetwork = this.props.wallet.currentNetwork.toUpperCase();
 
-    const styleWrapper = {
-      backgroundColor: "#3B1878"
-    };
+    if (currentNetwork !== this.state.currentNetwork) {
+      this.coinGraphHistory(currentNetwork)
+    }
 
     return (
-      <div>
-        <ResponsiveContainer width={this.props.width} height={this.props.height}>
-          <LineChart data={this.state.history_time_price}
-            margin={{ right: 0, left: 0, }}>
-            <CartesianGrid stroke="#4b2c82" vertical={false} />
-            <XAxis hide dataKey="time" />
-            <YAxis hide domain={["dataMin", "dataMax"]} />
-            <Tooltip wrapperStyle={styleWrapper} labelStyle={fontStyle} itemStyle={fontStyle} separator={": $"} />
-            <Line dataKey="close" dot={false} stroke="#4cd566" />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+      <Row>
+        <Col s={8} m={6} l={7} style={overflow}>
+          <ResponsiveContainer width={'90%'} height={90}>
+            <LineChart data={this.state.history_time_price}
+              margin={{ right: 0, left: 0, }}>
+              <CartesianGrid stroke={style.normalLilac} vertical={false} strokeWidth={3}/>
+              <XAxis hide dataKey="time" />
+              <YAxis hide domain={["dataMin", "dataMax"]} />
+              <Tooltip wrapperStyle={styleWrapper} labelStyle={fontStyle} itemStyle={fontStyle} separator={": $"} />
+              <Line dataKey="close" dot={false} stroke={style.normalGreen} strokeWidth={3}/>
+            </LineChart>
+          </ResponsiveContainer>
+        </Col>
+
+        <Col s={4} m={4} l={3}>
+          <WrapCoinPercent style={this.state.coin_percent < 0 ? { background: style.normalRed } : { background: style.lightgreen }}>
+            <CoinPercent>{this.state.coin_percent}%</CoinPercent>
+          </WrapCoinPercent>
+        </Col>
+      </Row>
     );
   }
 }
 
-export default CoinGraph;
+const mapStateToProps = state => {
+  return {
+    wallet: state.component.wallet,
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return { };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoinGraph);

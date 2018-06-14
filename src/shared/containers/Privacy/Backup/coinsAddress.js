@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import style from 'Shared/style-variables';
 
+// REDUX
+import { connect } from 'react-redux';
+
 //COMPONENTS
 import { Row, Col, H1} from 'Components';
 
@@ -16,30 +19,27 @@ const Input = styled.input`
 	color: ${style.normalGreen};
 	font-Size: 1.6rem;
 	height: 44px;
+	text-align: center;
 	padding: 20px;
 	width: 80%;
 `;
 
 const coins = [
-	'LNS',
-	'BTC', 
-	'ETH',
-	'LTC',
-	'DASH',
-	'NANO',	
+	{ 'coinName':  'LNS', 'address': '' },
+	{ 'coinName':  'BTC', 'address': 'Soon...' }
 ]
 
-class CoinsAddress extends React.Component {  
+class CoinsAddress extends React.Component { 
 	render() {
 		return (
 			coins.map( coin => {
         return (
-					<CoinAddress key={coin}>
+					<CoinAddress key={coin.coinName}>
 						<Row defaultAlign="left">
 							<H1 txBold clWhite width={'65px'} padding={'1.2rem 0 0 0'}> 
-								{coin}
+								{ coin.coinName }
 							</H1>
-							<Input disabled type="text" value='161cmLgavNNkWTjR61RnNqtejFeB88X6FM' />
+							<Input disabled type="text" placeholder="Carregando..." value={ this.props.walletInfo.addresses[coin.coinName] ? this.props.walletInfo.addresses[coin.coinName] : coin.address } />
 						</Row>
 					</CoinAddress>	
         )
@@ -48,4 +48,12 @@ class CoinsAddress extends React.Component {
 	}
 }
 
-export default CoinsAddress;
+// REDUX
+const mapStateToProps = state => {
+  return {
+    walletInfo: state.walletInfo,
+  };
+};
+const mapDispatchToProps = dispatch => { };
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoinsAddress);

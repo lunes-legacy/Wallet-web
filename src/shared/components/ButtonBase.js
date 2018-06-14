@@ -6,10 +6,10 @@ export let ButtonBase = css`
 	${BlockBase}
 	background: ${style.normalGreen};	
 	color: white;
-
-	font-size: 16px;
+	font-weight: bold;
+	font-size: 14px;
 	text-align: center;
-	border-radius: 4px;
+	border-radius: 6px;
 	border: none;
 	cursor: pointer;
 	&:focus {

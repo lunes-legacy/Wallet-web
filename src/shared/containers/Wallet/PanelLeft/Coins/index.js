@@ -2,10 +2,10 @@ import React       from "react";
 import styled      from "styled-components";
 import style       from "Shared/style-variables";
 import { TextBase, H1 } from "Components";
-import { connect } from "react-redux";
+
 //REDUX
-import { openPanelRight } from 'Redux/actions';
-import { togglePanelLeft } from 'Redux/actions';
+import { connect } from "react-redux";
+import { openPanelRight, togglePanelLeft } from 'Redux/actions';
 
 import { Loading } from 'Components/Loading';
 
@@ -14,8 +14,8 @@ import {numeral} from 'Utils/numeral';
 const StyledCoins = styled.div`
   width: auto;
   min-width: 100%;
-  height: 100%;
-  max-height: 100%;
+  height: 100vh;
+  max-height: 100vh;
 
 `;
 const StyledLoading = styled.div`
@@ -61,32 +61,34 @@ const Coin = styled.div`
 `;
 
 const CoinsHeader = styled.div`
-  ${TextBase}
-  display: flex;
-  align-items: none;
-  font-size: 1rem;
-  letter-spacing: 1.3px;
-  height: 8rem;
+${TextBase}
+background-image: url('/img/app_wallet/rectangle-wallet.svg');
+background-repeat: no-repeat;
+letter-spacing: 1.3px;
+display: flex;
+
+
+@media (${style.media.mobile}) {
+  font-size: 1.2rem;
   padding-top: 1.4rem;
-  padding-left: 1.4rem;
-  width: 100%;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  //background-size: 110% 100%;
+  background-size: cover;
+  background-position: -5px -5px;
+  height: 70px;
+}
 
-  @media (${style.media.tablet2}) {
-    font-size: 1.2rem;
-    padding-top: 1.4rem;
-    padding-left: 2rem;
-  }
+@media (${style.media.tablet}) {
+  font-size: 1.5rem;
+  padding-top: 2.3rem;
+  padding-left: 2.5rem;
+  height: 90px;
+}
 
-  @media (${style.media.laptop}) {
-    align-items: center;
-    border-top: none;
-    padding-top: 0;
-    padding-bottom: 3rem;
-  }
-
-  @media (${style.media.desktop}) {
-    padding-bottom: 1.4rem;
-  }
+@media (${style.media.laptop}) {
+  background-size: cover;
+}
 `;
 
 const CoinHeaderBg = styled.img`
@@ -163,16 +165,23 @@ class Coins extends React.Component {
   //metodo chamado sempre que o componente é renderizado ou um
   //estado é atualizado
   _renderCoins = () => {
-    let { currentNetwork }  = this.props.component.wallet;
-    let { price }           = this.props.currencies;
-    let { balance }         = this.props;
-    if (!balance || !price) {
+    let { currentNetwork }     = this.props.component.wallet;
+    let { crypto, currencies } = this.props.currencies;
+    let { balance }            = this.props
+
+    if (!balance || !crypto || !currencies) {
       return <Loading />;
     }
+    
     let components = [];
     // EX: coinKey = 'btc';
     for (let coinKey in balance) {
-      let currentBalance = balance[coinKey];
+      let { crypto }  = this.props.currencies;
+      let usdCurrent = crypto[coinKey].USD
+      let coinAmount = this.props.balance[coinKey].total_confirmed;
+      let coinBalance = numeral(coinAmount).format('0,0.000');
+      let usdBalance = numeral(coinAmount * usdCurrent).format('0,0.000');
+
       let tmp = (
         <Coin
           key={coinKey}
@@ -186,11 +195,11 @@ class Coins extends React.Component {
           </WrapCoinImg>
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>
-              { numeral(currentBalance.total_confirmed).format('0.00') }
+              { coinKey } 
+              { coinBalance }
             </CoinAmount>
             <CoinValue clWhite offSide size={"2rem"}>
-              {/* { `USD ${currentBalance.total_amount}` } */}
-              { `USD ${numeral(currentBalance.total_amount).format('0,0.00')}`}
+              { "USD " + usdBalance }
             </CoinValue>
           </WrapCoinData>
         </Coin>
@@ -203,9 +212,7 @@ class Coins extends React.Component {
   render() {
     return (
       <StyledCoins>
-        <CoinHeaderBg src="/img/app_wallet/rectangle-wallet.svg" />
         <CoinsHeader txLight>MINHAS CARTEIRAS</CoinsHeader>
-
         { this._renderCoins() }
       </StyledCoins>
     );
@@ -214,9 +221,9 @@ class Coins extends React.Component {
 
 const mapStateToProps = state => {
   return {
+    balance: state.balance,
     component:  state.component,
-    currencies: state.currencies,
-    balance:    state.balance
+		currencies: state.currencies,
   };
 };
 

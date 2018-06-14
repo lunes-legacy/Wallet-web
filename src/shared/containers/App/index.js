@@ -1,14 +1,14 @@
 require('dotenv').load();
 import React, { PropTypes } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { errorPattern } from 'Utils/functions';
 import styled from 'styled-components';
-import { users } from 'lunes-lib';
-import { createBrowserHistory } from 'history';
+import { users, coins } from 'lunes-lib';
+
+// REDUX
+import { connect } from 'react-redux';
+import { setBalance, setCurrenciesPrice, setCryptoPrice } from 'Redux/actions';
 
 //COMPONENTS
-import Login from 'Containers/User/Login/index';
 import Home from 'Containers/Home/index';
 import Portfolio from 'Containers/Portfolio/index';
 import Wallet from 'Containers/Wallet/index';
@@ -20,7 +20,6 @@ import Configuration from 'Containers/Configuration/index';
 import Privacy from 'Containers/Privacy/index';
 
 //SUB-COMPONENTS
-import { Link } from 'Components/Link';
 import { TextBase } from 'Components/TextBase';
 import { Text } from 'Components/Text';
 import Header from './Header';
@@ -84,11 +83,42 @@ class App extends React.Component {
 		super(props);
 		numeral.locale(this.props.currencies.locale);
 	}
+	
+	componentWillMount() {
+		this.props.setBalance();
+		this.props.setCurrenciesPrice();
+		this.props.setCryptoPrice();
+	}
+
 	componentDidMount() {
+		this.checkAccess();
 	}
+
 	componentDidUpdate() {
+		this.checkAccess();
 	}
+
+	checkAccess() {
+		let walletInfo = localStorage.getItem('WALLET-INFO');
+		let accessToken = localStorage.getItem('ACCESS-TOKEN');
+		if (!walletInfo || !accessToken) {
+			return this.props.history.push('/');
+		}
+	}
+	
+	calcBalance() {
+
+	}
+
 	render() {
+		let { crypto }  = this.props.currencies;
+		
+    let usdCurrent = crypto.LNS.USD
+    let lunesAmount = this.props.balance.LNS.total_confirmed;
+		
+		let lnsBalance = numeral(lunesAmount).format('0,0.00000000');
+		let usdBalance = numeral(lunesAmount * usdCurrent).format('$0,0.00');
+
 		return (
 			<WrapApp>
 				<Header>
@@ -99,13 +129,13 @@ class App extends React.Component {
 						<Balance>
 						<Text clWhite txLight txInline size={'1.8rem'}> Balance: </Text>
 							<Text clNormalGreen txNormal txInline offSide size={'2.3rem'} >LNS </Text>
-							<Text clWhite txNormal txInline offSide size={'2.0rem'}>{`${numeral(1300).format()}`}</Text>
+							<Text clWhite txNormal txInline offSide size={'2.0rem'}>{ lnsBalance }</Text>
 						</Balance>
-						<Text clNormalGreen txBold txRight size={'1.2rem'}>{numeral(130.10).format('$0,0.00')}</Text>
+						<Text clNormalGreen txBold txRight size={'1.2rem'}>{ usdBalance }</Text>
 					</WrapBalance>
 				</Header>
 				<Panels>
-					<PanelLeft />
+					<PanelLeft history={this.props.history} />
 
 					<PanelRight>
 						<Switch>
@@ -130,21 +160,33 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user, 
-		currencies: state.currencies
+		balance: state.balance,
+		currencies: state.currencies,
+		cryptoPrice: state.currencies.crypto,
+    currenciePrice: state.currencies.currencies,		
 	}
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		userLogin: (email, password) => {
-			dispatch({
-				type: 'USER_LOGIN',
-				payload: userLogin(email, password)
-			});
-		}
+		// userLogin: (email, password) => {
+		// 	dispatch({
+		// 		type: 'USER_LOGIN',
+		// 		payload: userLogin(email, password)
+		// 	});
+		// },
+		setCurrenciesPrice: () => {
+			dispatch(setCurrenciesPrice());
+		},
+		setCryptoPrice: () => {
+			dispatch(setCryptoPrice());
+		},
+		setBalance: () => {
+      dispatch(setBalance());
+		},
 	}
 }
-const userLogin = (email, password) => {
-	return users.login({ email, password });
-}
+// const userLogin = (email, password) => {
+// 	return users.login({ email, password });
+// }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

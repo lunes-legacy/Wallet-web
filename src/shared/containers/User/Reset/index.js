@@ -16,7 +16,7 @@ import { P } from "Components/P";
 import { FormBuilder } from "Components/FormBuilder";
 import { ButtonSecondary } from "Components/Buttons";
 import Slide from "../../../containers/User/Login/Slide";
-import { ButtonBackgroundGreen } from "../../../components/Buttons";
+import { ButtonGreen } from "../../../components/Buttons";
 
 const CustomLogo = Logo.extend`
   margin: 70px auto 0 auto;
@@ -81,7 +81,7 @@ const inputs = [
 class Reset extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
-    let emailEl = document.querySelector(".reset-email");
+    let emailEl = document.body.querySelector(".reset-email");
     this.props.userReset(emailEl.value);
   };
   componentDidMount() { }
@@ -131,7 +131,7 @@ class Reset extends React.Component {
             <CustomLinkRight to={"/login"} margin={"0 auto 25px auto"}>
               Fazer login?
             </CustomLinkRight>
-            <ButtonSecondary type={"submit"}>Redefinir senha</ButtonSecondary>
+            <ButtonGreen type={"submit"}>Redefinir senha</ButtonGreen>
           </CustomForm>
 
           <P txCenter clWhite margin={"20px 0 0 0"} fontSize={"1.4rem"} className={"js-status"} />

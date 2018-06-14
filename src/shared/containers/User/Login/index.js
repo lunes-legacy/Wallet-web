@@ -1,12 +1,13 @@
 import React from "react";
-import { users } from "lunes-lib";
-import { connect } from "react-redux";
 import styled from "styled-components";
 import validator from "validator";
 import style from "Shared/style-variables";
-import Route from "react-router";
-import Home from 'Containers/Home/index';
+
+// LIBS
+import { encrypt } from '../../../utils/crypt'
+
 //REDUX
+import { connect } from "react-redux";
 import { userLogin } from 'Redux/actions';
 
 //COMPONENTS
@@ -14,11 +15,8 @@ import { Form } from "Components/Form";
 import { FormGroup } from "Components/FormGroup";
 import { Input } from "Components/Input";
 import { ButtonSecondary } from "Components/Buttons";
-import { Link, CustomLink } from "Components/Link";
+import { CustomLink } from "Components/Link";
 import { H1 } from "Components/H1";
-import { H2 } from "Components/H2";
-import { H3 } from "Components/H3";
-import { P } from "Components/P";
 import { Logo } from "Components/Logo";
 
 //PRIVATE COMPONENTS
@@ -48,12 +46,6 @@ const CustomLinkRight = CustomLink.extend`
   text-align: right;
 `;
 
-const CustomP = P.extend`
-  display: block;
-  margin-top: 200px;
-  text-align: center;
-`;
-
 const Paragraph = styled.div`
   margin-top: 12px;
   color: white;
@@ -67,6 +59,26 @@ class Login extends React.Component {
   componentDidUpdate() {
     this.handleStatus();
   }
+
+  componentDidMount() {
+    let walletInfo = localStorage.getItem('WALLET-INFO');
+    let accessToken = localStorage.getItem('ACCESS-TOKEN');      
+    if (walletInfo && accessToken) {
+      this.props.history.push('/app/home')
+    }
+  }
+
+  getSeed() {
+    let walletInfo = localStorage.getItem('WALLET-INFO');
+    let emailEl = document.querySelector(".login-email");
+    localStorage.setItem('ACCESS-TOKEN', encrypt(JSON.stringify({ email: emailEl.value, accessToken: this.props.user.data.accessToken })));
+    walletInfo ? (
+      this.props.history.push('/app/home')
+    ) : (
+      this.props.history.push('/import')
+    )  
+  }
+
   handleLogin = event => {
     event.preventDefault();
 
@@ -98,31 +110,19 @@ class Login extends React.Component {
     try {
       let statusEl = document.querySelector(".js-status");
       let { status } = this.props.user;
-
       if (status === "pending") {
-        statusEl.textContent = "Aguarde...";
+        statusEl.textContent = "Loading...";
       } else if (status === "fulfilled") {
-           
-        this.props.history.push('/app/home');
+        this.getSeed();
       }
       else if (status === "rejected") {
         statusEl.textContent = "Tente novamente";
       }
     }
-
-
     catch (err) {
       console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
     }
-
   }
-
-  componentDidUpdate() {
-    setTimeout(() => {
-      this.handleStatus();
-    }, 300);
-  }
-
 
   render() {
     let { status, logged } = this.props.user;
@@ -173,14 +173,15 @@ class Login extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    walletInfo: state.walletInfo
   };
 };
 const mapDispatchToProps = dispatch => {
   return {
     userLogin: (email, password) => {
       dispatch(userLogin(email, password));
-    }
+    },
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { TextBase } from 'Components';
+import { TextBase } from '../../TextBase';
 
 let LabelRadio = styled.label`
-	${TextBase}
+	${TextBase};
 	display: inline;
 `;
 

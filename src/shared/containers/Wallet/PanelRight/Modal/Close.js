@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 
-let Close   = styled.div`
+let Close = styled.div`
 	position: absolute;
 	right: 10px;
 	top: 10px;
-	font-size: 2rem;
+	font-size: 1.8rem;
 	color: white;
-	cursor: pointer;
+	cursor: pointer; 
+	height: 3px;
+	
 `;
 export default Close;

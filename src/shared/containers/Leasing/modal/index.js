@@ -1,14 +1,19 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Col, Row } from "Components/index";
+import { TextBase } from 'Components/TextBase';
 import { ButtonGreen } from "Components/Buttons";
+import { numeral } from 'Utils/numeral';
+import { InputText } from 'Components/forms/input-text';
+
+// REDUX
+import { connect } from 'react-redux';
 
 import {
     Background,
     QuantityAmount,
     LeasingStyleModalCss,
     Close,
-    ReceiveContentCss,
     Rectangle,
     TextCenter,
     Image,
@@ -25,18 +30,45 @@ import {
 } from "./css";
 
 import Hr from "../../Wallet/PanelRight/Modal/Hr";
+import styled from "styled-components";
 
 class LeasingModal extends Component {
+
+    constructor() {
+        super();
+
+        this.state = {
+            valuePorcent: 0
+        }
+    }
+
+    handleModal = () => {
+        let modalClass = document.querySelector(".modal-status");
+        return modalClass.style.display = "none";
+    }
+
+    leasingPorcentCalculator(value) {
+        this.setState({
+            valuePorcent: (this.props.balance.LNS.total_confirmed * value)/ 100
+        })
+    }
+
+    setInputValue(value) {
+        this.setState({
+            valuePorcent: value
+        })
+    }
+
     render() {
         return (
-            <Background>
+            <Background className={"modal-status"}>
                 <LeasingStyleModalCss>
                     <Col defaultAlign={"center"} s={12} m={12} l={12}>
                         <Row>
-                            <Close>x</Close>
+                            <Close onClick={this.handleModal}>x</Close>
 
                             <Image src="/img/coins/lns.svg" />
-                            <CoinValue offSide>250000.0054248</CoinValue>
+                            <CoinValue offSide>{numeral(this.props.balance.LNS.total_confirmed).format('0,0.00000000')}</CoinValue>
 
                             <Rectangle>
                                 <Row>
@@ -45,23 +77,39 @@ class LeasingModal extends Component {
                                     </div>
                                 </Row>
                                 <Row>
-                                    <QuantityAmount >50.000000</QuantityAmount>
+                                    <QuantityAmount clNormalGreen>
+                                        <InputText                                        
+                                            type={'number'}
+                                            onChange={(value) => this.setInputValue(value.target.value)}
+                                            noBorder
+                                            txCenter
+                                            clNormalGreen
+                                            placeholder={'0.00000000'}
+                                            value={this.state.valuePorcent}                                            
+                                            min="0" />
+                                    </QuantityAmount>
                                 </Row>
                             </Rectangle>
                         </Row>
 
                         <Row>
                             <DivNumber>
-                                <NumberPorcent clNormalGreen marginRight={"35%"}>25%</NumberPorcent>
-                                <NumberPorcent clMostard marginRight={"28%"}>50%</NumberPorcent>
-                                <NumberPorcent clNormalRed>100%</NumberPorcent>
-                                <Line />
-                            </DivNumber>
+                                <NumberPorcent marginRight={"35%"} clNormalGreen onClick={() => this.leasingPorcentCalculator(25)}> 25%</NumberPorcent>
+                                <NumberPorcent marginRight={"27%"} clMostard onClick={() => this.leasingPorcentCalculator(50)}>50%</NumberPorcent>
+                                <NumberPorcent clNormalRed onClick={() => this.leasingPorcentCalculator(100)}>100%</NumberPorcent> 
+                                <Line/>
+                            </DivNumber> 
                         </Row>
                         <Row>
                             <DivText>
                                 <TextLeft clWhite>Destinatário</TextLeft>
-                                <Textphrase clWhite>3P2HNUd5VUPLMQkJmctTPEeeHumiPN2GkTb</Textphrase>
+                                <Textphrase>
+                                    <InputText
+                                        clWhite
+                                        noBorder
+                                        txCenter
+                                        placeholder={'clWhite3P2HNUd5VUPLMQkJ9stf...'} />
+                                </Textphrase>
                                 <LineText />
                             </DivText>
                         </Row>
@@ -69,7 +117,7 @@ class LeasingModal extends Component {
                         <Row>
                             <DivText inline>
                                 <TextLeft clWhite>Fee
-                                    <TextFee>0.000900</TextFee>
+                                    <TextFee>0.001</TextFee>
                                 </TextLeft>
 
                                 <LineText />
@@ -77,7 +125,7 @@ class LeasingModal extends Component {
                         </Row>
                         <Row>
                             <DivButton>
-                                <ButtonGreen>INICIAR LEASING</ButtonGreen>
+                                <ButtonGreen >INICIAR LEASING</ButtonGreen>
                             </DivButton>
                         </Row>
                     </Col>
@@ -86,4 +134,14 @@ class LeasingModal extends Component {
         );
     }
 }
-export default LeasingModal;
+
+const mapStateToProps = (state) => {
+    return {
+        balance: state.balance,
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeasingModal);

@@ -81,7 +81,7 @@ if (webpackEnv !== 'production') {
 	});
 } else {
 	app.listen(3010, () => {
-		console.log('Server is running on port 3002');
+		console.log('Server is running on port 3010');
 	});
 	// exports.ssr = functions.https.onRequest(app);
 }

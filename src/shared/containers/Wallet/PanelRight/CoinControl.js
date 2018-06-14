@@ -2,16 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
 import { TextBase } from "Components/TextBase";
-import { Text } from "Components/Text";
 import { Col, Row } from "Components/index"
-import ModalSend from "./Modal/Send/index";
 import ModalReceive from "./Modal/Receive/index";
 import {connect} from "react-redux";
 import {numeral} from 'Utils/numeral';
 
 const StyledCoinControl = styled.div`
   width: 100%;
-  padding: 30px 25px;
+  padding: 30px 0px 30px 0px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 `;
 
@@ -124,15 +122,23 @@ class CoinControl extends React.Component {
   };
 
   render() {
+    let { currentNetwork }      = this.props.component.wallet;
+    let { crypto, currencies }  = this.props.currencies;
+    let usdCurrent = crypto[currentNetwork.toUpperCase()].USD
+    let brlCurrent = crypto[currentNetwork.toUpperCase()].BRL
+    let coinAmount = this.props.balance[currentNetwork.toUpperCase()].total_confirmed;
+    let usdCoinAmount = numeral(usdCurrent * coinAmount).format('$0,0.00');
+    let brlCoinAmount = numeral(brlCurrent * coinAmount).format('$0,0.00');
+
     return (
       <StyledCoinControl>
         <Row overflowHidden>
           <Col s={12} m={6} l={8}>
             <WrapAmount>
-              <Amount offSide>0.00000001</Amount>
-              <Usd>USD {numeral(2).format('0,0.00')}</Usd>
+              <Amount offSide>{ this.props.component.wallet.currentNetwork.toUpperCase() } { numeral(this.props.balance[this.props.component.wallet.currentNetwork.toUpperCase()].total_confirmed).format('0,0.0000') }</Amount>
+              <Usd>USD { usdCoinAmount }</Usd>
               <Divisor />
-              <Brl>BRL {numeral(6.3).format('0,0.00')}</Brl>
+              <Brl>BRL { brlCoinAmount }</Brl>
             </WrapAmount>
           </Col>
           <Col s={6} m={3} l={2}>
@@ -158,7 +164,9 @@ class CoinControl extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		currencies: state.currencies
+    currencies: state.currencies,
+    component: state.component,
+    balance: state.balance
 	}
 }
 const mapDispatchToProps = (dispatch) => {

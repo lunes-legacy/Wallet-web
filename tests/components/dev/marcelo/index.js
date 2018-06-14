@@ -87,15 +87,15 @@ let props = {
   }
 };
 
-// const toRender = () => {
-//   return(
-//     <Modal {...props}/> 
-//   );
-// }
 const toRender = () => {
-	return(
-		<LeasingModal isShow={true}/>
-	);
+  return(
+    <Modal {...props}/> 
+  );
 }
+// const toRender = () => {
+// 	return(
+// 		<LeasingModal isShow={true}/>
+// 	);
+// }
 
 export default toRender;

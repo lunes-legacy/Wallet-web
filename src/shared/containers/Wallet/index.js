@@ -1,25 +1,16 @@
 import React            from 'react';
-import ReactDOM         from 'react-dom';
 import styled           from 'styled-components';
-import style            from 'Shared/style-variables';
 import { connect }      from 'react-redux';
-import CookieClass      from 'Classes/Cookie';
-import { WalletClass }  from 'Classes/Wallet';
 import UserClass        from 'Classes/User';
-import { ENV }          from 'Config/constants';
-import { errorPattern } from 'Utils/functions';
+
 //REDUX
 import {
-	setBalance,
 	togglePanelLeft,
+	setBalance,
 	setCryptoPrice,
 	setCurrenciesPrice } from 'Redux/actions';
 
 //COMPONENTS
-import { TextBase }    from 'Components/TextBase';
-import { Text }        from 'Components/Text';
-import { Loading }     from 'Components/Loading';
-//PRIVATE COMPONENTS
 import PanelLeft       from './PanelLeft/index';
 import PanelRight      from './PanelRight/index';
 
@@ -38,6 +29,13 @@ class Wallet extends React.Component {
 			coinsPrice: undefined
 		};
 	}
+
+	componentWillMount() {
+		this.props.setBalance();
+		this.props.setCurrenciesPrice();
+		this.props.setCryptoPrice();
+	}
+
 	componentDidMount = async () => {
 		// let Cookies = new CookieClass;
 		let User    = new UserClass;
@@ -56,16 +54,9 @@ class Wallet extends React.Component {
 	   //  }
 		let user    = await User.login({email:'',password:''});
 		if (!user) { return; }
-
-		let wallet     = new WalletClass;
-		let balance    = await wallet.getBalance(user);
-		// let coinsPrice = await wallet.getCoinsPrice();
-
-			this.props.setCurrenciesPrice();
-			this.props.setCryptoPrice();
-		if (ENV !== 'development') {
-			this.props.setBalance(balance);
-		}
+	
+		this.props.setCurrenciesPrice();
+		this.props.setCryptoPrice();
 	}
 
 	render() {
@@ -81,7 +72,11 @@ class Wallet extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		wallet: state.wallet
+		wallet: state.wallet,
+		balance: state.balance,
+		currencies: state.currencies,
+		cryptoPrice: state.currencies.crypto,
+    currenciePrice: state.currencies.currencies,
 	}
 }
 const mapDispatchToProps = (dispatch) => {
@@ -97,7 +92,7 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		togglePanelLeft: () => {
 			dispatch(togglePanelLeft());
-		}
+		},
 	}
 }
 
