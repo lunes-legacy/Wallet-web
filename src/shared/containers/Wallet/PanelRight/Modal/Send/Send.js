@@ -353,6 +353,8 @@ class Send extends React.Component {
 
 			return false;
 		}
+ 
+		let dataTransaction = await this.transactionSend(address, coinAmount);
 
 		let dataSend = await this.transactionSend(address, coinAmount);
 		this.setState({ ...this.state, addressIsValid: true });
@@ -380,6 +382,7 @@ class Send extends React.Component {
 		currentSelected.setAttribute('state', 'selected');
 		currentSelected.style.borderBottom = `5px solid ${style.normalGreen}`;
 	}
+
 	handleClickFee = (event) => {
 		let button = event.currentTarget;
 		this._arrangeFeeButtons(button);
@@ -388,7 +391,7 @@ class Send extends React.Component {
 	validateAddress = async (address) => {
 		return true; //SHOULD BE REMOVED <<<<<<<<
 		const wallet = new WalletClass();
-		let network = networks.LNS;
+		let network = networks.LNSTESTNET;
 		let data = wallet.validateAddress(address, network)
 
 		return data;
