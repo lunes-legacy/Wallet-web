@@ -11,7 +11,7 @@ import Reset from "Containers/User/Reset/index";
 
 
 
-const Divmobile = styled.div `
+const Divmobile = styled.div`
 widht 100%;
 height 100%; 
 background-color: #4B2C82; 
@@ -19,13 +19,15 @@ background-color: #4B2C82;
 
 const Paragraphmobile = styled.div`
    
-   font-size: 4.0rem;
+   font-size: 2.2rem;
    text-align: center; 
    font-family: offSide; 
    color: #4CD566;
    position:absolute;
-   margin-top: 75%; 
-   
+   margin-top: 50%; 
+   font-weight: bold; 
+   margin-left: 5%;
+   margin-right: 5%;
    
    
 `;
@@ -36,10 +38,12 @@ class AppSwitcher extends React.Component {
     // 791 = iPad
     if (window.innerWidth < 761) {
       return (
-       <Divmobile> 
-      
-          <Paragraphmobile offSide> Versão mobile disponível em breve ! </Paragraphmobile>
-        
+        <Divmobile>
+
+          <Paragraphmobile offSide>
+          Aviso!  Visando uma melhor experiência de uso, recomendamos que acesse a Lunes Wallet por computadores ou tablets.  Pedimos que aguardem, numa próxima atualização, a compatibilidade total com dispositivos móveis.  Obrigado!
+          </Paragraphmobile>
+
         </Divmobile>
       )
     }
