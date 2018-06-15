@@ -16,14 +16,16 @@ import { FormGroup } from "Components/FormGroup";
 import { Input } from "Components/Input";
 import { ButtonSecondary } from "Components/Buttons";
 import { CustomLink } from "Components/Link";
+import { CustomLinkFooter } from "Components/Link";
 import { H1 } from "Components/H1";
 import { Logo } from "Components/Logo";
+import { P } from "Components/P";
+
 
 //PRIVATE COMPONENTS
 import PanelLeft from "./PanelLeft";
 import PanelRight from "./PanelRight";
 import Slide from "../../../containers/User/Login/Slide";
-import FooterUser from 'Components/FooterUser'
 
 const WrapPhrases = styled.div`
   width: 100%;
@@ -35,6 +37,18 @@ const WrapPhrases = styled.div`
 
   @media (${style.media.desktop}) {
     margin-top: 25%;
+  }
+`;
+
+const CustomP = P.extend`
+  display: block;
+  margin: 50px auto 50px auto;
+  text-align: center;
+
+  @media only screen and (min-width: 768px) {
+    position: absolute;
+    bottom: 0;
+    width: 40%;
   }
 `;
 
@@ -53,8 +67,6 @@ const Paragraph = styled.div`
   text-align: center;
   font-size: 1.5rem;
 `;
-
-
 class Login extends React.Component {
   componentDidUpdate() {
     this.handleStatus();
@@ -62,7 +74,7 @@ class Login extends React.Component {
 
   componentDidMount() {
     let walletInfo = localStorage.getItem('WALLET-INFO');
-    let accessToken = localStorage.getItem('ACCESS-TOKEN');      
+    let accessToken = localStorage.getItem('ACCESS-TOKEN');
     if (walletInfo && accessToken) {
       this.props.history.push('/app/home')
     }
@@ -75,8 +87,8 @@ class Login extends React.Component {
     walletInfo ? (
       this.props.history.push('/app/home')
     ) : (
-      this.props.history.push('/import')
-    )  
+        this.props.history.push('/import')
+      )
   }
 
   handleLogin = event => {
@@ -157,9 +169,15 @@ class Login extends React.Component {
             </ButtonSecondary>
           </Form>
 
-          <H1 txCenter clWhite className={"js-status"} />
+          <P txCenter clWhite margin={"20px 0 0 0"} fontSize={"1.4rem"} className={"js-status"} />
 
-          <FooterUser content="Não tem uma conta?" to="/registry" label="Inscrever-se" />
+          <CustomP clWhite fontSize={"1.4rem"}>
+            Não tem uma conta?{" "}
+            <CustomLinkFooter to={"/registry"} color={`${style.normalGreen}`} >
+              Inscrever-se.
+            </CustomLinkFooter>
+          </CustomP>
+
 
         </PanelLeft>
 

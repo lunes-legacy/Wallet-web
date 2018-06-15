@@ -24,3 +24,12 @@ export let CircleLink = CustomLink.extend`
   height: ${props => props.height ? props.height : '40px'};
   width: ${props => props.width ? props.width : '40px'};
 `;
+
+export let CustomLinkFooter = styled(TmpLink)`
+	font-size: 1.4rem;
+	text-decoration: none;
+	text-align: center;
+	display: ${props => props.display ? props.display : 'inline'};
+	color: ${props => props.color ? props.color : 'white'};
+	margin: ${props => props.margin ? props.margin : '10px auto 20px auto' };
+`;
