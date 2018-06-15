@@ -173,13 +173,12 @@ class PanelRight extends React.Component {
 
     // consulta de leasing
     searchLeasing = async () => {
-        //this.setState({...this.state, listLeasing: []});
+        this.setState({...this.state, listLeasing: []});
 
         // usando endereco do localstorage
         let address = this.state.wallet_info.addresses.LNS
 
         // consulta
-
         let listLeasing = await coins.services.leaseHistory({ 
             address: address, 
             network: 'LNS', 
@@ -211,7 +210,7 @@ class PanelRight extends React.Component {
     
         // bloco de teste ************
         this.setState({...this.state, wallet_info: {
-                seed: 'educate cruise farm draw paper smile valve conduct remain blur agree index chef example lesson',
+                seed: encrypt('educate cruise farm draw paper smile valve conduct remain blur agree index chef example lesson'),
                 addresses: {
                     LNS: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG'
                 }
@@ -221,7 +220,7 @@ class PanelRight extends React.Component {
     }
 
     cancelLeasing = async (key) => {
-        const mnemonic = this.state.wallet_info.seed;
+        const mnemonic = decrypt(this.state.wallet_info.seed);
 
         const cancelLeasingData = { 
             mnemonic: mnemonic, 
@@ -230,12 +229,14 @@ class PanelRight extends React.Component {
             testnet: true 
         }; 
         const cancelLeaseResult = await coins.services.leaseCancel(cancelLeasingData);
+
+        alert("CANCELED: "+key);
         this.searchLeasing();
     }    
 
     // normalizar status do leasing, que hoje é 8 ou 9 
     _normalizeStatus = status => {
-        if(status===8){
+        if(status==="active"){
             return true
         }else{
             return false
@@ -243,23 +244,25 @@ class PanelRight extends React.Component {
     }
 
     // retornando o botao de cancelar, com condicional de status
-    _buttonCancel = (status, id) => {
-        if(status){
-            return (
-                <CancelBox>
-                    <CancelText clNormalGreen txCenter status={status} onClick={()=>this.cancelLeasing(id)}>
-                        <IconActive /><br/>
-                        CANCEL
+    _buttonCancel = (status, id, type) => {
+        if(type===8){
+            if(status){
+                return (
+                    <CancelBox>
+                        <CancelText clNormalGreen txCenter status={status} onClick={()=>this.cancelLeasing(id)}>
+                            <IconActive /><br/>
+                            CANCEL
+                        </CancelText>
+                    </CancelBox>
+                );
+            }else{
+                return (
+                    <CancelText clNormalRed txCenter status={status} onClick={()=>{}}>
+                        <Icon src={'/img/leasing_panel_right/icon-power-off.svg'} /><br/>
+                        CANCELED
                     </CancelText>
-                </CancelBox>
-            );
-        }else{
-            return (
-                <CancelText clNormalRed txCenter status={status} onClick={()=>{}}>
-                    <Icon src={'/img/leasing_panel_right/icon-power-off.svg'} /><br/>
-                    CANCELED
-                </CancelText>
-            );
+                );
+            }
         }
     }
 
@@ -274,18 +277,19 @@ class PanelRight extends React.Component {
             return this.state.listLeasing.map((obj, key) => {
 
                 let nativeAmount = numeral(obj.nativeAmount / 100000000).format('0,0.00000000');
-                
+                let status = this._normalizeStatus(obj.otherParams.status);
+
                 return (
                     <BoxLineLeasing key={obj.txid} >
                         <Col s={12} m={6} l={6}>
-                            <DateText clWhite status={this._normalizeStatus(obj.otherParams.type)}> {new Date(obj.date).toLocaleDateString()} </DateText>
-                            <HashText clWhite txBold status={this._normalizeStatus(obj.otherParams.type)}> {obj.txid} </HashText>
+                            <DateText clWhite status={status}> {new Date(obj.date).toLocaleDateString()} </DateText>
+                            <HashText clWhite txBold status={status}> {obj.txid} </HashText>
                         </Col>
                         <Col s={12} m={4} l={4}>
-                            <GreenText clNormalGreen txBold txCenter status={this._normalizeStatus(obj.otherParams.type)}> {nativeAmount} LNS</GreenText>
+                            <GreenText clNormalGreen txBold txCenter status={status}> {nativeAmount} LNS</GreenText>
                         </Col>
                         <Col s={12} m={2} l={2}>
-                            {this._buttonCancel(this._normalizeStatus(obj.otherParams.type), obj.txid)} 
+                            {this._buttonCancel(status, obj.txid, obj.otherParams.type)} 
                         </Col>
                     </BoxLineLeasing>
                 );
