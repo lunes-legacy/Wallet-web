@@ -5,6 +5,7 @@ import configReducer     from './configReducer';
 import currenciesReducer from './currenciesReducer';
 import userReducer       from './userReducer';
 import walletReducer     from './walletReducer';
+import leaseReducer		 from './leaseReducer';
 
 export { 
 	balanceReducer,
@@ -13,5 +14,6 @@ export {
 	configReducer,
 	currenciesReducer,
 	userReducer,
-	walletReducer
+	walletReducer,
+	leaseReducer
 }

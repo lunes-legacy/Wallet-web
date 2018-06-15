@@ -1,23 +1,21 @@
 import React from "react";
 import styled, { consolidateStreamedStyles } from "styled-components";
 import style from "Shared/style-variables";
+import { TESTNET } from 'Config/constants';
 
 // UTILS
-import { decrypt } from "Utils/crypt";
 import { timestampDiff } from "Utils/functions";
 
 
 //REDUX
 import { connect } from "react-redux";
-import { setTxHistory, setWalletInfo } from 'Redux/actions';
+import { setTxHistory } from 'Redux/actions';
 
 // Components
 import { Col, Row } from 'Components/index';
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
 import { Loading } from 'Components/Loading';
-
-import CookieClass from 'Classes/Cookie';
 
 import {numeral} from 'Utils/numeral';
 
@@ -36,7 +34,7 @@ const History = styled.div`
 const TextT = styled.div `
   letter-spacing: 0.2rem;
   font-weight: bold;
-  display: inline;  
+  display: inline;
 `;
 
 const HistoryHead = styled.div`
@@ -161,7 +159,7 @@ const HistoryContent = styled.div`
 const HistoryContentItem = styled.div`
   ${TextBase}
   width: 100%;
-  padding-bottom: 5px; 
+  padding-bottom: 5px;
 
   @media (${style.media.tablet}) {
     padding-left: 5rem;
@@ -171,12 +169,21 @@ const HistoryContentItem = styled.div`
   }
 `;
 
-const TransactionId = styled.div`
-  text-decoration: underline;
+const TransactionId = styled.a`
+  color: #fff;
   font-weight: bold;
   margin-top: 10px;
+  text-decoration: none;
+
+  &:visited  {
+    color: #fff;
+  }
+
+  &:hover {
+    color: #eee;
+  }
 `;
- 
+
 const Span = styled.div `
   margin-top: 16%;
   display: inline;
@@ -214,16 +221,19 @@ class Histories extends React.Component {
     super();
 
     this.state = {
+      network: '',
       activeIndex: null
     }
+
     this.handleToggleHistory = this.handleToggleHistory.bind(this);
   }
 
   componentDidMount() {
-    let { currentNetwork } = this.props.componentWallet;
     numeral.locale(this.props.currencies.locale);
-    this.getWalletInfo();
-    this.props.setTxHistory({ network: currentNetwork.toUpperCase(), address: this.props.walletInfo.addresses[currentNetwork.toUpperCase()] });
+  }
+
+  setHistory(currentNetwork) {
+    return this.props.setTxHistory({ network: currentNetwork.toUpperCase(), address: this.props.walletInfo.addresses[currentNetwork.toUpperCase()] });
   }
 
   timeToText = (timestamp) => {
@@ -232,14 +242,14 @@ class Histories extends React.Component {
     if (timestamp.length <= 10) {
       timestamp = timestamp + "000";
     }
-    
+
     timestamp = parseInt(timestamp);
 
     const hoursDiff = timestampDiff({ first: timestamp });
 
     if (hoursDiff < 48) {
       return `${hoursDiff} horas atrás`;
-    } else { 
+    } else {
       return Math.round(hoursDiff / 24) + " dias atrás";
     }
   };
@@ -262,7 +272,7 @@ class Histories extends React.Component {
     if (timestamp.length <= 10) {
       timestamp = timestamp + "000";
     }
-    
+
     timestamp = parseInt(timestamp);
 
     let date = new Date(timestamp);
@@ -299,7 +309,7 @@ class Histories extends React.Component {
   };
 
   parseTimestampToDate2 = timestamp => {
-    
+
     if (!timestamp) return null;
 
     timestamp = timestamp.toString();
@@ -351,9 +361,14 @@ class Histories extends React.Component {
         break;
     }
     let day = date.getDate();
+    if (day < 10) {
+      return "0" + day + "/" + yearMonth;
+    }
+    else {
     return day + "/" + yearMonth;
+    }
   };
-  
+
   renderIcon = type => {
     if (type === "SPENT") return `/img/app_wallet/ic_enviado_.svg`;
     if (type === "RECEIVED") return `/img/app_wallet/ic_receber_.svg`;
@@ -370,23 +385,19 @@ class Histories extends React.Component {
     }
   };
 
-  getWalletInfo() {
-		let walletInfo = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')));
-		if (walletInfo) {
-			this.props.setWalletInfo(walletInfo.addresses);
-		}
-	}
-
-  _renderHistories = () => {
+  _renderHistories() {
     let { currentNetwork, currentTxHistory } = this.props.componentWallet;
     let { crypto } = this.props.currencies;
     let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD
-    
+
     if (currentTxHistory.length < 1) {
       return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
     } else if (currentTxHistory.data.history.length < 1) {
       return <ErrorMessage> No transactions </ErrorMessage>;
     }
+
+
+    const blockexplorerUrl = TESTNET ? 'https://blockexplorer-testnet.lunes.io/tx/' : 'https://blockexplorer.lunes.io/tx/3';
 
     return currentTxHistory.data.history.map((transaction, key) => {
       let amount = numeral(transaction.nativeAmount / 100000000).format('0,0.00000000');
@@ -408,7 +419,7 @@ class Histories extends React.Component {
                   { this.timeToText(transaction.date) }
                 </HistoryHeadText>
               </Col>
-              
+
               <Col s={6} m={6} l={6}>
                 <HistoryHeadAmount>
                   <HeadAmountCoin type={transaction.type}>
@@ -441,7 +452,7 @@ class Histories extends React.Component {
                   <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
                     <span>Date: </span>
                     <TextT>
-                      { this.parseTimestampToDate(transaction.date) } 
+                      { this.parseTimestampToDate(transaction.date) }
                     </TextT>
                   </Text>
                 </HistoryContentItem>
@@ -450,34 +461,22 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID:</Text>
                   <Text size={"1.4rem"} txBold>
-                    <TransactionId > { transaction.txid } </TransactionId>
+                    <TransactionId href={blockexplorerUrl + transaction.txid} target="_blank"> { transaction.txid } </TransactionId>
                   </Text>
                 </HistoryContentItem>
-              </Col>             
+              </Col>
             </Row>
           </HistoryContent>
         </History>
       ); //return
     })
   }
-  _shouldRender = () => {
-    let { currentNetwork, currentTxHistory } = this.props.component_wallet;
-    if (!currentTxHistory || currentTxHistory.length < 1)
-      return false;
-    // if (!price || !currentNetwork)
-    //   return false;
-
-    return true;
-  }
 
   render() {
-    // if (!this._shouldRender()) return null;
     try {
       return (
         <StyledHistories>
-
-          {this._renderHistories()}
-
+          { this._renderHistories() }
         </StyledHistories>
       );
     } catch (e) {
@@ -503,9 +502,6 @@ const mapDispatchToProps = dispatch => {
     setTxHistory: (data) => {
       dispatch(setTxHistory(data));
     },
-    setWalletInfo: (data) => {
-      dispatch(setWalletInfo(data));
-    }
   };
 };
 

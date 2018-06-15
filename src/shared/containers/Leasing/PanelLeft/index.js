@@ -6,8 +6,7 @@ import { TextBase, H1 } from "Components";
 import { ButtonGreen } from "Components/Buttons";
 import { numeral } from 'Utils/numeral';
 import ModalLeasing from "../modal/index";
-import { decrypt } from '../../../utils/crypt';
-import { WalletClass } from "../../../classes/Wallet";
+import { LeasingClass } from 'Classes/Leasing';
 
 const ModalStyle = styled.div`
    display: none;
@@ -34,7 +33,7 @@ const LeftHeader = styled.div`
   background-repeat: no-repeat;
   letter-spacing: 1.3px;
   display: flex;
-  
+
 
   @media (${style.media.mobile}) {
     font-size: 1.2rem;
@@ -76,16 +75,14 @@ const TextBalance = styled.text`
   text-align:right;
   margin-top: 1.5rem;
   letter-spacing: .6px;
+  font-weight: bold;
+  font-size: 1.4rem;
 
-  @media (${style.media.mobile}) {
-    font-size: 1rem;
-  }
-  
-  @media (${style.media.tablet}) {
+  @media (${style.media.tablet2}) {
     font-size: 2rem;
   }
 
-  @media (${style.media.laptop}) {
+  @media (${style.media.desktop}) {
     font-size: 2.5rem;
   }
 `;
@@ -111,7 +108,7 @@ const RowCardBalance = styled.div`
 
 const RowCardText = styled.div`
   ${TextBase}
-  
+  font-weight: bold;
   display:block;
   font-size:1rem;
 
@@ -119,9 +116,9 @@ const RowCardText = styled.div`
     width:100%
     text-align:left;
   }
-  
+
   @media (${style.media.tablet}) {
-    
+
   }
 
   @media (${style.media.laptop}) {
@@ -138,13 +135,27 @@ const RowCardText = styled.div`
 
 `;
 
-
 class PanelLeft extends React.Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      totalBalance: 0,
+      leaseBalance: 0,
+      availableBalance: 0
+    }
   }
 
   componentDidMount() {
+    const leasing = new LeasingClass();
+    leasing.getLeasingValues()
+      .then(balances => {
+        if (balances.code) {
+          throw balances;
+        }
+
+        this.setState(balances)
+      }).catch(err => console.error(err));
   }
 
   handleModal = () => {
@@ -156,23 +167,22 @@ class PanelLeft extends React.Component {
     return (
       <StyledPanelLeft>
         <LeftHeader txLight>LEASING LUNES</LeftHeader>
-
         <CardLeasing>
-          <span>Seu Saldo:</span>
-          <TextBalance clNormalGreen txBold>300000.000000</TextBalance>
+          <RowCardText>Available balance</RowCardText>
+          <TextBalance clNormalGreen txBold>{this.state.availableBalance}</TextBalance>
           <LabelBalance fontSize='1rem' txBold>LNS</LabelBalance>
 
           <RowCardBalance>
-            <RowCardText>Rendimentos</RowCardText>
-            <RowCardText alignRight>000000000000</RowCardText>
+            <RowCardText>Leasing balance</RowCardText>
+            <RowCardText alignRight>{this.state.leaseBalance}</RowCardText>
           </RowCardBalance>
           <RowCardBalance>
-            <RowCardText>Total</RowCardText>
-            <RowCardText alignRight>000000000000</RowCardText>
+            <RowCardText>Total balance</RowCardText>
+            <RowCardText alignRight>{this.state.totalBalance}</RowCardText>
           </RowCardBalance>
         </CardLeasing>
 
-        <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'} onClick={this.handleModal} >INICIAR LEASING</ButtonGreen>
+        <ButtonGreen width="70%" margin={"3rem auto 0px auto"} fontSize={'1rem'} onClick={this.handleModal}>START LEASING</ButtonGreen>
         <ModalStyle className={"modal-status"}>
           <ModalLeasing />
         </ModalStyle>

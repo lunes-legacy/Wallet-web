@@ -1,8 +1,7 @@
-import { decrypt } from '../../utils/crypt'
-
 let initialState = { 
   addresses: {
     LNS: null,
+    BTC: null
   }
 }
 

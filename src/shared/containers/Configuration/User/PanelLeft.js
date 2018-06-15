@@ -50,7 +50,7 @@ class PanelLeft extends React.Component {
         <ImgContainer>
           <UserImg src="https://lunes.io/img/time/Lucas_Magno.png" />
         </ImgContainer>
-        <BtnUpload>+ Upload Photo</BtnUpload>
+        <BtnUpload>+ PHOTO UPLOAD</BtnUpload>
       </PanelStyle>
     );
   }

@@ -1,6 +1,6 @@
 let initialState = {
 	wallet: {
-		currentNetwork: '',
+		currentNetwork: 'lns',
 		currentTxHistory: [
 			// {
 			// 	type: 'RECEIVED',
@@ -27,27 +27,25 @@ const componentReducer = (state = initialState, action) => {
 				}
 			}
 			return state;
-			break;
+		case 'WALLET_SET_COIN_HISTORY_PENDING':
+			state = {
+				wallet: {
+					...state.wallet,
+					currentTxHistory: []
+				}
+			}
+			return state;
 		case 'WALLET_SET_COIN_HISTORY_FULFILLED':
-			// action.payload = [
-			// 	{
-			// 		value: 1.003,
-			// 		type: 'RECEIVED' || 'SPENT',
-			// 		time: [timestamp],
-			// 		...all bitcoin transaction infomation
-			// 	}
-			// ]
 			state = {
 				wallet: {
 					...state.wallet,
 					currentTxHistory: action.payload
 				}
 			}
+			return state;
 		default:
 			return state;
-		break;
 	}
-	return state;
 }
 
 export default componentReducer;
