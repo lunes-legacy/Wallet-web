@@ -1,19 +1,19 @@
 import { errorPattern } from "Utils/functions";
 import { coins, services, networks } from "lunes-lib";
 import sb from "satoshi-bitcoin";
-import { TESTNET, APICONFIG } from 'Config/constants';
-import isCoinAvaliable from 'Config/isCoinAvaliable';
+import { TESTNET, APICONFIG } from "Config/constants";
+import isCoinAvaliable from "Config/isCoinAvaliable";
 
 export class WalletClass {
   static coinsPrice;
 
   //for now, we arent using this
-  getCoinsPrice = async (data) => {
+  getCoinsPrice = async data => {
     if (!data || Object.keys(data).length < 1) {
       data = {
-        BTC: { fromSymbol: 'BTC', toSymbol: 'USD' },
-        ETH: { fromSymbol: 'ETH', toSymbol: 'USD' }
-      }
+        BTC: { fromSymbol: "BTC", toSymbol: "USD" },
+        ETH: { fromSymbol: "ETH", toSymbol: "USD" }
+      };
     }
 
     try {
@@ -60,12 +60,23 @@ export class WalletClass {
 				} 
 			}
   */
-    
-  getAddressesBalance(addresses) {
-    console.log('data', addresses)
-    let addressescoins = coins.services.balance(APICONFIG, addresses)
-    console.log(addressescoins)
-    return addressescoins;
+
+  getMnemonic() {
+    try {
+      return services.wallet.mnemonic.generateMnemonic();
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  getAddressesBalance(address) {
+    try {
+      return coins.services.balance({ network: "LNS", address: address, testnet: TESTNET });
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
   }
 
   getBalance = async user => {
@@ -123,14 +134,11 @@ export class WalletClass {
     }
   };
   //"1Q7Jmho4FixWBiTVcZ5aKXv4rTMMp6CjiD"
-  getTxHistory = async ({
-    network = undefined,
-    address = undefined
-  }) => {
+  getTxHistory = async ({ network = undefined, address = undefined }) => {
     console.warn(network, address, "NETWORK | ADDRESS");
     if (!network)
       throw errorPattern("getHistory error, you should pass through a network name", 500, "WALLET_GETHISTORY_ERROR");
-    // if (!address) 
+    // if (!address)
     //   throw errorPattern("getHistory error, you should pass through an address", 500, "WALLET_GETHISTORY_ERROR");
 
     try {
@@ -140,19 +148,19 @@ export class WalletClass {
     }
   };
 
-  getCoinHistory = async (object) => {
+  getCoinHistory = async object => {
     return await coins.getHistory(object);
   };
 
   validateAddress = async (address, accessToken) => {
     return await services.wallet.lns.validateAddress(address, accessToken);
-  }
+  };
 
   getNewAddress(seed) {
     try {
-      return services.wallet.lns.wallet.newAddress(seed, networks[APICONFIG])
+      return services.wallet.lns.wallet.newAddress(seed, networks[APICONFIG]);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 }
