@@ -98,7 +98,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.props.setBalance({ address: this.getAddress() });
+    this.props.setBalance({ addresses: this.getAddress() });
     this.checkAccess();
   }
 

@@ -27,7 +27,7 @@ class Wallet extends React.Component {
   }
 
   componentWillMount() {
-    this.props.setBalance({ address: this.props.walletInfo.addresses });
+    this.props.setBalance({ addresses: this.props.walletInfo.addresses });
     this.props.setCurrenciesPrice();
     this.props.setCryptoPrice();
   }
