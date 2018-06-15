@@ -16,7 +16,7 @@ import Histories from './Histories';
 import CoinControl from './CoinControl';
 import CoinStatus from './CoinStatus';
 import Default from './Default';
-import ModalSend from "./modal/Send/index";
+import ModalSend from "./Modal/Send/index";
 
 const TextBold = Text.extend`
 	${TextBase}
@@ -59,6 +59,7 @@ class PanelRight extends React.Component {
 
 		return (
 			<StyledPanelRight>
+				<ModalSend />
 				<CoinStatus />
 				<CoinControl />
 				<Histories />

@@ -141,4 +141,8 @@ export class WalletClass {
   validateAddress = async (address, accessToken) => {
     return await services.wallet.lns.validateAddress(address, accessToken);
   }
+
+  transactionSend = async (transactionData, accessToken) => {
+    return await coins.services.transaction(transactionData, accessToken);
+  }
 }

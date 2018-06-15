@@ -244,7 +244,6 @@ class Send extends React.Component {
 
 		let coinAmount = this.coinAmount.value;
 		let address = this.address.value;
-		console.log(coinAmount);
 
 		if (!coinAmount || !address) return;
 
@@ -255,7 +254,10 @@ class Send extends React.Component {
 
 			return false;
 		}
+ 
+		let dataTransaction = await this.transactionSend(address, coinAmount);
 
+		console.log("TRANSAÇÂO OK (>ºuº)> ", dataTransaction);
 		this.setState({ ...this.state, addressIsValid: true });
 
 		const props = {
@@ -274,13 +276,14 @@ class Send extends React.Component {
 		Array.from(buttons).map((button) => {
 			let state = button.getAttribute('state');
 			if (state === 'selected') {
-				button.setAttribute('state','deselected');
+				button.setAttribute('state', 'deselected');
 				button.style.borderBottom = `none`;
 			}
 		});
 		currentSelected.setAttribute('state', 'selected');
 		currentSelected.style.borderBottom = `5px solid ${style.normalGreen}`;
 	}
+
 	handleClickFee = (event) => {
 		let button = event.currentTarget;
 		this._arrangeFeeButtons(button);
@@ -288,12 +291,24 @@ class Send extends React.Component {
 
 	validateAddress = async (address) => {
 		const wallet = new WalletClass();
-		let network = networks.LNS;
+		let network = networks.LNSTESTNET;
 		let data = wallet.validateAddress(address, network)
 
 		return data;
 	}
 
+	transactionSend = async (address, coinAmount) => {
+		const wallet = new WalletClass();
+		let seed = decrypt(localStorage.getItem("WALLET-INFO"));
+		let accessToken = decrypt(localStorage.getItem("ACCESS-TOKEN"));
+		let valueCoinAmount = coinAmount * 100000000;
+
+		let transactionData = { mnemonic: seed, network: this.props.component.currentNetwork, testnet: true, toAddress: address, amount: valueCoinAmount, fee: 0.01 };
+		console.log("COINAMOUNT ", transactionData); 
+		let data = await wallet.transactionSend(transactionData, accessToken);
+		console.log("data ", data); 
+		return data;
+	}
 	render() {
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
@@ -496,17 +511,13 @@ class Send extends React.Component {
 		);
 	}
 }
-export default Send;
-/*
 const mapStateToProps = (state) => {
 	return {
-		wallet: state.wallet
+		component: state.component.wallet
 	}
 }
-const mapDispatchToProps = (dispatch) => {
-	return {
 
-	}
+const mapDispatchToProps = (dispatch) => {
+	return {};
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ModalSend);
-*/
+export default connect(mapStateToProps, mapDispatchToProps)(Send);

@@ -52,7 +52,7 @@ class Rescue extends React.Component {
 	getAddress(seed) {
 		try {
 			if (seed.split(" ").length >= 12) {
-				let address = services.wallet.lns.wallet.newAddress(seed, networks.LNS);
+				let address = services.wallet.lns.wallet.newAddress(seed, networks.LNSTESTNET);
 				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: address } }, notification: null })
 			} else {
 				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Mínimo 12 palavras' } }, notification: null })
