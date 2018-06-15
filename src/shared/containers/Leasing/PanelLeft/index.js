@@ -6,6 +6,8 @@ import { TextBase, H1 } from "Components";
 import { ButtonGreen } from "Components/Buttons";
 import { numeral } from 'Utils/numeral';
 import ModalLeasing from "../modal/index";
+import { decrypt } from '../../../utils/crypt';
+import { WalletClass } from "../../../classes/Wallet";
 
 const ModalStyle = styled.div`
    display: none;
@@ -143,7 +145,6 @@ class PanelLeft extends React.Component {
   }
 
   componentDidMount() {
-
   }
 
   handleModal = () => {

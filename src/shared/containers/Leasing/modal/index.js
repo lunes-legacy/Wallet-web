@@ -5,6 +5,7 @@ import { TextBase } from 'Components/TextBase';
 import { ButtonGreen } from "Components/Buttons";
 import { numeral } from 'Utils/numeral';
 import { InputText } from 'Components/forms/input-text';
+import { ModalConfirm } from '../modal/confirm';
 
 // REDUX
 import { connect } from 'react-redux';
@@ -38,24 +39,50 @@ class LeasingModal extends Component {
         super();
 
         this.state = {
-            valuePorcent: 0
+            valuePorcent: 0,
+            valueToAddress: 0
         }
     }
 
-    handleModal = () => {
+    startLeasing = async () => {
+        const wallet = new WalletClass();
+        const leaseData = {
+          mnemonic: decrypt(localStorage.getItem("WALLET-INFO")),
+          toAddress: setInputToAddress,
+          amount: leasingPorcentCalculator,
+          fee: "100000",
+          testnet: true
+        };
+    
+        console.log("Dados ", leaseData);
+    
+        return false;
+    
+        let data = await wallet.startLeasing(leaseData);
+    
+      }
+
+    handleModal = () => {         
+    this.startLeasing();
         let modalClass = document.querySelector(".modal-status");
         return modalClass.style.display = "none";
     }
 
     leasingPorcentCalculator(value) {
         this.setState({
-            valuePorcent: (this.props.balance.LNS.total_confirmed * value)/ 100
+            valuePorcent: (this.props.balance.LNS.total_confirmed * value) / 100
         })
-    }
+    }    
 
     setInputValue(value) {
         this.setState({
             valuePorcent: value
+        })
+    }
+
+    setInputToAddress(value) {
+        this.setState({
+            valueToAddress: value,
         })
     }
 
@@ -78,14 +105,14 @@ class LeasingModal extends Component {
                                 </Row>
                                 <Row>
                                     <QuantityAmount clNormalGreen>
-                                        <InputText                                        
+                                        <InputText
                                             type={'number'}
                                             onChange={(value) => this.setInputValue(value.target.value)}
                                             noBorder
                                             txCenter
                                             clNormalGreen
                                             placeholder={'0.00000000'}
-                                            value={this.state.valuePorcent}                                            
+                                            value={this.state.valuePorcent}
                                             min="0" />
                                     </QuantityAmount>
                                 </Row>
@@ -96,24 +123,26 @@ class LeasingModal extends Component {
                             <DivNumber>
                                 <NumberPorcent marginRight={"35%"} clNormalGreen onClick={() => this.leasingPorcentCalculator(25)}> 25%</NumberPorcent>
                                 <NumberPorcent marginRight={"27%"} clMostard onClick={() => this.leasingPorcentCalculator(50)}>50%</NumberPorcent>
-                                <NumberPorcent clNormalRed onClick={() => this.leasingPorcentCalculator(100)}>100%</NumberPorcent> 
-                                <Line/>
-                            </DivNumber> 
+                                <NumberPorcent clNormalRed onClick={() => this.leasingPorcentCalculator(100)}>100%</NumberPorcent>
+                                <Line />
+                            </DivNumber>
                         </Row>
                         <Row>
                             <DivText>
                                 <TextLeft clWhite>Destinatário</TextLeft>
                                 <Textphrase>
                                     <InputText
+                                        onChange={(value) => this.setInputToAddress(value.target.value)}
                                         clWhite
                                         noBorder
                                         txCenter
+                                        value={this.state.valueToAddress}
                                         placeholder={'clWhite3P2HNUd5VUPLMQkJ9stf...'} />
                                 </Textphrase>
                                 <LineText />
                             </DivText>
                         </Row>
- 
+
                         <Row>
                             <DivText inline>
                                 <TextLeft clWhite>Fee
@@ -125,7 +154,7 @@ class LeasingModal extends Component {
                         </Row>
                         <Row>
                             <DivButton>
-                                <ButtonGreen >INICIAR LEASING</ButtonGreen>
+                                <ButtonGreen onClick={this.startLeasing}>INICIAR LEASING</ButtonGreen>
                             </DivButton>
                         </Row>
                     </Col>

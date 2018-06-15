@@ -141,4 +141,8 @@ export class WalletClass {
   validateAddress = async (address, accessToken) => {
     return await services.wallet.lns.validateAddress(address, accessToken);
   }
+
+  startLeasing = async (data) => {
+    let dataLeasing = coins.services.lease(data);
+  }
 }
