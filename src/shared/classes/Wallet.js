@@ -70,9 +70,15 @@ export class WalletClass {
     }
   }
 
-  getAddressesBalance(address) {
+  // addresses = { LNS: lunes addrees, BTC: bitcoin address... }
+  getAddressesBalance(addresses) {
     try {
-      return coins.services.balance({ network: "LNS", address: address, testnet: TESTNET });
+      let balances = [];
+      for (const coin in addresses) {
+        balances[coin] = coins.services.balance({ network: coin, address: addresses[coin], testnet: TESTNET });
+      }
+
+      return balances;
     } catch (error) {
       console.error(error);
       return error;
