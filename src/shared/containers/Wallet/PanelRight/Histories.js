@@ -351,7 +351,12 @@ class Histories extends React.Component {
         break;
     }
     let day = date.getDate();
+    if (day < 10) {
+      return "0" + day + "/" + yearMonth;
+    }
+    else {
     return day + "/" + yearMonth;
+    }
   };
   
   renderIcon = type => {
