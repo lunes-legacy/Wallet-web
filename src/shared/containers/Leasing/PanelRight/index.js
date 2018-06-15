@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import style from 'Shared/style-variables'
-import { coins } from 'lunes-lib';
+// import { coins } from 'lunes-lib';
 import { TextBase, H1 } from "Components";
 //import {ButtonGreen} from "Components/Buttons";
 import { Col, Row } from 'Components/index';
@@ -10,7 +10,9 @@ import {timestampToDate} from 'Utils/date';
 import { encrypt, decrypt } from '../../../utils/crypt';
 // import Leasing from 'Classes/Leasing'; // refatorar para usar a classe
 import { connect } from 'react-redux';
-import { getWalletInfo } from 'Redux/actions';
+import { 
+    getLeasingHistory, 
+    cancelLeasing } from 'Redux/actions';
 import {numeral} from 'Utils/numeral';
 
 
@@ -157,79 +159,44 @@ const BoxLineLeasing = Row.extend`
 class PanelRight extends React.Component {
     constructor(props){
         super(props)
-
-        this.state = {
-            listLeasing: [], 
-            wallet_info: {
-                seed: null,
-                addresses: {
-                    LNS: null
-                }
-            }
-        };
-        
+        let wallet_info = {}
         this.cancelLeasing = this.cancelLeasing.bind(this);
     }
 
     // consulta de leasing
-    searchLeasing = async () => {
-        this.setState({...this.state, listLeasing: []});
-
-        // usando endereco do localstorage
-        let address = this.state.wallet_info.addresses.LNS
-
-        // consulta
-        let listLeasing = await coins.services.leaseHistory({ 
-            address: address, 
-            network: 'LNS', 
-            testnet: true 
-        }).then((e)=>{
-            console.log(e);
-            return e
-        }).catch((e)=>{
-            console.log(e);
-            return false
-        });
-
-        this.setState({...this.state, listLeasing: listLeasing});
-
-        console.log(this.state);
+    searchLeasing = () => {
+        this.props.getLeasingHistory(this.wallet_info);
+        console.log(this.props.listLeasing);
     }
 
     componentDidMount = () => {
+        // bloco de teste ************
+        let INFO_TESTE = {
+            seed: 'educate cruise farm draw paper smile valve conduct remain blur agree index chef example lesson',
+            addresses: {
+                LNS: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG'
+            }
+        };
+        this.wallet_info = encrypt(JSON.stringify(INFO_TESTE));
+        // bloco de teste ************
+
+        //this.wallet_info = localStorage.getItem('WALLET-INFO');
+
         this.searchLeasing();
     }
 
     componentWillMount = () => {
-        // fazer a chamada da classe Leasing
-        // let leasing = new Leasing()
-        // let retorno = leasing.getLeaseHistory() // chamada para teste
 
-        // pegar os dados criptografados (verificar em privacy/rescue.js)
-        //this.setState({this.state, wallet_info: JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')))});
-    
-        // bloco de teste ************
-        this.setState({...this.state, wallet_info: {
-                seed: encrypt('educate cruise farm draw paper smile valve conduct remain blur agree index chef example lesson'),
-                addresses: {
-                    LNS: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG'
-                }
-            }
-        });
-        // bloco de teste ************
     }
 
-    cancelLeasing = async (key) => {
-        const mnemonic = decrypt(this.state.wallet_info.seed);
+    cancelLeasing = (key) => {
+        let payload = {
+            wallet_info: this.wallet_info,
+            key: key
+        };
 
-        const cancelLeasingData = { 
-            mnemonic: mnemonic, 
-            txID: key, 
-            fee: "100000", 
-            testnet: true 
-        }; 
-        const cancelLeaseResult = await coins.services.leaseCancel(cancelLeasingData);
-
+        this.props.cancelLeasing(payload);
+        
         alert("CANCELED: "+key);
         this.searchLeasing();
     }    
@@ -268,13 +235,13 @@ class PanelRight extends React.Component {
 
     // retornando os itens, de acordo com os dados no storage
     _renderLeasings = () => {
-        if(!this.state.listLeasing){
+        if(!this.props.listLeasing){
             return <GreenText txBold txCenter>NENHUM LEASING ENCONTRADO</GreenText>
         }
-        if (this.state.listLeasing.length < 1) {
+        if (this.props.listLeasing.length < 1) {
             return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
         }else{
-            return this.state.listLeasing.map((obj, key) => {
+            return this.props.listLeasing.map((obj, key) => {
 
                 let nativeAmount = numeral(obj.nativeAmount / 100000000).format('0,0.00000000');
                 let status = this._normalizeStatus(obj.otherParams.status);
@@ -324,18 +291,20 @@ class PanelRight extends React.Component {
 }
 
 //aplicar redux 
-// const mapStateToProps = state => {
-//     return {
-//         walletInfo: state.walletInfo
-//     }
-// }
+const mapStateToProps = state => {
+    return {
+        listLeasing: state.leasing.listLeasing
+    }
+}
 
-// const mapDispatchToProps = dispatch => {
-//     return {
-//         getWalletInfo: (data) => {
-//             dispatch(getWalletInfo(data));
-//         }
-//     }
-// }
-// export default connect(mapStateToProps, mapDispatchToProps)(PanelRight);
-export default PanelRight;
+const mapDispatchToProps = dispatch => {
+    return {
+        getLeasingHistory: (data) => {
+            dispatch(getLeasingHistory(data));
+        },
+        cancelLeasing: (data) => {
+            dispatch(cancelLeasing(data));
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(PanelRight);
