@@ -425,15 +425,22 @@ class Send extends React.Component {
 
 	transactionSend = async (address, coinAmount) => {
 		const wallet = new WalletClass();
-		let seed = decrypt(localStorage.getItem("WALLET-INFO"));
-		let accessToken = decrypt(localStorage.getItem("ACCESS-TOKEN"));
+		let seedData = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
+		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
 		let valueCoinAmount = coinAmount * 100000000;
 
-		let transactionData = { mnemonic: seed, network: this.props.component.currentNetwork, testnet: true, toAddress: address, amount: valueCoinAmount, fee: 0.01 };
-		console.log("COINAMOUNT ", transactionData); 
-		let data = await wallet.transactionSend(transactionData, accessToken);
-		console.log("data ", data); 
-		return data;
+		console.log(valueCoinAmount);
+		let transactionData = {
+			mnemonic: seedData.seed,
+			network: this.props.component.currentNetwork,
+			testnet: true,
+			toAddress: address,
+			amount: valueCoinAmount.toString(),
+			fee: "100000"
+		};
+		console.log(transactionData);
+		let data = await wallet.transactionSend(transactionData, tokenData.accessToken);
+		console.log("FUNFO ", data);
 	}
 	
 	render() {
