@@ -3,11 +3,18 @@ import { coins } from 'lunes-lib';
 import { errorPattern } from 'Utils/functions';
 
 export default class EstimateFee {
+	static staticNetworkFees;
 	constructor(){
 		this.families = {
 			BTC: 'BTCFamily',
 			ETH: 'ETHFamily'
 		}
+	}
+	getNetworkFees = () => {
+		return this.staticNetworkFees;
+	}
+	setNetworkFees = (value) => {
+		this.staticNetworkFees = value;
 	}
 	networkFees = async ({network, testnet = TESTNET}) => {
 		try {
@@ -15,10 +22,13 @@ export default class EstimateFee {
 				testnet = true;
 			if (!network)
 				throw errorPattern("Network parameter is pending",500,"FEE_NETWORKFEES_ERROR");
+			if (this.getNetworkFees() !== undefined) {
+				return this.getNetworkFees();
+			}
 			this.networkFees = await coins.services.networkFees({ network, testnet:true });
 			return this.networkFees;
 			// return  {
-			// 	network: 'BTC',
+			// 	network: 'LNS',
 			// 	data: {
 			// 		high: 30,
 			// 		medium: 20,
@@ -26,7 +36,7 @@ export default class EstimateFee {
 			// 	}
 			// }
 		} catch (err) {
-			throw errorPattern(`An error ocurred on trying to get ${network}'s networkFees`, 500, "FEE_NETWORKFEES_ERROR", err);
+			throw errorPattern(`An error ocurred on trying to get ${network}'s network fees`, 500, "FEE_NETWORKFEES_ERROR", err);
 		}
 	}
 	go = async (data) => {
@@ -56,7 +66,7 @@ export default class EstimateFee {
 		}
 		let { networkFees } = data;
 		let currentEstimate;
-		data.amount = coins.util.unitConverter.toSatoshi(data.amount);
+		data.amount = coins.util.unitConverter.toSatoshi(data.amount).toString();
 		for (let level in params) {
 			if (this.network === "ETH") {
 				params[level] = {
@@ -71,28 +81,28 @@ export default class EstimateFee {
 				}
 			}
 			currentEstimate = params[level];
-			result[level]   = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
+			// result[level]   = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
+		}
+		result = {
+			high: {
+				network: data.network,
+				data: {
+					fee: 0.001 * 100000000
+				}
+			},
+			medium: {
+				network: data.network,
+				data: {
+					fee: 0.001 * 100000000
+				}	
+			},
+			low: {
+				network: data.network,
+				data: {
+					fee: 0.001 * 100000000
+				}		
+			}
 		}
 		return result;
-		// result = {
-		// 	high: {
-		// 		network: 'BTC',
-		// 		data: {
-		// 			fee: 100
-		// 		}
-		// 	},
-		// 	medium: {
-		// 		network: 'BTC',
-		// 		data: {
-		// 			fee: 200
-		// 		}	
-		// 	},
-		// 	low: {
-		// 		network: 'BTC',
-		// 		data: {
-		// 			fee: 200
-		// 		}		
-		// 	}
-		// }
 	}
 }

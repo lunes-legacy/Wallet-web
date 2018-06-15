@@ -8,6 +8,9 @@ import style from 'Shared/style-variables';
 import { connect } from 'react-redux';
 import qrcode from 'qrcode-generator';
 import { decrypt } from '../../../../../utils/crypt';
+
+import { Loading } from 'Components';
+
 let { networks } = require('lunes-lib')
 // import Instascan   from 'instascan';
 
@@ -78,7 +81,13 @@ class Send extends React.Component {
 		//quantity types: real, dollar, coin
 		this.state = {
 			stateButtonSend: 'Enviar',
-			addressIsValid: true
+			addressIsValid: true,
+			fees: {
+				status: 'loading', //loading || complete
+				low: undefined,
+				medium: undefined,
+				high: undefined
+			}
 		}
 	}
 
@@ -116,19 +125,21 @@ class Send extends React.Component {
 		// }).catch((err) => {
 		// 	console.log(`%c ${err}`, 'background: red; color: white;');
 		// });
+		this._estimateFee();
+	}
 
-
+	_estimateFee = () => {
 	    //tests to here
 	    let Estimate          = new EstimateFee;
 	    let coinToTest        = 'LNS'; //just change here <<<<<
 	    let ETHtestnetAddress = '0xf4af6cCE5c3e68a5D937FC257dDDb73ac3eF9B3A';
-	    let BTCtestnetAddress = '2N1zumWWHmQnp2CycT4YPvzca57smDzWw1D';
+	    let BTCtestnetAddress = '2N7ieQWq3pgZCF7c1pbuAqZWrzDjMta1iAf';
 	    let LNStestnetAddress = '37RThBWionPuAbr8H4pzZJM6HYP2U6Y9nLr';
 	    let toAddress;
 	    let fromAddress;
 
 	    if (coinToTest === 'BTC') {
-			toAddress   = BTCtestnetAddress;
+			toAddress   = 'mjUgrqgoYzuHFwTGoiCvtuYj4eD3tiXt9b';
 			fromAddress = BTCtestnetAddress;
 	    } else if (coinToTest === 'ETH') {
 			toAddress   = ETHtestnetAddress;
@@ -145,21 +156,29 @@ class Send extends React.Component {
 	        network: coinToTest,
 	        fromAddress: fromAddress,
 	        toAddress: toAddress,
-	        amount: 0.01,
+	        amount: '0.01',
 	        accessToken: user.accessToken
 	      }));
 	    }
 	    login().then(user => {
 	      console.log('\x1b[32m Fiz o login \x1b[0m');
 	      calculateFee(user).then((e) => {
-	        console.log('\x1b[32m Chamei o cf \x1b[0m');
-	        console.log(e);
+	        // console.log('\x1b[32m Chamei o cf \x1b[0m');
+	        // console.log(e);
+	        this.setState({
+	        	fees: {
+	        		status: 'complete',
+		        	low: e.low.data.fee / 100000000,
+		        	medium: e.medium.data.fee  / 100000000,
+		        	high: e.high.data.fee  / 100000000
+	        	}
+	        });
 	      }).catch((e) => {
 	        console.log("calculateFee error",e);
 	      });
 	    }).catch(e => {
 	      console.error("loginError", e);
-	    });
+	    });		
 	}
 
 	toggleModal = (event) => {
@@ -341,8 +360,30 @@ class Send extends React.Component {
 
 		return data;
 	}
-
-
+	
+	_renderFeeButtons = () => {
+		if (this.state.fees.status === 'loading') {
+			return <Loading/>;
+		}
+		return (
+			<Col s={12} m={6} l={6}>
+				<FeeButton onClick={this.handleClickFee} className="fee-button first">{this.state.fees.low} <Text txInline clNormalRed>baixa</Text></FeeButton>
+				<FeeButton onClick={this.handleClickFee} className="fee-button second">{this.state.fees.medium} <Text txInline clNormalGreen>média</Text></FeeButton>
+				<FeeButton onClick={this.handleClickFee} className="fee-button third">{this.state.fees.high} <Text txInline clMostard>alta</Text></FeeButton>
+			</Col>
+		);
+	}
+	_renderFeeTotal = () => {
+		if (this.state.fees.status === 'loading') {
+			return <Loading/>;
+		}
+		return (
+			<Col s={12} m={6} l={6}>
+				<Text txRight clWhite>You are sending <Text clNormalGreen txInline>0.0999 BTC</Text> (R$ 300,00)</Text>
+			</Col>
+		);
+	}
+	
 	render() {
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
@@ -507,11 +548,9 @@ class Send extends React.Component {
 					<Hr />
 					{/*FOURTH ROW*/}
 					<Row css={FourthRowCss}>
-						<Col>
-							<FeeButton onClick={this.handleClickFee} className="fee-button first-btn">0.0001 <Text clNormalRed>baixa</Text></FeeButton>
-							<FeeButton onClick={this.handleClickFee} className="fee-button second-btn">0.001 <Text clNormalGreen>média</Text></FeeButton>
-							<FeeButton onClick={this.handleClickFee} className="fee-button third-btn">0.01 <Text clMostard>alta</Text></FeeButton>
-						</Col>
+						{ this._renderFeeButtons() }
+						
+						{ this._renderFeeTotal() }
 					</Row>
 				</Col>
 
