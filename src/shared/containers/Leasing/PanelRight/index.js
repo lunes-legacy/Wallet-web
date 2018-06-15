@@ -171,16 +171,10 @@ class PanelRight extends React.Component {
 
     componentDidMount = () => {
         // bloco de teste ************
-        let INFO_TESTE = {
-            seed: 'educate cruise farm draw paper smile valve conduct remain blur agree index chef example lesson',
-            addresses: {
-                LNS: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG'
-            }
-        };
-        this.wallet_info = encrypt(JSON.stringify(INFO_TESTE));
+        // ++ adicione aqui
         // bloco de teste ************
 
-        //this.wallet_info = localStorage.getItem('WALLET-INFO');
+        this.wallet_info = localStorage.getItem('WALLET-INFO');
 
         this.searchLeasing();
     }
