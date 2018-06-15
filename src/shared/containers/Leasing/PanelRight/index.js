@@ -9,7 +9,7 @@ import { Loading } from 'Components/Loading';
 import {timestampToDate} from 'Utils/date';
 
 import { encrypt, decrypt } from '../../../utils/crypt';
-// import Leasing from 'Classes/Leasing'; // refatorar para usar a classe
+// import { LeasingClass } from 'Classes/Leasing'; // refatorar para usar a classe
 
 // REDUX
 import { connect } from 'react-redux';
@@ -132,21 +132,21 @@ const IconActive = styled.div`
         from { -webkit-transform: rotate(0deg); }
         to {-webkit-transform: rotate(359deg); }
     }
-    
+
     @-moz-keyframes rotation {
         from { -moz-transform: rotate(0deg); }
         to { -moz-transform: rotate(359deg); }
     }
-    
+
     @keyframes rotation {
         from { transform: rotate(0deg); }
         to { transform: rotate(359deg); }
     }
-    
+
 `;
 
 const BoxLineLeasing = Row.extend`
-    margin-bottom:20px; 
+    margin-bottom:20px;
     border-bottom: solid 1px ${style.normalLilac3};
     padding-top:20px;
     padding-bottom:20px;
@@ -165,31 +165,31 @@ class PanelRight extends React.Component {
     // consulta de leasing
     componentDidMount = async () => {
         // fazer a chamada da classe Leasing
-        // let leasing = new Leasing()
+        // let leasing = new LeasingClass()
         // let retorno = leasing.getLeaseHistory() // chamada para teste
 
         // pegar os dados criptografados (verificar em privacy/rescue.js)
         let wallet_info = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')))
-        
+
         // usando endereco do localstorage
         let address = wallet_info.addresses.LNS
         //let address = '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG'
 
         // consulta
-        this.listLeasing = await coins.services.leaseHistory({ 
-            address: address, 
-            network: 'LNS', 
-            testnet: true 
+        this.listLeasing = await coins.services.leaseHistory({
+            address: address,
+            network: 'LNS',
+            testnet: true
         }).then((e)=>{
             return e
         }).catch((e)=>{
             return false
         });
-            
+
         // validar se voltou alguma coisa
     }
 
-    // normalizar status do leasing, que hoje é 8 ou 9 
+    // normalizar status do leasing, que hoje é 8 ou 9
     _normalizeStatus = status => {
         if(status===8){
             return true
@@ -238,7 +238,7 @@ class PanelRight extends React.Component {
                             <GreenText clNormalGreen txBold txCenter status={this._normalizeStatus(obj.otherParams.type)}> {obj.nativeAmount} LNS</GreenText>
                         </Col>
                         <Col s={12} m={2} l={2}>
-                            {this._buttonCancel(this._normalizeStatus(obj.otherParams.type))} 
+                            {this._buttonCancel(this._normalizeStatus(obj.otherParams.type))}
                         </Col>
                     </BoxLineLeasing>
                 );
@@ -262,7 +262,7 @@ class PanelRight extends React.Component {
                         Status
                     </Col>
                 </HeaderRow>
-            
+
                 {/* content da tabela */}
                 <ContentList>
                     {this._renderLeasings()}
@@ -272,7 +272,7 @@ class PanelRight extends React.Component {
     }
 }
 
-//aplicar redux 
+//aplicar redux
 // const mapStateToProps = state => {
 //     return {
 //         walletInfo: state.walletInfo

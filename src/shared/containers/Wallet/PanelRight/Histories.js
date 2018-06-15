@@ -214,16 +214,19 @@ class Histories extends React.Component {
     super();
 
     this.state = {
+      network: '',
       activeIndex: null
     }
     this.handleToggleHistory = this.handleToggleHistory.bind(this);
+    
   }
 
   componentDidMount() {
-    let { currentNetwork } = this.props.componentWallet;
     numeral.locale(this.props.currencies.locale);
-    this.getWalletInfo();
-    this.props.setTxHistory({ network: currentNetwork.toUpperCase(), address: this.props.walletInfo.addresses[currentNetwork.toUpperCase()] });
+  }
+
+  setHistory(currentNetwork) {
+    return this.props.setTxHistory({ network: currentNetwork.toUpperCase(), address: this.props.walletInfo.addresses[currentNetwork.toUpperCase()] });
   }
 
   timeToText = (timestamp) => {
@@ -370,14 +373,7 @@ class Histories extends React.Component {
     }
   };
 
-  getWalletInfo() {
-		let walletInfo = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')));
-		if (walletInfo) {
-			this.props.setWalletInfo(walletInfo.addresses);
-		}
-	}
-
-  _renderHistories = () => {
+  _renderHistories() {
     let { currentNetwork, currentTxHistory } = this.props.componentWallet;
     let { crypto } = this.props.currencies;
     let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD
@@ -460,24 +456,12 @@ class Histories extends React.Component {
       ); //return
     })
   }
-  _shouldRender = () => {
-    let { currentNetwork, currentTxHistory } = this.props.component_wallet;
-    if (!currentTxHistory || currentTxHistory.length < 1)
-      return false;
-    // if (!price || !currentNetwork)
-    //   return false;
-
-    return true;
-  }
 
   render() {
-    // if (!this._shouldRender()) return null;
     try {
       return (
         <StyledHistories>
-
-          {this._renderHistories()}
-
+          { this._renderHistories() }
         </StyledHistories>
       );
     } catch (e) {
@@ -503,9 +487,6 @@ const mapDispatchToProps = dispatch => {
     setTxHistory: (data) => {
       dispatch(setTxHistory(data));
     },
-    setWalletInfo: (data) => {
-      dispatch(setWalletInfo(data));
-    }
   };
 };
 

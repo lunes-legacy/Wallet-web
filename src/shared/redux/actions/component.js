@@ -11,9 +11,8 @@ export const openPanelRight = (data) => {
 	}
 }
 export const setTxHistory = (data) => {
-	console.log(data)
-	//data.address = '17JzE6xsyu4kZbLosvAKUXHdbU9arAp8Uf';
-	data.address = '37jxbsXCjQJ1cvzG3DdMC5xMxT73ab6DLDM';
+	// data.address = '17JzE6xsyu4kZbLosvAKUXHdbU9arAp8Uf';
+	// data.address = '37jxbsXCjQJ1cvzG3DdMC5xMxT73ab6DLDM';
 	return {
 		type: 'WALLET_SET_COIN_HISTORY',
 		payload: Wallet.getTxHistory({network: data.network, address: data.address})
