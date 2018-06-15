@@ -1,7 +1,7 @@
 import { errorPattern } from "Utils/functions";
-import { coins, services } from "lunes-lib";
+import { coins, services, networks } from "lunes-lib";
 import sb from "satoshi-bitcoin";
-import { TESTNET } from 'Config/constants';
+import { TESTNET, APICONFIG } from 'Config/constants';
 import isCoinAvaliable from 'Config/isCoinAvaliable';
 
 export class WalletClass {
@@ -19,8 +19,6 @@ export class WalletClass {
     try {
       let coinsPrice = {};
       for (let coinKey in data) {
-        // console.warn(data[coinKey].fromSymbol.toLowerCase(), "()()()()()()()()");
-        console.log(data)
         coinsPrice[data[coinKey].fromSymbol] = await coins.getPrice(data[coinKey]);
       }
       return coinsPrice;
@@ -61,7 +59,14 @@ export class WalletClass {
 					total_amount: 0 
 				} 
 			}
-	*/
+  */
+    
+  getAddressesBalance(data) {
+    console.log('data', data)
+    let addressescoins = coins.services.balance(data)
+    return addressescoins;
+  }
+
   getBalance = async user => {
     try {
       if (typeof user === "string") {
@@ -140,5 +145,13 @@ export class WalletClass {
 
   validateAddress = async (address, accessToken) => {
     return await services.wallet.lns.validateAddress(address, accessToken);
+  }
+
+  getNewAddress(seed) {
+    try {
+      return services.wallet.lns.wallet.newAddress(seed, networks[APICONFIG])
+    } catch (error) {
+      console.log(error)
+    }
   }
 }

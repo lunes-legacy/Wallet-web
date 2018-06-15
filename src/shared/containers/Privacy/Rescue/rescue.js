@@ -3,7 +3,7 @@ import styled from "styled-components";
 import style from "Shared/style-variables";
 
 // LIBS
-import { services, networks } from 'lunes-lib';
+import { WalletClass } from 'Classes/Wallet';
 import { encrypt } from '../../../utils/crypt'
 
 // REDUX
@@ -35,6 +35,7 @@ const Row = styled.div`
   text-align: center;
 `;
 
+const Wallet = new WalletClass();
 class Rescue extends React.Component {
 	constructor(){
 		super();
@@ -52,7 +53,7 @@ class Rescue extends React.Component {
 	getAddress(seed) {
 		try {
 			if (seed.split(" ").length >= 12) {
-				let address = services.wallet.lns.wallet.newAddress(seed, networks.LNS);
+				let address = Wallet.getNewAddress(seed);
 				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: address } }, notification: null })
 			} else {
 				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Mínimo 12 palavras' } }, notification: null })

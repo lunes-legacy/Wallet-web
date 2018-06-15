@@ -3,21 +3,18 @@ import styled, { consolidateStreamedStyles } from "styled-components";
 import style from "Shared/style-variables";
 
 // UTILS
-import { decrypt } from "Utils/crypt";
 import { timestampDiff } from "Utils/functions";
 
 
 //REDUX
 import { connect } from "react-redux";
-import { setTxHistory, setWalletInfo } from 'Redux/actions';
+import { setTxHistory } from 'Redux/actions';
 
 // Components
 import { Col, Row } from 'Components/index';
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
 import { Loading } from 'Components/Loading';
-
-import CookieClass from 'Classes/Cookie';
 
 import {numeral} from 'Utils/numeral';
 

@@ -2,11 +2,12 @@ require('dotenv').load();
 import React, { PropTypes } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import { users, coins } from 'lunes-lib';
+
+import { decrypt } from '../../utils/crypt'
 
 // REDUX
 import { connect } from 'react-redux';
-import { setBalance, setCurrenciesPrice, setCryptoPrice } from 'Redux/actions';
+import { setBalance, setCurrenciesPrice, setCryptoPrice, setWalletInfo } from 'Redux/actions';
 
 //COMPONENTS
 import Home from 'Containers/Home/index';
@@ -85,12 +86,21 @@ class App extends React.Component {
 	}
 	
 	componentWillMount() {
-		this.props.setBalance();
 		this.props.setCurrenciesPrice();
 		this.props.setCryptoPrice();
 	}
 
+	getAddress() {
+		let walletInfo = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')));
+		if (walletInfo) {
+			this.props.setWalletInfo(walletInfo.addresses);
+			return walletInfo.addresses;
+		}
+	}
+
 	componentDidMount() {
+		console.log('get', this.getAddress())
+		this.props.setBalance({ network: 'lns'.toUpperCase(), address: this.getAddress() });
 		this.checkAccess();
 	}
 
@@ -104,10 +114,6 @@ class App extends React.Component {
 		if (!walletInfo || !accessToken) {
 			return this.props.history.push('/');
 		}
-	}
-	
-	calcBalance() {
-
 	}
 
 	render() {
@@ -161,9 +167,11 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.user, 
 		balance: state.balance,
+		component: state.component,
 		currencies: state.currencies,
 		cryptoPrice: state.currencies.crypto,
-    currenciePrice: state.currencies.currencies,		
+		currenciePrice: state.currencies.currencies,		
+		walletInfo: state.walletInfo
 	}
 }
 const mapDispatchToProps = (dispatch) => {
@@ -180,8 +188,11 @@ const mapDispatchToProps = (dispatch) => {
 		setCryptoPrice: () => {
 			dispatch(setCryptoPrice());
 		},
-		setBalance: () => {
-      dispatch(setBalance());
+		setBalance: (data) => {
+      dispatch(setBalance(data));
+		},
+		setWalletInfo: (data) => {
+      dispatch(setWalletInfo(data));
 		},
 	}
 }
