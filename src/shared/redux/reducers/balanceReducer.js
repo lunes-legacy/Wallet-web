@@ -1,11 +1,11 @@
 let initialState = {
-  BTC: {
-    coinName: "Bitcoin",
-    img: "btc.svg",
-    total_amount: 3,
-    total_confirmed: 3,
-    total_unconfirmed: 0
-  },
+  // BTC: {
+  //   coinName: "Bitcoin",
+  //   img: "btc.svg",
+  //   total_amount: 0,
+  //   total_confirmed: 0,
+  //   total_unconfirmed: 0
+  // },
   // ETH: {
   // 	total_confirmed: 1.02,
   // 	total_unconfirmed: 1,
@@ -48,21 +48,24 @@ let initialState = {
 const balanceReducer = (state = initialState, action) => {
   switch (action.type) {
     case "WALLET_SET_BALANCE":
-      console.log("payload pending", action.payload);
       return state;
 
     case "WALLET_SET_BALANCE_FULFILLED":
-      console.log("payload full", action.payload);
-      let balance = action.payload;
-      return (state = {
-        ...state
-        // LNS: {
-        //   coinName: "Lunes",
-        //   img: "lns.svg",
-        //   total_confirmed: balance.confirmed / 100000000,
-        //   total_amount: balance.confirmed
-        // }
-      });
+      let coins = action.payload;
+      for (const coinKey in coins) {
+        let balance = action.payload[coinKey].data;
+        state = {
+          ...state,
+          [coinKey]: {
+            coinName: state[coinKey].coinName,
+            img: state[coinKey].img,
+            total_confirmed: balance.confirmed / 100000000,
+            total_amount: balance.confirmed
+          }
+        };
+      }
+
+      return state;
   }
 
   return state;
