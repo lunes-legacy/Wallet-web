@@ -53,6 +53,9 @@ class PanelRight extends React.Component {
     );
   }
 }
+<<<<<<< HEAD
+export default connect(mapStateToProps, mapDispatchToProps)(PanelRight);
+=======
 const mapStateToProps = state => {
   return {
     component_wallet: state.component.wallet
@@ -65,3 +68,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(PanelRight);
+>>>>>>> e74baca680473398cb074d6d7166fb8cf2460667

@@ -1,6 +1,6 @@
 let initialState = {
 	wallet: {
-		currentNetwork: '',
+		currentNetwork: 'lns',
 		currentTxHistory: [
 			// {
 			// 	type: 'RECEIVED',
