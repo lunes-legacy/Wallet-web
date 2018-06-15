@@ -1,4 +1,4 @@
-import { EstimateFee } from 'Classes/crypto';
+import { FeeClass } from 'Classes/crypto';
 import { users, coins } from 'lunes-lib';
 
 import React from 'react';
@@ -84,23 +84,36 @@ class Send extends React.Component {
 			addressIsValid: true,
 			fees: {
 				status: 'loading', //loading || complete
-				low: undefined,
+				low:    undefined,
 				medium: undefined,
-				high: undefined
+				high:   undefined
+			},
+			networkFees: {
+				low:    undefined,
+				medium: undefined,
+				high:   undefined
+			},
+			estimateParams: {
+				network:     undefined,
+				fromAddress: undefined,
+				toAddress:   undefined,
+				amount:      undefined,
+				accessToken: undefined,
+				networkFees: undefined //it is optional
 			}
 		}
 	}
 
 	componentDidMount() {
-		this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
+		this.wrapperQr       = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
-		this.coinAmount = ReactDOM.findDOMNode(this.ref.coinAmount.current);
-		this.address = ReactDOM.findDOMNode(this.ref.address.current);
-		this.brlAmount = ReactDOM.findDOMNode(this.ref.brlAmount.current);
-		this.usdAmount = ReactDOM.findDOMNode(this.ref.usdAmount.current);
-		this.coinAmount = ReactDOM.findDOMNode(this.ref.coinAmount.current);
-		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
-		this.wrapper = ReactDOM.findDOMNode(this.ref.wrapper.current);
+		this.coinAmount      = ReactDOM.findDOMNode(this.ref.coinAmount.current);
+		this.address         = ReactDOM.findDOMNode(this.ref.address.current);
+		this.brlAmount       = ReactDOM.findDOMNode(this.ref.brlAmount.current);
+		this.usdAmount       = ReactDOM.findDOMNode(this.ref.usdAmount.current);
+		this.coinAmount      = ReactDOM.findDOMNode(this.ref.coinAmount.current);
+		this.sendButton      = ReactDOM.findDOMNode(this.ref.sendButton.current);
+		this.wrapper         = ReactDOM.findDOMNode(this.ref.wrapper.current);
 
 		this.makeQrCode();
 		this.arrangeAmountType();
@@ -125,12 +138,36 @@ class Send extends React.Component {
 		// }).catch((err) => {
 		// 	console.log(`%c ${err}`, 'background: red; color: white;');
 		// });
-		this._estimateFee();
+		this._setNetworkFees();
+		// this._estimateFee();
 	}
+	_setNetworkFees = async () => {
+		// let currentNetwork = this.props.component_wallet;
+		let currentNetwork = 'LNS';
+		let Fee     = new FeeClass;
+		let result;
+		let networkFees;
+		if (!currentNetwork)
+			console.error(errorPattern('Current network is not defined', 500, 'SETNETWORKFEES_ERROR'));
 
+		result = await Fee.getNetworkFees({network: currentNetwork});
+		if (result.status !== 'success')
+			console.error(errorPattern('Failed on trying to get network fees',500,"SETNETWORKFEES_ERROR"));
+
+		networkFees = result.data;
+		this.setState({
+			...this.state,
+			estimateParams: {
+				...this.state.estimateParams,
+				networkFees
+			}
+		}, () => {
+			console.log("STATE",this.state);
+		});
+	}
 	_estimateFee = () => {
 	    //tests to here
-	    let Estimate          = new EstimateFee;
+	    let Fee               = new FeeClass;
 	    let coinToTest        = 'LNS'; //just change here <<<<<
 	    let ETHtestnetAddress = '0xf4af6cCE5c3e68a5D937FC257dDDb73ac3eF9B3A';
 	    let BTCtestnetAddress = '2N7ieQWq3pgZCF7c1pbuAqZWrzDjMta1iAf';
@@ -152,7 +189,7 @@ class Send extends React.Component {
 	      return users.login({ email:'marcelo@gmail.com', password:'123123123' });
 	    }
 	    const calculateFee = (user) => {
-	      return Promise.resolve(Estimate.go({
+	      return Promise.resolve(Fee.estimate({
 	        network: coinToTest,
 	        fromAddress: fromAddress,
 	        toAddress: toAddress,
@@ -163,8 +200,6 @@ class Send extends React.Component {
 	    login().then(user => {
 	      console.log('\x1b[32m Fiz o login \x1b[0m');
 	      calculateFee(user).then((e) => {
-	        // console.log('\x1b[32m Chamei o cf \x1b[0m');
-	        // console.log(e);
 	        this.setState({
 	        	fees: {
 	        		status: 'complete',
@@ -178,7 +213,7 @@ class Send extends React.Component {
 	      });
 	    }).catch(e => {
 	      console.error("loginError", e);
-	    });		
+	    });
 	}
 
 	toggleModal = (event) => {
@@ -400,7 +435,7 @@ class Send extends React.Component {
 										unique={'true'}
 									/>
 									<RadioCheckmark />
-									<LabelRadio clWhite>Quantidade em BTC</LabelRadio>
+									<LabelRadio clWhite>LNS unit</LabelRadio>
 								</WrapRadio>
 							</div>
 						</Col>
@@ -483,7 +518,7 @@ class Send extends React.Component {
 									unique={'true'}
 								/>
 								<RadioCheckmark />
-								<LabelRadio clWhite>Valor em Reais</LabelRadio>
+								<LabelRadio clWhite>REAL unit</LabelRadio>
 							</WrapRadio>
 							<WrapRadio css={css`margin: 4rem 0 0 0;`}>
 								<InputRadio
@@ -493,7 +528,7 @@ class Send extends React.Component {
 									unique={'true'}
 								/>
 								<RadioCheckmark />
-								<LabelRadio clWhite >Valor em Dolar</LabelRadio>
+								<LabelRadio clWhite >USD unit</LabelRadio>
 							</WrapRadio>
 						</Col>
 						<Col s={6} m={6} l={6}>
@@ -541,7 +576,7 @@ class Send extends React.Component {
 								noBorder
 								type={'text'}
 								ref={this.ref.address}
-								placeholder={'Endereço'} />
+								placeholder={'Address'} />
 						</Col>
 					</Row>
 
