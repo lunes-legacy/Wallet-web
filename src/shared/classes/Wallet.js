@@ -61,9 +61,10 @@ export class WalletClass {
 			}
   */
     
-  getAddressesBalance(data) {
-    console.log('data', data)
-    let addressescoins = coins.services.balance(data)
+  getAddressesBalance(addresses) {
+    console.log('data', addresses)
+    let addressescoins = coins.services.balance(APICONFIG, addresses)
+    console.log(addressescoins)
     return addressescoins;
   }
 
