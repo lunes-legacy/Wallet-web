@@ -11,8 +11,10 @@ import Foot        from '../Foot';
 import Head        from '../Head';
 import IconCoin    from '../IconCoin';
 import StyledModal from '../StyledModal';
+//UI
+import { toggleModal } from './../ui';
 
-class Modal extends React.Component {
+class ModalSend extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -41,6 +43,11 @@ class Modal extends React.Component {
 			console.log(this.state, "nextStep STATE");
 		});
 	}
+	_handleClickClose = (event) => {
+		let modal = document.querySelector('.js-modal-send');
+		toggleModal(modal);
+		 /*{className={'js-modal-send'}}*/
+	}
 	render() {
 		if (!this.state.steps) 
 			return null;
@@ -48,8 +55,8 @@ class Modal extends React.Component {
 		let Component = this.state.steps[this.state.currStep].component;
 		return (
 			<Background>
-				<StyledModal className={'js-modal-send'}>
-					<Close>X</Close>
+				<StyledModal className="js-modal-send">
+					<Close onClick={this._handleClickClose}>X</Close>
 
 					<Head>
 						<IconCoin src={'/img/bitcoin.svg'}/>
@@ -64,4 +71,4 @@ class Modal extends React.Component {
 	}	
 }
 
-export default Modal;
+export default ModalSend;

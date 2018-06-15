@@ -18,5 +18,8 @@ let Background = styled.div`
 	& * {
 		overflow: visible;
 	}
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.3s;
 `;
 export default Background;
