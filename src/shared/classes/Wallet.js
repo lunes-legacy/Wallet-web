@@ -163,4 +163,8 @@ export class WalletClass {
       console.log(error);
     }
   }
+
+  transactionSend = async (transactionData, accessToken) => {
+    return await coins.services.transaction(transactionData, accessToken);
+  }
 }
