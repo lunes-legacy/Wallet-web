@@ -1,5 +1,5 @@
 //import {decrypt} from '../../utils/crypt';
-import Leasing from "Classes/Leasing";
+import {LeasingClass} from "Classes/Leasing";
 
 let initialState = {
     listLeasing: []
