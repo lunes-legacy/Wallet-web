@@ -47,7 +47,11 @@ export class LeasingClass {
             testnet: TESTNET 
         }).then((e)=>{
             //console.log(e);
-            return e
+            if(e.lenght>0){
+                return e
+            }else{
+                return false
+            }
         }).catch((e)=>{
             //console.log(e);
             return false
@@ -68,7 +72,7 @@ export class LeasingClass {
         const cancelLeaseResult = await coins.services.leaseCancel(cancelLeasingData).then((e)=>{
             return e
         }).catch((e)=>{
-            console.log(e);
+            //console.log(e);
             return false
         });
 
