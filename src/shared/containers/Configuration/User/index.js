@@ -2,7 +2,6 @@ import React from "react";
 import styled from 'styled-components';
 
 // Private components
-import styleVar from 'Shared/style-variables';
 import { Row, Col } from 'Components/index';
 import PanelLeft from './PanelLeft';
 import PanelRight from './PanelRight';

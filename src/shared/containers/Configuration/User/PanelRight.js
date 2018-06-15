@@ -54,15 +54,15 @@ class PanelLeft extends React.Component {
         <BtnEdit>Edit</BtnEdit>
         <Form>
           <Label htmlFor="fullName">Full Name</Label>
-          <Input type="text" id="fullName" value="Lucas Magno"/>
+          <Input type="text" id="fullName" defaultValue="Lucas Magno"  disabled/>
           <Label htmlFor="phone">Phone</Label>
-          <Input type="text" id="phone" value="(11) 9999-9999"/>
+          <Input type="text" id="phone" defaultValue="(11) 9999-9999" disabled/>
           <Label htmlFor="address">Address</Label>
-          <Input type="text" id="address" value="Rua dos Coqueiros"/>
+          <Input type="text" id="address" defaultValue="Rua dos Coqueiros" disabled/>
           <Label htmlFor="email">E-mail</Label>
-          <Input type="email" id="email" value="email@lunes.io"/>
+          <Input type="email" id="email" defaultValue="email@lunes.io" disabled/>
           <Label htmlFor="birthDate">Birth date</Label>
-          <Input type="date" id="birthDate" value="1987-06-01"/>
+          <Input type="date" id="birthDate" defaultValue="1987-06-01" disabled  />
         </Form>
       </PanelStyle>
     );
