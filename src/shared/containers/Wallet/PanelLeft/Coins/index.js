@@ -3,9 +3,12 @@ import styled      from "styled-components";
 import style       from "Shared/style-variables";
 import { TextBase, H1 } from "Components";
 
+// UTILS
+import { decrypt } from "Utils/crypt";
+
 //REDUX
 import { connect } from "react-redux";
-import { openPanelRight, togglePanelLeft } from 'Redux/actions';
+import { openPanelRight, togglePanelLeft, setTxHistory, setWalletInfo } from 'Redux/actions';
 
 import { Loading } from 'Components/Loading';
 
@@ -162,6 +165,17 @@ class Coins extends React.Component {
     numeral.locale(this.props.currencies.locale);
   }
 
+  componentDidMount() {
+    this.getWalletInfo();
+  }
+
+  getWalletInfo() {
+		let walletInfo = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')));
+		if (walletInfo) {
+			this.props.setWalletInfo(walletInfo.addresses);
+		}
+	}
+
   //metodo chamado sempre que o componente é renderizado ou um
   //estado é atualizado
   _renderCoins = () => {
@@ -188,6 +202,7 @@ class Coins extends React.Component {
           onClick={() => {
             this.props.openPanelRight({currentNetwork: coinKey.toLowerCase()}); 
             this.props.togglePanelLeft();
+            this.props.setTxHistory({ network: coinKey.toUpperCase(), address: this.props.walletInfo.addresses[coinKey.toUpperCase()] });
           }}
         >
           <WrapCoinImg>
@@ -223,7 +238,8 @@ const mapStateToProps = state => {
   return {
     balance: state.balance,
     component:  state.component,
-		currencies: state.currencies,
+    currencies: state.currencies,
+    walletInfo: state.walletInfo,
   };
 };
 
@@ -234,7 +250,13 @@ const mapDispatchToProps = dispatch => {
     }, 
     togglePanelLeft: () => {
       dispatch(togglePanelLeft());
-    }
+    },
+    setWalletInfo: (data) => {
+      dispatch(setWalletInfo(data));
+    },
+    setTxHistory: (data) => {
+      dispatch(setTxHistory(data));
+    },
   };
 };
 

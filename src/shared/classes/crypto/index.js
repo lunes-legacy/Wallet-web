@@ -1,6 +1,6 @@
-import EstimateFee from './EstimateFee';
+import FeeClass from './Fee';
 
 
 export {
-	EstimateFee
+	FeeClass
 }

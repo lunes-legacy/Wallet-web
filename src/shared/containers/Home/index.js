@@ -21,7 +21,8 @@ const MainRectangle = styled.div`
   width: 299px;
   border-radius: 10px;
   background-color: #442181;
-  
+  box-shadow: 3px 1px 15px 10px rgba(0, 0, 0, 0.09);    
+  cursor: pointer;
 `;
 
 const Icon = styled.img`
@@ -37,57 +38,55 @@ const TextRectangle = styled.div`
   text-align: center;
   
 `;
+const Paragraph = styled.div `
+line-height: 1.5; 
+font-size: 1.4rem;
+color: white;
+text-align: center;
+
+`;
 
 class Home extends React.Component {
   render() {
     return (
       <Container>
-        <MainRectangle>
+        <MainRectangle onClick={() => this.props.history.push('/app/wallet')}>
           <Icon src={"/img/app_panel_left/ic_wallet.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Wallet
           </H1>
           <TextRectangle>
-            <P fontSize={"1.4rem"} txCenter clWhite>
+            <Paragraph fontSize={"1.4rem"} txCenter clWhite>
               Meet the most well-designed wallets. <br /> Send, receive, and view the transaction history in a unique way.
-            </P>
+            </Paragraph>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={() => this.props.history.push('/app/wallet')}>
-            Entrar
-          </ButtonGreen>
         </MainRectangle>
 
-        <MainRectangle>
-          <Icon src={"/img/app_panel_left/ic_recharge.svg"} />
+        <MainRectangle onClick={() => this.props.history.push('/app/leasing')}>
+          <Icon src={"/img/app_panel_left/ic_leasing.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Leasing
           </H1>
           <TextRectangle>
-            <P fontSize={"1.4rem"} txCenter clWhite>
+            <Paragraph fontSize={"1.4rem"} txCenter clWhite>
               Lend the forging power of your LNS to nodes and guarantee up to 5% per year with no risk.
-            </P>
+            </Paragraph>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={() => this.props.history.push('/app/leasing')}>
-            Entrar
-          </ButtonGreen>
         </MainRectangle>
 
-        <MainRectangle>
+        <MainRectangle onClick={() => this.props.history.push('/app/privacy')}>
           <Icon src={"/img/app_panel_left/ic_privacy.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Privacidade
           </H1>
           <TextRectangle>
-            <P fontSize={"1.4rem"} txCenter clWhite>
+            <Paragraph fontSize={"1.4rem"} txCenter clWhite>
               Access and restore your wallet information at any time through the backup system.
-            </P>
+            </Paragraph>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={() => this.props.history.push('/app/privacy')}>
-            Entrar
-          </ButtonGreen>
         </MainRectangle>
 
-        {/* <MainRectangle>
+        {/* <MainRectangle onClick={() => this.props.history.push('/app/recharge')}>
           <Icon src={"/img/app_panel_left/ic_recharge.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Recarga
@@ -98,12 +97,9 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={ () => this.props.history.push('/app/recharge')}>
-            Entrar
-          </ButtonGreen>
         </MainRectangle> */}
 
-        {/* <MainRectangle>
+        {/* <MainRectangle onClick={() => this.props.history.push('/app/ticket')}>
           <Icon src={"/img/app_panel_left/ic_barcode.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Boleto
@@ -114,12 +110,9 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={ () => this.props.history.push('/app/ticket')}>
-            Entrar
-          </ButtonGreen>
         </MainRectangle> */}
 
-        {/* <MainRectangle>
+        {/* <MainRectangle onClick={() => this.props.history.push('/app/buy')}>
           <Icon src={"/img/app_panel_left/ic_buy.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Compras
@@ -130,12 +123,9 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
           </TextRectangle>
-          <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={ () => this.props.history.push('/app/buy')}>
-            Entrar
-          </ButtonGreen>
         </MainRectangle> */}
 
-        {/* <MainRectangle>
+        {/* <MainRectangle onClick={() => this.props.history.push('/app/portfolio')}>
           <Icon src={"/img/app_panel_left/ic_portfolio.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
             Portfólio
@@ -146,9 +136,6 @@ class Home extends React.Component {
               tecnologia desta incrível carteira e armazene suas criptomoedas com um alto nível de segurança..
             </P>
 					</TextRectangle>
-							<ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={ () => this.props.history.push('/app/portfolio')}>
-								Entrar
-							</ButtonGreen>
         </MainRectangle> */}
 
       </Container>

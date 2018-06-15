@@ -1,11 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import style from "Shared/style-variables";
+import React        from "react";
+import styled       from "styled-components";
+import style        from "Shared/style-variables";
 import { TextBase } from "Components/TextBase";
 import { Col, Row } from "Components/index"
 import ModalReceive from "./Modal/Receive/index";
-import {connect} from "react-redux";
-import {numeral} from 'Utils/numeral';
+import ModalSend    from "./Modal/Send";
+import {connect}    from "react-redux";
+import {numeral}    from 'Utils/numeral';
+import { toggleModal } from './Modal/ui';
 
 const StyledCoinControl = styled.div`
   width: 100%;
@@ -93,6 +95,7 @@ const CoinAction = styled.div`
 const SendCoin = CoinAction.extend`
   float: right;
   background: ${style.normalRed};
+  cursor: pointer;
 `;
 
 const ReceiveCoin = CoinAction.extend`
@@ -120,7 +123,15 @@ class CoinControl extends React.Component {
       isOpenModalReceived: !this.state.isOpenModalReceived
     });
   };
-
+  _handleClickOpenModal = (name) => {
+    let modal
+    if (name === 'send') {
+      modal = document.querySelector('.js-modal-send');
+    } else {
+      modal = document.querySelector('.js-modal-receive');
+    }
+    toggleModal(modal);
+  }
   render() {
     let { currentNetwork }      = this.props.component.wallet;
     let { crypto, currencies }  = this.props.currencies;
@@ -132,6 +143,8 @@ class CoinControl extends React.Component {
 
     return (
       <StyledCoinControl>
+        <ModalSend/>
+        <ModalReceive/>
         <Row overflowHidden>
           <Col s={12} m={6} l={8}>
             <WrapAmount>
@@ -142,19 +155,19 @@ class CoinControl extends React.Component {
             </WrapAmount>
           </Col>
           <Col s={6} m={3} l={2}>
-            <SendCoin>
+            <SendCoin onClick={() => this._handleClickOpenModal('send')}>
               <SendCoinImage src="/img/app_wallet/ic_enviar.svg" />
               <br />
               Enviar
             </SendCoin>
           </Col>
           <Col s={6} m={3} l={2}>
-            <ReceiveCoin onClick={() => this.showModalReceived()}>
+            <ReceiveCoin onClick={() => this._handleClickOpenModal('receive')}>
               <SendCoinImage src="/img/app_wallet/ic_receber.svg" />
               <br />
               Receber
             </ReceiveCoin>
-            {this.state.isOpenModalReceived && <ModalReceive isShow={this.state.isOpenModalReceived} />}
+            {/*this.state.isOpenModalReceived && <ModalReceive isShow={this.state.isOpenModalReceived} />*/}
           </Col>
         </Row>
       </StyledCoinControl>
@@ -165,8 +178,8 @@ class CoinControl extends React.Component {
 const mapStateToProps = (state) => {
 	return {
     currencies: state.currencies,
-    component: state.component,
-    balance: state.balance
+    component:  state.component,
+    balance:    state.balance
 	}
 }
 const mapDispatchToProps = (dispatch) => {

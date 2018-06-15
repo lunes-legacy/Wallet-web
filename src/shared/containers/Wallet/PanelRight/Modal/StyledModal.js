@@ -15,6 +15,8 @@ let StyledModal = styled.div`
 		height: 70%;
 		margin-top: 75px;
 	}
+	transform: translateY(-100%);
+	transition: all 0.3s;
 `;
 
 export default StyledModal;

@@ -12,14 +12,16 @@ import {
 	balanceReducer,
 	currenciesReducer,
 	configReducer,
-	componentReducer } from 'Redux/reducers';
+	componentReducer, 
+	leaseReducer } from 'Redux/reducers';
 
 export let initialState = {
 	user:             userReducer,
 	wallet:           walletReducer,
-	walletInfo:				privacyReducer,
+	walletInfo:		  privacyReducer,
 	config:           configReducer,
 	currencies:       currenciesReducer,
 	balance:          balanceReducer,
-	component:        componentReducer
+	component:        componentReducer, 
+	leasing: 		  leaseReducer
 }

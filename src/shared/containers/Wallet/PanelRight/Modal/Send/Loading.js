@@ -3,7 +3,6 @@ import { findDOMNode } from 'react-dom';
 import { timer } from 'Utils/functions';
 //COMPONENTS
 import { Text, Col, Row, Img } from 'Components';
-import { coins, users } from 'lunes-lib';
 import { css }  from 'styled-components';
 
 let CssWrapper = css`
@@ -71,6 +70,12 @@ class Loading extends React.Component {
 			this.animThisComponentOut();
 			this.props.nextStep();
 		}, 500);
+
+
+	    
+
+		// 	this.animThisComponentOut();
+		// 	this.props.nextStep();
 		return;
 
 
@@ -86,26 +91,26 @@ class Loading extends React.Component {
 		let accessToken = user.accessToken;
 		// console.log(`%cUsuário logado ${JSON.stringify(user, null, 2)}`, 'background: lightgreen; color: black;');
 		
-		let fees       = await coins.services.networkFees({
-			network,
-			testnet
-		});
-		console.log(`%c${JSON.stringify(fees, null, 2)} fees`, 'background: lightyellow; color: black;');
-		let amountBTC     = coinAmount;
-		let amountSTH     = coins.util.unitConverter.toSatoshi(coinAmount);
-		let dataHighEstimate = {
-			network,
-			testnet,
-			toAddress: address,
-			fromAddress: userAddress,
-			amount: amountSTH,
-			feePerByte: fees.data.high
-		};
-		let highResult = await coins.services.estimateFee(
-			dataHighEstimate,
-			accessToken
-		);
-		console.log(`%c${JSON.stringify(highResult)}`, 'background: lightblue; color: black;');
+		// let fees       = await coins.services.networkFees({
+		// 	network,
+		// 	testnet
+		// });
+		// console.log(`%c${JSON.stringify(fees, null, 2)} fees`, 'background: lightyellow; color: black;');
+		// let amountBTC     = coinAmount;
+		// let amountSTH     = coins.util.unitConverter.toSatoshi(coinAmount);
+		// let dataHighEstimate = {
+		// 	network,
+		// 	testnet,
+		// 	toAddress: address,
+		// 	fromAddress: userAddress,
+		// 	amount: amountSTH,
+		// 	feePerByte: fees.data.high
+		// };
+		// let highResult = await coins.services.estimateFee(
+		// 	dataHighEstimate,
+		// 	accessToken
+		// );
+		// console.log(`%c${JSON.stringify(highResult)}`, 'background: lightblue; color: black;');
 		let txData = {
 			network,
 			testnet,
