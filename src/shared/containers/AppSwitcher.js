@@ -11,13 +11,22 @@ import Reset from "Containers/User/Reset/index";
 
 
 
-
+const Divmobile = styled.div `
+widht 100%;
+height 100%; 
+background-color: #4B2C82; 
+`;
 
 const Paragraphmobile = styled.div`
    
-   font-size: 5.0rem;
-   color: white; 
+   font-size: 4.0rem;
    text-align: center; 
+   font-family: offSide; 
+   color: #4CD566;
+   position:absolute;
+   margin-top: 75%; 
+   
+   
    
 `;
 class AppSwitcher extends React.Component {
@@ -27,9 +36,11 @@ class AppSwitcher extends React.Component {
     // 791 = iPad
     if (window.innerWidth < 761) {
       return (
-        <div>
-          <Paragraphmobile> Versão mobile disponível em breve ! </Paragraphmobile>
-        </div>
+       <Divmobile> 
+      
+          <Paragraphmobile offSide> Versão mobile disponível em breve ! </Paragraphmobile>
+        
+        </Divmobile>
       )
     }
 
