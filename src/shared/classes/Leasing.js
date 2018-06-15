@@ -40,7 +40,7 @@ export class LeasingClass {
     
     getLeaseHistory = async(data) => {
         let wallet_info = JSON.parse(decrypt(data));
-
+        
         let consultLeasing = await coins.services.leaseHistory({ 
             address: wallet_info.addresses.LNS, 
             network: 'LNS', 
