@@ -1,7 +1,6 @@
 import { errorPattern } from 'Utils/functions';
 import { encrypt, decrypt } from '../utils/crypt';
 import { coins } from 'lunes-lib';
-import { decrypt } from 'Utils/crypt';
 import { MoneyClass } from './Money';
 import { TESTNET } from 'Config/constants';
 
@@ -45,7 +44,7 @@ export class LeasingClass {
         let consultLeasing = await coins.services.leaseHistory({ 
             address: wallet_info.addresses.LNS, 
             network: 'LNS', 
-            testnet: true 
+            testnet: TESTNET 
         }).then((e)=>{
             //console.log(e);
             return e
@@ -63,7 +62,7 @@ export class LeasingClass {
             mnemonic: wallet_info.seed, 
             txID: data.key, 
             fee: "100000", 
-            testnet: true //TESTNET 
+            testnet: TESTNET //TESTNET 
         }; 
 
         const cancelLeaseResult = await coins.services.leaseCancel(cancelLeasingData).then((e)=>{
