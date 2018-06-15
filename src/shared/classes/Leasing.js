@@ -47,7 +47,7 @@ export class LeasingClass {
             testnet: TESTNET 
         }).then((e)=>{
             //console.log(e);
-            if(e.lenght>0){
+            if(e.length>0){
                 return e
             }else{
                 return false
