@@ -16,6 +16,8 @@ export let ReceiveStyleModalCss = styled.div`
     height: 40%;
     margin-top: 75px;
   }
+  transform: translateY(-100%);
+  transition: all 0.3s;
 `;
 
 export let ReceiveButtonQrCodeCss = styled.div`

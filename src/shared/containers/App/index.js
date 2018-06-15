@@ -2,6 +2,7 @@ require("dotenv").load();
 import React, { PropTypes } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import styled from "styled-components";
+import NotFound from './NotFound';
 
 import { decrypt } from "../../utils/crypt";
 
@@ -152,16 +153,17 @@ class App extends React.Component {
 
           <PanelRight>
             <Switch>
-              <Route exact path={"/app/"} component={Home} />
-              <Route exact path={"/app/home/"} component={Home} />
+              <Route exact path={"/app/"}           component={Home} />
+              <Route exact path={"/app/home/"}      component={Home} />
               <Route exact path={"/app/portfolio/"} component={Portfolio} />
-              <Route exact path={"/app/wallet/"} component={Wallet} />
-              <Route exact path={"/app/recharge/"} component={Recharge} />
-              <Route exact path={"/app/ticket/"} component={Ticket} />
-              <Route exact path={"/app/buy"} component={Buy} />
-              <Route exact path={"/app/leasing"} component={Leasing} />
+              <Route exact path={"/app/wallet/"}    component={Wallet} />
+              <Route exact path={"/app/recharge/"}  component={Recharge} />
+              <Route exact path={"/app/ticket/"}    component={Ticket} />
+              <Route exact path={"/app/buy"}        component={Buy} />
+              <Route exact path={"/app/leasing"}    component={Leasing} />
               <Route exact path={"/app/configuration"} component={Configuration} />
-              <Route exact path={"/app/privacy"} component={Privacy} />
+              <Route exact path={"/app/privacy"}    component={Privacy} />
+              <Route exact path={"**"}              component={NotFound} />
             </Switch>
           </PanelRight>
         </Panels>

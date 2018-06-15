@@ -7,6 +7,8 @@ import { Col, Row } from "Components/index";
 import Background from "../Background";
 import Close from "../Close";
 import Foot from "../Foot";
+//UI
+import { toggleModal } from './../ui';
 
 import {
   ReceiveStyleModalCss,
@@ -70,13 +72,17 @@ class ModalReceive extends React.Component {
     this.setState({ isOpenModalReceived: !isShow });
   };
 
+  _handleClickClose = (event) => {
+    let modal = document.querySelector('.js-modal-receive');
+    toggleModal(modal);
+     /*{className={'js-modal-send'}}*/
+  }
   render() {
-    if (!this.state.isOpenModalReceived) return null;
-
+    // if (!this.state.isOpenModalReceived) return null;
     return (
       <Background>
-        <ReceiveStyleModalCss>
-          <Close onClick={() => this.toggleModalReceived(this.props.isShow)}>
+        <ReceiveStyleModalCss className="js-modal-receive">
+          <Close onClick={this._handleClickClose}>
             <strong>X</strong>
           </Close>
           <ReceiveContentCss>

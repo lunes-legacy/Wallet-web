@@ -62,6 +62,25 @@ class Import extends React.Component {
   }
 
   getAddress(seed) {
+<<<<<<< HEAD
+		try {
+			if (seed.split(" ").length >= 12) {
+        let address;
+        if (TESTNET === true)
+  				address = services.wallet.lns.wallet.newAddress(seed, networks.LNSTESTNET);
+        else
+          address = services.wallet.lns.wallet.newAddress(seed, networks.LNS);
+
+				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: address } }, notification: null })
+			} else {
+				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Mínimo 12 palavras' } }, notification: null })
+			}
+		} catch (error) {
+			this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Palavras inválidas' } }, notification: null })
+			console.log(error);
+		}
+	}
+=======
     try {
       if (seed.split(" ").length >= 12) {
         let address = Wallet.getNewAddress(seed);
@@ -82,6 +101,7 @@ class Import extends React.Component {
       console.log(error);
     }
   }
+>>>>>>> e74baca680473398cb074d6d7166fb8cf2460667
 
   setSeed() {
     try {
