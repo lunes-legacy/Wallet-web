@@ -48,9 +48,11 @@ let initialState = {
 const balanceReducer = (state = initialState, action) => {
 	switch(action.type) {
 		case 'WALLET_SET_BALANCE':
+			console.log('payload', action.payload)
 			return state;
 			
 		case 'WALLET_SET_BALANCE_FULFILLED':
+			console.log('payload', action.payload)
 			let balance = action.payload.data;
 			return state = {
 				...state,

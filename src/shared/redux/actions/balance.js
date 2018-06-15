@@ -1,8 +1,9 @@
-import { coins } from "lunes-lib";
+import { WalletClass } from "Classes/Wallet";
+const Wallet = new WalletClass();
 
-export const setBalance = () => {
-	return {
-		type: 'WALLET_SET_BALANCE',
-		payload: coins.services.balance({ network: 'lns', address: '37jxbsXCjQJ1cvzG3DdMC5xMxT73ab6DLDM' }),
-	}
-}
+export const setBalance = data => {
+  return {
+    type: "WALLET_SET_BALANCE",
+    payload: Wallet.getAddressesBalance(data.addresses.LNS)
+  };
+};
