@@ -7,13 +7,11 @@ import { TextBase, H1 } from "Components";
 import { Col, Row } from 'Components/index';
 import { Loading } from 'Components/Loading';
 import {timestampToDate} from 'Utils/date';
-
 import { encrypt, decrypt } from '../../../utils/crypt';
 // import Leasing from 'Classes/Leasing'; // refatorar para usar a classe
-
-// REDUX
 import { connect } from 'react-redux';
 import { getWalletInfo } from 'Redux/actions';
+import {numeral} from 'Utils/numeral';
 
 
 const StyledPanelRight = styled.div`
@@ -159,35 +157,81 @@ const BoxLineLeasing = Row.extend`
 class PanelRight extends React.Component {
     constructor(props){
         super(props)
-        this.listLeasing = []
+
+        this.state = {
+            listLeasing: [], 
+            wallet_info: {
+                seed: null,
+                addresses: {
+                    LNS: null
+                }
+            }
+        };
+        
+        this.cancelLeasing = this.cancelLeasing.bind(this);
     }
 
     // consulta de leasing
-    componentDidMount = async () => {
+    searchLeasing = async () => {
+        //this.setState({...this.state, listLeasing: []});
+
+        // usando endereco do localstorage
+        let address = this.state.wallet_info.addresses.LNS
+
+        // consulta
+
+        let listLeasing = await coins.services.leaseHistory({ 
+            address: address, 
+            network: 'LNS', 
+            testnet: true 
+        }).then((e)=>{
+            console.log(e);
+            return e
+        }).catch((e)=>{
+            console.log(e);
+            return false
+        });
+
+        this.setState({...this.state, listLeasing: listLeasing});
+
+        console.log(this.state);
+    }
+
+    componentDidMount = () => {
+        this.searchLeasing();
+    }
+
+    componentWillMount = () => {
         // fazer a chamada da classe Leasing
         // let leasing = new Leasing()
         // let retorno = leasing.getLeaseHistory() // chamada para teste
 
         // pegar os dados criptografados (verificar em privacy/rescue.js)
-        let wallet_info = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')))
-        
-        // usando endereco do localstorage
-        let address = wallet_info.addresses.LNS
-        //let address = '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG'
-
-        // consulta
-        this.listLeasing = await coins.services.leaseHistory({ 
-            address: address, 
-            network: 'LNS', 
-            testnet: true 
-        }).then((e)=>{
-            return e
-        }).catch((e)=>{
-            return false
+        //this.setState({this.state, wallet_info: JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')))});
+    
+        // bloco de teste ************
+        this.setState({...this.state, wallet_info: {
+                seed: 'educate cruise farm draw paper smile valve conduct remain blur agree index chef example lesson',
+                addresses: {
+                    LNS: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG'
+                }
+            }
         });
-            
-        // validar se voltou alguma coisa
+        // bloco de teste ************
     }
+
+    cancelLeasing = async (key) => {
+        const mnemonic = this.state.wallet_info.seed;
+
+        const cancelLeasingData = { 
+            mnemonic: mnemonic, 
+            txID: key, 
+            fee: "100000", 
+            testnet: true 
+        }; 
+        const cancelLeaseResult = await coins.services.leaseCancel(cancelLeasingData);
+        this.searchLeasing();
+    }    
 
     // normalizar status do leasing, que hoje é 8 ou 9 
     _normalizeStatus = status => {
@@ -199,11 +243,11 @@ class PanelRight extends React.Component {
     }
 
     // retornando o botao de cancelar, com condicional de status
-    _buttonCancel = status => {
+    _buttonCancel = (status, id) => {
         if(status){
             return (
                 <CancelBox>
-                    <CancelText clNormalGreen txCenter status={status} onClick={()=>{}}>
+                    <CancelText clNormalGreen txCenter status={status} onClick={()=>this.cancelLeasing(id)}>
                         <IconActive /><br/>
                         CANCEL
                     </CancelText>
@@ -221,13 +265,16 @@ class PanelRight extends React.Component {
 
     // retornando os itens, de acordo com os dados no storage
     _renderLeasings = () => {
-        if(!this.listLeasing){
+        if(!this.state.listLeasing){
             return <GreenText txBold txCenter>NENHUM LEASING ENCONTRADO</GreenText>
         }
-        if (this.listLeasing.length < 1) {
+        if (this.state.listLeasing.length < 1) {
             return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
         }else{
-            return this.listLeasing.map((obj, key) => {
+            return this.state.listLeasing.map((obj, key) => {
+
+                let nativeAmount = numeral(obj.nativeAmount / 100000000).format('0,0.00000000');
+                
                 return (
                     <BoxLineLeasing key={obj.txid} >
                         <Col s={12} m={6} l={6}>
@@ -235,10 +282,10 @@ class PanelRight extends React.Component {
                             <HashText clWhite txBold status={this._normalizeStatus(obj.otherParams.type)}> {obj.txid} </HashText>
                         </Col>
                         <Col s={12} m={4} l={4}>
-                            <GreenText clNormalGreen txBold txCenter status={this._normalizeStatus(obj.otherParams.type)}> {obj.nativeAmount} LNS</GreenText>
+                            <GreenText clNormalGreen txBold txCenter status={this._normalizeStatus(obj.otherParams.type)}> {nativeAmount} LNS</GreenText>
                         </Col>
                         <Col s={12} m={2} l={2}>
-                            {this._buttonCancel(this._normalizeStatus(obj.otherParams.type))} 
+                            {this._buttonCancel(this._normalizeStatus(obj.otherParams.type), obj.txid)} 
                         </Col>
                     </BoxLineLeasing>
                 );
