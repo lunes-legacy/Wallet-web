@@ -1,4 +1,5 @@
 import { errorPattern } from 'Utils/functions';
+import { encrypt, decrypt } from '../utils/crypt';
 import { coins } from 'lunes-lib';
 import { decrypt } from 'Utils/crypt';
 import { MoneyClass } from './Money';
@@ -37,39 +38,41 @@ export class LeasingClass {
         return errorPattern(`Error on trying to get price`, 500, "COINGETPRICE_ERROR", err);
       }
     }
+    
+    getLeaseHistory = async(data) => {
+        let wallet_info = JSON.parse(decrypt(data));
 
-    //getLeaseHistory = async({address, network, testnet = true}) => {
-    getLeaseHistory = async() => { // parametros fixo para teste
-        let consultLeasing = await coins.services.leaseHistory({
-            address: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG',
-            network: 'LNS',
-            testnet: true
+        let consultLeasing = await coins.services.leaseHistory({ 
+            address: wallet_info.addresses.LNS, 
+            network: 'LNS', 
+            testnet: true 
+        }).then((e)=>{
+            //console.log(e);
+            return e
+        }).catch((e)=>{
+            //console.log(e);
+            return false
         }); 
-
-        //console.log(JSON.stringify(this.leasehistory));
-
         return consultLeasing;
-        // try {
-        //     this.leasehistory = await coins.services.leaseHistory({
-        //         address: '37aF3eL4tsZ6YpqViXpYAmRQAi7ehtDdBmG',
-        //         network: 'LNS',
-        //         testnet: true
-        //     }); 
-
-        //     return this.leasehistory
-        //     // .then((e) => {
-        //     //     console.log(e);
-        //     //     done();
-        //     // }).catch((e) => {
-        //     //     done(e);
-        //     // });
-        // }catch(e){
-        //     return errorPattern(`An error ocurred on trying to get LNS`,500,'LEASEHISTORY_ERROR',e)
-        // }
     }
 
-    // acao de cancelar o leasing
-    cancelLease = async() => {
+    cancelLease = async(data) => {
+        let wallet_info = JSON.parse(decrypt(data.wallet_info));
+        
+        const cancelLeasingData = { 
+            mnemonic: wallet_info.seed, 
+            txID: data.key, 
+            fee: "100000", 
+            testnet: true //TESTNET 
+        }; 
 
+        const cancelLeaseResult = await coins.services.leaseCancel(cancelLeasingData).then((e)=>{
+            return e
+        }).catch((e)=>{
+            console.log(e);
+            return false
+        });
+
+        return cancelLeaseResult;
     }
 }
