@@ -21,7 +21,7 @@ const MainRectangle = styled.div`
   width: 299px;
   border-radius: 10px;
   background-color: #442181;
-  
+  box-shadow: 3px 1px 15px 10px rgba(0, 0, 0, 0.09);    
 `;
 
 const Icon = styled.img`
@@ -37,6 +37,13 @@ const TextRectangle = styled.div`
   text-align: center;
   
 `;
+const Paragraph = styled.div `
+line-height: 1.5; 
+font-size: 1.4rem;
+color: white;
+text-align: center;
+
+`;
 
 class Home extends React.Component {
   render() {
@@ -48,9 +55,9 @@ class Home extends React.Component {
             Wallet
           </H1>
           <TextRectangle>
-            <P fontSize={"1.4rem"} txCenter clWhite>
+            <Paragraph fontSize={"1.4rem"} txCenter clWhite>
               Meet the most well-designed wallets. <br /> Send, receive, and view the transaction history in a unique way.
-            </P>
+            </Paragraph>
           </TextRectangle>
           <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={() => this.props.history.push('/app/wallet')}>
             Entrar
@@ -63,9 +70,9 @@ class Home extends React.Component {
             Leasing
           </H1>
           <TextRectangle>
-            <P fontSize={"1.4rem"} txCenter clWhite>
+            <Paragraph fontSize={"1.4rem"} txCenter clWhite>
               Lend the forging power of your LNS to nodes and guarantee up to 5% per year with no risk.
-            </P>
+            </Paragraph>
           </TextRectangle>
           <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={() => this.props.history.push('/app/leasing')}>
             Entrar
@@ -78,9 +85,9 @@ class Home extends React.Component {
             Privacidade
           </H1>
           <TextRectangle>
-            <P fontSize={"1.4rem"} txCenter clWhite>
+            <Paragraph fontSize={"1.4rem"} txCenter clWhite>
               Access and restore your wallet information at any time through the backup system.
-            </P>
+            </Paragraph>
           </TextRectangle>
           <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={() => this.props.history.push('/app/privacy')}>
             Entrar
