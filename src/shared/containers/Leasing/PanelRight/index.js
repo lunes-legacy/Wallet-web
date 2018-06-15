@@ -175,7 +175,7 @@ class PanelRight extends React.Component {
         // bloco de teste ************
         // ++ adicione aqui
         // bloco de teste ************
-
+    
         this.wallet_info = localStorage.getItem('WALLET-INFO');
 
         this.searchLeasing();
