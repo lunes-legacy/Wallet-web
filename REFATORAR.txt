@@ -1,0 +1,3 @@
+Procure a partir da pasta root do projeto pelas palavras:
+-refatorar
+-cuidado
