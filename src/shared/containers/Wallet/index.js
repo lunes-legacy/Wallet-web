@@ -83,11 +83,11 @@ const mapDispatchToProps = dispatch => {
     setBalance: data => {
       dispatch(setBalance(data));
     },
-    setCryptoPrice: data => {
-      dispatch(setCryptoPrice(data));
+    setCryptoPrice: () => {
+      dispatch(setCryptoPrice());
     },
-    setCurrenciesPrice: data => {
-      dispatch(setCurrenciesPrice(data));
+    setCurrenciesPrice: () => {
+      dispatch(setCurrenciesPrice());
     },
     togglePanelLeft: () => {
       dispatch(togglePanelLeft());

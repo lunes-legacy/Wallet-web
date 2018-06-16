@@ -5,9 +5,13 @@ import { TextBase } from "Components/TextBase";
 import { Col, Row } from "Components/index"
 import ModalReceive from "./Modal/Receive/index";
 import ModalSend    from "./Modal/Send";
-import {connect}    from "react-redux";
 import {numeral}    from 'Utils/numeral';
 import { toggleModal } from './Modal/ui';
+
+// REDUX
+import {connect}    from "react-redux";
+import { setBalance, setCryptoPrice, setCurrenciesPrice } from "Redux/actions";
+
 
 const StyledCoinControl = styled.div`
   width: 100%;
@@ -118,11 +122,18 @@ class CoinControl extends React.Component {
     numeral.locale(this.props.currencies.locale);
   }
 
+  onModalSendClick() {
+    this.props.setBalance({ addresses: this.props.addresses });
+    this.props.setCurrenciesPrice();
+    this.props.setCryptoPrice();
+  }
+
   showModalReceived = () => {
     this.setState({
       isOpenModalReceived: !this.state.isOpenModalReceived
     });
   };
+
   _handleClickOpenModal = (name) => {
     let modal
     if (name === 'send') {
@@ -155,7 +166,7 @@ class CoinControl extends React.Component {
             </WrapAmount>
           </Col>
           <Col s={6} m={3} l={2}>
-            <SendCoin onClick={() => this._handleClickOpenModal('send')}>
+            <SendCoin onClick={ () => { this._handleClickOpenModal('send'); this.onModalSendClick(); }} >
               <SendCoinImage src="/img/app_wallet/ic_enviar.svg" />
               <br />
               Enviar
@@ -177,13 +188,24 @@ class CoinControl extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-    currencies: state.currencies,
+    balance:    state.balance,
     component:  state.component,
-    balance:    state.balance
+    adresses: state.walletInfo.addresses,
+    currencies: state.currencies,
 	}
 }
 const mapDispatchToProps = (dispatch) => {
-	return { }
+	return {
+    setBalance: data => {
+      dispatch(setBalance(data));
+    },
+    setCryptoPrice: data => {
+      dispatch(setCryptoPrice(data));
+    },
+    setCurrenciesPrice: data => {
+      dispatch(setCurrenciesPrice(data));
+    },
+   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoinControl);

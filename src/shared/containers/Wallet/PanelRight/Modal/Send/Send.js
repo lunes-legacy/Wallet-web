@@ -9,8 +9,6 @@ import qrcode from 'qrcode-generator';
 import { decrypt } from '../../../../../utils/crypt';
 import { Loading } from 'Components';
 import { WalletClass } from "Classes/Wallet";
-let { networks } = require('lunes-lib')
-// import Instascan   from 'instascan';
 
 import {
 	InputRadio,
@@ -29,8 +27,6 @@ import {
 	ThirdRowCss,
 	FourthRowCss
 } from './css';
-
-import Background from '../Background';
 
 let CssWrapper = css`
 	transform-origin: top;
@@ -61,6 +57,7 @@ let FeeButton = styled.button`
 let FeeCss = css`
 `;
 
+const wallet = new WalletClass();
 
 class Send extends React.Component {
 	constructor(props) {
@@ -80,6 +77,11 @@ class Send extends React.Component {
 		this.state = {
 			stateButtonSend: 'Enviar',
 			addressIsValid: true,
+			transferValues: {
+				coin: 0.00000000,
+				brl: 0.00,
+				usd: 0.00
+			},
 			fees: {
 				status: 'loading', //loading || complete
 				low: undefined,
@@ -119,8 +121,6 @@ class Send extends React.Component {
 		setTimeout(() => {
 			this.animThisComponentIn();
 		}, 500);
-
-		this.validateAddress();
 
 		//__________________________________-
 		// let scanner = new Instascan.Scanner(document.querySelector('.scan'));
@@ -339,25 +339,25 @@ class Send extends React.Component {
 		this.wrapper.style.transform = 'translateY(-100%)';
 	}
 
-	handleSend = async () => {
-
+	handleSend = async (address) => {
 		let coinAmount = this.coinAmount.value;
-		let address = this.address.value;
-
-		if (!coinAmount || !address) return;
-
-		let data = await this.validateAddress(address);
+		let currentNetwork = this.props.wallet.currentNetwork;
+		let data = await this.validateAddress(address, currentNetwork);
 
 		if (!data) {
 			this.setState({ ...this.state, addressIsValid: false });
 
 			return false;
+		} else {
+			this.setState({ ...this.state, addressIsValid: true });
 		}
- 
-		let dataTransaction = await this.transactionSend(address, coinAmount);
+		
+		if (!coinAmount || !address) return;
 
-		let dataSend = await this.transactionSend(address, coinAmount);
-		this.setState({ ...this.state, addressIsValid: true });
+
+ 
+
+		let dataSend = this.transactionSend(address, coinAmount);
 
 		const props = {
 			...this.props,
@@ -388,18 +388,15 @@ class Send extends React.Component {
 		this._arrangeFeeButtons(button);
 	}
 
-	validateAddress = async (address) => {
-		return true; //SHOULD BE REMOVED <<<<<<<<
-		const wallet = new WalletClass();
-		let network = networks.LNSTESTNET;
-		let data = wallet.validateAddress(address, network)
+	validateAddress (address) {
+		let data = wallet.validateAddress(address)
 
 		return data;
 	}
 
 	_renderFeeButtons = () => {
 		if (this.state.fees.status === 'loading') {
-			return <Loading />;
+			// return <Loading />;
 		}
 		return (
 			<Col s={12} m={6} l={6}>
@@ -411,7 +408,7 @@ class Send extends React.Component {
 	}
 	_renderFeeTotal = () => {
 		if (this.state.fees.status === 'loading') {
-			return <Loading />;
+			// return <Loading />;
 		}
 		return (
 			<Col s={12} m={6} l={6}>
@@ -439,6 +436,32 @@ class Send extends React.Component {
 		return data;
 	}
 
+	convertCoins(value, type) {
+		console.log('data', value, type)
+		switch (type) {
+			case 'coin':
+				this.setState({ ...state, transferValues: { coin: 0.0000000, brl: 0.00, usd: 0.00 } })
+				
+				break;
+
+			case 'brl':
+				this.setState({ ...state, transferValues: { coin: 0.0000000, brl: 0.00, usd: 0.00 } })
+				
+				break;
+
+			case 'usd':
+				this.setState({ ...state, transferValues: { coin: 0.0000000, brl: 0.00, usd: 0.00 } })
+
+				break;
+		
+			default:
+				break;
+		}
+		// this.setState({ ...state, transferValues: { coin: input.target.value, brl: 0.00, usd: 0.00 } })
+
+	}
+	
+
 	render() {
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
@@ -461,6 +484,7 @@ class Send extends React.Component {
 						</Col>
 						<Col s={12} m={6} l={6}>
 							<Row defaultAlign={'right'}>
+								{ /* Crypto Input */}
 								<InputText
 									huge
 									phRight
@@ -468,6 +492,8 @@ class Send extends React.Component {
 									whiteTheme
 									txRight
 									noBorder
+									value = { this.state.transferValues.coin }
+									onChange = { (input) => { this.convertCoins(input.target.value, 'coin') } }
 									ref={this.ref.coinAmount}
 									onKeyUp={this.handleOnAmountChange}
 									data-amount-type={'coin'}
@@ -562,7 +588,8 @@ class Send extends React.Component {
 									noBorder
 									type={'text'}
 									ref={this.ref.brlAmount}
-									onKeyUp={this.handleOnAmountChange}
+									onChange = { (input) => { this.convertCoins(input.target.value, 'brl') } }
+									// onKeyUp={this.handleOnAmountChange}
 									className={'input-amount brl'}
 									data-amount-type={'brl'}
 									placeholder={'BRL 0.00'} />
@@ -577,7 +604,8 @@ class Send extends React.Component {
 									phMediumFont
 									type={'text'}
 									ref={this.ref.usdAmount}
-									onChange={this.handleOnAmountChange}
+									// onChange={this.handleOnAmountChange}
+									onChange = { (input) => { this.convertCoins(input.target.value, 'usd') } }
 									className={'input-amount usd'}
 									data-amount-type={'usd'}
 									placeholder={'USD 0.00'} />
@@ -590,7 +618,7 @@ class Send extends React.Component {
 					<Row css={ThirdRowCss}>
 						<Col s={12} m={12} l={12}>
 							<InputText
-								style={this.state.addressIsValid ? { color: "white" } : { color: "red" }}
+								style={ this.state.addressIsValid ? { color: "white" } : { color: "red" } }
 								whiteTheme
 								normal
 								noBorder
@@ -609,8 +637,6 @@ class Send extends React.Component {
 					</Row>
 				</Col>
 
-
-				{/*BUTTONS COL*/}
 				<Col defaultAlign={'center'} s={6} m={3} l={2}>
 					<Row>
 						<Button
@@ -618,8 +644,8 @@ class Send extends React.Component {
 							blockCenter
 							clWhite
 							bgNormalYellow
-							onClick={this.handleSend}
-							innerRef={this.ref.sendButton}>
+							onClick={ (input) => { this.handleSend(input.target.value) }}
+							innerRef={ this.ref.sendButton }>
 							Enviar
 						</Button>
 					</Row>
