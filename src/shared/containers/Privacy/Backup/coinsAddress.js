@@ -25,7 +25,7 @@ const Input = styled.input`
 `;
 
 const coins = [
-	{ 'coinKey': 'LNS', 'coinName':  'LUNES', 'address': '' },
+	{ 'coinKey': 'LNS', 'coinName':  'LNS', 'address': '' },
 	{ 'coinKey': 'BTC', 'coinName':  'BTC', 'address': 'Soon...' }
 ]
 
