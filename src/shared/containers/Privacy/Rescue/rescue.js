@@ -8,7 +8,7 @@ import { encrypt } from "../../../utils/crypt";
 
 // REDUX
 import { connect } from "react-redux";
-import { setWalletInfo } from "Redux/actions";
+import { setWalletInfo, setBalance } from "Redux/actions";
 
 // COMPONENTS
 import { Col, H1, H2 } from "Components";
@@ -36,7 +36,7 @@ const Row = styled.div`
 const Wallet = new WalletClass();
 
 class Rescue extends React.Component {
-	constructor(){
+	constructor() {
 		super();
 		this.state = {
 			notification: null,
@@ -62,7 +62,7 @@ class Rescue extends React.Component {
 			console.log(error);
 		}
 	}
-		
+
 
 	setSeed() {
 		try {
@@ -73,8 +73,9 @@ class Rescue extends React.Component {
 				}
 			}
 			if (this.state.walletInfo.seed) {
+				this.props.setBalance(walletInfo);
 				this.props.setWalletInfo(walletInfo.addresses);
-				localStorage.setItem('WALLET-INFO', encrypt(JSON.stringify(walletInfo)));	
+				localStorage.setItem('WALLET-INFO', encrypt(JSON.stringify(walletInfo)));
 				this.setState({ ...this.state, notification: 'Success' })
 			} else {
 				this.setState({ ...this.state, notification: 'Campo vazio' })
@@ -89,7 +90,7 @@ class Rescue extends React.Component {
 	renderImport() {
 		if (this.state.walletInfo.addresses.LNS && this.state.walletInfo.addresses.LNS.charAt(0) === '3') {
 			return (
-				<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={ () => { this.setSeed() } }>IMPORTAR</ButtonGreen>
+				<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={() => { this.setSeed() }}>IMPORTAR</ButtonGreen>
 			);
 		} else {
 			return (
@@ -105,7 +106,7 @@ class Rescue extends React.Component {
 			);
 		} else if (this.state.notification && this.state.notification !== 'Success') {
 			return (
-				<H1 fontSize={"2.2rem"} margin={"2rem 0 0 0"} offSide clNormalRed> { this.state.notification } </H1>
+				<H1 fontSize={"2.2rem"} margin={"2rem 0 0 0"} offSide clNormalRed> {this.state.notification} </H1>
 			);
 		}
 	}
@@ -116,15 +117,15 @@ class Rescue extends React.Component {
 				<H1 fontSize={"1.6rem"} txBold clWhite>
 					Digite suas palavras
 				</H1>
-				<Input onChange={ (seed) => { this.getAddress(seed.target.value) } } placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish"/>
+				<Input onChange={(seed) => { this.getAddress(seed.target.value) }} placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish" />
 				<Row>
 					<H2 fontSize={"1.6rem"} margin={"0 0 2.0rem 0"} padding={"1.0rem 0 0 0"} clWhite>
-						{ this.state.walletInfo.addresses.LNS }
+						{this.state.walletInfo.addresses.LNS}
 					</H2>
-					{ this.renderImport() }
+					{this.renderImport()}
 				</Row>
 				<Row>
-					{ this.renderMsg() }
+					{this.renderMsg()}
 				</Row>
 			</Content>
 		);
@@ -132,21 +133,20 @@ class Rescue extends React.Component {
 }
 
 // REDUX
-const mapStateToProps = state => {
-  return {
-    walletInfo: state.walletInfo
-  };
-};
+const mapStateToProps = state => ({
+	walletInfo: state.walletInfo,
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setWalletInfo: data => {
-      dispatch(setWalletInfo(data));
-    }
-  };
-};
+const mapDispatchToProps = dispatch => ({
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Rescue);
+	setWalletInfo: data => {
+		dispatch(setWalletInfo(data));
+	},
+
+	setBalance: data => {
+		dispatch(setBalance(data));
+	}
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Rescue);
