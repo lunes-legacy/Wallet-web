@@ -38,7 +38,7 @@ class Default extends React.Component {
 		return (
 			<StyledDefault>
 				<Icon src={"/img/app_wallet/ic_default.svg"} />
-        <CustomH3>Selecione uma carteira <br />em seu portfólio.</CustomH3>
+        <CustomH3>Select a wallet <br /> in your portfolio.</CustomH3>
 			</StyledDefault>
 		);
 	}
