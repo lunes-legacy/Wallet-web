@@ -55,10 +55,10 @@ class Rescue extends React.Component {
 				let address = Wallet.getNewAddress(seed);
 				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: address } }, notification: null })
 			} else {
-				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Mínimo 12 palavras' } }, notification: null })
+				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Minimum 12 words' } }, notification: null })
 			}
 		} catch (error) {
-			this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Palavras inválidas' } }, notification: null })
+			this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Invalid words' } }, notification: null })
 			console.log(error);
 		}
 	}
@@ -90,11 +90,11 @@ class Rescue extends React.Component {
 	renderImport() {
 		if (this.state.walletInfo.addresses.LNS && this.state.walletInfo.addresses.LNS.charAt(0) === '3') {
 			return (
-				<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={() => { this.setSeed() }}>IMPORTAR</ButtonGreen>
+				<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={() => { this.setSeed() }}>IMPORT</ButtonGreen>
 			);
 		} else {
 			return (
-				<ButtonDisabled width="130px" fontSize={'0.8rem'}>IMPORTAR</ButtonDisabled>
+				<ButtonDisabled width="130px" fontSize={'0.8rem'}>IMPORT</ButtonDisabled>
 			)
 		}
 	}
@@ -102,7 +102,7 @@ class Rescue extends React.Component {
 	renderMsg() {
 		if (this.state.notification && this.state.notification === 'Success') {
 			return (
-				<H1 fontSize={"2.2rem"} margin={"2rem 0 0 0"} offSide clNormalGreen> Importado com sucesso! </H1>
+				<H1 fontSize={"2.2rem"} margin={"2rem 0 0 0"} offSide clNormalGreen> Success importing seedwords! </H1>
 			);
 		} else if (this.state.notification && this.state.notification !== 'Success') {
 			return (
@@ -115,7 +115,7 @@ class Rescue extends React.Component {
 		return (
 			<Content>
 				<H1 fontSize={"1.6rem"} txBold clWhite>
-					Digite suas palavras
+					Enter your seedwords
 				</H1>
 				<Input onChange={(seed) => { this.getAddress(seed.target.value) }} placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish" />
 				<Row>
