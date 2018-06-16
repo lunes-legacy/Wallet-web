@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { connect } from "react-redux";
 import UserClass from "Classes/User";
 
 //REDUX
+import { connect } from "react-redux";
 import { togglePanelLeft, setBalance, setCryptoPrice, setCurrenciesPrice } from "Redux/actions";
 
 //COMPONENTS
