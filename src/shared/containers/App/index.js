@@ -137,7 +137,7 @@ class App extends React.Component {
                 Balance:{" "}
               </Text>
               <Text clNormalGreen txNormal txInline offSide size={"2.3rem"}>
-                LNS{" "}
+                LUNES{" "}
               </Text>
               <Text clWhite txNormal txInline offSide size={"2.0rem"}>
                 {lnsBalance}

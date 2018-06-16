@@ -166,11 +166,11 @@ class PanelLeft extends React.Component {
   render() {
     return (
       <StyledPanelLeft>
-        <LeftHeader txLight>LEASING LUNES</LeftHeader>
+        <LeftHeader txLight>LUNES LEASING</LeftHeader>
         <CardLeasing>
           <RowCardText>Available balance</RowCardText>
           <TextBalance clNormalGreen txBold>{this.state.availableBalance}</TextBalance>
-          <LabelBalance fontSize='1rem' txBold>LNS</LabelBalance>
+          <LabelBalance fontSize='1rem' txBold>LUNES</LabelBalance>
 
           <RowCardBalance>
             <RowCardText>Leasing balance</RowCardText>

@@ -227,7 +227,7 @@ class Coins extends React.Component {
   render() {
     return (
       <StyledCoins>
-        <CoinsHeader txLight>MINHAS CARTEIRAS</CoinsHeader>
+        <CoinsHeader txLight>MY CURRENCIES</CoinsHeader>
         { this._renderCoins() }
       </StyledCoins>
     );

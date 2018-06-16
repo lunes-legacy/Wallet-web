@@ -250,7 +250,7 @@ class PanelRight extends React.Component {
                             <HashText clWhite txBold status={status}> {obj.txid} </HashText>
                         </Col>
                         <Col s={12} m={4} l={4}>
-                            <GreenText clNormalGreen txBold txCenter status={status}> {Money.convertToBtc_simple(obj.nativeAmount)} LNS</GreenText>
+                            <GreenText clNormalGreen txBold txCenter status={status}> {Money.convertToBtc_simple(obj.nativeAmount)} LUNES</GreenText>
                         </Col>
                         <Col s={12} m={2} l={2}>
                             {this._buttonCancel(status, obj.txid, obj.otherParams.type)} 
@@ -271,7 +271,7 @@ class PanelRight extends React.Component {
                         Leasing Transactions
                     </Col>
                     <Col s={12} m={4} l={4} css={`text-align:center;`}>
-                        Emprestado
+                        Amount lent
                     </Col>
                     <Col s={12} m={2} l={2} css={`text-align:center;`}>
                         Status
