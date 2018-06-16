@@ -165,7 +165,7 @@ class Login extends React.Component {
             </CustomLinkRight>
 
             <ButtonSecondary secondary onClick={this.handleLogin}>
-              {logged ? "Logado" : "Login"}
+              {logged ? "Logged in" : "Login"}
             </ButtonSecondary>
           </Form>
 
