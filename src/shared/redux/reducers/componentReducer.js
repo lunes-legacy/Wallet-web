@@ -1,17 +1,7 @@
 let initialState = {
 	wallet: {
 		currentNetwork: 'lns',
-		currentTxHistory: [
-			// {
-			// 	type: 'RECEIVED',
-			// 	otherParams: {},
-			// 	txid: '.......',
-			// 	date: 1517446725,
-			// 	blockHeight: 1261725,
-			// 	nativeAmount: 200000000,
-			// 	networkFee: 100000
-			// }
-		],
+		currentTxHistory: [],
 		isPanelRightVisible: false
 	}
 }

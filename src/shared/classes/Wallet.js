@@ -70,14 +70,20 @@ export class WalletClass {
     }
   }
 
-  getAddressesBalance(address) {
+  // addresses = { LNS: lunes addrees, BTC: bitcoin address... }
+  getAddressesBalance = async addresses => {
     try {
-      return coins.services.balance({ network: "LNS", address: address, testnet: TESTNET });
+      let balances = {};
+      for (const coin in addresses) {
+        balances[coin] = await coins.services.balance({ network: coin, address: addresses[coin], testnet: TESTNET });
+      }
+      console.log('balances', balances)
+      return balances;
     } catch (error) {
       console.error(error);
       return error;
     }
-  }
+  };
 
   getBalance = async user => {
     try {
@@ -138,8 +144,6 @@ export class WalletClass {
     console.warn(network, address, "NETWORK | ADDRESS");
     if (!network)
       throw errorPattern("getHistory error, you should pass through a network name", 500, "WALLET_GETHISTORY_ERROR");
-    // if (!address)
-    //   throw errorPattern("getHistory error, you should pass through an address", 500, "WALLET_GETHISTORY_ERROR");
 
     try {
       return coins.services.history({ network, address, testnet: TESTNET });
