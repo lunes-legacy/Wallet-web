@@ -8,6 +8,7 @@
     "dev-doc": "webpack --watch --hot --progress --config ./doc/webpack.config.js",
     "dev": "webpack --watch --hot --progress",
     "start": "nodemon ./src/server/bundle/index.bundle.js -w ./src/server/ -e bundle.js",
+    "start-prod": "nodemon ./functions/index.js -w ./functions/ -e index.js",
     "clear": "rm -f ./src/server/bundle/*.hot-update.* && rm -f ./public/*.hot-update.* && rm -f ./tests/components/bundle/*.hot-update.*",
     "test": "webpack --config ./webpack.test.js --progress --watch --hot",
     "test-component": "webpack --config ./webpack-component.test.js --watch --hot --progress",
