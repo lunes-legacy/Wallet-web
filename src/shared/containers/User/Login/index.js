@@ -145,10 +145,10 @@ class Login extends React.Component {
 
           <WrapPhrases>
             <H1 clNormalGreen txCenter margin-top={"10%"}>
-              Rápida, segura e inteligente!
+              Fast, safe and smart!
             </H1>
             <Paragraph clWhite txCenter margin={"20px 0 70px 0"} fontSize={"1.4rem"}>
-              Entre com seus dados
+              Enter your information:
             </Paragraph>
           </WrapPhrases>
 
@@ -161,20 +161,20 @@ class Login extends React.Component {
             </FormGroup>
 
             <CustomLinkRight to={"/reset"} margin={"0 auto 20px auto"}>
-              Esqueceu a senha?
+              Forgot your password?
             </CustomLinkRight>
 
             <ButtonSecondary secondary onClick={this.handleLogin}>
-              {logged ? "Logado" : "Fazer login"}
+              {logged ? "Logado" : "Login"}
             </ButtonSecondary>
           </Form>
 
           <P txCenter clWhite margin={"20px 0 0 0"} fontSize={"1.4rem"} className={"js-status"} />
 
           <CustomP clWhite fontSize={"1.4rem"}>
-            Não tem uma conta?{" "}
+            Don't have an account?{" "}
             <CustomLinkFooter to={"/registry"} color={`${style.normalGreen}`} >
-              Inscrever-se.
+              Sign up.
             </CustomLinkFooter>
           </CustomP>
 

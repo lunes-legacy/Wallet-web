@@ -33,6 +33,7 @@ const PaddingH1 = styled.div`
 
 const CustomLinkRight = CustomLink.extend`
   text-align: right;
+  float:right;
 `;
 
 const CircleLink = CustomLink.extend`
@@ -58,6 +59,10 @@ const CustomP = P.extend`
     bottom: 0;
     width: 40%;
   }
+`;
+
+const SubtitleP = P.extend`
+  margin-top: 15px;
 `;
 
 const CustomForm = styled.form`
@@ -118,28 +123,34 @@ class Reset extends React.Component {
           <MarginH1>
             <H1 clNormalGreen txCenter margin={"100px auto 0 auto"} fontSize={"2.5rem"}>
               <strong>
-                Esqueceu sua senha?
+                Forgot your password?
               </strong>
             </H1>
           </MarginH1>
-          <P clWhite txCenter margin={"20px"} fontSize={"1.4rem"}>
-            Nós enviaremos suas instruções sobre como redefini-la.
-          </P>
+          <SubtitleP clWhite txCenter margin={"15px 15px 15px 15px"} fontSize={"1.4rem"}>
+            We will send to you instructions to reset your password.
+          </SubtitleP>
 
           <CustomForm onSubmit={this.handleSubmit}>
             <FormBuilder inputs={inputs} />
-            <CustomLinkRight to={"/login"} margin={"0 auto 25px auto"}>
-              Fazer login?
+            
+            <CustomLinkRight to={"/login"} margin={"0 auto 25px 5px"}>
+              Login.  
             </CustomLinkRight>
-            <ButtonGreen type={"submit"}>Redefinir senha</ButtonGreen>
+
+            <P clWhite txRight fontSize={"1.5rem"}> 
+               Already have an account?  
+            </P>
+
+            <ButtonGreen type={"submit"}>Redefine password</ButtonGreen>
           </CustomForm>
 
           <P txCenter clWhite margin={"20px 0 0 0"} fontSize={"1.4rem"} className={"js-status"} />
 
           <CustomP clWhite fontSize={"1.4rem"}>
-            Não tem uma conta?{" "}
+            Don't have an account?{" "}
             <CustomLink to={"/registry"} color={`${style.normalGreen}`}>
-              Inscrever-se.
+              Sign up.
             </CustomLink>
           </CustomP>
         </PanelLeft>
@@ -150,7 +161,7 @@ class Reset extends React.Component {
           <PaddingH1>
             <H1 txCenter clWhite clWhite margin={"2rem 0 0 0"} fontSize={"2rem"} >
               <strong>
-                Uma mensagem com link de definição de senha foi enviado para o seu endereço de e-mail.
+                We have sent a password reset link to your email address.
               </strong>
             </H1>
           </PaddingH1>
