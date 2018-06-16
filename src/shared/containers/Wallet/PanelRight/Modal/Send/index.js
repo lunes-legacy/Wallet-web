@@ -1,16 +1,18 @@
 import React from 'react';
+
 //COMPONENTS
 import Send    from './Send';
 import Loading from './Loading'
 import Final   from './Final';
+
 //PRIVATE COMPONENTS
 import Background  from '../Background';
 import Close       from '../Close';
 import Content     from '../Content';
-import Foot        from '../Foot';
 import Head        from '../Head';
 import IconCoin    from '../IconCoin';
 import StyledModal from '../StyledModal';
+
 //UI
 import { toggleModal } from './../ui';
 
@@ -59,7 +61,7 @@ class ModalSend extends React.Component {
 					<Close onClick={this._handleClickClose}>X</Close>
 
 					<Head>
-						<IconCoin src={'/img/bitcoin.svg'}/>
+						<IconCoin src={'/img/coins/lns.svg'}/>
 					</Head>
 
 					<Content>

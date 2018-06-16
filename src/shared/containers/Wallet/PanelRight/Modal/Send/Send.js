@@ -1,14 +1,18 @@
-import { FeeClass } from 'Classes/crypto';
-import { users, coins } from 'lunes-lib';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { FeeClass } from 'Classes/crypto';
+import { users, coins } from 'lunes-lib';
 import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
-import { connect } from 'react-redux';
-import qrcode from 'qrcode-generator';
 import { decrypt } from '../../../../../utils/crypt';
 import { Loading } from 'Components';
 import { WalletClass } from "Classes/Wallet";
+
+// REDUX
+import { connect } from 'react-redux';
+
+// UTILS
+import { numeral }    from 'Utils/numeral';
 
 import {
 	InputRadio,
@@ -67,20 +71,17 @@ class Send extends React.Component {
 		this.ref.wrapperQr = React.createRef();
 		this.ref.radioCoinAmount = React.createRef();
 		this.ref.coinAmount = React.createRef();
-		this.ref.address = React.createRef();
-		this.ref.brlAmount = React.createRef();
-		this.ref.usdAmount = React.createRef();
-		this.ref.coinAmount = React.createRef();
 		this.ref.sendButton = React.createRef();
 		this.ref.wrapper = React.createRef();
+
 		//quantity types: real, dollar, coin
 		this.state = {
 			stateButtonSend: 'Enviar',
 			addressIsValid: true,
 			transferValues: {
-				coin: 0.00000000,
-				brl: 0.00,
-				usd: 0.00
+				coin: '',
+				brl: '',
+				usd: ''
 			},
 			fees: {
 				status: 'loading', //loading || complete
@@ -107,41 +108,19 @@ class Send extends React.Component {
 	componentDidMount() {
 		this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
-		this.coinAmount = ReactDOM.findDOMNode(this.ref.coinAmount.current);
-		this.address = ReactDOM.findDOMNode(this.ref.address.current);
-		this.brlAmount = ReactDOM.findDOMNode(this.ref.brlAmount.current);
-		this.usdAmount = ReactDOM.findDOMNode(this.ref.usdAmount.current);
-		this.coinAmount = ReactDOM.findDOMNode(this.ref.coinAmount.current);
 		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
 		this.wrapper = ReactDOM.findDOMNode(this.ref.wrapper.current);
 
-		this.makeQrCode();
 		this.arrangeAmountType();
 
 		setTimeout(() => {
 			this.animThisComponentIn();
 		}, 500);
 
-		//__________________________________-
-		// let scanner = new Instascan.Scanner(document.querySelector('.scan'));
-		// scanner.addListener('scan', (content) => {
-		// 	console.log(content);
-		// });
-		// Instascan.Camera.getCameras().then((cameras) => {
-		// 	console.log(cameras, "CAMERAS");
-		// 	if (cameras.length > 0)
-		// 		scanner.start(cameras[0]);
-		// 	else
-		// 		console.log(`%c Cameras arent found`, 'background: red; color: white;');
-		// }).catch((err) => {
-		// 	console.log(`%c ${err}`, 'background: red; color: white;');
-		// });
 		this._setNetworkFees();
-		// this._estimateFee();
 	}
 	_setNetworkFees = async () => {
-		// let currentNetwork = this.props.component_wallet;
-		let currentNetwork = 'LNS';
+		let currentNetwork = this.props.wallet.currentNetwork;
 		let Fee = new FeeClass;
 		let result;
 		let networkFees;
@@ -216,26 +195,6 @@ class Send extends React.Component {
 
 	toggleModal = (event) => {
 	}
-
-	makeQrCode = () => {
-		let qr = qrcode(4, 'L');
-		qr.addData('Marcelo Rafael');
-		qr.make();
-		let img = qr.createSvgTag();
-		this.wrapperQr.innerHTML = img;
-		let imgEl = this.wrapperQr.children[0];
-		imgEl.style.width = '90%';
-		imgEl.style.height = 'auto';
-	}
-
-
-	// toggleStateButtonSend = (text, disabled) => {
-	// 	if (disabled)
-	// 		this.sendButton.style.pointerEvents = 'none';
-	// 	else
-	// 		this.sendButton.style.pointerEvents = '';
-	// 	this.setState({stateButtonSend: text});
-	// }
 
 	arrangeAmountType = () => {
 		let radios = document.getElementsByName('amount-type');
@@ -394,22 +353,21 @@ class Send extends React.Component {
 		return data;
 	}
 
-	_renderFeeButtons = () => {
-		if (this.state.fees.status === 'loading') {
-			// return <Loading />;
-		}
-		return (
-			<Col s={12} m={6} l={6}>
-				<FeeButton onClick={this.handleClickFee} className="fee-button first">{this.state.fees.low} <Text txInline clNormalRed>baixa</Text></FeeButton>
-				<FeeButton onClick={this.handleClickFee} className="fee-button second">{this.state.fees.medium} <Text txInline clNormalGreen>média</Text></FeeButton>
-				<FeeButton onClick={this.handleClickFee} className="fee-button third">{this.state.fees.high} <Text txInline clMostard>alta</Text></FeeButton>
-			</Col>
-		);
-	}
+	// _renderFeeButtons = () => {
+	// 	if (this.state.fees.status === 'loading') {
+	// 		// return <Loading />;
+	// 	}
+	// 	return (
+	// 		<Col s={12} m={6} l={6}>
+	// 			<FeeButton onClick={this.handleClickFee} className="fee-button first">{this.state.fees.low} <Text txInline clNormalRed>baixa</Text></FeeButton>
+	// 			<FeeButton onClick={this.handleClickFee} className="fee-button second">{this.state.fees.medium} <Text txInline clNormalGreen>média</Text></FeeButton>
+	// 			<FeeButton onClick={this.handleClickFee} className="fee-button third">{this.state.fees.high} <Text txInline clMostard>alta</Text></FeeButton>
+	// 		</Col>
+	// 	);
+	// }
+
 	_renderFeeTotal = () => {
-		if (this.state.fees.status === 'loading') {
-			// return <Loading />;
-		}
+
 		return (
 			<Col s={12} m={6} l={6}>
 				<Text txRight clWhite>You are sending <Text clNormalGreen txInline>0.0999 BTC</Text> (R$ 300,00)</Text>
@@ -436,33 +394,69 @@ class Send extends React.Component {
 		return data;
 	}
 
+	clearFields() {
+		this.setState({ 
+			...this.state, 
+			transferValues: { 
+				coin: '', 
+				brl: '' , 
+				usd: ''
+			}
+		})
+	}
+
 	convertCoins(value, type) {
-		console.log('data', value, type)
+		let cryptoCurrencies = this.props.crypto;
+		let currentNetwork = this.props.wallet.currentNetwork;
+
+		let usdValue = cryptoCurrencies[currentNetwork.toUpperCase()].USD;
+		let brlValue = cryptoCurrencies[currentNetwork.toUpperCase()].BRL;
+
 		switch (type) {
 			case 'coin':
-				this.setState({ ...state, transferValues: { coin: 0.0000000, brl: 0.00, usd: 0.00 } })
+				this.setState({ 
+					...this.state, 
+					transferValues: { 
+						coin: value,
+						brl: brlValue * value ,
+						usd: usdValue * value
+					}
+				});
 				
 				break;
 
 			case 'brl':
-				this.setState({ ...state, transferValues: { coin: 0.0000000, brl: 0.00, usd: 0.00 } })
+				this.setState({ 
+					...this.state, 
+					transferValues: { 
+						coin: value / brlValue,
+						brl: value,
+						usd: (usdValue * value) / brlValue
+					} 
+				});
 				
 				break;
 
 			case 'usd':
-				this.setState({ ...state, transferValues: { coin: 0.0000000, brl: 0.00, usd: 0.00 } })
+				this.setState({ 
+					...this.state, 
+					transferValues: { 
+						coin: value / usdValue, 
+						brl: (brlValue * value) / usdValue,
+						usd: value
+					} 
+				});
 
 				break;
 		
 			default:
 				break;
 		}
-		// this.setState({ ...state, transferValues: { coin: input.target.value, brl: 0.00, usd: 0.00 } })
-
 	}
 	
 
 	render() {
+		let currentNetwork = this.props.wallet.currentNetwork;
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
 				<Col s={9} m={9} l={9}>
@@ -478,7 +472,7 @@ class Send extends React.Component {
 										unique={'true'}
 									/>
 									<RadioCheckmark />
-									<LabelRadio clWhite>LNS unit</LabelRadio>
+									<LabelRadio clWhite> { currentNetwork } unit</LabelRadio>
 								</WrapRadio>
 							</div>
 						</Col>
@@ -492,10 +486,10 @@ class Send extends React.Component {
 									whiteTheme
 									txRight
 									noBorder
+									pattern="[0-9]*"
 									value = { this.state.transferValues.coin }
 									onChange = { (input) => { this.convertCoins(input.target.value, 'coin') } }
-									ref={this.ref.coinAmount}
-									onKeyUp={this.handleOnAmountChange}
+									onClick = { this.clearFields() }
 									data-amount-type={'coin'}
 									className={'input-amount coin'}
 									placeholder={'0.00000000'} />
@@ -588,8 +582,9 @@ class Send extends React.Component {
 									noBorder
 									type={'text'}
 									ref={this.ref.brlAmount}
-									onChange = { (input) => { this.convertCoins(input.target.value, 'brl') } }
-									// onKeyUp={this.handleOnAmountChange}
+									onChange={ (input) => { this.convertCoins(input.target.value, 'brl') } }
+									onClick = { this.clearFields() }
+									value={ this.state.transferValues.brl }
 									className={'input-amount brl'}
 									data-amount-type={'brl'}
 									placeholder={'BRL 0.00'} />
@@ -604,8 +599,9 @@ class Send extends React.Component {
 									phMediumFont
 									type={'text'}
 									ref={this.ref.usdAmount}
-									// onChange={this.handleOnAmountChange}
+									value={ this.state.transferValues.usd }
 									onChange = { (input) => { this.convertCoins(input.target.value, 'usd') } }
+									onClick = { this.clearFields() }
 									className={'input-amount usd'}
 									data-amount-type={'usd'}
 									placeholder={'USD 0.00'} />
@@ -631,35 +627,23 @@ class Send extends React.Component {
 					<Hr />
 					{/*FOURTH ROW*/}
 					<Row css={FourthRowCss}>
-						{this._renderFeeButtons()}
+						{ /* this._renderFeeButtons() */ }
 
 						{this._renderFeeTotal()}
 					</Row>
 				</Col>
-
 				<Col defaultAlign={'center'} s={6} m={3} l={2}>
 					<Row>
 						<Button
+							style={ { 'backgroundColor': style.coinsColor[currentNetwork] } }
 							css={SendButtonCss}
 							blockCenter
 							clWhite
-							bgNormalYellow
 							onClick={ (input) => { this.handleSend(input.target.value) }}
 							innerRef={ this.ref.sendButton }>
 							Enviar
 						</Button>
 					</Row>
-					<Row>
-						<Button
-							innerRef={this.ref.wrapperQr}
-							blockCenter
-							clWhite
-							bgWhite >
-							QR Code
-						</Button>
-					</Row>
-					<div className={'scan'} style={{ width: '100px', height: '100px' }}>
-					</div>
 				</Col>
 			</Row>
 		);
@@ -668,7 +652,10 @@ class Send extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		wallet: state.component.wallet
+		crypto: state.currencies.crypto,
+		wallet: state.component.wallet,
+		balance: state.balance,
+		currencies: state.currencies.currencies,
 	}
 }
 const mapDispatchToProps = (dispatch) => {
