@@ -1,16 +1,74 @@
-import { FeeClass } from 'Classes/crypto';
+import { FeeClass }     from 'Classes/crypto';
 import { users, coins } from 'lunes-lib';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import styled, { css } from 'styled-components';
-import style from 'Shared/style-variables';
-import { connect } from 'react-redux';
-import qrcode from 'qrcode-generator';
-import { decrypt } from '../../../../../utils/crypt';
-import { Loading } from 'Components';
-import { WalletClass } from "Classes/Wallet";
+import React            from 'react';
+import ReactDOM         from 'react-dom';
+import styled, { css }  from 'styled-components';
+import style            from 'Shared/style-variables';
+import { connect }      from 'react-redux';
+import qrcode           from 'qrcode-generator';
+import { decrypt }      from '../../../../../utils/crypt';
+import { Loading }      from 'Components';
+import { WalletClass }  from "Classes/Wallet";
 let { networks } = require('lunes-lib')
 // import Instascan   from 'instascan';
+
+/*
+1) O usuário entrou no modal
+	-É calculado o fee por byte da network e armazenado no react
+2) O usuário digitou o valor a ser enviado
+	-estimateFee será disparado trazendo para o usuário os valores alta media e baixa.
+3) O usuário digitou o endereco
+	-É verificado se é válido o endereco, se não, fica vermelho, o leo fez isso eu acho.
+4) O usuário clica em enviar
+	-Neste momento transactionSend é chamado para ser iniciada a transacao
+	-Na programação	
+		Enquanto aguarda o resultado do transactionSend, colocamos o modal step Loading
+			Se der erro, voltamos. this.previousStep()
+			Se for bem sucedido. this.nextStep() 
+				Mostramos a etapa final.js para o usuario, onde aparecera a imagem e o txid
+				Enviamos um e-mail para o usuário com a transaction ID
+O que precisa ser feito:
+	Caixa de mensagem para mostrar ao usuário o que está acontecendo, se é erro, vermelho, se sucesso, verde. 
+	[REVER] Usar o node-mailer para fazer o envio de e-mail(tx id).
+	Refatorar todo o modal send
+		Adicionar um método para voltar uma etapa
+		Conectar as propriedades com redux
+		Fazer algumas actions em redux
+		Separar melhor os componentes
+		Colocar os dados do estimateFee nos botões(ESTÁTICO)
+		Fazer a soma do valor total com a taxa
+	Passar a chamada de transação para o backend, para evitar manipulação do usuário.
+
+Todos os estados que precisamos e/ou iremos usar
+	this.state = {
+		stateButtonSend: 'Enviar',
+		addressIsValid: true,
+		fees: {
+			status: 'loading', //loading || complete
+			low: undefined,
+			medium: undefined,
+			high: undefined
+		},
+		networkFees: {
+			low: undefined,
+			medium: undefined,
+			high: undefined
+		},
+		estimateParams: {
+			network: undefined,
+			fromAddress: undefined,
+			toAddress: undefined,
+			amount: undefined,
+			accessToken: undefined,
+			networkFees: undefined //it is optional
+		}
+	}
+	this.props = {
+		component_wallet,
+		balance,
+		coinPrice,
+	}
+*/
 
 import {
 	InputRadio,
@@ -80,6 +138,7 @@ class Send extends React.Component {
 		this.state = {
 			stateButtonSend: 'Enviar',
 			addressIsValid: true,
+			choosenFee: undefined,
 			fees: {
 				status: 'loading', //loading || complete
 				low: undefined,
@@ -103,6 +162,7 @@ class Send extends React.Component {
 	}
 
 	componentDidMount() {
+		console.warn("this>PROPS <<<><<><>",this.props);
 		this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
 		this.coinAmount = ReactDOM.findDOMNode(this.ref.coinAmount.current);
@@ -112,8 +172,10 @@ class Send extends React.Component {
 		this.coinAmount = ReactDOM.findDOMNode(this.ref.coinAmount.current);
 		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
 		this.wrapper = ReactDOM.findDOMNode(this.ref.wrapper.current);
-
-		this.makeQrCode();
+		
+		//we need to read a qrcode, and not make the user read it
+		//to read the qrcode, use the method scanQRCode();
+		// this.makeQrCode();
 		this.arrangeAmountType();
 
 		setTimeout(() => {
@@ -122,7 +184,10 @@ class Send extends React.Component {
 
 		this.validateAddress();
 
-		//__________________________________-
+		this._setNetworkFees();
+		// this._setFees();
+	}
+	scanQRCode = () => {
 		// let scanner = new Instascan.Scanner(document.querySelector('.scan'));
 		// scanner.addListener('scan', (content) => {
 		// 	console.log(content);
@@ -135,9 +200,7 @@ class Send extends React.Component {
 		// 		console.log(`%c Cameras arent found`, 'background: red; color: white;');
 		// }).catch((err) => {
 		// 	console.log(`%c ${err}`, 'background: red; color: white;');
-		// });
-		this._setNetworkFees();
-		// this._estimateFee();
+		// });	
 	}
 	_setNetworkFees = async () => {
 		// let currentNetwork = this.props.component_wallet;
@@ -145,6 +208,7 @@ class Send extends React.Component {
 		let Fee = new FeeClass;
 		let result;
 		let networkFees;
+
 		if (!currentNetwork)
 			console.error(errorPattern('Current network is not defined', 500, 'SETNETWORKFEES_ERROR'));
 
@@ -155,78 +219,55 @@ class Send extends React.Component {
 		networkFees = result.data;
 		this.setState({
 			...this.state,
-			estimateParams: {
-				...this.state.estimateParams,
-				networkFees
+			networkFees
+		}, () => {
+			console.warn("SET NETWORKFEES::::", this.state);
+			console.warn('THIS>PROPS:::',this.props);
+			this._setFees();
+		});
+	}
+	_setFees = async (data) => {
+		if (!data) {
+			data = this.state.estimateParams;
+		}
+		//tests to here
+		let Fee               = new FeeClass;
+		let LNStestnetAddress = '37RThBWionPuAbr8H4pzZJM6HYP2U6Y9nLr';
+		let toAddress         = LNStestnetAddress;
+		let fromAddress       = LNStestnetAddress;
+
+		let user  = await users.login({ email: 'marcelo@gmail.com', password: '123123123' })
+		let fees  = await Fee.estimate({
+			network: 'LNS',
+			fromAddress: fromAddress,
+			toAddress: toAddress,
+			amount: '0.01',
+			accessToken: user.accessToken
+		})
+		console.warn("FEES:::",fees);
+		this.setState({
+			choosenFee: fees.low.data.fee / 100000000,
+			fees: {
+				status: 'complete',
+				low:    fees.low.data.fee    / 100000000,
+				medium: fees.medium.data.fee / 100000000,
+				high:   fees.high.data.fee   / 100000000
 			}
 		}, () => {
-			console.log("STATE", this.state);
-		});
-	}
-	_estimateFee = () => {
-		//tests to here
-		let Fee = new FeeClass;
-		let coinToTest = 'LNS'; //just change here <<<<<
-		let ETHtestnetAddress = '0xf4af6cCE5c3e68a5D937FC257dDDb73ac3eF9B3A';
-		let BTCtestnetAddress = '2N7ieQWq3pgZCF7c1pbuAqZWrzDjMta1iAf';
-		let LNStestnetAddress = '37RThBWionPuAbr8H4pzZJM6HYP2U6Y9nLr';
-		let toAddress;
-		let fromAddress;
-
-		if (coinToTest === 'BTC') {
-			toAddress = 'mjUgrqgoYzuHFwTGoiCvtuYj4eD3tiXt9b';
-			fromAddress = BTCtestnetAddress;
-		} else if (coinToTest === 'ETH') {
-			toAddress = ETHtestnetAddress;
-			fromAddress = ETHtestnetAddress;
-		} else if (coinToTest === 'LNS') {
-			toAddress = LNStestnetAddress;
-			fromAddress = LNStestnetAddress;
-		}
-		const login = () => {
-			return users.login({ email: 'marcelo@gmail.com', password: '123123123' });
-		}
-		const calculateFee = (user) => {
-			return Promise.resolve(Fee.estimate({
-				network: coinToTest,
-				fromAddress: fromAddress,
-				toAddress: toAddress,
-				amount: '0.01',
-				accessToken: user.accessToken
-			}));
-		}
-		login().then(user => {
-			console.log('\x1b[32m Fiz o login \x1b[0m');
-			calculateFee(user).then((e) => {
-				this.setState({
-					fees: {
-						status: 'complete',
-						low: e.low.data.fee / 100000000,
-						medium: e.medium.data.fee / 100000000,
-						high: e.high.data.fee / 100000000
-					}
-				});
-			}).catch((e) => {
-				console.log("calculateFee error", e);
-			});
-		}).catch(e => {
-			console.error("loginError", e);
-		});
+			console.warn("SET_ESTIMATE_FEE::::",this.state);
+		});	
 	}
 
-	toggleModal = (event) => {
-	}
-
-	makeQrCode = () => {
-		let qr = qrcode(4, 'L');
-		qr.addData('Marcelo Rafael');
-		qr.make();
-		let img = qr.createSvgTag();
-		this.wrapperQr.innerHTML = img;
-		let imgEl = this.wrapperQr.children[0];
-		imgEl.style.width = '90%';
-		imgEl.style.height = 'auto';
-	}
+	// makeQrCode = () => {
+	// 	let qr = qrcode(4, 'L');
+	// 	qr.addData('Marcelo Rafael');
+	// 	qr.make();
+	// 	let img = qr.createSvgTag();
+	// 	this.wrapperQr.innerHTML = img;
+	// 	let imgEl = this.wrapperQr.children[0];
+	// 	imgEl.style.width = '90%';
+	// 	imgEl.style.height = 'auto';
+	// }
 
 
 	// toggleStateButtonSend = (text, disabled) => {
@@ -340,7 +381,6 @@ class Send extends React.Component {
 	}
 
 	handleSend = async () => {
-
 		let coinAmount = this.coinAmount.value;
 		let address = this.address.value;
 
@@ -354,9 +394,9 @@ class Send extends React.Component {
 			return false;
 		}
  
-		let dataTransaction = await this.transactionSend(address, coinAmount);
+		// let dataTransaction = await this.transactionSend(address, coinAmount);
 
-		let dataSend = await this.transactionSend(address, coinAmount);
+		// let dataSend = await this.transactionSend(address, coinAmount);
 		this.setState({ ...this.state, addressIsValid: true });
 
 		const props = {
@@ -385,6 +425,8 @@ class Send extends React.Component {
 
 	handleClickFee = (event) => {
 		let button = event.currentTarget;
+		//tirar
+		this.props.setterWalletSend({choosenFee: parseFloat(button.value)});
 		this._arrangeFeeButtons(button);
 	}
 
@@ -403,9 +445,9 @@ class Send extends React.Component {
 		}
 		return (
 			<Col s={12} m={6} l={6}>
-				<FeeButton onClick={this.handleClickFee} className="fee-button first">{this.state.fees.low} <Text txInline clNormalRed>baixa</Text></FeeButton>
-				<FeeButton onClick={this.handleClickFee} className="fee-button second">{this.state.fees.medium} <Text txInline clNormalGreen>média</Text></FeeButton>
-				<FeeButton onClick={this.handleClickFee} className="fee-button third">{this.state.fees.high} <Text txInline clMostard>alta</Text></FeeButton>
+				<FeeButton onClick={this.handleClickFee} className="fee-button first" value={this.state.fees.low}>{this.state.fees.low} <Text txInline clNormalRed>baixa</Text></FeeButton>
+				<FeeButton onClick={this.handleClickFee} className="fee-button second" value={this.state.fees.medium}>{this.state.fees.medium} <Text txInline clNormalGreen>média</Text></FeeButton>
+				<FeeButton onClick={this.handleClickFee} className="fee-button third" value={this.state.fees.high}>{this.state.fees.high} <Text txInline clMostard>alta</Text></FeeButton>
 			</Col>
 		);
 	}
@@ -421,21 +463,21 @@ class Send extends React.Component {
 	}
 
 	transactionSend = async (address, coinAmount) => {
-		const wallet = new WalletClass();
-		let seedData = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
-		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
+		const wallet        = new WalletClass();
+		let seedData        = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
+		let tokenData       = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
 		let valueCoinAmount = coinAmount * 100000000;
 		
 		let transactionData = {
-			mnemonic: seedData.seed,
-			network: this.props.wallet.currentNetwork,
-			testnet: true,
+			mnemonic:  seedData.seed,
+			network:   this.props.wallet.currentNetwork,
+			testnet:   true,
 			toAddress: address,
-			amount: valueCoinAmount.toString(),
-			fee: "100000"
+			amount:    valueCoinAmount.toString(),
+			fee:       "100000"
 		};
 
-		 let data = await wallet.transactionSend(transactionData, tokenData.accessToken);
+		let data = await wallet.transactionSend(transactionData, tokenData.accessToken);
 		return data;
 	}
 

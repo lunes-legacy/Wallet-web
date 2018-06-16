@@ -12,7 +12,11 @@ let initialState = {
 			// 	networkFee: 100000
 			// }
 		],
-		isPanelRightVisible: false
+		isPanelRightVisible: false,
+		send: {
+			status: 'initial', //initial, loading, error, success
+			choosenFee: undefined,
+		}
 	}
 }
 const componentReducer = (state = initialState, action) => {
@@ -43,9 +47,22 @@ const componentReducer = (state = initialState, action) => {
 				}
 			}
 			return state;
+		case 'WALLET_SET_SEND_PROPS':
+			state = {
+				...state,
+				wallet: {
+					...state.wallet,
+					send: {
+						...state.wallet.send,
+						...action.payload
+					}
+				}
+			}
+			return state;
 		default:
 			return state;
 	}
+	return state;
 }
 
 export default componentReducer;

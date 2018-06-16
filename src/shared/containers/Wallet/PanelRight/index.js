@@ -8,10 +8,10 @@ import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
 
 //PRIVATE COMPONENTS
-import Histories from './Histories';
+import Histories   from './Histories';
 import CoinControl from './CoinControl';
-import CoinStatus from './CoinStatus';
-import Default from './Default';
+import CoinStatus  from './CoinStatus';
+import Default     from './Default';
 // import ModalSend from "./Modal/Send/index";
 
 const TextBold = Text.extend`

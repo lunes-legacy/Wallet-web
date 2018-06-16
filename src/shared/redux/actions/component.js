@@ -16,3 +16,9 @@ export const setTxHistory = (data) => {
 		payload: Wallet.getTxHistory({network: data.network, address: data.address})
 	}
 }
+export const setterWalletSend = (data) => {
+	return {
+		type: 'WALLET_SET_SEND_PROPS',
+		payload: data
+	}
+}

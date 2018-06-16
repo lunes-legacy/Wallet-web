@@ -13,6 +13,9 @@ import IconCoin    from '../IconCoin';
 import StyledModal from '../StyledModal';
 //UI
 import { toggleModal } from './../ui';
+//REDUX
+import { connect }           from 'react-redux';
+import { setterWalletSend } from 'Redux/actions';
 
 class ModalSend extends React.Component {
 	constructor(props) {
@@ -32,15 +35,16 @@ class ModalSend extends React.Component {
 			steps
 		});
 	}
-	prevStep = () => {
-
+	prevStep = (props) => {
+		this.setState({
+			currStep: this.state.currStep - 1,
+			generalProps: props
+		});
 	}
 	nextStep = (props) => {
 		this.setState({
 			currStep: this.state.currStep + 1,
 			generalProps: props
-		}, () => {
-			console.log(this.state, "nextStep STATE");
 		});
 	}
 	_handleClickClose = (event) => {
@@ -63,7 +67,7 @@ class ModalSend extends React.Component {
 					</Head>
 
 					<Content>
-						<Component nextStep={(props) => this.nextStep(props)} {...this.state.generalProps} />
+						<Component prevStep={(props) => this.prevStep(props)} nextStep={(props) => this.nextStep(props)} {...this.props} {...this.state.generalProps}/>
 					</Content>
 				</StyledModal>
 			</Background>
@@ -71,4 +75,19 @@ class ModalSend extends React.Component {
 	}	
 }
 
-export default ModalSend;
+const mapStateToProps = (state) => {
+	return {
+		balance: state.balance,
+		component_wallet: state.component.wallet,
+		cryptocurrencies: state.config
+	}
+}
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setterWalletSend: (data) => {
+			dispatch(setterWalletSend(data));
+		}
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ModalSend);
+// export default ModalSend;
