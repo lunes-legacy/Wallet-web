@@ -63,7 +63,7 @@ let inputs = [
   { className: "registry-email", placeholder: "E-mail", type: "email" },
   { className: "registry-pass", placeholder: "Password", type: "password" },
   { className: "registry-cpass", placeholder: "Repeat password", type: "password" },
-  { className: "registry-terms", value: <span> I accept the <Anchor href ="/" target ="blank_">Terms of service</Anchor> </span>  , type: "checkbox" }
+  { className: "registry-terms", value: <span> I accept the <Anchor href ="/assets/Lunes-Wallet-Privacy-Policy.pdf" target ="blank_">Terms of service</Anchor> </span>  , type: "checkbox" }
 ];
 
 class Registry extends React.Component {
