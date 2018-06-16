@@ -179,7 +179,7 @@ class PanelLeft extends React.Component {
     return (
       <StyledPanelLeft>
         <ItemMenuApp
-          label="Home"
+          label="Start"
           to="/app/home"
           icon="ic_home.svg"
           activeClassName="active" />
@@ -196,14 +196,14 @@ class PanelLeft extends React.Component {
           icon="ic_leasing.svg"
           activeClassName="active" />
 
-        <ItemMenuApp
-          label="Configurações"
+        {/*<ItemMenuApp
+          label="Settings"
           to="/app/configuration"
           icon="ic_config.svg"
-          activeClassName="active" />
+          activeClassName="active" />*/}
 
         <ItemMenuApp
-          label="Privacidade"
+          label="Privacy"
           to="/app/privacy"
           icon="ic_privacy.svg"
           activeClassName="active" />

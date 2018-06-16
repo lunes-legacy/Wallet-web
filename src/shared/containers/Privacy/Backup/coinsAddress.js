@@ -25,8 +25,8 @@ const Input = styled.input`
 `;
 
 const coins = [
-	{ 'coinName':  'LNS', 'address': '' },
-	{ 'coinName':  'BTC', 'address': 'Soon...' }
+	{ 'coinKey': 'LNS', 'coinName':  'LNS', 'address': '' },
+	{ 'coinKey': 'BTC', 'coinName':  'BTC', 'address': 'Soon...' }
 ]
 
 class CoinsAddress extends React.Component { 
@@ -34,12 +34,12 @@ class CoinsAddress extends React.Component {
 		return (
 			coins.map( coin => {
         return (
-					<CoinAddress key={coin.coinName}>
+					<CoinAddress key={coin.coinKey}>
 						<Row defaultAlign="left">
 							<H1 txBold clWhite width={'65px'} padding={'1.2rem 0 0 0'}> 
 								{ coin.coinName }
 							</H1>
-							<Input disabled type="text" placeholder="Carregando..." value={ this.props.walletInfo.addresses[coin.coinName] ? this.props.walletInfo.addresses[coin.coinName] : coin.address } />
+							<Input disabled type="text" placeholder="Carregando..." value={ this.props.walletInfo.addresses[coin.coinKey] ? this.props.walletInfo.addresses[coin.coinKey] : coin.address } />
 						</Row>
 					</CoinAddress>	
         )

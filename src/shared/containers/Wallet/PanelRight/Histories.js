@@ -248,16 +248,16 @@ class Histories extends React.Component {
     const hoursDiff = timestampDiff({ first: timestamp });
 
     if (hoursDiff < 48) {
-      return `${hoursDiff} horas atrás`;
+      return `${hoursDiff} hours ago`;
     } else {
-      return Math.round(hoursDiff / 24) + " dias atrás";
+      return Math.round(hoursDiff / 24) + " days ago";
     }
   };
 
   icoStatusToText = type => {
     if (type === "RECEIVED") return "Received";
 
-    return "Send";
+    return "Sent";
   };
 
   SignalControl = type => {

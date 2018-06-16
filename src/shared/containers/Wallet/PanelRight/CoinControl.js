@@ -169,14 +169,14 @@ class CoinControl extends React.Component {
             <SendCoin onClick={ () => { this._handleClickOpenModal('send'); this.onModalSendClick(); }} >
               <SendCoinImage src="/img/app_wallet/ic_enviar.svg" />
               <br />
-              Enviar
+              Send
             </SendCoin>
           </Col>
           <Col s={6} m={3} l={2}>
             <ReceiveCoin onClick={() => this._handleClickOpenModal('receive')}>
               <SendCoinImage src="/img/app_wallet/ic_receber.svg" />
               <br />
-              Receber
+              Receive
             </ReceiveCoin>
             {/*this.state.isOpenModalReceived && <ModalReceive isShow={this.state.isOpenModalReceived} />*/}
           </Col>

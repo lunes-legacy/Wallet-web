@@ -117,11 +117,11 @@ class Import extends React.Component {
             this.setSeed();
           }}
         >
-          IMPORTAR
+          IMPORT SEEDWORDS
         </ButtonGreen>
       );
     } else {
-      return <ButtonDisabled margin={"1.0rem auto"}>IMPORTAR</ButtonDisabled>;
+      return <ButtonDisabled margin={"1.0rem auto"}>IMPORT SEEDWORDS</ButtonDisabled>;
     }
   }
 
@@ -134,10 +134,10 @@ class Import extends React.Component {
             <FormGroup>
               <Row>
                 <P fontSize={"1.4rem"} margin={"0 0 1.0rem 0"} clWhite>
-                  If you already generated your seed, then insert below
+                  If you already generated your seed, then insert it below
                 </P>
                 <P fontSize={"1.4rem"} margin={"0 0 1.0rem 0"} clWhite>
-                  If it's your first time, then generate the seed
+                  If you do not have a seed to import, then generate the seed
                 </P>
                 <P fontSize={"1.9rem"} margin={"4.0rem 0 1.0rem 0"} txBold clNormalGreen>
                   Insert your seedwords
@@ -159,12 +159,12 @@ class Import extends React.Component {
                 this.randomSeed();
               }}
             >
-              GERAR NOVA SEED
+              GENERATE NEW SEEDWORD
             </ButtonSecondary>
             {this.renderImport()}
           </ButtonsRow>
           <Row>
-            <P fontSize={"1.4rem"} margin={"3.0rem 0 1.0rem 0"} clWhite>
+            <P style={ this.state.walletInfo.seed ? { display: 'block' } : { display : 'none' } } fontSize={"1.4rem"} margin={"3.0rem 0 1.0rem 0"} clWhite>
               Address
             </P>
             <P fontSize={"1.4rem"} clWhite>
