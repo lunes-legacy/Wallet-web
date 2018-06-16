@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { connect } from "react-redux";
 import UserClass from "Classes/User";
 
 //REDUX
+import { connect } from "react-redux";
 import { togglePanelLeft, setBalance, setCryptoPrice, setCurrenciesPrice } from "Redux/actions";
 
 //COMPONENTS
@@ -83,11 +83,11 @@ const mapDispatchToProps = dispatch => {
     setBalance: data => {
       dispatch(setBalance(data));
     },
-    setCryptoPrice: data => {
-      dispatch(setCryptoPrice(data));
+    setCryptoPrice: () => {
+      dispatch(setCryptoPrice());
     },
-    setCurrenciesPrice: data => {
-      dispatch(setCurrenciesPrice(data));
+    setCurrenciesPrice: () => {
+      dispatch(setCurrenciesPrice());
     },
     togglePanelLeft: () => {
       dispatch(togglePanelLeft());

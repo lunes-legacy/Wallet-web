@@ -57,7 +57,7 @@ class Home extends React.Component {
           </H1>
           <TextRectangle>
             <Paragraph fontSize={"1.4rem"} txCenter clWhite>
-              Meet the most well-designed wallets. <br /> Send, receive, and view the transaction history in a unique way.
+              Meet the most well-designed wallets. <br /> Send, receive, and view the transaction history in a unique way. 
             </Paragraph>
           </TextRectangle>
         </MainRectangle>
@@ -69,7 +69,7 @@ class Home extends React.Component {
           </H1>
           <TextRectangle>
             <Paragraph fontSize={"1.4rem"} txCenter clWhite>
-              Lend the forging power of your LNS to nodes and guarantee up to 5% per year with no risk.
+              Lend the forging power of your LUNES to a mining node and be rewarded at up to 5% per year.
             </Paragraph>
           </TextRectangle>
         </MainRectangle>
@@ -77,11 +77,11 @@ class Home extends React.Component {
         <MainRectangle onClick={() => this.props.history.push('/app/privacy')}>
           <Icon src={"/img/app_panel_left/ic_privacy.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
-            Privacidade
+            Privacy
           </H1>
           <TextRectangle>
             <Paragraph fontSize={"1.4rem"} txCenter clWhite>
-              Access and restore your wallet information at any time through the backup system.
+              Access all vital information of your wallet and restore seeds at any time through our backup system.
             </Paragraph>
           </TextRectangle>
         </MainRectangle>

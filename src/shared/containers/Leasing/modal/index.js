@@ -73,7 +73,7 @@ class LeasingModal extends Component {
                             <Rectangle>
                                 <Row>
                                     <div>
-                                        <TextCenter clWhite>Quantidade</TextCenter>
+                                        <TextCenter clWhite>Amount</TextCenter>
                                     </div>
                                 </Row>
                                 <Row>
@@ -102,13 +102,13 @@ class LeasingModal extends Component {
                         </Row>
                         <Row>
                             <DivText>
-                                <TextLeft clWhite>Destinatário</TextLeft>
+                                <TextLeft clWhite>Mining node address</TextLeft>
                                 <Textphrase>
                                     <InputText
                                         clWhite
                                         noBorder
                                         txCenter
-                                        placeholder={'clWhite3P2HNUd5VUPLMQkJ9stf...'} />
+                                        placeholder={'Mining node address'} />
                                 </Textphrase>
                                 <LineText />
                             </DivText>

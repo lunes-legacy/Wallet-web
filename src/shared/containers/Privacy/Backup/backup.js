@@ -67,13 +67,13 @@ class Backup extends React.Component {
       <div>
 				<Phrase>
 					<H1 fontSize={"1.6rem"} txBold clWhite>
-						Frase de Backup
+						Safety phrase
 					</H1>
 					<Input
 						disabled
 						type="text"
 						value={ this.state.seed ? this.state.seed : "" }
-						placeholder={ this.state.seed ? "" : "Carregando..."}
+						placeholder={ this.state.seed ? "" : "Loading..."}
 					/>
 				</Phrase>
 		
@@ -81,7 +81,7 @@ class Backup extends React.Component {
 		
 				<Addresses>
 					<H1 fontSize={"1.6rem"} txBold clWhite>
-						Endereços das Carteiras
+						Wallet addresses
 					</H1>
 					<CoinsAddress  walletInfo={ this.state.walletInfo } />
 				</Addresses>

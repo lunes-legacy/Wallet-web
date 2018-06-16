@@ -9,7 +9,7 @@ import { Loading } from 'Components/Loading';
 import {timestampToDate} from 'Utils/date';
 import { encrypt, decrypt } from '../../../utils/crypt';
 // import { LeasingClass } from 'Classes/Leasing'; // refatorar para usar a classe
-
+import {MoneyClass} from 'Classes/Money';
 // REDUX
 import { connect } from 'react-redux';
 import { 
@@ -158,6 +158,8 @@ const BoxLineLeasing = Row.extend`
     }
 `;
 
+const Money = new MoneyClass;
+
 class PanelRight extends React.Component {
     constructor(props){
         super(props)
@@ -238,8 +240,7 @@ class PanelRight extends React.Component {
             return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
         }else{
             return this.props.listLeasing.map((obj, key) => {
-
-                let nativeAmount = numeral(obj.nativeAmount / 100000000).format('0,0.00000000');
+                
                 let status = this._normalizeStatus(obj.otherParams.status);
 
                 return (
@@ -249,7 +250,7 @@ class PanelRight extends React.Component {
                             <HashText clWhite txBold status={status}> {obj.txid} </HashText>
                         </Col>
                         <Col s={12} m={4} l={4}>
-                            <GreenText clNormalGreen txBold txCenter status={status}> {nativeAmount} LNS</GreenText>
+                            <GreenText clNormalGreen txBold txCenter status={status}> {Money.convertToBtc_simple(obj.nativeAmount)} LUNES</GreenText>
                         </Col>
                         <Col s={12} m={2} l={2}>
                             {this._buttonCancel(status, obj.txid, obj.otherParams.type)} 
@@ -270,7 +271,7 @@ class PanelRight extends React.Component {
                         Leasing Transactions
                     </Col>
                     <Col s={12} m={4} l={4} css={`text-align:center;`}>
-                        Emprestado
+                        Amount lent
                     </Col>
                     <Col s={12} m={2} l={2} css={`text-align:center;`}>
                         Status

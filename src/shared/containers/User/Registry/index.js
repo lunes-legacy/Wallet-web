@@ -58,12 +58,12 @@ let Anchor = styled.a `
 `;
 
 let inputs = [
-  { className: "registry-fname", placeholder: "Nome" },
-  { className: "registry-lname", placeholder: "Sobrenome" },
+  { className: "registry-fname", placeholder: "Name" },
+  { className: "registry-lname", placeholder: "Surname" },
   { className: "registry-email", placeholder: "E-mail", type: "email" },
-  { className: "registry-pass", placeholder: "Senha", type: "password" },
-  { className: "registry-cpass", placeholder: "Confirmar senha", type: "password" },
-  { className: "registry-terms", value: <span> Eu aceito os <Anchor href ="/" target ="blank_">Termos de Serviços</Anchor> </span>  , type: "checkbox" }
+  { className: "registry-pass", placeholder: "Password", type: "password" },
+  { className: "registry-cpass", placeholder: "Repeat password", type: "password" },
+  { className: "registry-terms", value: <span> I accept the <Anchor href ="/" target ="blank_">Terms of service</Anchor> </span>  , type: "checkbox" }
 ];
 
 class Registry extends React.Component {
@@ -132,34 +132,34 @@ class Registry extends React.Component {
     let errors = [];
 
     if (!validator.isLength(firstNameEl.value, {min: 3, max: undefined})) {
-      errors.push('O nome deve ter no mínimo 3 caracteres');
+      errors.push('Name must have at least 3 characters');
       firstNameEl.style.color = colorError;
     }
 
     if (!validator.isLength(lastNameEl.value, {min: 3, max: undefined})) {
-      errors.push('O sobrenome deve ter no mínimo 3 caracteres');
+      errors.push('Surname must have at least 3 characters');
       lastNameEl.style.color = colorError;
     }
 
     if (!validator.isEmail(emailEl.value) || validator.isEmpty(emailEl.value)) {
-      errors.push('Um email válido deve ser informado');
+      errors.push('A valid email must be informed');
       emailEl.style.color = colorError;
     }
 
     const passRules = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!_+=@#-$%^&*])(?=.{8,})/g;
     if (!validator.matches(passEl.value, passRules)) {
-      errors.push('A senha deve ter pelo menos 8 caracteres entre letras maíusuculas e minúsculas, \n\tnúmeros e pelo menos um caracter especial');
+      errors.push('The password must have at least 8 characters, upper and lower case, \n\tnumbers and at least one special character');
       passEl.style.color = colorError;
     }
 
     if (passEl.value !== confirmPassEl.value) {
-      errors.push('A confirmação de senha não confere');
+      errors.push('The password confirmation do not match');
       confirmPassEl.style.color = colorError;
     }
 
     if (!termsEl.checked) {
       const termsLabelEl = document.querySelector('label');
-      errors.push('Você deve aceitar os termos para continuar');
+      errors.push('You must accept the terms to continue');
       termsLabelEl.style.color = colorError;
     }
 
@@ -186,7 +186,7 @@ class Registry extends React.Component {
       let { status } = this.props.user;
 
       if (status === "pending") {
-        statusEl.textContent = "Aguarde...";
+        statusEl.textContent = "Wait...";
       } else if (status === "fulfilled") {
         firstPanelEl.style.display  = "none";
         secondPanelEl.style.display = "block";
@@ -214,15 +214,15 @@ class Registry extends React.Component {
           <CustomLogo />
 
           <CustomForm onSubmit={this.handleSubmit} className={"js-first-panel-left"}>
-            <CustomH3>Insira os dados necessários para efetuar o seu cadastro</CustomH3>
+            <CustomH3>Enter requested information below to register:</CustomH3>
             <FormBuilder inputs={inputs} />
-            <ButtonSecondary type={"submit"}>Registrar</ButtonSecondary>
+            <ButtonSecondary type={"submit"}>Register</ButtonSecondary>
           </CustomForm>
 
           <SuccessMessage className={"js-second-panel-left"}>
             <Img src={"img/user_panel_left/ic_email.svg"} margin={"10.5rem auto 0 auto"} width={"80px"} />
             <CustomH1 txCenter clWhite>
-              Uma mensagem com link de ativação foi enviada para o seu endereço de e-mail.
+              We have sent a password reset link to your email address.
             </CustomH1>
             <CircleLink to={"/login"} margin={"50px auto 10px auto"}>
               <ArrowImg src={"img/user_panel_left/right-arrow.svg"} margin={"auto"} width={"20px"} />
@@ -231,7 +231,7 @@ class Registry extends React.Component {
 
           <H1 className={"js-status"} txCenter clWhite margin={"50px 0 0 0"} />
 
-          <FooterUser content="Já tem uma conta?" to="/login" label="Entrar" />
+          <FooterUser content="Already have an account?" to="/login" label="Log in here." />
 
         </PanelLeft>
 
