@@ -6,6 +6,9 @@ import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
 import { WalletClass } from "Classes/Wallet";
 
+// CONSTANTS
+import { TESTNET } from 'Config/constants';
+
 // REDUX
 import { connect } from 'react-redux';
 
@@ -304,7 +307,7 @@ class Send extends React.Component {
 		let transactionData = {
 			mnemonic: seedData.seed,
 			network: this.props.wallet.currentNetwork,
-			testnet: true,
+			testnet: TESTNET,
 			toAddress: address,
 			amount: valueCoinAmount.toString(),
 			fee: "100000"
@@ -525,7 +528,6 @@ class Send extends React.Component {
 					</Row>
 				</Col>
 				<Col defaultAlign={'center'} s={6} m={3} l={2}>
-					{ console.log('state', this.state.invalidAmount) }
 					<Row>
 						<Button
 							style={ this.state.invalidAmount ? { 'backgroundColor': style.disabledText } : { 'backgroundColor': style.coinsColor[currentNetwork] }}

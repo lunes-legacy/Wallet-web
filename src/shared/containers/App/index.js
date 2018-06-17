@@ -185,12 +185,6 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    // userLogin: (email, password) => {
-    // 	dispatch({
-    // 		type: 'USER_LOGIN',
-    // 		payload: userLogin(email, password)
-    // 	});
-    // },
     setCurrenciesPrice: () => {
       dispatch(setCurrenciesPrice());
     },

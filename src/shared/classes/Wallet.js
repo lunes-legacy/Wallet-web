@@ -77,11 +77,10 @@ export class WalletClass {
       for (const coin in addresses) {
         balances[coin] = await coins.services.balance({ network: coin, address: addresses[coin], testnet: TESTNET });
       }
-      console.log('balances', balances)
       return balances;
     } catch (error) {
-      console.error(error);
-      return error;
+      // console.error(error);
+      return false;
     }
   };
 

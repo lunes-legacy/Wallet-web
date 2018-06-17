@@ -40,7 +40,6 @@ class Loading extends React.Component {
 				this.animCoinComponent();
 			}, 300);
 		}, 100);
-		console.log(this.props, "LOADING PROPS");
 		this.send();
 	}
 	animCoinComponent = async () => {

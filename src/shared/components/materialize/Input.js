@@ -6,7 +6,6 @@ import { BlockBase } from 'Components/BlockBase';
 import { MarginBase } from 'Components/bases';
 
 let TmpInput = (props) => {
-	console.log(props, "EU SOU O PROPS");
 	return (<MatInput {...props}/>);
 }
 
