@@ -91,10 +91,12 @@ class App extends React.Component {
   }
 
   getAddress() {
-    let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
-    if (walletInfo) {
-      this.props.setWalletInfo(walletInfo.addresses);
-      return walletInfo.addresses;
+    if (this.checkAccess()) {
+      let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
+      if (walletInfo) {
+        this.props.setWalletInfo(walletInfo.addresses);
+        return walletInfo.addresses;
+      }
     }
   }
 
@@ -111,8 +113,11 @@ class App extends React.Component {
     let walletInfo = localStorage.getItem("WALLET-INFO");
     let accessToken = localStorage.getItem("ACCESS-TOKEN");
     if (!walletInfo || !accessToken) {
-      return this.props.history.push("/");
+      this.props.history.push("/");
+      return false;
     }
+
+    return true;
   }
 
   render() {
