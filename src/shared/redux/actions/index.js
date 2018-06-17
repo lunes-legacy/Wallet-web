@@ -1,4 +1,4 @@
-import { userReset, userLogin, userCreate }   from './user';
+import { userReset, userLogin, userCreate, userClear }   from './user';
 import { togglePanelLeft }                    from './wallet';
 import { setBalance }                         from './balance';
 import { setWalletInfo }       from './privacy';
@@ -10,6 +10,7 @@ export {
 	userReset,
 	userLogin,
 	userCreate,
+	userClear,
 	setBalance,
 	setWalletInfo,
 	togglePanelLeft,

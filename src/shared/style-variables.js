@@ -38,5 +38,10 @@ module.exports = {
 		desktop: 'min-width: 1356px', 
 		desktop2: 'min-width: 1590px',
 		fullhd: 'min-width: 1970px'   
+	},
+	coinsColor: {
+		lns: '#4CD566',
+		btc: '#000',
+
 	}
 }
