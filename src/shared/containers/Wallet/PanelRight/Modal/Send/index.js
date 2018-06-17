@@ -49,14 +49,19 @@ class ModalSend extends React.Component {
 	_handleClickClose = (event) => {
 		let modal = document.querySelector('.js-modal-send');
 		toggleModal(modal);
+		this.setState({
+			...this.state,
+			currStep: 0
+		});
 		 /*{className={'js-modal-send'}}*/
 	}
 
 	render() {
-		if (!this.state.steps) 
+		if (!this.state.steps)
 			return null;
 
 		let Component = this.state.steps[this.state.currStep].component;
+		console.log('steps', this.state.steps)
 		return (
 			<Background>
 				<StyledModal className="js-modal-send">

@@ -195,6 +195,7 @@ class Send extends React.Component {
 		setTimeout(() => {
 			this.props.nextStep({ coinAmount, address });
 		}, 1000);
+
 		this.animThisComponentOut();
 	}
 
@@ -333,8 +334,9 @@ class Send extends React.Component {
 		let brlValue = cryptoCurrencies[currentNetwork].BRL;
 		let amountStatus = false;
 
+		value.replace(",", ".");
 		balance = parseFloat(balance.toFixed(8));
-
+		
 		switch (type) {
 			case 'coin':
 				parseFloat(value) + 0.01 > balance ? amountStatus = true : amountStatus = false;
@@ -344,8 +346,8 @@ class Send extends React.Component {
 					invalidAmount: amountStatus,
 					transferValues: { 
 						coin: value,
-						brl: brlValue * value,
-						usd: usdValue * value
+						brl: (brlValue * value).toFixed(2),
+						usd: (usdValue * value).toFixed(2)
 					},
 				});
 
@@ -358,9 +360,9 @@ class Send extends React.Component {
 					...this.state, 
 					invalidAmount: amountStatus,
 					transferValues: { 
-						coin: value / brlValue,
+						coin: (value / brlValue).toFixed(8),
 						brl: value,
-						usd: (usdValue * value) / brlValue
+						usd: ((usdValue * value) / brlValue).toFixed(2)
 					} 
 				});
 				
@@ -373,8 +375,8 @@ class Send extends React.Component {
 					...this.state, 
 					invalidAmount: amountStatus,
 					transferValues: { 
-						coin: value / usdValue, 
-						brl: (brlValue * value) / usdValue,
+						coin: (value / usdValue).toFixed(8), 
+						brl: ((brlValue * value) / usdValue).toFixed(2),
 						usd: value
 					} 
 				});

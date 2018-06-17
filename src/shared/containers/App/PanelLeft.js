@@ -110,7 +110,7 @@ class PanelLeft extends React.Component {
     return (
       <StyledPanelLeft>
         <ItemMenuApp
-          label="Start"
+          label="Home"
           to="/app/home"
           icon="ic_home.svg"
           onClick={() => this.handleMenuActive("home")}
