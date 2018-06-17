@@ -194,7 +194,7 @@ class PanelLeft extends React.Component {
         <ModalStyle className={"modal-status"}>
           <ModalLeasing />
         </ModalStyle>
-        <ModalConfirm isOpen={this.state.showModalConfirm} onClose={this.toggleModalConfirm} amount={1} />
+        <ModalConfirm isOpen={this.state.showModalConfirm} onClose={this.toggleModalConfirm} />
       </StyledPanelLeft>
     );
   }

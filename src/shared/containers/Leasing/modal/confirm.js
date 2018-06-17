@@ -41,7 +41,7 @@ class ModalConfirm extends React.Component {
             <H3>{this.props.lastLeasingAmount} <Green>LNS</Green></H3>
             <Text size={'1.2rem'} margin={'1rem'} clNormalGreen>foram alocados para leasing na rede Lunes</Text>
             <Text size={'1.2rem'} margin={'1rem'}>Destinatário:</Text>
-            <Text size={'1.2rem'} margin={'1rem'}>{this.props.receiver}</Text>
+            <Text size={'1.2rem'} margin={'1rem'}>{this.props.toAddress}</Text>
           </div>
         }
         footer={<ButtonGreen width={'50%'}>Iniciar um novo Leasing</ButtonGreen>}
@@ -53,8 +53,8 @@ class ModalConfirm extends React.Component {
 // REDUX
 const mapStateToProps = state => {
   return {
-    amount: state.lastLeasingAmount,
-    toAddress: state.lastLeasingAddress
+    amount: state.leasing.lastLeasing.amount,
+    toAddress: state.leasing.lastLeasing.toAddress
   }
 }
 

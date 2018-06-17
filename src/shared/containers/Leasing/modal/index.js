@@ -63,7 +63,6 @@ class LeasingModal extends Component {
         testnet: true
       };
 
-      // this.toggleConfirmModal();
       // const leasing = new LeasingClass();
       // leasing.startLease(leaseData)
       //   .then(res => {
