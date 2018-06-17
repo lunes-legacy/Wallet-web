@@ -29,7 +29,7 @@ import {
     LineText,
     Textphrase,
     TextFee,
-    TextError
+    Message
 } from "./css";
 
 class LeasingModal extends Component {
@@ -37,6 +37,7 @@ class LeasingModal extends Component {
         super();
 
         this.state = {
+            message: ' - ',
             amount: 0,
             toAddress: '',
             openConfirmModal: false
@@ -48,12 +49,20 @@ class LeasingModal extends Component {
 
     startLeasing = () => {
       let err = 0;
+      let message = '';
+
       if (this.state.amount < 1) {
         err++;
+        message = ' on LNS amount';
+      }
+
+      if (!this.state.toAddress.trim()) {
+        err++;
+        message = ' on address to send';
       }
 
       if (err > 0) {
-        return this.showError();
+        return this.showError(message);
       }
 
       const leaseData = {
@@ -63,20 +72,23 @@ class LeasingModal extends Component {
         testnet: true
       };
 
-      // const leasing = new LeasingClass();
-      // leasing.startLease(leaseData)
-      //   .then(res => {
-      //     if (res.code) {
-      //       throw res;
-      //     }
+      this.props.setLeasingAmount({
+        toAddress: this.state.toAddress.trim(),
+        amount: this.state.amount
+      });
 
-      //     console.log(res);
-      //     this.handleModal();
-      //     return this.toggleConfirmModal();
-      //   }).catch(err => {
-      //     this.showError();
-      //     return console.error(err)
-      //   });
+      const leasing = new LeasingClass();
+      leasing.startLease(leaseData)
+        .then(res => {
+          if (res.code) {
+            throw res;
+          }
+
+          return this.showSuccess();
+        }).catch(err => {
+          this.showError();
+          return console.error(err)
+        });
       }
 
     // Chama o envento da modal
@@ -113,23 +125,36 @@ class LeasingModal extends Component {
         });
     }
 
-    showError = () => {
-      const textError = document.querySelector('.error-message');
-      textError.style.visibility = 'visible';
+    showError = (message) => {
+      this.setState({
+        message: `Something wrong happened${message}!`
+      });
+
+      const textMessage = document.querySelector('.show-message');
+      textMessage.style.visibility = 'visible';
+      textMessage.style.color = '#FF1C38';
 
       setTimeout(() => {
-        textError.style.visibility = 'hidden';
+        textMessage.style.visibility = 'hidden';
       }, 3000);
     }
 
-    componentDidUpdate() {
-      this.props.setLeasingAmount({
-        toAddress: this.state.toAddress.trim(),
-        amount: this.state.amount
+    showSuccess = () => {
+      this.setState({
+        message: 'Success!'
       });
+
+      const textMessage = document.querySelector('.show-message');
+      textMessage.style.visibility = 'visible';
+      textMessage.style.color = '#4CD566';
+
+      setTimeout(() => {
+        textMessage.style.visibility = 'hidden';
+        this.handleModal();
+      }, 3000);
     }
 
-    render() {
+     render() {
         return (
           <div>
             <Background className={"modal-status"}>
@@ -198,7 +223,7 @@ class LeasingModal extends Component {
                         </Row>
                         <Row>
                             <DivButton>
-                                <TextError className="error-message" size={'1.4rem'} txCenter margin={'-1rem 0 1rem 0'}>Something wrong happened! :(</TextError>
+                                <Message className="show-message" size={'1.4rem'} txCenter margin={'-1rem 0 1rem 0'}>{this.state.message}</Message>
                                 <ButtonGreen onClick={this.startLeasing}>INICIAR LEASING</ButtonGreen>
                             </DivButton>
                         </Row>

@@ -171,9 +171,8 @@ export let LineText = styled.hr`
 	margin-top: 14px
 `;
 
-export const TextError = styled.div`
+export const Message = styled.div`
   ${TextBase};
-  color: ${style.normalRed};
   visibility: hidden;
 `;
 

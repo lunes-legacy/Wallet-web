@@ -13,6 +13,10 @@ const ModalStyle = styled.div`
    display: none;
 `;
 
+const ModalConfirmStyle = styled.div`
+   display: none;
+`;
+
 const StyledPanelLeft = styled.div`
     background: ${style.normalLilac};
     box-shadow: 30px 0 40px rgba(0,0,0,.09);
@@ -166,6 +170,9 @@ class PanelLeft extends React.Component {
   }
 
   toggleModalConfirm = () => {
+    const confirmModal = document.querySelector('.confirm-modal');
+    confirmModal.style.display = 'none';
+
     this.setState(prevState => ({
       showModalConfirm: !prevState.showModalConfirm
     }));
@@ -194,7 +201,9 @@ class PanelLeft extends React.Component {
         <ModalStyle className={"modal-status"}>
           <ModalLeasing />
         </ModalStyle>
-        <ModalConfirm isOpen={this.state.showModalConfirm} onClose={this.toggleModalConfirm} />
+        <ModalConfirmStyle className={'modal-confirm'}>
+          <ModalConfirm isOpen={true} onClose={this.toggleModalConfirm} />
+        </ModalConfirmStyle>
       </StyledPanelLeft>
     );
   }

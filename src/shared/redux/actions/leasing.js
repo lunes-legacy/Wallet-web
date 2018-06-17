@@ -1,7 +1,6 @@
 import {LeasingClass} from "Classes/Leasing";
 
 export const setLeasingAmount = leasingInfo => {
-  console.log('@@@@@@@@@@' + leasingInfo);
   return {
       type: 'ADD_LEASING_FULFILLED',
       payload: leasingInfo
