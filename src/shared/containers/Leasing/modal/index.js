@@ -235,7 +235,7 @@ class LeasingModal extends Component {
                                         noBorder
                                         txCenter
                                         value={this.state.toAddress}
-                                        placeholder={'Address'} />
+                                        placeholder={'Mining node address'} />
                                 </Textphrase>
                                 <LineText />
                             </DivText>
