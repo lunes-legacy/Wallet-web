@@ -1,11 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { FeeClass } from 'Classes/crypto';
-import { users, coins } from 'lunes-lib';
 import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
-import { Loading } from 'Components';
 import { WalletClass } from "Classes/Wallet";
 
 // REDUX
@@ -20,10 +18,13 @@ import {
 	LabelRadio,
 	RadioCheckmark
 } from 'Components/forms/input-radio';
+
 import { InputText } from 'Components/forms/input-text';
 import { Col, Row, Button, TextBase, Text } from 'Components/index';
+
 //PRIVATE COMPONENTS
 import Hr from '../Hr';
+
 //CUSTOM CSS
 import {
 	SendButtonCss,
@@ -37,8 +38,6 @@ let CssWrapper = css`
 	transform: translateY(-100%);
 	transition: all 0.3s;
 `;
-
-let fontAddressColor = "::placeholder {	color: red;}";
 
 let Image = styled.img`
   width: 32px;
@@ -58,8 +57,6 @@ let FeeButton = styled.button`
 		outline: none;
 	}
 `;
-let FeeCss = css`
-`;
 
 const wallet = new WalletClass();
 
@@ -78,10 +75,16 @@ class Send extends React.Component {
 			stateButtonSend: 'Enviar',
 			addressIsValid: true,
 			invalidAmount: false,
+			sendAddress: '',
 			transferValues: {
 				coin: '',
 				brl: '',
 				usd: ''
+			},
+			radioControl: {
+				coin: true,
+				brl: false,
+				usd: false
 			},
 			fees: {
 				status: 'loading', //loading || complete
@@ -110,14 +113,18 @@ class Send extends React.Component {
 		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
 		this.wrapper = ReactDOM.findDOMNode(this.ref.wrapper.current);
 
-		this.arrangeAmountType();
-
 		setTimeout(() => {
 			this.animThisComponentIn();
 		}, 500);
 
 		this._setNetworkFees();
 	}
+
+	estimateFee() {
+		let fee = parseFloat(0.001);
+		return fee;
+	}
+
 	_setNetworkFees = async () => {
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let Fee = new FeeClass;
@@ -137,41 +144,14 @@ class Send extends React.Component {
 				...this.state.estimateParams,
 				networkFees
 			}
-		}, () => {
-			console.log("STATE", this.state);
-		});
+		})
 	}
 
 	toggleModal = (event) => {
 	}
 
-	arrangeAmountType = () => {
-		let radios = document.getElementsByName('amount-type');
-		Array.from(radios).map((radio) => {
-			if (radio.checked) {
-				let inputCOIN = document.querySelector('.input-amount.coin');
-				let inputBRL = document.querySelector('.input-amount.brl');
-				let inputUSD = document.querySelector('.input-amount.usd');
-				if (radio.value === 'coin') {
-					inputCOIN.removeAttribute('disabled');
-					inputBRL.setAttribute('disabled', true);
-					inputUSD.setAttribute('disabled', true);
-				} else if (radio.value === 'brl') {
-					inputBRL.removeAttribute('disabled');
-					inputUSD.setAttribute('disabled', true);
-					inputCOIN.setAttribute('disabled', true);
-				} else if (radio.value === 'usd') {
-					inputUSD.removeAttribute('disabled');
-					inputBRL.setAttribute('disabled', true);
-					inputCOIN.setAttribute('disabled', true);
-				}
-			}
-		});
-	}
-
 	handleOnPercentChange = (event) => {
 		let element = event.currentTarget;
-		let name = element.getAttribute('name');
 		let value = element.value;
 		let amount = parseFloat(this.props.balance.total_confirmed);
 		let result = amount * (parseInt(value) / 100);
@@ -186,32 +166,36 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
-		let coinAmount = this.state.transferValues.coin;
+		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
-		let data = await this.validateAddress(address, currentNetwork);
+		let fee = this.estimateFee();
 
-		if (!coinAmount || !address) return;
+		if (address && address.length > 1) {
+			let validateAddress = await this.validateAddress(address, currentNetwork);
 
-		if (!data) {
-			this.setState({ ...this.state, addressIsValid: false });
-
-			return false;
+			if (!validateAddress) {
+				this.setState({ ...this.state, addressIsValid: false });
+				return;
+			} else {
+				this.setState({ ...this.state, addressIsValid: true });
+			}
 		} else {
-			this.setState({ ...this.state, addressIsValid: true });
+			this.setState({ ...this.state, addressIsValid: false, sendAddress: 'Invalid Address' });
+
+			return;
 		}
 		
-
-		let dataSend = this.transactionSend(address, coinAmount);
-
-		const props = {
-			...this.props,
-			coinAmount,
-			address
+		if (!coinAmount || coinAmount <= 1) {
+			this.setState({ ...this.state, invalidAmount: true });
+			return;
 		}
 
+		let dataSend = this.transactionSend(address, coinAmount + fee);
+
 		setTimeout(() => {
-			this.props.nextStep(props);
-		}, 500);
+			this.props.nextStep({ coinAmount, address });
+		}, 1000);
+
 		this.animThisComponentOut();
 	}
 
@@ -235,7 +219,6 @@ class Send extends React.Component {
 
 	validateAddress (address) {
 		let data = wallet.validateAddress(address)
-
 		return data;
 	}
 
@@ -252,13 +235,64 @@ class Send extends React.Component {
 	// 	);
 	// }
 
-	_renderFeeTotal = () => {
+	// _renderFeeTotal = () => {
+	// 	let currentNetwork = this.props.wallet.currentNetwork;
+	// 	let coinAmount = this.state.transferValues.coin;
+	// 	let usdAmount = this.state.transferValues.usd;
 
-		return (
-			<Col s={12} m={6} l={6}>
-				<Text txRight clWhite>You are sending <Text clNormalGreen txInline>0.0999 BTC</Text> (R$ 300,00)</Text>
-			</Col>
-		);
+	// 	return (
+	// 		<Col s={12} m={6} l={6}>
+	// 			<Text txRight clWhite>You are sending 
+	// 				<Text clNormalGreen txInline>
+	// 					 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
+	// 				</Text> 
+	// 				({ numeral( usdAmount ).format('$0,0.00') }) + { this.estimateFee() } of fee
+	// 			</Text>
+	// 		</Col>
+	// 	);
+	// }
+
+	inputControl(value) {
+		switch (value) {
+			case 'coin':
+				this.setState({
+					...this.state,
+					radioControl: {
+						coin: true,
+						brl: false,
+						usd: false
+					}
+				});
+
+				break;
+
+			case 'brl':
+				this.setState({
+					...this.state,
+					radioControl: {
+						coin: false,
+						brl: true,
+						usd: false
+					}
+				});
+
+				break;
+
+			case 'usd':
+				this.setState({
+					...this.state,
+					radioControl: {
+						coin: false,
+						brl: false,
+						usd: true
+					}
+				});
+
+				break;
+		
+			default:
+				break;
+		}
 	}
 
 	transactionSend = async (address, coinAmount) => {
@@ -296,11 +330,13 @@ class Send extends React.Component {
 		let currentNetwork = this.props.wallet.currentNetwork;
 		currentNetwork = currentNetwork.toUpperCase()
 		let balance = this.props.balance[currentNetwork].total_amount;
-		balance = parseFloat(balance.toFixed(8));
 		let usdValue = cryptoCurrencies[currentNetwork].USD;
 		let brlValue = cryptoCurrencies[currentNetwork].BRL;
 		let amountStatus = false;
 
+		value.replace(",", ".");
+		balance = parseFloat(balance.toFixed(8));
+		
 		switch (type) {
 			case 'coin':
 				parseFloat(value) + 0.01 > balance ? amountStatus = true : amountStatus = false;
@@ -310,8 +346,8 @@ class Send extends React.Component {
 					invalidAmount: amountStatus,
 					transferValues: { 
 						coin: value,
-						brl: brlValue * value,
-						usd: usdValue * value
+						brl: (brlValue * value).toFixed(2),
+						usd: (usdValue * value).toFixed(2)
 					},
 				});
 
@@ -324,9 +360,9 @@ class Send extends React.Component {
 					...this.state, 
 					invalidAmount: amountStatus,
 					transferValues: { 
-						coin: value / brlValue,
+						coin: (value / brlValue).toFixed(8),
 						brl: value,
-						usd: (usdValue * value) / brlValue
+						usd: ((usdValue * value) / brlValue).toFixed(2)
 					} 
 				});
 				
@@ -339,8 +375,8 @@ class Send extends React.Component {
 					...this.state, 
 					invalidAmount: amountStatus,
 					transferValues: { 
-						coin: value / usdValue, 
-						brl: (brlValue * value) / usdValue,
+						coin: (value / usdValue).toFixed(8), 
+						brl: ((brlValue * value) / usdValue).toFixed(2),
 						usd: value
 					} 
 				});
@@ -364,12 +400,13 @@ class Send extends React.Component {
 								<WrapRadio>
 									<InputRadio
 										name={'amount-type'}
-										onChange={this.arrangeAmountType}
 										value={'coin'}
 										unique={'true'}
+										defaultChecked
+										onClick={ (input) => { this.inputControl(input.target.value) } }
 									/>
 									<RadioCheckmark />
-									<LabelRadio clWhite> { currentNetwork } unit</LabelRadio>
+									<LabelRadio clWhite> { currentNetwork.toUpperCase() } </LabelRadio>
 								</WrapRadio>
 							</div>
 						</Col>
@@ -383,6 +420,7 @@ class Send extends React.Component {
 									whiteTheme
 									txRight
 									noBorder
+									disabled={ !this.state.radioControl.coin }
 									type={ 'number' }
 									value = { this.state.transferValues.coin }
 									onChange = { (input) => { this.convertCoins(input.target.value, 'coin') } }
@@ -402,22 +440,23 @@ class Send extends React.Component {
 							<WrapRadio>
 								<InputRadio
 									name={'amount-type'}
-									onChange={this.arrangeAmountType}
 									value={'brl'}
 									unique={'true'}
+									onClick={ (input) => { this.inputControl(input.target.value) } }
 								/>
 								<RadioCheckmark />
-								<LabelRadio clWhite>REAL unit</LabelRadio>
+								<LabelRadio clWhite>BRL</LabelRadio>
 							</WrapRadio>
 							<WrapRadio css={css`margin: 4rem 0 0 0;`}>
 								<InputRadio
-									onChange={this.arrangeAmountType}
 									name={'amount-type'}
 									value={'usd'}
 									unique={'true'}
+									onClick={ (input) => { this.inputControl(input.target.value) } }
+
 								/>
 								<RadioCheckmark />
-								<LabelRadio clWhite >USD unit</LabelRadio>
+								<LabelRadio clWhite>USD</LabelRadio>
 							</WrapRadio>
 						</Col>
 						<Col s={6} m={6} l={6}>
@@ -429,6 +468,7 @@ class Send extends React.Component {
 									whiteTheme
 									txRight
 									noBorder
+									disabled={ !this.state.radioControl.brl }
 									type={ 'number' }
 									ref={this.ref.brlAmount}
 									onChange={ (input) => { this.convertCoins(input.target.value, 'brl') } }
@@ -449,6 +489,7 @@ class Send extends React.Component {
 									type={ 'number' }
 									ref={this.ref.usdAmount}
 									value={ this.state.transferValues.usd }
+									disabled={ !this.state.radioControl.usd }
 									onChange = { (input) => { this.convertCoins(input.target.value, 'usd') } }
 									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
 									className={'input-amount usd'}
@@ -463,12 +504,13 @@ class Send extends React.Component {
 					<Row css={ThirdRowCss}>
 						<Col s={12} m={12} l={12}>
 							<InputText
-								style={ this.state.addressIsValid ? { color: "red" } : { color: "white" } }
+								style={ this.state.addressIsValid ? { color: "white" } : { color: "red" } }
 								whiteTheme
 								normal
 								noBorder
 								type={'text'}
-								ref={this.ref.address}
+								value={ this.state.sendAddress }
+								onChange={ (input) => { this.setState({ ...this.state, sendAddress: input.target.value }) } }
 								placeholder={'Address'} />
 						</Col>
 					</Row>
@@ -476,9 +518,10 @@ class Send extends React.Component {
 					<Hr />
 					{/*FOURTH ROW*/}
 					<Row css={FourthRowCss}>
-						{ /* this._renderFeeButtons() */ }
 
-						{this._renderFeeTotal()}
+						{ /* this._renderFeeButtons() */ }
+						{ /*this._renderFeeTotal() */}
+
 					</Row>
 				</Col>
 				<Col defaultAlign={'center'} s={6} m={3} l={2}>
@@ -489,7 +532,7 @@ class Send extends React.Component {
 							css={SendButtonCss}
 							blockCenter
 							clWhite
-							onClick={ this.state.invalidAmount ? () => { alert("Invalid Amount") } : (input) => { this.handleSend(input.target.value) } }
+							onClick={ this.state.invalidAmount ? () => { alert("Invalid Amount") } : () => { this.handleSend(this.state.sendAddress) } }
 							innerRef={ this.ref.sendButton }>
 							Enviar
 						</Button>
