@@ -177,38 +177,40 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.user,
-    balance: state.balance,
-    component: state.component,
-    walletInfo: state.walletInfo,
-    currencies: state.currencies,
-    cryptoPrice: state.currencies.crypto,
-    currenciePrice: state.currencies.currencies
-  };
-};
-const mapDispatchToProps = dispatch => {
-  return {
-    setCurrenciesPrice: () => {
-      dispatch(setCurrenciesPrice());
-    },
-    setCryptoPrice: () => {
-      dispatch(setCryptoPrice());
-    },
-    setBalance: data => {
-      dispatch(setBalance(data));
-    },
-    setWalletInfo: data => {
-      dispatch(setWalletInfo(data));
-    }
-  };
-};
+// const mapStateToProps = state => {
+//   return {
+//     user: state.user,
+//     balance: state.balance,
+//     component: state.component,
+//     walletInfo: state.walletInfo,
+//     currencies: state.currencies,
+//     cryptoPrice: state.currencies.crypto,
+//     currenciePrice: state.currencies.currencies
+//   };
+// };
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     setCurrenciesPrice: () => {
+//       dispatch(setCurrenciesPrice());
+//     },
+//     setCryptoPrice: () => {
+//       dispatch(setCryptoPrice());
+//     },
+//     setBalance: data => {
+//       dispatch(setBalance(data));
+//     },
+//     setWalletInfo: data => {
+//       dispatch(setWalletInfo(data));
+//     }
+//   };
+// };
 // const userLogin = (email, password) => {
 // 	return users.login({ email, password });
 // }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default App
+
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(App);
