@@ -54,15 +54,17 @@ const balanceReducer = (state = initialState, action) => {
       let coins = action.payload;
       for (const coinKey in coins) {
         let balance = action.payload[coinKey].data;
-        state = {
-          ...state,
-          [coinKey]: {
-            coinName: state[coinKey].coinName,
-            img: state[coinKey].img,
-            total_confirmed: balance.confirmed / 100000000,
-            total_amount: balance.confirmed / 100000000
-          }
-        };
+        if (state[coinKey]) {
+          state = {
+            ...state,
+            [coinKey]: {
+              coinName: state[coinKey].coinName,
+              img: state[coinKey].img,
+              total_confirmed: balance.confirmed / 100000000,
+              total_amount: balance.confirmed / 100000000
+            }
+          };   
+        }
       }
 
       return state;

@@ -5,6 +5,9 @@ import { timer } from 'Utils/functions';
 import { Text, Col, Row, Img } from 'Components';
 import { css }  from 'styled-components';
 
+import { TESTNET } from 'Config/constants';
+
+
 let CssWrapper = css`
 	transform: translateY(-100%);
 	transform-origin: top;
@@ -40,7 +43,6 @@ class Loading extends React.Component {
 				this.animCoinComponent();
 			}, 300);
 		}, 100);
-		console.log(this.props, "LOADING PROPS");
 		this.send();
 	}
 	animCoinComponent = async () => {
@@ -86,7 +88,7 @@ class Loading extends React.Component {
 		// let address    = this.address.value;
 		let address     = 'myaj43o2wt34j31ej5pmP6htCHFafAKoeP';
 		let network     = 'btc';
-		let testnet     = true;
+		let testnet     = TESTNET;
 		let userAddress = user.wallet.coins[0].addresses[0].address;
 		let accessToken = user.accessToken;
 		// console.log(`%cUsuário logado ${JSON.stringify(user, null, 2)}`, 'background: lightgreen; color: black;');

@@ -44,7 +44,6 @@ class Index extends React.Component {
 		});
 	}
 	handleButtonMenu = (event) => {
-		console.log("EU FUI");
 		this._setPanelRightAsLoading(true);
 		let clickedEl = event.currentTarget;
 		// if (!clickedEl) return;

@@ -5,12 +5,12 @@ import Carousel from "nuka-carousel";
 let Img = styled.img`
   width: 100%;
   height: auto;
+  padding: 8px;
 `;
 
 let DivCarrousel = styled.div`
   margin-top: 4%;
-  width: 75% !important;
-
+  width: 75% !important; 
   
   & .slider-list {
     height: 80vh !important;
@@ -50,18 +50,28 @@ let DivParagraph = styled.div`
   padding: 10px;
 `;
 
+let DivImage = styled.div`
+  width: 100%;
+  height: auto;
+  padding-right: 20%;
+`;
 class Image extends React.Component {
   handleChange = index => {
     if (index == this.props.imageList.length) this.renderImage(this.props.imageList);
   };
   render() {
     return (
-      <DivCarrousel>
-        <Carousel wrapAround autoplay>
-          {this.renderImage(this.props.imageList)}
-        </Carousel>
-      </DivCarrousel>
-
+      // <DivCarrousel>
+      //   <Carousel wrapAround autoplay>
+      //     {this.renderImage(this.props.imageList)}
+      //   </Carousel>
+      // </DivCarrousel>
+      <DivImage>
+        <Img src={"/img/user_panel_right/lunio-welcome.webp"} />
+        <DivParagraph>
+          <P>Welcome to the first multiservice wallet in the world. <br />We offer an innovative and intelligent financial ecosystem with unique features and modern design.</P>
+        </DivParagraph>
+      </DivImage>
     );
   }
 

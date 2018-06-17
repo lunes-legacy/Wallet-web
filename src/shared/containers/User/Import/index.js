@@ -1,8 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import style from "Shared/style-variables";
-//CONTANTS
-import { TESTNET } from 'Config/constants';
 
 // LIBS
 import { WalletClass } from "Classes/Wallet";
