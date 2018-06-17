@@ -34,13 +34,13 @@ class ModalConfirm extends React.Component {
         height={'70%'}
         width={'50%'}
         type={'success'}
-        title={'Sua leasing foi iniciada com sucesso'}
+        title={'Your leasing initiated sucessfully'}
         hr
         text={
           <div>
             <H3>{this.props.lastLeasingAmount} <Green>LNS</Green></H3>
-            <Text size={'1.2rem'} margin={'1rem'} clNormalGreen>foram alocados para leasing na rede Lunes</Text>
-            <Text size={'1.2rem'} margin={'1rem'}>Destinatário:</Text>
+            <Text size={'1.2rem'} margin={'1rem'} clNormalGreen> are allocated to leasing on lunes network</Text>
+            <Text size={'1.2rem'} margin={'1rem'}>Mining node address:</Text>
             <Text size={'1.2rem'} margin={'1rem'}>{this.props.toAddress}</Text>
           </div>
         }

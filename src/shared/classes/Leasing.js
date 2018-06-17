@@ -25,14 +25,19 @@ export class LeasingClass {
           testnet: TESTNET
         });
 
-        const availableBalance = lunesValue.data.confirmed - leaseValue.data.leaseBalance;
+        //const availableBalance = lunesValue.data.confirmed - leaseValue.data.leaseBalance;
 
         const money = new MoneyClass;
+        
+        console.log(lunesValue.data.confirmed);
+        console.log(leaseValue.data.leaseBalance);
+        const totalBalance = lunesValue.data.confirmed + leaseValue.data.leaseBalance;
 
         return {
-          totalBalance: await money.convertToBtc(lunesValue.data.confirmed),
+          totalBalance: await money.convertToBtc(totalBalance),
+           
           leaseBalance: await money.convertToBtc(leaseValue.data.leaseBalance),
-          availableBalance: await money.convertToBtc(availableBalance)
+          availableBalance: await money.convertToBtc(lunesValue.data.confirmed)
         };
       } catch (err) {
         return errorPattern(`Error on trying to get lease balance`, 500, "GETLEASEBALANCE_ERROR", err);

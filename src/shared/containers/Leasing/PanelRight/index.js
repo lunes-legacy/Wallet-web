@@ -270,7 +270,7 @@ class PanelRight extends React.Component {
                         Leasing Transactions
                     </Col>
                     <Col s={12} m={4} l={4} css={`text-align:center;`}>
-                        Emprestado
+                        Amount
                     </Col>
                     <Col s={12} m={2} l={2} css={`text-align:center;`}>
                         Status
