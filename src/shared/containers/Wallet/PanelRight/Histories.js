@@ -1,23 +1,15 @@
 import React from "react";
-import styled, { consolidateStreamedStyles } from "styled-components";
+import styled from "styled-components";
 import style from "Shared/style-variables";
 import { TESTNET } from 'Config/constants';
-
-// UTILS
 import { timestampDiff } from "Utils/functions";
-
-
-//REDUX
 import { connect } from "react-redux";
 import { setTxHistory } from 'Redux/actions';
-
-// Components
 import { Col, Row } from 'Components/index';
 import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
 import { Loading } from 'Components/Loading';
-
-import {numeral} from 'Utils/numeral';
+import { numeral } from 'Utils/numeral';
 
 const StyledHistories = styled.div`
   padding-top: 20px;
@@ -31,7 +23,7 @@ const History = styled.div`
   position: relative;
 `;
 
-const TextT = styled.div `
+const TextT = styled.div`
   letter-spacing: 0.2rem;
   font-weight: bold;
   display: inline;
@@ -184,7 +176,7 @@ const TransactionId = styled.a`
   }
 `;
 
-const Span = styled.div `
+const Span = styled.div`
   margin-top: 16%;
   display: inline;
 `;
@@ -210,14 +202,14 @@ const StatusStyle = styled.div`
   }
 `;
 
-const ErrorMessage = styled.div `
+const ErrorMessage = styled.div`
   ${TextBase};
   color: #FFFFFF;
   text-align: center;
 `;
 
 class Histories extends React.Component {
-  constructor(props) {
+  constructor() {
     super();
 
     this.state = {
@@ -280,35 +272,36 @@ class Histories extends React.Component {
 
     switch (weekDay) {
       case 0:
-        weekDay = "Domingo";
+        weekDay = "Sunday";
         break;
       case 1:
-        weekDay = "Segunda-feira";
+        weekDay = "Monday";
         break;
       case 2:
-        weekDay = "Terça-feira";
+        weekDay = "Tuesday";
         break;
       case 3:
-        weekDay = "Quarta-feira";
+        weekDay = "Wednesday";
         break;
       case 4:
-        weekDay = "Quinta-feira";
+        weekDay = "Thursday";
         break;
       case 5:
-        weekDay = "Sexta-feira";
+        weekDay = "Friday";
         break;
       case 6:
-        weekDay = "Sabado";
+        weekDay = "Saturday";
         break;
     }
     let day = date.getDate();
     let month = date.getMonth() + 1;
-    let year = date.getYear();
+    let year = date.getFullYear();
 
-    return weekDay + " " + day + "/" + month + "/" + year;
+
+    return `${weekDay} ${day}/${month < 10 ? "0" + month : month}/${year}`;
   };
 
-  parseTimestampToDate2 = timestamp => {
+  parseTimeStampToDayAndMonth = timestamp => {
 
     if (!timestamp) return null;
 
@@ -327,16 +320,16 @@ class Histories extends React.Component {
         yearMonth = "Jan";
         break;
       case 1:
-        yearMonth = "Fev";
+        yearMonth = "Feb";
         break;
       case 2:
         yearMonth = "Mar";
         break;
       case 3:
-        yearMonth = "Abr";
+        yearMonth = "Apr";
         break;
       case 4:
-        yearMonth = "Mai";
+        yearMonth = "May";
         break;
       case 5:
         yearMonth = "Jun";
@@ -345,19 +338,19 @@ class Histories extends React.Component {
         yearMonth = "Jul";
         break;
       case 7:
-        yearMonth = "Ago";
+        yearMonth = "Aug";
         break;
       case 8:
-        yearMonth = "Set";
+        yearMonth = "Sep";
         break;
       case 9:
-        yearMonth = "Out";
+        yearMonth = "Oct";
         break;
       case 10:
         yearMonth = "Nov";
         break;
       case 11:
-        yearMonth = "Dez";
+        yearMonth = "Dec";
         break;
     }
     let day = date.getDate();
@@ -365,7 +358,7 @@ class Histories extends React.Component {
       return "0" + day + "/" + yearMonth;
     }
     else {
-    return day + "/" + yearMonth;
+      return day + "/" + yearMonth;
     }
   };
 
@@ -378,10 +371,10 @@ class Histories extends React.Component {
 
   // action click history
   handleToggleHistory = item => {
-    if(this.state.activeIndex===item){
-      this.setState({...this.state, activeIndex: null});
-    }else{
-      this.setState({...this.state, activeIndex: item });
+    if (this.state.activeIndex === item) {
+      this.setState({ ...this.state, activeIndex: null });
+    } else {
+      this.setState({ ...this.state, activeIndex: item });
     }
   };
 
@@ -402,7 +395,7 @@ class Histories extends React.Component {
     return currentTxHistory.data.history.map((transaction, key) => {
       if (transaction.otherParams.type !== 4) return null;
       let amount = numeral(transaction.nativeAmount / 100000000).format('0,0.00000000');
-      let usdAmount = numeral( ( transaction.nativeAmount / 100000000 ) * currentCurrencies).format('$0,0.00')
+      let usdAmount = numeral((transaction.nativeAmount / 100000000) * currentCurrencies).format('$0,0.00')
 
       return (
         <History key={key}>
@@ -411,24 +404,24 @@ class Histories extends React.Component {
               <Col s={6} m={6} l={6}>
                 <HistoryHeadStatus>
                   <HeadStatusIcon type={transaction.type} src={this.renderIcon(transaction.type)} />
-                  <HeadStatusDate>{ this.parseTimestampToDate2(transaction.date) }</HeadStatusDate>
+                  <HeadStatusDate>{this.parseTimeStampToDayAndMonth(transaction.date)}</HeadStatusDate>
                 </HistoryHeadStatus>
                 <HistoryHeadText>
                   <StatusStyle type={transaction.type}>
-                    { this.icoStatusToText(transaction.type) }
+                    {this.icoStatusToText(transaction.type)}
                   </StatusStyle>
-                  { this.timeToText(transaction.date) }
+                  {this.timeToText(transaction.date)}
                 </HistoryHeadText>
               </Col>
 
               <Col s={6} m={6} l={6}>
                 <HistoryHeadAmount>
                   <HeadAmountCoin type={transaction.type}>
-                    {this.SignalControl(transaction.type)} 
-                    { amount }
+                    {this.SignalControl(transaction.type)}
+                    {amount}
                   </HeadAmountCoin>
                   <HeadAmountMoney>
-                    ({ usdAmount })
+                    ({usdAmount})
                   </HeadAmountMoney>
                 </HistoryHeadAmount>
               </Col>
@@ -442,18 +435,18 @@ class Histories extends React.Component {
                   <Text size={"1.4rem"}> </Text>
                   <Text size={"1.4rem"} txBold margin={"2.5rem 0 0 0"}>
                     <Span>
-                      { this.icoStatusToText(transaction.type) }: 
+                      {this.icoStatusToText(transaction.type)}:
                     </Span>
                     <TextT>
-                      { amount } 
-                      { currentNetwork.toUpperCase() } 
-                      ({ usdAmount }) 
+                      {amount}
+                      {currentNetwork.toUpperCase()}
+                      ({usdAmount})
                     </TextT>
                   </Text>
                   <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
                     <span>Date: </span>
                     <TextT>
-                      { this.parseTimestampToDate(transaction.date) }
+                      {this.parseTimestampToDate(transaction.date)}
                     </TextT>
                   </Text>
                 </HistoryContentItem>
@@ -462,14 +455,14 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID:</Text>
                   <Text size={"1.4rem"} txBold>
-                    <TransactionId href={blockexplorerUrl + transaction.txid} target="_blank"> { transaction.txid } </TransactionId>
+                    <TransactionId href={blockexplorerUrl + transaction.txid} target="_blank"> {transaction.txid} </TransactionId>
                   </Text>
                 </HistoryContentItem>
               </Col>
             </Row>
           </HistoryContent>
         </History>
-      ); //return
+      );
     })
   }
 
@@ -477,19 +470,15 @@ class Histories extends React.Component {
     try {
       return (
         <StyledHistories>
-          { this._renderHistories() }
+          {this._renderHistories()}
         </StyledHistories>
       );
     } catch (e) {
       console.error(e);
-      return <ErrorMessage> Error: { e } </ErrorMessage>;
+      return <ErrorMessage> Error: {e} </ErrorMessage>;
     }
   }
 }
-
-const monetaryValue = (value, options) => {
-  return parseFloat(value.toFixed(2)).toLocaleString('pt-BR', options);
-};
 
 const mapStateToProps = state => {
   return {
@@ -498,6 +487,7 @@ const mapStateToProps = state => {
     componentWallet: state.component.wallet,
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     setTxHistory: (data) => {
