@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import style from "Shared/style-variables";
-import { Redirect } from 'react-router-dom'
+
+// REDUX
+import { connect } from 'react-redux';
 
 //COMPONENTS
 import { H1 } from "Components/H1";
-import { P } from "Components/P";
-import { ButtonGreen } from "Components/Buttons";
 
 const Container = styled.div`
   text-align: center;
@@ -143,4 +142,11 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+
+const mapStateToProps = () => {
+	return { }
+}
+const mapDispatchToProps = () => {
+	return { }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

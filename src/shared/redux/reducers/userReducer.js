@@ -53,6 +53,12 @@ const userReducer = (state = initialState, action) => {
 			status: 'rejected'
 		}
 	}
+	else if (action.type === 'USER_CLEAR') {
+		return {
+			status: 'initial',
+			logged: false
+		}
+	}
 	return state;
 }
 

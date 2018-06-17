@@ -5,7 +5,7 @@ import { TextBase } from "Components/TextBase";
 import { Col, Row } from "Components/index"
 import ModalReceive from "./Modal/Receive/index";
 import ModalSend    from "./Modal/Send";
-import {numeral}    from 'Utils/numeral';
+import { numeral }    from 'Utils/numeral';
 import { toggleModal } from './Modal/ui';
 
 // REDUX
