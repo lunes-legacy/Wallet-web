@@ -151,6 +151,7 @@ class PanelLeft extends React.Component {
     super(props);
     //
     this.state = {
+      'menuActive': 'home',
       isOpenSignout: false
     };
   }
@@ -257,9 +258,7 @@ class PanelLeft extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    walletInfo: state.walletInfo
-  };
+  return { };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -272,4 +271,4 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(PanelLeft);
 
-//export default PanelLeft;
+// export default PanelLeft;

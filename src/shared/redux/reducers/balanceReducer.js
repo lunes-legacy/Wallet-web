@@ -60,7 +60,7 @@ const balanceReducer = (state = initialState, action) => {
             coinName: state[coinKey].coinName,
             img: state[coinKey].img,
             total_confirmed: balance.confirmed / 100000000,
-            total_amount: balance.confirmed
+            total_amount: balance.confirmed / 100000000
           }
         };
       }

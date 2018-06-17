@@ -84,11 +84,7 @@ class Login extends React.Component {
     let walletInfo = localStorage.getItem('WALLET-INFO');
     let emailEl = document.querySelector(".login-email");
     localStorage.setItem('ACCESS-TOKEN', encrypt(JSON.stringify({ email: emailEl.value, accessToken: this.props.user.data.accessToken })));
-    walletInfo ? (
-      this.props.history.push('/app/home')
-    ) : (
-        this.props.history.push('/import')
-      )
+    walletInfo ? ( this.props.history.push('/app/home') ) : ( this.props.history.push('/import') )
   }
 
   handleLogin = event => {
