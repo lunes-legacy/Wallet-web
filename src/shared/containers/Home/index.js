@@ -61,11 +61,9 @@ class Home extends React.Component {
   }
 
   getAddress() {
-    if (this.checkAccess()) {
-      let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
-      if (walletInfo) {
-        return walletInfo.addresses;
-      }
+    let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
+    if (walletInfo) {
+      return walletInfo.addresses;
     }
   }
 
