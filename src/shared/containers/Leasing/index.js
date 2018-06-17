@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import style from 'Shared/style-variables';
 
+import { decrypt } from "../../utils/crypt";
+
 // REDUX
 import { connect } from "react-redux";
 import { setBalance, setCurrenciesPrice, setCryptoPrice } from "Redux/actions";
