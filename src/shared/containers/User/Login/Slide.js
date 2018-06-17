@@ -16,8 +16,11 @@ let Container = styled.div`
 
 let images = [
   {
-    link: "/img/user_panel_right/img-slide1.jpg",
-    text: `Discover the first multiservice wallet in the world and keep your cryptocurrencies safe. We offer an innovative and intelligent financial ecosystem with unique features and modern design.` 
+    // link: "/img/user_panel_right/img-slide1.jpg",
+    link: "/img/user_panel_right/lunio-welcome.webp",
+    link: "/img/user_panel_right/lunio-welcome.webp",
+    text: `Welcome to the first multiservice wallet in the world. We offer an innovative and intelligent financial ecosystem with unique features and modern design.` 
+    // text: `Discover the first multiservice wallet in the world and keep your cryptocurrencies safe. We offer an innovative and intelligent financial ecosystem with unique features and modern design.` 
   },
   {
     link: "/img/user_panel_right/img-slide2.jpg",
