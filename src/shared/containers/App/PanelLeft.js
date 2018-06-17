@@ -103,9 +103,6 @@ class PanelLeft extends React.Component {
     let cookie = new CookieClass();
     cookie.set({ name: 'user', value: null, expires: -1 });
     localStorage.clear();
-
-    console.log("TESTE LEO");
-    // redirecionar para login
     return this.props.history.push('/');
   }
 

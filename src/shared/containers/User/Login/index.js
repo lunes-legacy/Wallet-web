@@ -128,8 +128,6 @@ class Login extends React.Component {
     try {
       let statusEl = document.querySelector(".js-status");
       let { status } = this.props.user;
-      console.log('props', this.props.user)
-      console.log("PROPS ", this.props.user);
       if (status === "pending") {
         statusEl.textContent = "Loading...";
       } else if (status === "fulfilled") {
