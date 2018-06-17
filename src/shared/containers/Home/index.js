@@ -3,6 +3,10 @@ import styled from "styled-components";
 import style from "Shared/style-variables";
 import { Redirect } from 'react-router-dom'
 
+// REDUX
+import { connect } from "react-redux";
+import { setBalance, setCurrenciesPrice, setCryptoPrice } from "Redux/actions";
+
 //COMPONENTS
 import { H1 } from "Components/H1";
 import { P } from "Components/P";
@@ -163,4 +167,38 @@ class Home extends React.Component {
   }
 }
 
+// const mapStateToProps = state => {
+//   return {
+//     user: state.user,
+//     balance: state.balance,
+//     component: state.component,
+//     walletInfo: state.walletInfo,
+//     currencies: state.currencies,
+//     cryptoPrice: state.currencies.crypto,
+//     currenciePrice: state.currencies.currencies
+//   };
+// };
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     setCurrenciesPrice: () => {
+//       dispatch(setCurrenciesPrice());
+//     },
+//     setCryptoPrice: () => {
+//       dispatch(setCryptoPrice());
+//     },
+//     setBalance: data => {
+//       dispatch(setBalance(data));
+//     },
+//     setWalletInfo: data => {
+//       dispatch(setWalletInfo(data));
+//     }
+//   };
+// };
+
 export default Home;
+
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(Home);

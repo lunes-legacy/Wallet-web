@@ -8,7 +8,7 @@ import { decrypt } from "../../utils/crypt";
 
 // REDUX
 import { connect } from "react-redux";
-import { setBalance, setCurrenciesPrice, setCryptoPrice, setWalletInfo } from "Redux/actions";
+import { setBalance, setCurrenciesPrice, setCryptoPrice } from "Redux/actions";
 
 //COMPONENTS
 import Home from "Containers/Home/index";
@@ -94,14 +94,12 @@ class App extends React.Component {
     if (this.checkAccess()) {
       let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
       if (walletInfo) {
-        this.props.setWalletInfo(walletInfo.addresses);
         return walletInfo.addresses;
       }
     }
   }
 
   componentDidMount() {
-    this.checkAccess();
     this.props.setBalance({ addresses: this.getAddress() });
   }
 
@@ -142,7 +140,7 @@ class App extends React.Component {
                 Balance:{" "}
               </Text>
               <Text clNormalGreen txNormal txInline offSide size={"2.3rem"}>
-                LNS {" "}
+                LNS{" "}
               </Text>
               <Text clWhite txNormal txInline offSide size={"2.0rem"}>
                 {lnsBalance}
@@ -179,15 +177,12 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user,
     balance: state.balance,
-    component: state.component,
-    walletInfo: state.walletInfo,
     currencies: state.currencies,
     cryptoPrice: state.currencies.crypto,
-    currenciePrice: state.currencies.currencies
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     setCurrenciesPrice: () => {
@@ -199,14 +194,10 @@ const mapDispatchToProps = dispatch => {
     setBalance: data => {
       dispatch(setBalance(data));
     },
-    setWalletInfo: data => {
-      dispatch(setWalletInfo(data));
-    }
   };
 };
-// const userLogin = (email, password) => {
-// 	return users.login({ email, password });
-// }
+
+// export default App
 
 export default connect(
   mapStateToProps,
