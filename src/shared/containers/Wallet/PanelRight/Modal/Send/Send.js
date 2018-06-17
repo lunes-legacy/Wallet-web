@@ -184,7 +184,7 @@ class Send extends React.Component {
 			fromAddress = LNStestnetAddress;
 		}
 		const login = () => {
-			return users.login({ email: 'marcelo@gmail.com', password: '123123123' });
+			return users.login({ email: '', password: '' });
 		}
 		const calculateFee = (user) => {
 			return Promise.resolve(Fee.estimate({
