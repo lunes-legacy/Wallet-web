@@ -14,7 +14,6 @@ export const estimateETH = async (data) => {
 	let { networkFees } = data;
 	let currentEstimate;
 	data.amount = coins.util.unitConverter.toWei(data.amount);
-	// console.log('AMOUNT >>', data.amount);
 	for (let level in params) {
 		params[level] = {
 			...data,

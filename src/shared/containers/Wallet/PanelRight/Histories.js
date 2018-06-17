@@ -390,7 +390,7 @@ class Histories extends React.Component {
     }
 
 
-    const blockexplorerUrl = TESTNET ? 'https://blockexplorer-testnet.lunes.io/tx/' : 'https://blockexplorer.lunes.io/tx/3';
+    const blockexplorerUrl = TESTNET ? 'https://blockexplorer-testnet.lunes.io/tx/' : 'https://blockexplorer.lunes.io/tx/';
 
     return currentTxHistory.data.history.map((transaction, key) => {
       if (transaction.otherParams.type !== 4) return null;

@@ -9,11 +9,11 @@ import { Loading } from 'Components/Loading';
 import {timestampToDate} from 'Utils/date';
 import { encrypt, decrypt } from '../../../utils/crypt';
 // import { LeasingClass } from 'Classes/Leasing'; // refatorar para usar a classe
-import {MoneyClass} from 'Classes/Money';
+
 // REDUX
 import { connect } from 'react-redux';
-import { 
-    getLeasingHistory, 
+import {
+    getLeasingHistory,
     cancelLeasing } from 'Redux/actions';
 import {numeral} from 'Utils/numeral';
 
@@ -158,8 +158,6 @@ const BoxLineLeasing = Row.extend`
     }
 `;
 
-const Money = new MoneyClass;
-
 class PanelRight extends React.Component {
     constructor(props){
         super(props)
@@ -170,14 +168,14 @@ class PanelRight extends React.Component {
     // consulta de leasing
     searchLeasing = () => {
         this.props.getLeasingHistory(this.wallet_info);
-        console.log(this.props.listLeasing);
+        // console.log(this.props.listLeasing);
     }
 
     componentDidMount = () => {
         // bloco de teste ************
         // ++ adicione aqui
         // bloco de teste ************
-    
+
         this.wallet_info = localStorage.getItem('WALLET-INFO');
 
         this.searchLeasing();
@@ -194,12 +192,12 @@ class PanelRight extends React.Component {
         };
 
         this.props.cancelLeasing(payload);
-        
+
         alert("CANCELED: "+key);
         this.searchLeasing();
-    }    
+    }
 
-    // normalizar status do leasing, que hoje é 8 ou 9 
+    // normalizar status do leasing, que hoje é 8 ou 9
     _normalizeStatus = status => {
         if(status==="active"){
             return true
@@ -234,13 +232,14 @@ class PanelRight extends React.Component {
     // retornando os itens, de acordo com os dados no storage
     _renderLeasings = () => {
         if(!this.props.listLeasing){
-            return <GreenText txBold txCenter>NO LEASING TRANSACTIONS FOUND</GreenText>
+            return <GreenText txBold txCenter>NENHUM LEASING ENCONTRADO</GreenText>
         }
         if (this.props.listLeasing.length < 1) {
             return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
         }else{
             return this.props.listLeasing.map((obj, key) => {
-                
+
+                let nativeAmount = numeral(obj.nativeAmount / 100000000).format('0,0.00000000');
                 let status = this._normalizeStatus(obj.otherParams.status);
 
                 return (
@@ -250,10 +249,10 @@ class PanelRight extends React.Component {
                             <HashText clWhite txBold status={status}> {obj.txid} </HashText>
                         </Col>
                         <Col s={12} m={4} l={4}>
-                            <GreenText clNormalGreen txBold txCenter status={status}> {Money.convertToBtc_simple(obj.nativeAmount)} LUNES</GreenText>
+                            <GreenText clNormalGreen txBold txCenter status={status}> {nativeAmount} LNS</GreenText>
                         </Col>
                         <Col s={12} m={2} l={2}>
-                            {this._buttonCancel(status, obj.txid, obj.otherParams.type)} 
+                            {this._buttonCancel(status, obj.txid, obj.otherParams.type)}
                         </Col>
                     </BoxLineLeasing>
                 );
@@ -271,7 +270,7 @@ class PanelRight extends React.Component {
                         Leasing Transactions
                     </Col>
                     <Col s={12} m={4} l={4} css={`text-align:center;`}>
-                        Amount
+                        Emprestado
                     </Col>
                     <Col s={12} m={2} l={2} css={`text-align:center;`}>
                         Status
@@ -287,7 +286,7 @@ class PanelRight extends React.Component {
     }
 }
 
-//aplicar redux 
+//aplicar redux
 const mapStateToProps = state => {
     return {
         listLeasing: state.leasing.listLeasing

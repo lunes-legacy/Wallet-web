@@ -3,7 +3,6 @@ import { Row, Col, H1, H2, Text } from 'Components';
 
 export default class Grids extends React.Component {
 	render(){
-		console.log(this.props);
 		return(
 			<Row>
 				<Col s="12" m="12" l="12">

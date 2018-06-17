@@ -41,8 +41,6 @@ class ModalSend extends React.Component {
 		this.setState({
 			currStep: this.state.currStep + 1,
 			generalProps: props
-		}, () => {
-			console.log(this.state, "nextStep STATE");
 		});
 	}
 
@@ -61,7 +59,6 @@ class ModalSend extends React.Component {
 			return null;
 
 		let Component = this.state.steps[this.state.currStep].component;
-		console.log('steps', this.state.steps)
 		return (
 			<Background>
 				<StyledModal className="js-modal-send">

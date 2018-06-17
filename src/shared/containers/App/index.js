@@ -91,16 +91,18 @@ class App extends React.Component {
   }
 
   getAddress() {
-    let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
-    if (walletInfo) {
-      this.props.setWalletInfo(walletInfo.addresses);
-      return walletInfo.addresses;
+    if (this.checkAccess()) {
+      let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
+      if (walletInfo) {
+        this.props.setWalletInfo(walletInfo.addresses);
+        return walletInfo.addresses;
+      }
     }
   }
 
   componentDidMount() {
-    this.props.setBalance({ addresses: this.getAddress() });
     this.checkAccess();
+    this.props.setBalance({ addresses: this.getAddress() });
   }
 
   componentDidUpdate() {
@@ -111,8 +113,11 @@ class App extends React.Component {
     let walletInfo = localStorage.getItem("WALLET-INFO");
     let accessToken = localStorage.getItem("ACCESS-TOKEN");
     if (!walletInfo || !accessToken) {
-      return this.props.history.push("/");
+      this.props.history.push("/");
+      return false;
     }
+
+    return true;
   }
 
   render() {
@@ -185,12 +190,6 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
-    // userLogin: (email, password) => {
-    // 	dispatch({
-    // 		type: 'USER_LOGIN',
-    // 		payload: userLogin(email, password)
-    // 	});
-    // },
     setCurrenciesPrice: () => {
       dispatch(setCurrenciesPrice());
     },

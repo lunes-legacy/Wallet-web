@@ -6,9 +6,14 @@ import { TextBase, H1 } from "Components";
 import { ButtonGreen } from "Components/Buttons";
 import { numeral } from 'Utils/numeral';
 import ModalLeasing from "../modal/index";
+import ModalConfirm from "../modal/confirm";
 import { LeasingClass } from 'Classes/Leasing';
 
 const ModalStyle = styled.div`
+   display: none;
+`;
+
+const ModalConfirmStyle = styled.div`
    display: none;
 `;
 
@@ -142,7 +147,8 @@ class PanelLeft extends React.Component {
     this.state = {
       totalBalance: 0,
       leaseBalance: 0,
-      availableBalance: 0
+      availableBalance: 0,
+      showModalConfirm: false
     }
   }
 
@@ -161,6 +167,15 @@ class PanelLeft extends React.Component {
   handleModal = () => {
     let modalClass = document.querySelector(".modal-status");
     return modalClass.style.display = "block";
+  }
+
+  toggleModalConfirm = () => {
+    const confirmModal = document.querySelector('.confirm-modal');
+    confirmModal.style.display = 'none';
+
+    this.setState(prevState => ({
+      showModalConfirm: !prevState.showModalConfirm
+    }));
   }
 
   render() {
@@ -186,6 +201,9 @@ class PanelLeft extends React.Component {
         <ModalStyle className={"modal-status"}>
           <ModalLeasing />
         </ModalStyle>
+        <ModalConfirmStyle className={'modal-confirm'}>
+          <ModalConfirm isOpen={true} onClose={this.toggleModalConfirm} />
+        </ModalConfirmStyle>
       </StyledPanelLeft>
     );
   }
