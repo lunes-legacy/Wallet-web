@@ -2,11 +2,19 @@
 import {LeasingClass} from "Classes/Leasing";
 
 let initialState = {
-    listLeasing: []
+    listLeasing: [],
+    lastLeasing: {
+      amount: 0
+    }
 }
 
 const leaseReducer = (state=initialState, action) => {
     switch(action.type){
+        case 'ADD_LEASING_FULFILLED':
+          return {
+            ...state,
+            lastLeasing: action.payload
+          }
         case 'GET_LEASING_FULFILLED':
             return {
                 ...state,

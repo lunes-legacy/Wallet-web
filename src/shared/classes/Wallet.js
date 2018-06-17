@@ -52,12 +52,12 @@ export class WalletClass {
   /*
 		@param user: typically comes from cookies
 		return ex:
-			{ 
-				btc: { 
-					total_confirmed: 0, 
-					total_unconfirmed: 0, 
-					total_amount: 0 
-				} 
+			{
+				btc: {
+					total_confirmed: 0,
+					total_unconfirmed: 0,
+					total_amount: 0
+				}
 			}
   */
 
@@ -156,9 +156,13 @@ export class WalletClass {
     return await coins.getHistory(object);
   };
 
-  validateAddress = async (address, coin) => {
-    let data = await services.wallet.lns.validateAddress(address, networks[APICONFIG]);
-    return data;
+  validateAddress = async (address) => {
+    try {
+      return await services.wallet.lns.validateAddress(address, networks[APICONFIG]);
+    } catch (error) {
+      console.error(error)
+      return false;
+    }
   };
 
   getNewAddress(seed) {
