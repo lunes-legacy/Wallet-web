@@ -8,6 +8,8 @@ import { LeasingClass } from 'Classes/Leasing';
 import { WalletClass } from 'Classes/Wallet';
 import ModalConfirm from './confirm';
 
+import { TESTNET } from 'Config/constants';
+
 // Lunes-lib
 import { networks } from  'lunes-lib';
 
@@ -98,7 +100,7 @@ class LeasingModal extends Component {
         toAddress: this.state.toAddress.trim(),
         amount: this.state.amount,
         fee: "100000",
-        testnet: true
+        testnet: TESTNET
       };
 
       this.props.setLeasingAmount({
