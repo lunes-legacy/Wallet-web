@@ -8,7 +8,7 @@ import { encrypt } from '../../../utils/crypt'
 
 //REDUX
 import { connect } from "react-redux";
-import { userLogin, setWalletInfo } from 'Redux/actions';
+import { userLogin, userClear, setWalletInfo } from 'Redux/actions';
 
 //COMPONENTS
 import { Form } from "Components/Form";
@@ -69,24 +69,20 @@ const Paragraph = styled.div`
 `;
 class Login extends React.Component {
 
-
-  initializingDataUser() {
-    // apagar o redux
-    this.props.setWalletInfo({});
-  }
-
   componentDidUpdate() {
     this.handleStatus();
   }
 
-  componentWillMount() {
-    this.initializingDataUser();
-  }
   componentDidMount() {
     let walletInfo = localStorage.getItem('WALLET-INFO');
     let accessToken = localStorage.getItem('ACCESS-TOKEN');
     if (walletInfo && accessToken) {
       this.props.history.push('/app/home')
+    } else if (walletInfo) {
+      this.props.history.push('/import')
+    } else {
+      this.props.userClear();
+      this.props.setWalletInfo({});
     }
   }
 
@@ -132,7 +128,7 @@ class Login extends React.Component {
     try {
       let statusEl = document.querySelector(".js-status");
       let { status } = this.props.user;
-
+      console.log('props', this.props.user)
       console.log("PROPS ", this.props.user);
       if (status === "pending") {
         statusEl.textContent = "Loading...";
@@ -215,6 +211,9 @@ const mapDispatchToProps = dispatch => {
     },
     userLogin: (email, password) => {
       dispatch(userLogin(email, password));
+    },
+    userClear: () => {
+      dispatch(userClear());
     },
   };
 };

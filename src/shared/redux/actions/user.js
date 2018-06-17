@@ -29,3 +29,10 @@ export const userCreate = (data) => {
 		})
 	}
 }
+
+export const userClear = email => {
+  return {
+    type: "USER_CLEAR",
+    payload: {}
+  }
+}
