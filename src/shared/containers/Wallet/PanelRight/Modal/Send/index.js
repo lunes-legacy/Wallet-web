@@ -45,11 +45,13 @@ class ModalSend extends React.Component {
 			console.log(this.state, "nextStep STATE");
 		});
 	}
+
 	_handleClickClose = (event) => {
 		let modal = document.querySelector('.js-modal-send');
 		toggleModal(modal);
 		 /*{className={'js-modal-send'}}*/
 	}
+
 	render() {
 		if (!this.state.steps) 
 			return null;
@@ -67,6 +69,7 @@ class ModalSend extends React.Component {
 					<Content>
 						<Component nextStep={(props) => this.nextStep(props)} {...this.state.generalProps} />
 					</Content>
+
 				</StyledModal>
 			</Background>
 		);
