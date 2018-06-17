@@ -50,6 +50,24 @@ text-align: center;
 `;
 
 class Home extends React.Component {
+  componentWillMount() {
+    this.props.setCurrenciesPrice();
+    this.props.setCryptoPrice();
+  }
+
+  componentDidMount() {
+    this.props.setBalance({ addresses: this.getAddress() });
+  }
+
+  getAddress() {
+    if (this.checkAccess()) {
+      let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
+      if (walletInfo) {
+        return walletInfo.addresses;
+      }
+    }
+  }
+
   render() {
     return (
       <Container>
@@ -167,38 +185,25 @@ class Home extends React.Component {
   }
 }
 
-// const mapStateToProps = state => {
-//   return {
-//     user: state.user,
-//     balance: state.balance,
-//     component: state.component,
-//     walletInfo: state.walletInfo,
-//     currencies: state.currencies,
-//     cryptoPrice: state.currencies.crypto,
-//     currenciePrice: state.currencies.currencies
-//   };
-// };
+const mapStateToProps = state => {
+  return { };
+};
 
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     setCurrenciesPrice: () => {
-//       dispatch(setCurrenciesPrice());
-//     },
-//     setCryptoPrice: () => {
-//       dispatch(setCryptoPrice());
-//     },
-//     setBalance: data => {
-//       dispatch(setBalance(data));
-//     },
-//     setWalletInfo: data => {
-//       dispatch(setWalletInfo(data));
-//     }
-//   };
-// };
+const mapDispatchToProps = dispatch => {
+  return {
+    setCurrenciesPrice: () => {
+      dispatch(setCurrenciesPrice());
+    },
+    setCryptoPrice: () => {
+      dispatch(setCryptoPrice());
+    },
+    setBalance: data => {
+      dispatch(setBalance(data));
+    },
+  };
+};
 
-export default Home;
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(Home);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

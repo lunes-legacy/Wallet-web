@@ -32,22 +32,6 @@ import { AuthRoute } from "Components/AuthRoute";
 
 import { numeral } from "Utils/numeral";
 
-// numeral.register('locale', 'pt-br', {
-// 	delimiters: {
-// 		thousands: '.',
-// 		decimal: ','
-// 	},
-// 	abbreviations: {
-//         thousand: 'mil',
-//         million: 'mi',
-//         billion: 'bi',
-//         trillion: 'tri'
-//     },
-// 	currency: {
-// 		symbol: 'R$'
-// 	}
-// });
-
 let Panels = styled.div`
   width: 100%;
   height: 100%;
