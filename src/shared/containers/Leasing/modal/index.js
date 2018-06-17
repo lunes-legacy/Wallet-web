@@ -40,7 +40,8 @@ class LeasingModal extends Component {
             message: ' - ',
             amount: 0,
             toAddress: '',
-            openConfirmModal: false
+            openConfirmModal: false,
+            buttonState: true
         }
 
         this.setInputValue = this.setInputValue.bind(this);
@@ -54,16 +55,20 @@ class LeasingModal extends Component {
       if (this.state.amount < 1) {
         err++;
         message = ' on LNS amount';
+        return;
       }
 
       if (!this.state.toAddress.trim()) {
         err++;
         message = ' on address to send';
+        return;
       }
 
       if (err > 0) {
         return this.showError(message);
       }
+
+      this.setState({ ...this.state, buttonState: false });
 
       const leaseData = {
         toAddress: this.state.toAddress.trim(),
@@ -224,7 +229,7 @@ class LeasingModal extends Component {
                         <Row>
                             <DivButton>
                                 <Message className="show-message" size={'1.4rem'} txCenter margin={'-1rem 0 1rem 0'}>{this.state.message}</Message>
-                                <ButtonGreen onClick={this.startLeasing}>INICIAR LEASING</ButtonGreen>
+                                <ButtonGreen onClick={this.state.buttonState ? this.startLeasing : () => { }}>INICIAR LEASING</ButtonGreen>
                             </DivButton>
                         </Row>
                     </Col>
