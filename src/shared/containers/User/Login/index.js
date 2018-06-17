@@ -107,10 +107,10 @@ class Login extends React.Component {
 
     let errors = [];
     if (!validator.isEmail(emailEl.value)) {
-      errors.push('Um email válido deve ser informado');
+      errors.push('A valid email must be informed');
     }
     if (validator.isEmpty(passEl.value)) {
-      errors.push('Campo de senha vazio');
+      errors.push('Password Field empty');
     }
     if (errors.length > 0) {
       alert('- ' + errors.join('\n- '));
@@ -128,7 +128,7 @@ class Login extends React.Component {
         this.getSeed();
       }
       else if (status === "rejected") {
-        statusEl.textContent = "Tente novamente";
+        statusEl.textContent = "Try again";
       }
     }
     catch (err) {
@@ -157,7 +157,7 @@ class Login extends React.Component {
               <Input placeholder={"nome@email.com"} className={"login-email"} placeholder={"E-mail"} type={"email"} required />
             </FormGroup>
             <FormGroup>
-              <Input placeholder={"Senha"} className={"login-password"} placeholder={"Senha"} type={"password"} required />
+              <Input placeholder={"Password"} className={"login-password"} type={"password"} required />
             </FormGroup>
 
             <CustomLinkRight to={"/reset"} margin={"0 auto 20px auto"}>
@@ -165,7 +165,7 @@ class Login extends React.Component {
             </CustomLinkRight>
 
             <ButtonSecondary secondary onClick={this.handleLogin}>
-              {logged ? "Logado" : "Login"}
+              {logged ? "Logged in" : "Login"}
             </ButtonSecondary>
           </Form>
 
