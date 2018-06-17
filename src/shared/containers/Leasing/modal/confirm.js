@@ -9,6 +9,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
+// REDUX
+import { connect } from 'react-redux';
+
 // Private components
 import style from 'Shared/style-variables';
 import { H3, Text, Modal } from 'Components/index';
@@ -21,16 +24,13 @@ const Green = styled.span`
 class ModalConfirm extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      isOpen: true
-    }
   }
 
   render() {
     return(
       <Modal
-        isOpen={this.state.isOpen}
+        isOpen={this.props.isOpen}
+        onClose={this.props.onClose}
         height={'70%'}
         width={'50%'}
         type={'success'}
@@ -38,7 +38,7 @@ class ModalConfirm extends React.Component {
         hr
         text={
           <div>
-            <H3>{this.props.amount} <Green>LNS</Green></H3>
+            <H3>{this.props.lastLeasingAmount} <Green>LNS</Green></H3>
             <Text size={'1.2rem'} margin={'1rem'} clNormalGreen>foram alocados para leasing na rede Lunes</Text>
             <Text size={'1.2rem'} margin={'1rem'}>Destinatário:</Text>
             <Text size={'1.2rem'} margin={'1rem'}>{this.props.receiver}</Text>
@@ -50,4 +50,14 @@ class ModalConfirm extends React.Component {
   }
 }
 
-export default ModalConfirm;
+// REDUX
+const mapStateToProps = state => {
+  return {
+    amount: state.lastLeasingAmount,
+    toAddress: state.lastLeasingAddress
+  }
+}
+
+export default connect(mapStateToProps)(ModalConfirm);
+
+// export default ModalConfirm;

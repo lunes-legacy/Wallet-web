@@ -1,8 +1,9 @@
 /**
  * Componente padrão para Modais
  *
- * Lista de props, com exceção da isOpen, todas são opcionais:
- * isOpen: true | false. Passar função que altera o estado
+ * Lista de props, com exceção da isOpen e onClose, todas são opcionais:
+ * isOpen: true | false. Exibe ou não a modal
+ * onClose: true | false. Passar função que altera o estado
  * width: default 40%
  * height: default 50%
  * type: 'success' | 'error'. Exibe um ícone verde para sucesso e vermelho para erro
@@ -18,6 +19,7 @@
  * Exemplo:
  * <Modal
       isOpen={true}
+      onClose={this.toggleModalOpen}
       height={'70%'}
       width={'40%'}
       header={'Título da modal'}
@@ -37,7 +39,7 @@ import { H3, TextBase } from 'Components/index';
 
 const ModalScreen = styled.div`
   position: fixed;
-  z-index: 98;
+  z-index: 9998;
   left: 0;
   top: 0;
   width: 100%;
@@ -47,7 +49,7 @@ const ModalScreen = styled.div`
 `;
 
 const ModalBox = styled.div`
-  z-index: 99;
+  z-index: 9999;
   background-color: #442181;
   color: #fff;
   margin: 5% auto 0 auto;
@@ -160,24 +162,9 @@ const Error = styled.div`
   color: #d22;
 `;
 
-
 class Modal extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isModalOpen: this.props.isOpen || false
-    }
-  }
-
-  toggleModal = () => {
-    this.setState( prevState => ({
-      isModalOpen: !prevState.isModalOpen
-    }));
-  };
-
   render() {
-    if (!this.state.isModalOpen) return null;
+    if (!this.props.isOpen) return null;
 
     const types = {
       success: <Icon color={style.normalGreen}><SuccessContent /></Icon>,
@@ -188,7 +175,7 @@ class Modal extends React.Component {
       <ModalScreen>
         <ModalBox width={this.props.width} height={this.props.height}>
           <Header align={this.props.headerAlign}>
-            <Close onClick={() => this.toggleModal()}>&times;</Close>
+            <Close onClick={this.props.onClose}>&times;</Close>
             <H3>{this.props.header || ''}</H3>
           </Header>
           <Content align={this.props.contentAlign}>

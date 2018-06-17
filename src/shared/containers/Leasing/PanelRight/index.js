@@ -12,8 +12,8 @@ import { encrypt, decrypt } from '../../../utils/crypt';
 
 // REDUX
 import { connect } from 'react-redux';
-import { 
-    getLeasingHistory, 
+import {
+    getLeasingHistory,
     cancelLeasing } from 'Redux/actions';
 import {numeral} from 'Utils/numeral';
 
@@ -168,7 +168,7 @@ class PanelRight extends React.Component {
     // consulta de leasing
     searchLeasing = () => {
         this.props.getLeasingHistory(this.wallet_info);
-        console.log(this.props.listLeasing);
+        // console.log(this.props.listLeasing);
     }
 
     componentDidMount = () => {
@@ -192,12 +192,12 @@ class PanelRight extends React.Component {
         };
 
         this.props.cancelLeasing(payload);
-        
+
         alert("CANCELED: "+key);
         this.searchLeasing();
-    }    
+    }
 
-    // normalizar status do leasing, que hoje é 8 ou 9 
+    // normalizar status do leasing, que hoje é 8 ou 9
     _normalizeStatus = status => {
         if(status==="active"){
             return true
@@ -252,7 +252,7 @@ class PanelRight extends React.Component {
                             <GreenText clNormalGreen txBold txCenter status={status}> {nativeAmount} LNS</GreenText>
                         </Col>
                         <Col s={12} m={2} l={2}>
-                            {this._buttonCancel(status, obj.txid, obj.otherParams.type)} 
+                            {this._buttonCancel(status, obj.txid, obj.otherParams.type)}
                         </Col>
                     </BoxLineLeasing>
                 );
@@ -286,7 +286,7 @@ class PanelRight extends React.Component {
     }
 }
 
-//aplicar redux 
+//aplicar redux
 const mapStateToProps = state => {
     return {
         listLeasing: state.leasing.listLeasing

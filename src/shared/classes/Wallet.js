@@ -52,12 +52,12 @@ export class WalletClass {
   /*
 		@param user: typically comes from cookies
 		return ex:
-			{ 
-				btc: { 
-					total_confirmed: 0, 
-					total_unconfirmed: 0, 
-					total_amount: 0 
-				} 
+			{
+				btc: {
+					total_confirmed: 0,
+					total_unconfirmed: 0,
+					total_amount: 0
+				}
 			}
   */
 
@@ -162,9 +162,5 @@ export class WalletClass {
     } catch (error) {
       console.log(error);
     }
-  }
-
-  startLeasing = async (data) => {
-    let dataLeasing = coins.services.lease(data);
   }
 }

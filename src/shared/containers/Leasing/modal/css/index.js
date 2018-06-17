@@ -30,12 +30,12 @@ export let TextCenter = styled.div`
 `;
 
 export let QuantityAmount = styled.div`
-  ${TextBase};	
+  ${TextBase};
 	font-size: 12px;
   font-weight: 300;
 	color: #4cd566;
 	text-align: center;
-	
+
   @media (${style.media.mobile2}) {
     font-size: 4rem;
     margin-top: 1rem;
@@ -43,12 +43,12 @@ export let QuantityAmount = styled.div`
 `;
 
 export let LeasingStyleModalCss = styled.div`
-	position: relative;	
+	position: relative;
   background-color: #442181;
 	box-shadow: 19px 1px 22px 0 rgba(0, 0, 0, 0.09);
 
   min-width: 583px;
-  min-height: 506px; 
+  min-height: 536px;
   border-radius: 10px;
 	padding: 3rem;
 
@@ -107,7 +107,7 @@ export let CoinValue = styled.div`
 export let NumberPorcent = styled.div`
 	${TextBase};
 	font-weight: 300;
-	float: left;	
+	float: left;
 	cursor: pointer;
 	${props => {
 		if (props.marginRight)
@@ -128,12 +128,12 @@ export let Line = styled.hr`
 
 export let DivNumber = styled.div`
 	margin: 0 auto;
-	width: 62%; 
+	width: 62%;
 `;
 
 export let DivButton = styled.div`
  margin-top: 30px;
- width: 241px;  
+ width: 241px;
 `;
 
 export let DivText = styled.div`
@@ -146,27 +146,37 @@ export let DivText = styled.div`
 `;
 
 export let TextLeft = styled.div`
-	${TextBase}; 
+	${TextBase};
 	font-size: 12px;
 	font-weight: bold;
 `;
 
 export let Textphrase = styled.div`
-${TextBase}; 
+${TextBase};
 	font-size: 12px;
 	font-weight: bold;
 	margin-top: 9px;
-	margin-bottom: 9px; 
+	margin-bottom: 9px;
 	text-align: center;
 `;
 
 export let TextFee = styled.div`
-${TextBase}; 
+${TextBase};
 	font-size: 21px;
-	float: right;	
+	float: right;
 `;
 
-export let LineText = styled.hr` 
+export let LineText = styled.hr`
 	border: 0.7px solid #654fa4;
 	margin-top: 14px
+`;
+
+export const TextError = styled.div`
+  ${TextBase};
+  color: ${style.normalRed};
+  visibility: hidden;
+`;
+
+export const GreenText = styled.span`
+color: ${style.normalGreen};
 `;
