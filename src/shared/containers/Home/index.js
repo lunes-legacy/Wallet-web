@@ -37,7 +37,7 @@ const TextRectangle = styled.div`
   text-align: center;
   
 `;
-const Paragraph = styled.div `
+const Paragraph = styled.div`
 line-height: 1.5; 
 font-size: 1.4rem;
 color: white;
@@ -82,7 +82,7 @@ class Home extends React.Component {
         <MainRectangle>
           <Icon src={"/img/app_panel_left/ic_privacy.svg"} />
           <H1 fontSize={"2rem"} margin={"1.5rem 0 1.5rem 0"} txBold txCenter clWhite>
-            Privacidade
+            Privacy
           </H1>
           <TextRectangle>
             <Paragraph fontSize={"1.4rem"} txCenter clWhite>
