@@ -16,17 +16,17 @@ let Container = styled.div`
 
 let images = [
   {
-    link: "/img/user_panel_right/img-slide1.png",
+    link: "/img/user_panel_right/img-slide1.jpg",
     text: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
     Cum sociis natoque penatibus et magnis dis parturient montes.` 
   },
   {
-    link: "/img/user_panel_right/img-slide2.png",
+    link: "/img/user_panel_right/img-slide2.jpg",
     text: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
     Cum sociis natoque penatibus et magnis dis parturient montes.`
   },
   {
-    link: "/img/user_panel_right/img-slide3.png",
+    link: "/img/user_panel_right/img-slide3.jpg",
     text: `Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. 
     Cum sociis natoque penatibus et magnis dis parturient montes.`
   }
