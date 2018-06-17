@@ -20,6 +20,7 @@ import { CustomLinkFooter } from "Components/Link";
 import { H1 } from "Components/H1";
 import { Logo } from "Components/Logo";
 import { P } from "Components/P";
+import { Col } from 'Components/index';
 
 
 //PRIVATE COMPONENTS
@@ -42,7 +43,7 @@ const WrapPhrases = styled.div`
 
 const CustomP = P.extend`
   display: block;
-  margin: 50px auto 50px auto;
+  margin: 10px auto 10px auto;
   text-align: center;
 
   @media only screen and (min-width: 768px) {
@@ -154,7 +155,7 @@ class Login extends React.Component {
             </Paragraph>
           </WrapPhrases>
 
-          <Form margin={"10% auto"} width={"80%"}>
+          <Form margin={"10% auto 2% auto"} width={"80%"}>
             <FormGroup>
               <Input placeholder={"nome@email.com"} className={"login-email"} placeholder={"E-mail"} type={"email"} required />
             </FormGroup>
@@ -170,15 +171,16 @@ class Login extends React.Component {
               {logged ? "Logged in" : "Login"}
             </ButtonSecondary>
           </Form>
+          <Col s={12} m={12} l={12}>
+            <P txCenter clWhite margin={"0 0 0 0"} fontSize={"1.4rem"} className={"js-status"} />
 
-          <P txCenter clWhite margin={"20px 0 0 0"} fontSize={"1.4rem"} className={"js-status"} />
-
-          <CustomP clWhite fontSize={"1.4rem"}>
-            Don't have an account?{" "}
-            <CustomLinkFooter to={"/registry"} color={`${style.normalGreen}`} >
-              Sign up.
-            </CustomLinkFooter>
-          </CustomP>
+            <CustomP clWhite fontSize={"1.4rem"}>
+              Don't have an account?{" "}
+              <CustomLinkFooter to={"/registry"} color={`${style.normalGreen}`} >
+                Sign up.
+              </CustomLinkFooter>
+            </CustomP>
+          </Col>
 
 
         </PanelLeft>

@@ -209,7 +209,7 @@ class LeasingModal extends Component {
                                 <Close onClick={this.handleModal}>x</Close>
 
                                 <Image src="/img/coins/lns.svg" />
-                                <CoinValue offSide>{numeral(this.props.balance.LNS.total_confirmed).format('0,0.00000000')}</CoinValue>
+                                <CoinValue margin={ "0 4.0rem 0 0" }offSide>{numeral(this.props.balance.LNS.total_confirmed).format('0,0.00000000')}</CoinValue>
 
                                 <Rectangle>
                                     <Row>

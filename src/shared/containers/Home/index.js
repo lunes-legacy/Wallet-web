@@ -3,6 +3,12 @@ import styled from "styled-components";
 import style from "Shared/style-variables";
 import { Redirect } from 'react-router-dom'
 
+import { decrypt } from "../../utils/crypt";
+
+// REDUX
+import { connect } from "react-redux";
+import { setBalance, setCurrenciesPrice, setCryptoPrice } from "Redux/actions";
+
 //COMPONENTS
 import { H1 } from "Components/H1";
 import { P } from "Components/P";
@@ -46,6 +52,23 @@ text-align: center;
 `;
 
 class Home extends React.Component {
+  componentWillMount() {
+    this.props.setCurrenciesPrice();
+    this.props.setCryptoPrice();
+  }
+
+  componentDidMount() {
+    console.log('Foi')
+    this.props.setBalance({ addresses: this.getAddress() });
+  }
+
+  getAddress() {
+    let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
+    if (walletInfo) {
+      return walletInfo.addresses;
+    }
+  }
+
   render() {
     return (
       <Container>
@@ -163,4 +186,25 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+const mapStateToProps = state => {
+  return { };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setCurrenciesPrice: () => {
+      dispatch(setCurrenciesPrice());
+    },
+    setCryptoPrice: () => {
+      dispatch(setCryptoPrice());
+    },
+    setBalance: data => {
+      dispatch(setBalance(data));
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

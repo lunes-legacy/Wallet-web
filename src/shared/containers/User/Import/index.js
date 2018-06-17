@@ -127,7 +127,7 @@ class Import extends React.Component {
       <div>
         <PanelLeft>
           <CustomLogo />
-          <Form margin={"10% auto"} width={"80%"}>
+          <Form margin={"10% auto 0 auto"} width={"80%"}>
             <FormGroup>
               <Row>
                 <P fontSize={"1.4rem"} margin={"0 0 1.0rem 0"} clWhite>
@@ -161,7 +161,7 @@ class Import extends React.Component {
             {this.renderImport()}
           </ButtonsRow>
           <Row>
-            <P style={ this.state.walletInfo.seed ? { display: 'block' } : { display : 'none' } } fontSize={"1.4rem"} margin={"3.0rem 0 1.0rem 0"} clWhite>
+            <P style={ this.state.walletInfo.seed ? { display: 'block' } : { display : 'none' } } fontSize={"1.4rem"} margin={"3.0rem 0 0 0"} clWhite>
               Address
             </P>
             <P fontSize={"1.4rem"} clWhite>

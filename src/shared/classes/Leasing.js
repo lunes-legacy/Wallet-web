@@ -28,7 +28,7 @@ export class LeasingClass {
         //const availableBalance = lunesValue.data.confirmed - leaseValue.data.leaseBalance;
 
         const money = new MoneyClass;
-       
+        
         const totalBalance = lunesValue.data.confirmed + leaseValue.data.leaseBalance;
 
         return {
