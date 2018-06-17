@@ -132,8 +132,8 @@ export let DivNumber = styled.div`
 `;
 
 export let DivButton = styled.div`
- margin-top: 30px;
- width: 241px;
+ margin-top: 20px;
+ width: 70%;
 `;
 
 export let DivText = styled.div`

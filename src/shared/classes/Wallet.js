@@ -152,8 +152,13 @@ export class WalletClass {
     return await coins.getHistory(object);
   };
 
-  validateAddress = async (address, accessToken) => {
-    return await services.wallet.lns.validateAddress(address, accessToken);
+  validateAddress = async (address) => {
+    try {
+      return await services.wallet.lns.validateAddress(address, networks[APICONFIG]);
+    } catch (error) {
+      console.error(error)
+      return false;
+    }
   };
 
   getNewAddress(seed) {

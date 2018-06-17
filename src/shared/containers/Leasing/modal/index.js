@@ -5,7 +5,11 @@ import { ButtonGreen } from "Components/Buttons";
 import { numeral } from 'Utils/numeral';
 import { InputText } from 'Components/forms/input-text';
 import { LeasingClass } from 'Classes/Leasing';
+import { WalletClass } from 'Classes/Wallet';
 import ModalConfirm from './confirm';
+
+// Lunes-lib
+import { networks } from  'lunes-lib';
 
 // REDUX
 import { connect } from 'react-redux';
@@ -37,31 +41,51 @@ class LeasingModal extends Component {
         super();
 
         this.state = {
-            message: ' - ',
+            message: '-<br />-',
             amount: 0,
             toAddress: '',
+            isValidAddress: false,
             openConfirmModal: false,
-            buttonState: true
+            buttonState: true,
+
         }
 
         this.setInputValue = this.setInputValue.bind(this);
         this.toggleConfirmModal = this.toggleConfirmModal.bind(this);
     }
 
-    startLeasing = () => {
+    validateAddress = async (address) => {
+      const wallet = new WalletClass();
+      const isValid = wallet.validateAddress(address)
+
+      return isValid;
+    }
+
+    startLeasing = async () => {
       let err = 0;
       let message = '';
 
-      if (this.state.amount < 1) {
+      if (!this.state.toAddress) {
         err++;
-        message = ' on LNS amount';
-        return;
+        message = 'Invalid address';
+        return this.showError(message);
       }
 
-      if (!this.state.toAddress.trim()) {
+      if (this.state.amount < 1) {
         err++;
-        message = ' on address to send';
-        return;
+        message = 'Invalid LNS amount';
+      }
+
+      if (this.state.amount > this.props.balance.LNS.total_amount) {
+        err++;
+        message = 'Insufficient funds';
+      }
+
+      const isValidAddress = await this.validateAddress(this.state.toAddress);
+
+      if (!isValidAddress) {
+        err++;
+        message = 'Invalid address';
       }
 
       if (err > 0) {
@@ -132,7 +156,7 @@ class LeasingModal extends Component {
 
     showError = (message) => {
       this.setState({
-        message: `Something wrong happened${message}!`
+        message: message
       });
 
       const textMessage = document.querySelector('.show-message');
@@ -211,7 +235,7 @@ class LeasingModal extends Component {
                                         noBorder
                                         txCenter
                                         value={this.state.toAddress}
-                                        placeholder={'clWhite3P2HNUd5VUPLMQkJ9stf...'} />
+                                        placeholder={'Address'} />
                                 </Textphrase>
                                 <LineText />
                             </DivText>
