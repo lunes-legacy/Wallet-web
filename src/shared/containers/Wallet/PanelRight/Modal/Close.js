@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 let Close = styled.div`
 	position: absolute;
-	right: 10px;
+	right: 15px;
 	top: 10px;
 	font-size: 1.8rem;
 	color: white;
