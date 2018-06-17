@@ -5,7 +5,11 @@ import { ButtonGreen } from "Components/Buttons";
 import { numeral } from 'Utils/numeral';
 import { InputText } from 'Components/forms/input-text';
 import { LeasingClass } from 'Classes/Leasing';
+import { WalletClass } from 'Classes/Wallet';
 import ModalConfirm from './confirm';
+
+// Lunes-lib
+import { networks } from  'lunes-lib';
 
 // REDUX
 import { connect } from 'react-redux';
@@ -37,14 +41,23 @@ class LeasingModal extends Component {
         super();
 
         this.state = {
-            message: ' - ',
+            message: '-<br />-',
             amount: 0,
             toAddress: '',
+            isValidAddress: false,
             openConfirmModal: false
         }
 
         this.setInputValue = this.setInputValue.bind(this);
         this.toggleConfirmModal = this.toggleConfirmModal.bind(this);
+    }
+
+    validateAddress = async (address) => {
+      const wallet = new WalletClass();
+      const network = networks.LNS;
+      const isValid = wallet.validateAddress(address, network)
+
+      return isValid;
     }
 
     startLeasing = () => {
@@ -53,17 +66,31 @@ class LeasingModal extends Component {
 
       if (this.state.amount < 1) {
         err++;
-        message = ' on LNS amount';
+        message = 'wrong LNS amount';
       }
 
       if (!this.state.toAddress.trim()) {
         err++;
-        message = ' on address to send';
+        message = 'wrong address to send';
+      }
+
+      if (this.state.amount > this.props.balance.LNS.total_amount) {
+        err++;
+        message = 'insufficient funds';
+      }
+
+      console.log(this.state.toAddress.trim());
+      const isValidAddress = await this.validateAddress(this.state.toAddress.trim());
+      if (!isValidAddress) {
+        err++;
+        message = 'address is invalid';
       }
 
       if (err > 0) {
         return this.showError(message);
       }
+
+      return this.showSuccess();
 
       const leaseData = {
         toAddress: this.state.toAddress.trim(),
@@ -127,7 +154,7 @@ class LeasingModal extends Component {
 
     showError = (message) => {
       this.setState({
-        message: `Something wrong happened${message}!`
+        message: `Something wrong happened: ${message}`
       });
 
       const textMessage = document.querySelector('.show-message');
@@ -152,6 +179,10 @@ class LeasingModal extends Component {
         textMessage.style.visibility = 'hidden';
         this.handleModal();
       }, 3000);
+    }
+
+    componentDidMount() {
+      this.validateAddress();
     }
 
      render() {
