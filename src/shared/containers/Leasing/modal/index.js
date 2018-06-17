@@ -140,6 +140,7 @@ class LeasingModal extends Component {
         let modalClass = document.querySelector(".modal-status");
         this.resetStateClose();
         return modalClass.style.display = "none";
+
     }
 
     toggleConfirmModal = () => {
