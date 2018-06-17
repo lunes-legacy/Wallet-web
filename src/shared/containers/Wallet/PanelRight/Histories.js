@@ -400,6 +400,7 @@ class Histories extends React.Component {
     const blockexplorerUrl = TESTNET ? 'https://blockexplorer-testnet.lunes.io/tx/' : 'https://blockexplorer.lunes.io/tx/3';
 
     return currentTxHistory.data.history.map((transaction, key) => {
+      if (transaction.otherParams.type !== 4) return null;
       let amount = numeral(transaction.nativeAmount / 100000000).format('0,0.00000000');
       let usdAmount = numeral( ( transaction.nativeAmount / 100000000 ) * currentCurrencies).format('$0,0.00')
 
