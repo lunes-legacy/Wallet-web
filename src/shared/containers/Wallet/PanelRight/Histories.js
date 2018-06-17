@@ -298,7 +298,7 @@ class Histories extends React.Component {
     let year = date.getFullYear();
 
 
-    return `${weekDay} ${day}/${month < 10 ? "0" + month : month}/${year}`;
+    return `${weekDay} ${month < 10 ? "0" + month : month}/${day}/${year}`;
   };
 
   parseTimeStampToDayAndMonth = timestamp => {
