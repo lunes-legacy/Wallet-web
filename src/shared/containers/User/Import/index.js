@@ -127,7 +127,7 @@ class Import extends React.Component {
       <div>
         <PanelLeft>
           <CustomLogo />
-          <Form margin={"10% auto"} width={"80%"}>
+          <Form margin={"10% auto 5% auto"} width={"80%"}>
             <FormGroup>
               <Row>
                 <P fontSize={"1.4rem"} margin={"0 0 1.0rem 0"} clWhite>
