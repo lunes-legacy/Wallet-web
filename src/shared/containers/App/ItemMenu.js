@@ -46,7 +46,7 @@ const CustomLink = styled(TmpLink)`
   &.active {
     opacity: 1;
     border-left: solid 8px #4cd566;
-    padding-left: 10px;
+    padding-left: 6px;
 
     -webkit-filter: none;
     filter: none;
