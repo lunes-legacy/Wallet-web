@@ -234,7 +234,7 @@ class PanelRight extends React.Component {
     // retornando os itens, de acordo com os dados no storage
     _renderLeasings = () => {
         if(!this.props.listLeasing){
-            return <GreenText txBold txCenter>NO LEASING TRANSACTION FOUND</GreenText>
+            return <GreenText txBold txCenter>NO LEASING TRANSACTIONS FOUND</GreenText>
         }
         if (this.props.listLeasing.length < 1) {
             return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
@@ -271,7 +271,7 @@ class PanelRight extends React.Component {
                         Leasing Transactions
                     </Col>
                     <Col s={12} m={4} l={4} css={`text-align:center;`}>
-                        Amount lent
+                        Amount
                     </Col>
                     <Col s={12} m={2} l={2} css={`text-align:center;`}>
                         Status
