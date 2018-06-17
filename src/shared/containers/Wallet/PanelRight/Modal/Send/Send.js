@@ -68,7 +68,6 @@ class Send extends React.Component {
 		super(props);
 
 		this.ref = {};
-		this.ref.wrapperQr = React.createRef();
 		this.ref.radioCoinAmount = React.createRef();
 		this.ref.coinAmount = React.createRef();
 		this.ref.sendButton = React.createRef();
@@ -78,6 +77,7 @@ class Send extends React.Component {
 		this.state = {
 			stateButtonSend: 'Enviar',
 			addressIsValid: true,
+			invalidAmount: false,
 			transferValues: {
 				coin: '',
 				brl: '',
@@ -106,7 +106,6 @@ class Send extends React.Component {
 	}
 
 	componentDidMount() {
-		this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
 		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
 		this.wrapper = ReactDOM.findDOMNode(this.ref.wrapper.current);
@@ -140,56 +139,6 @@ class Send extends React.Component {
 			}
 		}, () => {
 			console.log("STATE", this.state);
-		});
-	}
-	_estimateFee = () => {
-		//tests to here
-		let Fee = new FeeClass;
-		let coinToTest = 'LNS'; //just change here <<<<<
-		let ETHtestnetAddress = '0xf4af6cCE5c3e68a5D937FC257dDDb73ac3eF9B3A';
-		let BTCtestnetAddress = '2N7ieQWq3pgZCF7c1pbuAqZWrzDjMta1iAf';
-		let LNStestnetAddress = '37RThBWionPuAbr8H4pzZJM6HYP2U6Y9nLr';
-		let toAddress;
-		let fromAddress;
-
-		if (coinToTest === 'BTC') {
-			toAddress = 'mjUgrqgoYzuHFwTGoiCvtuYj4eD3tiXt9b';
-			fromAddress = BTCtestnetAddress;
-		} else if (coinToTest === 'ETH') {
-			toAddress = ETHtestnetAddress;
-			fromAddress = ETHtestnetAddress;
-		} else if (coinToTest === 'LNS') {
-			toAddress = LNStestnetAddress;
-			fromAddress = LNStestnetAddress;
-		}
-		const login = () => {
-			return users.login({ email: 'marcelo@gmail.com', password: '123123123' });
-		}
-		const calculateFee = (user) => {
-			return Promise.resolve(Fee.estimate({
-				network: coinToTest,
-				fromAddress: fromAddress,
-				toAddress: toAddress,
-				amount: '0.01',
-				accessToken: user.accessToken
-			}));
-		}
-		login().then(user => {
-			console.log('\x1b[32m Fiz o login \x1b[0m');
-			calculateFee(user).then((e) => {
-				this.setState({
-					fees: {
-						status: 'complete',
-						low: e.low.data.fee / 100000000,
-						medium: e.medium.data.fee / 100000000,
-						high: e.high.data.fee / 100000000
-					}
-				});
-			}).catch((e) => {
-				console.log("calculateFee error", e);
-			});
-		}).catch(e => {
-			console.error("loginError", e);
 		});
 	}
 
@@ -227,68 +176,6 @@ class Send extends React.Component {
 		let amount = parseFloat(this.props.balance.total_confirmed);
 		let result = amount * (parseInt(value) / 100);
 		this.coinAmount.value = result;
-		this.handleOnAmountChange();
-	}
-
-	handleOnAmountChange = (event) => {
-		let element;
-		if (!event) {
-			element = this.coinAmount;
-		} else {
-			element = event.currentTarget;
-		}
-		let type = element.getAttribute('data-amount-type');
-		let value = element.value;
-		let { coinPrice } = this.props;
-		let usdResult;
-		let coinResult;
-		let brlResult;
-		const BRLToCOIN = ({ amount, price }) => {
-			return amount / price;
-		}
-		const BRLToUSD = ({ amount, price }) => {
-			return amount / price;
-		}
-		const COINToUSD = ({ amount, price }) => {
-			return amount * price;
-		}
-		const COINToBRL = ({ amount, price }) => {
-			return amount * price;
-		}
-		const USDToBRL = ({ amount, price }) => {
-			return amount * price;
-		}
-		const USDToCOIN = ({ amount, price }) => {
-			return amount / price;
-		}
-		if (type === 'brl') {
-			usdResult = BRLToUSD({ amount: parseFloat(value), price: 3.3 });
-			coinResult = BRLToCOIN({ amount: parseFloat(value), price: coinPrice.brl });
-
-			if (!usdResult) { usdResult = 0; }
-			if (!coinResult) { coinResult = 0; }
-
-			this.usdAmount.value = usdResult.toFixed(2);
-			this.coinAmount.value = coinResult.toFixed(8);
-		} else if (type === 'coin') {
-			usdResult = COINToUSD({ amount: parseFloat(value), price: coinPrice.usd });
-			brlResult = COINToBRL({ amount: parseFloat(value), price: coinPrice.brl });
-
-			if (!usdResult) { usdResult = 0; }
-			if (!brlResult) { brlResult = 0; }
-
-			this.brlAmount.value = brlResult.toFixed(2);
-			this.usdAmount.value = usdResult.toFixed(2);
-		} else if (type === 'usd') {
-			brlResult = USDToBRL({ amount: parseFloat(value), price: 3.3 });
-			coinResult = USDToCOIN({ amount: parseFloat(value), price: coinPrice.usd });
-
-			if (!brlResult) { brlResult = 0; }
-			if (!coinResult) { coinResult = 0; }
-
-			this.brlAmount.value = brlResult.toFixed(2);
-			this.coinAmount.value = coinResult.toFixed(8);
-		}
 	}
 
 	animThisComponentIn = () => {
@@ -299,9 +186,11 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
-		let coinAmount = this.coinAmount.value;
+		let coinAmount = this.state.transferValues.coin;
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let data = await this.validateAddress(address, currentNetwork);
+
+		if (!coinAmount || !address) return;
 
 		if (!data) {
 			this.setState({ ...this.state, addressIsValid: false });
@@ -311,10 +200,6 @@ class Send extends React.Component {
 			this.setState({ ...this.state, addressIsValid: true });
 		}
 		
-		if (!coinAmount || !address) return;
-
-
- 
 
 		let dataSend = this.transactionSend(address, coinAmount);
 
@@ -329,6 +214,7 @@ class Send extends React.Component {
 		}, 500);
 		this.animThisComponentOut();
 	}
+
 	_arrangeFeeButtons = (currentSelected) => {
 		let buttons = document.querySelectorAll('.fee-button');
 		Array.from(buttons).map((button) => {
@@ -408,26 +294,35 @@ class Send extends React.Component {
 	convertCoins(value, type) {
 		let cryptoCurrencies = this.props.crypto;
 		let currentNetwork = this.props.wallet.currentNetwork;
-
-		let usdValue = cryptoCurrencies[currentNetwork.toUpperCase()].USD;
-		let brlValue = cryptoCurrencies[currentNetwork.toUpperCase()].BRL;
+		currentNetwork = currentNetwork.toUpperCase()
+		let balance = this.props.balance[currentNetwork].total_amount;
+		balance = parseFloat(balance.toFixed(8));
+		let usdValue = cryptoCurrencies[currentNetwork].USD;
+		let brlValue = cryptoCurrencies[currentNetwork].BRL;
+		let amountStatus = false;
 
 		switch (type) {
 			case 'coin':
+				parseFloat(value) + 0.01 > balance ? amountStatus = true : amountStatus = false;
+
 				this.setState({ 
-					...this.state, 
+					...this.state,
+					invalidAmount: amountStatus,
 					transferValues: { 
 						coin: value,
-						brl: brlValue * value ,
+						brl: brlValue * value,
 						usd: usdValue * value
-					}
+					},
 				});
-				
+
 				break;
 
 			case 'brl':
+				(parseFloat(value) / brlValue) + 0.01 > balance ? amountStatus = true : amountStatus = false;
+
 				this.setState({ 
 					...this.state, 
+					invalidAmount: amountStatus,
 					transferValues: { 
 						coin: value / brlValue,
 						brl: value,
@@ -438,15 +333,17 @@ class Send extends React.Component {
 				break;
 
 			case 'usd':
-				this.setState({ 
+				(parseFloat(value) / usdValue) + 0.01 > balance ? amountStatus = true : amountStatus = false;
+
+				this.setState({
 					...this.state, 
+					invalidAmount: amountStatus,
 					transferValues: { 
 						coin: value / usdValue, 
 						brl: (brlValue * value) / usdValue,
 						usd: value
 					} 
 				});
-
 				break;
 		
 			default:
@@ -486,61 +383,13 @@ class Send extends React.Component {
 									whiteTheme
 									txRight
 									noBorder
-									pattern="[0-9]*"
+									type={ 'number' }
 									value = { this.state.transferValues.coin }
 									onChange = { (input) => { this.convertCoins(input.target.value, 'coin') } }
-									onClick = { this.clearFields() }
+									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
 									data-amount-type={'coin'}
 									className={'input-amount coin'}
 									placeholder={'0.00000000'} />
-							</Row>
-							<Row>
-								<WrapRadio>
-									<InputRadio
-										type={'radio'}
-										onChange={this.arrangeAmountType}
-										value={25}
-										name={'percent'}
-										unique={'true'}
-										onClick={this.handleOnPercentChange}
-									/>
-									<RadioCheckmark />
-									<LabelRadio clWhite >25%</LabelRadio>
-								</WrapRadio>
-								<WrapRadio>
-									<InputRadio
-										type={'radio'}
-										onChange={this.arrangeAmountType}
-										value={50}
-										name={'percent'}
-										unique={'true'}
-										onClick={this.handleOnPercentChange}
-									/>
-									<RadioCheckmark />
-									<LabelRadio clWhite >50%</LabelRadio>
-								</WrapRadio>
-								<WrapRadio>
-									<InputRadio
-										type={'radio'}
-										value={75}
-										name={'percent'}
-										unique={'true'}
-										onClick={this.handleOnPercentChange}
-									/>
-									<RadioCheckmark />
-									<LabelRadio clWhite >75%</LabelRadio>
-								</WrapRadio>
-								<WrapRadio>
-									<InputRadio
-										type={'radio'}
-										value={100}
-										name={'percent'}
-										unique={'true'}
-										onClick={this.handleOnPercentChange}
-									/>
-									<RadioCheckmark />
-									<LabelRadio clWhite >100%</LabelRadio>
-								</WrapRadio>
 							</Row>
 						</Col>
 					</Row>
@@ -580,11 +429,11 @@ class Send extends React.Component {
 									whiteTheme
 									txRight
 									noBorder
-									type={'text'}
+									type={ 'number' }
 									ref={this.ref.brlAmount}
 									onChange={ (input) => { this.convertCoins(input.target.value, 'brl') } }
-									onClick = { this.clearFields() }
 									value={ this.state.transferValues.brl }
+									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
 									className={'input-amount brl'}
 									data-amount-type={'brl'}
 									placeholder={'BRL 0.00'} />
@@ -597,11 +446,11 @@ class Send extends React.Component {
 									noBorder
 									grayTheme
 									phMediumFont
-									type={'text'}
+									type={ 'number' }
 									ref={this.ref.usdAmount}
 									value={ this.state.transferValues.usd }
 									onChange = { (input) => { this.convertCoins(input.target.value, 'usd') } }
-									onClick = { this.clearFields() }
+									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
 									className={'input-amount usd'}
 									data-amount-type={'usd'}
 									placeholder={'USD 0.00'} />
@@ -614,7 +463,7 @@ class Send extends React.Component {
 					<Row css={ThirdRowCss}>
 						<Col s={12} m={12} l={12}>
 							<InputText
-								style={ this.state.addressIsValid ? { color: "white" } : { color: "red" } }
+								style={ this.state.addressIsValid ? { color: "red" } : { color: "white" } }
 								whiteTheme
 								normal
 								noBorder
@@ -633,13 +482,14 @@ class Send extends React.Component {
 					</Row>
 				</Col>
 				<Col defaultAlign={'center'} s={6} m={3} l={2}>
+					{ console.log('state', this.state.invalidAmount) }
 					<Row>
 						<Button
-							style={ { 'backgroundColor': style.coinsColor[currentNetwork] } }
+							style={ this.state.invalidAmount ? { 'backgroundColor': style.disabledText } : { 'backgroundColor': style.coinsColor[currentNetwork] }}
 							css={SendButtonCss}
 							blockCenter
 							clWhite
-							onClick={ (input) => { this.handleSend(input.target.value) }}
+							onClick={ this.state.invalidAmount ? () => { alert("Invalid Amount") } : (input) => { this.handleSend(input.target.value) } }
 							innerRef={ this.ref.sendButton }>
 							Enviar
 						</Button>
