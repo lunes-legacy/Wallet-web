@@ -1,16 +1,12 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom'
 import styled from 'styled-components';
 import styles from 'Shared/style-variables';
-import { NavLink as TmpLink } from 'react-router-dom';
 import { TextBase } from 'Components/TextBase';
-import {ButtonGreen} from "Components/Buttons";
+import { ButtonGreen } from "Components/Buttons";
 import Modal from 'Components/Modal';
-//REDUX
-import { connect } from "react-redux";
-import { setWalletInfo } from 'Redux/actions';
+import ItemMenuApp from "./ItemMenu";
+import CookieClass from 'Classes/Cookie';
 
-import CookieClass        from 'Classes/Cookie';
 
 const StyledPanelLeft = styled.div`
   width: 65px;
@@ -27,19 +23,6 @@ const StyledPanelLeft = styled.div`
   @media (${styles.media.tablet2}) {
     width: 160px;
   }
-`;
-
-const WrapLink = styled.div`
-  display: block; //flex
-  flex-wrap: nowrap;
-	justify-content: flex-start;
-  width: 100%;
-`;
-
-const Icon = styled.img`
-	width: 25px;
-	height: 25px;
-  transition: .2s;
 `;
 
 const CustomText = styled.div`
@@ -69,41 +52,6 @@ const CustomTextPopup = styled.div`
   letter-spacing: 0.5px;
 `;
 
-const CustomLink = styled(TmpLink) `
-  ${TextBase};
-
-  color: white;
-  text-decoration: none;
-  transition-delay: .2s;
-  display: flex;
-  align-items: center;
-  transition: .2s;
-  opacity: 0.3;
-
-  border-left: solid 8px rgba(0,0,0,0);
-  padding-left: 10px;
-  height: 56px;
-
-  -webkit-filter: grayscale(100%);
-  filter: grayscale(100%);
-
-  &:hover {
-    opacity: 1;
-
-    -webkit-filter: none;
-    filter: none;
-  }
-
-  &.active {
-    opacity: 1;
-    border-left: solid 8px #4cd566;
-    padding-left: 10px;
-
-    -webkit-filter: none;
-    filter: none;
-  }
-`;
-
 const LinkLogout = styled.div`
   ${TextBase};
 
@@ -124,55 +72,37 @@ const LinkLogout = styled.div`
   position: absolute;
   top: 100%;
   margin-top:-56px;
-
   margin-left: 20px;
-
   cursor: pointer;
 `;
 
-
-class ItemMenuApp extends React.Component {
-  render() {
-    return (
-      <div>
-        <WrapLink>
-          <CustomLink {...this.props}>
-            <Icon src={'/img/app_panel_left/' + this.props.icon} alt={this.props.label} />
-            <CustomText size={'1.4rem'} >{this.props.label}</CustomText>
-          </CustomLink>
-        </WrapLink>
-      </div>
-    )
-  }
-}
-
 class PanelLeft extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    //
+
     this.state = {
-      'menuActive': 'home',
-      isOpenSignout: false
+      isOpenSignout: false,
+      menuActive: "home"
     };
   }
 
   openModalSignout = () => {
-    this.setState({isOpenSignout:!this.state.isOpenSignout});
+    this.setState({ isOpenSignout: !this.state.isOpenSignout });
+  }
+
+
+  handleMenuActive(linkName) {
+
+    this.setState({
+      menuActive: linkName.toLowerCase()
+    });
   }
 
   logoutAction = () => {
-    // apagar o cookie
-    let cookie = new CookieClass;
-    cookie.set({name: 'user', value: null, expires: -1});
 
-    // apagar o redux
-    this.props.setWalletInfo({});
-
-    // apagar o localstorage
-    localStorage.removeItem('WALLET-INFO');
-    localStorage.removeItem('ACCESS-TOKEN');
-
-    // redirecionar para login
+    let cookie = new CookieClass();
+    cookie.set({ name: 'user', value: null, expires: -1 });
+    localStorage.clear();
     return this.props.history.push('/');
   }
 
@@ -183,18 +113,21 @@ class PanelLeft extends React.Component {
           label="Start"
           to="/app/home"
           icon="ic_home.svg"
+          onClick={() => this.handleMenuActive("home")}
           activeClassName="active" />
 
         <ItemMenuApp
           label="Wallet"
           to="/app/wallet"
           icon="ic_wallet.svg"
+          onClick={() => this.handleMenuActive("wallet")}
           activeClassName="active" />
 
         <ItemMenuApp
           label="Leasing"
           to="/app/leasing"
           icon="ic_leasing.svg"
+          onClick={() => this.handleMenuActive("leasing")}
           activeClassName="active" />
 
         {/*<ItemMenuApp
@@ -207,34 +140,39 @@ class PanelLeft extends React.Component {
           label="Privacy"
           to="/app/privacy"
           icon="ic_privacy.svg"
+          onClick={() => this.handleMenuActive("privacy")}
           activeClassName="active" />
 
         {/* <ItemMenuApp
           label="Recharge"
           to="/app/recharge"
           icon="ic_recharge.svg"
-          activeClassName="active" /> */}
+          onClick={() => this.handleMenuActive("recharge")}
+                    activeClassName="active" /> */}
 
         {/* <ItemMenuApp
           label="Boleto"
           to="/app/ticket"
           icon="ic_barcode.svg"
-          activeClassName="active" /> */}
+          onClick={() => this.handleMenuActive("ticket")}
+                    activeClassName="active" /> */}
 
         {/* <ItemMenuApp
           label="Compras"
           to="/app/buy"
           icon="ic_buy.svg"
-          activeClassName="active" /> */}
+          onClick={() => this.handleMenuActive("buy")}
+                    activeClassName="active" />*/}
 
         {/* <ItemMenuApp
           label="Portfólio"
           to="/app/portfolio"
           icon="ic_portfolio.svg"
-          activeClassName="active" /> */}
+          onClick={() => this.handleMenuActive("portfolio")}
+                    activeClassName="active" /> */}
 
 
-        <LinkLogout onClick={()=>this.openModalSignout()}>
+        <LinkLogout onClick={() => this.openModalSignout()}>
           <CustomText size={'1.4rem'}>Sign out</CustomText>
         </LinkLogout>
         {
@@ -245,30 +183,17 @@ class PanelLeft extends React.Component {
             width={'40%'}
             header={''}
             headerAlign={'justify'}
-            text={<div>
-              <CustomTextPopup>If you sign out, the next time you log in the seed will be asked.</CustomTextPopup>
-              <ButtonGreen onClick={()=>this.logoutAction()}width="70%" margin={"3rem auto 3rem auto"} fontSize={'1rem'}>Ok, I want to sign out</ButtonGreen>
+            text={
+              <div>
+                <CustomTextPopup>If you sign out, the next time you log in the seed will be asked.</CustomTextPopup>
+                <ButtonGreen onClick={() => this.logoutAction()} width="70%" margin={"3rem auto 3rem auto"} fontSize={'1rem'}>Ok, I want to sign out</ButtonGreen>
               </div>}
           />
         }
-
       </StyledPanelLeft>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return { };
-};
+export default PanelLeft;
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setWalletInfo: data => {
-      dispatch(setWalletInfo(data));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(PanelLeft);
-
-// export default PanelLeft;

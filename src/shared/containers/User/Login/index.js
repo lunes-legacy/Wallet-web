@@ -8,7 +8,7 @@ import { encrypt } from '../../../utils/crypt'
 
 //REDUX
 import { connect } from "react-redux";
-import { userLogin } from 'Redux/actions';
+import { userLogin, userClear, setWalletInfo } from 'Redux/actions';
 
 //COMPONENTS
 import { Form } from "Components/Form";
@@ -68,6 +68,7 @@ const Paragraph = styled.div`
   font-size: 1.5rem;
 `;
 class Login extends React.Component {
+
   componentDidUpdate() {
     this.handleStatus();
   }
@@ -77,6 +78,11 @@ class Login extends React.Component {
     let accessToken = localStorage.getItem('ACCESS-TOKEN');
     if (walletInfo && accessToken) {
       this.props.history.push('/app/home')
+    } else if (walletInfo) {
+      this.props.history.push('/import')
+    } else {
+      this.props.userClear();
+      this.props.setWalletInfo({});
     }
   }
 
@@ -185,6 +191,7 @@ class Login extends React.Component {
   }
 }
 
+
 const mapStateToProps = state => {
   return {
     user: state.user,
@@ -193,8 +200,14 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
   return {
+    setWalletInfo: data => {
+      dispatch(setWalletInfo(data));
+    },
     userLogin: (email, password) => {
       dispatch(userLogin(email, password));
+    },
+    userClear: () => {
+      dispatch(userClear());
     },
   };
 };
