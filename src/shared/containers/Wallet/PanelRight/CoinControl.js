@@ -149,8 +149,8 @@ class CoinControl extends React.Component {
     let usdCurrent = crypto[currentNetwork.toUpperCase()].USD
     let brlCurrent = crypto[currentNetwork.toUpperCase()].BRL
     let coinAmount = this.props.balance[currentNetwork.toUpperCase()].total_confirmed;
-    let usdCoinAmount = numeral(usdCurrent * coinAmount).format('$0,0.00');
-    let brlCoinAmount = numeral(brlCurrent * coinAmount).format('$0,0.00');
+    let usdCoinAmount = numeral(usdCurrent * coinAmount).format('$ 0,0.00');
+    let brlCoinAmount = "R"+numeral(brlCurrent * coinAmount).format('$ 0,0.00');
 
     return (
       <StyledCoinControl>
