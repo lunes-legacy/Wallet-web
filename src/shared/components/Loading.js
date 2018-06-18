@@ -12,5 +12,6 @@ export let Loading = styled.div`
 	animation: ${rotationLoading} 1s linear infinite;
 	width: ${props => props.size ? props.size : '75px'};
 	height: ${props => props.size ? props.size : '75px'};
-  margin: 0 auto;
+	margin: 0 auto;
+	display: ${props => props.hide === false ? 'none' : 'block' };
 `;

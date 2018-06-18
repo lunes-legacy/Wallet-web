@@ -2,16 +2,13 @@ import React, { Component } from "react";
 
 import { Col, Row } from "Components/index";
 import { ButtonGreen } from "Components/Buttons";
+import { Loading } from 'Components/Loading';
 import { numeral } from 'Utils/numeral';
 import { InputText } from 'Components/forms/input-text';
 import { LeasingClass } from 'Classes/Leasing';
 import { WalletClass } from 'Classes/Wallet';
-import ModalConfirm from './confirm';
 
 import { TESTNET } from 'Config/constants';
-
-// Lunes-lib
-import { networks } from 'lunes-lib';
 
 // REDUX
 import { connect } from 'react-redux';
@@ -49,7 +46,7 @@ class LeasingModal extends Component {
             isValidAddress: false,
             openConfirmModal: false,
             buttonState: true,
-
+            loading: false,
         }
 
         this.setInputValue = this.setInputValue.bind(this);
@@ -80,9 +77,12 @@ class LeasingModal extends Component {
         let err = 0;
         let message = '';
 
+        this.setState({ ...this.state, loading: true });
+
         if (!this.state.toAddress) {
             err++;
             message = 'Invalid address';
+            this.setState({ ...this.state, loading: false });
             return this.showError(message);
         }
 
@@ -104,6 +104,7 @@ class LeasingModal extends Component {
         }
 
         if (err > 0) {
+            this.setState({ ...this.state, loading: false });
             return this.showError(message);
         }
 
@@ -122,12 +123,13 @@ class LeasingModal extends Component {
         });
 
         const leasing = new LeasingClass();
+
         leasing.startLease(leaseData)
             .then(res => {
                 if (res.code) {
                     throw res;
                 }
-
+                this.setState({ ...this.state, loading: false });
                 return this.showSuccess();
             }).catch(err => {
                 this.showError();
@@ -147,13 +149,6 @@ class LeasingModal extends Component {
         this.setState(prevState => ({
             openConfirmModal: !prevState.openConfirmModal
         }));
-    }
-
-    // Atualiza o valor de acordo com percentual informado
-    leasingPercentCalculator = value => {
-        this.setState({
-            amount: (this.props.balance.LNS.total_confirmed * value) / 100
-        });
     }
 
     // Atualiza o valor percentual
@@ -196,7 +191,7 @@ class LeasingModal extends Component {
         setTimeout(() => {
             textMessage.style.visibility = 'hidden';
             this.handleModal();
-        }, 3000);
+        }, 1000);
     }
 
     render() {
@@ -234,14 +229,6 @@ class LeasingModal extends Component {
                             </Row>
 
                             <Row>
-                                <DivNumber>
-                                    <NumberPorcent marginRight={"35%"} clNormalGreen onClick={() => this.leasingPercentCalculator(25)}> 25%</NumberPorcent>
-                                    <NumberPorcent marginRight={"27%"} clMostard onClick={() => this.leasingPercentCalculator(50)}>50%</NumberPorcent>
-                                    <NumberPorcent clNormalRed onClick={() => this.leasingPercentCalculator(100)}>100%</NumberPorcent>
-                                    <Line />
-                                </DivNumber>
-                            </Row>
-                            <Row>
                                 <DivText>
                                     <TextLeft clWhite>Mining node address</TextLeft>
                                     <Textphrase>
@@ -268,7 +255,8 @@ class LeasingModal extends Component {
                             </Row>
                             <Row>
                                 <DivButton>
-                                    <Message className="show-message" size={'1.4rem'} txCenter margin={'-1rem 0 1rem 0'}>{this.state.message}</Message>
+                                    <Loading hide={this.state.loading} size={"25px"} />
+                                    <Message txBold txCenter className="show-message" size={'1.6rem'} margin={'-1rem 0 1rem 0'}>{this.state.message}</Message>
                                     <ButtonGreen onClick={this.state.buttonState ? this.startLeasing : () => { }}>START LEASING</ButtonGreen>
                                 </DivButton>
                             </Row>
