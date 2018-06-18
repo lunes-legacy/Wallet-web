@@ -81,8 +81,7 @@ class PanelLeft extends React.Component {
     super(props);
 
     this.state = {
-      isOpenSignout: false,
-      menuActive: "home"
+      isOpenSignout: false, 
     };
   }
 
@@ -90,14 +89,7 @@ class PanelLeft extends React.Component {
     this.setState({ isOpenSignout: !this.state.isOpenSignout });
   }
 
-
-  handleMenuActive(linkName) {
-
-    this.setState({
-      menuActive: linkName.toLowerCase()
-    });
-  }
-
+ 
   logoutAction = () => {
 
     let cookie = new CookieClass();
@@ -112,22 +104,19 @@ class PanelLeft extends React.Component {
         <ItemMenuApp
           label="Home"
           to="/app/home"
-          icon="ic_home.svg"
-          onClick={() => this.handleMenuActive("home")}
+          icon="ic_home.svg" 
           activeClassName="active" />
 
         <ItemMenuApp
           label="Wallet"
           to="/app/wallet"
-          icon="ic_wallet.svg"
-          onClick={() => this.handleMenuActive("wallet")}
+          icon="ic_wallet.svg" 
           activeClassName="active" />
 
         <ItemMenuApp
           label="Leasing"
           to="/app/leasing"
-          icon="ic_leasing.svg"
-          onClick={() => this.handleMenuActive("leasing")}
+          icon="ic_leasing.svg" 
           activeClassName="active" />
 
         {/*<ItemMenuApp
@@ -140,7 +129,6 @@ class PanelLeft extends React.Component {
           label="Privacy"
           to="/app/privacy"
           icon="ic_privacy.svg"
-          onClick={() => this.handleMenuActive("privacy")}
           activeClassName="active" />
 
         {/* <ItemMenuApp
@@ -177,8 +165,9 @@ class PanelLeft extends React.Component {
         </LinkLogout>
         {
           this.state.isOpenSignout &&
-          <Modal
+          <Modal            
             isOpen={true}
+            onClose={this.openModalSignout}
             height={'30%'}
             width={'40%'}
             header={''}
@@ -187,7 +176,8 @@ class PanelLeft extends React.Component {
               <div>
                 <CustomTextPopup>If you sign out, the next time you log in the seed will be asked.</CustomTextPopup>
                 <ButtonGreen onClick={() => this.logoutAction()} width="70%" margin={"3rem auto 3rem auto"} fontSize={'1rem'}>Ok, I want to sign out</ButtonGreen>
-              </div>}
+              </div>
+            }
           />
         }
       </StyledPanelLeft>

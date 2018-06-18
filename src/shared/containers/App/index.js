@@ -54,7 +54,18 @@ let WrapLogo = styled.div`
 `;
 let Logo = styled.img`
   width: 100px;
+  padding-top: 0.5rem;
 `;
+let Version = styled.div`  
+  border-left: 2px solid #4CD566;
+  float: right;
+  margin-left: 1rem;
+  padding: 1rem;
+  color: #4CD566;
+  font-size: 20px;  
+  font-weight: 700;
+`;
+
 let WrapBalance = styled.div`
   margin-left: auto;
   padding: 0 50px 0 50px;
@@ -116,6 +127,7 @@ class App extends React.Component {
         <Header>
           <WrapLogo>
             <Logo src={"/img/logo.svg"} />
+            <Version> BETA </Version>
           </WrapLogo>
           <WrapBalance>
             <Balance>
@@ -140,17 +152,17 @@ class App extends React.Component {
 
           <PanelRight>
             <Switch>
-              <Route exact path={"/app/"}           component={Home} />
-              <Route exact path={"/app/home/"}      component={Home} />
+              <Route exact path={"/app/"} component={Home} />
+              <Route exact path={"/app/home/"} component={Home} />
               <Route exact path={"/app/portfolio/"} component={Portfolio} />
-              <Route exact path={"/app/wallet/"}    component={Wallet} />
-              <Route exact path={"/app/recharge/"}  component={Recharge} />
-              <Route exact path={"/app/ticket/"}    component={Ticket} />
-              <Route exact path={"/app/buy"}        component={Buy} />
-              <Route exact path={"/app/leasing"}    component={Leasing} />
+              <Route exact path={"/app/wallet/"} component={Wallet} />
+              <Route exact path={"/app/recharge/"} component={Recharge} />
+              <Route exact path={"/app/ticket/"} component={Ticket} />
+              <Route exact path={"/app/buy"} component={Buy} />
+              <Route exact path={"/app/leasing"} component={Leasing} />
               <Route exact path={"/app/configuration"} component={Configuration} />
-              <Route exact path={"/app/privacy"}    component={Privacy} />
-              <Route exact path={"**"}              component={NotFound} />
+              <Route exact path={"/app/privacy"} component={Privacy} />
+              <Route exact path={"**"} component={NotFound} />
             </Switch>
           </PanelRight>
         </Panels>

@@ -6,7 +6,7 @@ import { TextBase, H1 } from "Components";
 //import {ButtonGreen} from "Components/Buttons";
 import { Col, Row } from 'Components/index';
 import { Loading } from 'Components/Loading';
-import {timestampToDate} from 'Utils/date';
+import { timestampToDate } from 'Utils/date';
 import { encrypt, decrypt } from '../../../utils/crypt';
 // import { LeasingClass } from 'Classes/Leasing'; // refatorar para usar a classe
 
@@ -14,8 +14,9 @@ import { encrypt, decrypt } from '../../../utils/crypt';
 import { connect } from 'react-redux';
 import {
     getLeasingHistory,
-    cancelLeasing } from 'Redux/actions';
-import {numeral} from 'Utils/numeral';
+    cancelLeasing
+} from 'Redux/actions';
+import { numeral } from 'Utils/numeral';
 
 
 const StyledPanelRight = styled.div`
@@ -59,7 +60,7 @@ const DateText = styled.div`
     display:block;
 
     ${props => {
-        if(!props.status){
+        if (!props.status) {
             return `color: ${style.lightPurple}`;
         }
     }};
@@ -72,7 +73,7 @@ const HashText = styled.div`
     margin-top: .5rem;
 
     ${props => {
-        if(!props.status){
+        if (!props.status) {
             return `color: ${style.lightPurple}`;
         }
     }};
@@ -82,12 +83,20 @@ const GreenText = styled.div`
     ${TextBase}
     font-size: 1.2rem;
     display:block;
-
+    
     ${props => {
-        if(!props.status){
+        if (!props.status) {
             return `color: ${style.lightPurple}`;
         }
     }};
+`;
+
+const Noleasingtext = styled.div`
+    ${TextBase}
+    font-size: 1.2rem;
+    display:block;
+    color: white;
+  
 `;
 
 const CancelBox = styled.div`
@@ -104,7 +113,7 @@ const CancelText = styled.div`
     cursor: pointer;
 
     ${props => {
-        if(!props.status){
+        if (!props.status) {
             return `color: ${style.lightPurple}`;
         }
     }};
@@ -159,7 +168,7 @@ const BoxLineLeasing = Row.extend`
 `;
 
 class PanelRight extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         let wallet_info = {}
         this.cancelLeasing = this.cancelLeasing.bind(this);
@@ -193,35 +202,35 @@ class PanelRight extends React.Component {
 
         this.props.cancelLeasing(payload);
 
-        alert("CANCELED: "+key);
+        alert("CANCELED: " + key);
         this.searchLeasing();
     }
 
     // normalizar status do leasing, que hoje é 8 ou 9
     _normalizeStatus = status => {
-        if(status==="active"){
+        if (status === "active") {
             return true
-        }else{
+        } else {
             return false
         }
     }
 
     // retornando o botao de cancelar, com condicional de status
     _buttonCancel = (status, id, type) => {
-        if(type===8){
-            if(status){
+        if (type === 8) {
+            if (status) {
                 return (
                     <CancelBox>
-                        <CancelText clNormalGreen txCenter status={status} onClick={()=>this.cancelLeasing(id)}>
-                            <IconActive /><br/>
+                        <CancelText clNormalGreen txCenter status={status} onClick={() => this.cancelLeasing(id)}>
+                            <IconActive /><br />
                             CANCEL
                         </CancelText>
                     </CancelBox>
                 );
-            }else{
+            } else {
                 return (
-                    <CancelText clNormalRed txCenter status={status} onClick={()=>{}}>
-                        <Icon src={'/img/leasing_panel_right/icon-power-off.svg'} /><br/>
+                    <CancelText clNormalRed txCenter status={status} onClick={() => { }}>
+                        <Icon src={'/img/leasing_panel_right/icon-power-off.svg'} /><br />
                         CANCELED
                     </CancelText>
                 );
@@ -231,12 +240,12 @@ class PanelRight extends React.Component {
 
     // retornando os itens, de acordo com os dados no storage
     _renderLeasings = () => {
-        if(!this.props.listLeasing){
-            return <GreenText txBold txCenter>NENHUM LEASING ENCONTRADO</GreenText>
+        if (!this.props.listLeasing) {
+            return <Noleasingtext txBold txCenter>NO LEASING FOUND</Noleasingtext>
         }
         if (this.props.listLeasing.length < 1) {
             return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
-        }else{
+        } else {
             return this.props.listLeasing.map((obj, key) => {
 
                 let nativeAmount = numeral(obj.nativeAmount / 100000000).format('0,0.00000000');
