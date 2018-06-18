@@ -92,12 +92,13 @@ const render = (html, styleTags) => {
 		<html>
 			<head>
 				<meta name="viewport" content="width=device-width, initial-scale=1">
+				<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico" />
 				<link rel="stylesheet" type="text/css" href="/css/style.css"/>
+				<title> Lunes - Web Wallet </title>
 				${styleTags}
 			</head>
 			<body>
 				<div class="root">${html}</div>
-
 				<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 				<script src="/js/bundle.js" refer></script>
 			</body>
