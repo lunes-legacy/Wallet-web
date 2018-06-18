@@ -177,8 +177,9 @@ class PanelLeft extends React.Component {
         </LinkLogout>
         {
           this.state.isOpenSignout &&
-          <Modal
+          <Modal            
             isOpen={true}
+            onClose={this.openModalSignout}
             height={'30%'}
             width={'40%'}
             header={''}
