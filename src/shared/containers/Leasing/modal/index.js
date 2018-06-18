@@ -269,7 +269,7 @@ class LeasingModal extends Component {
                             <Row>
                                 <DivButton>
                                     <Message className="show-message" size={'1.4rem'} txCenter margin={'-1rem 0 1rem 0'}>{this.state.message}</Message>
-                                    <ButtonGreen onClick={this.state.buttonState ? this.startLeasing : () => { }}>START LEASING</ButtonGreen>
+                                    <ButtonGreen onClick={this.state.buttonState ? this.startLeasing : () => { }}>SEND LEASING</ButtonGreen>
                                 </DivButton>
                             </Row>
                         </Col>
