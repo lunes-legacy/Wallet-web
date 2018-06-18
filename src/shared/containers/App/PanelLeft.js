@@ -133,6 +133,7 @@ const LinkLogout = styled.div`
 
 class ItemMenuApp extends React.Component {
   render() {
+    console.warn("HEYYYYY:::::",this.props);
     return (
       <div>
         <WrapLink>
@@ -270,6 +271,6 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PanelLeft);
+export default connect(mapStateToProps, mapDispatchToProps, null, { pure: false })(PanelLeft);
 
 //export default PanelLeft;
