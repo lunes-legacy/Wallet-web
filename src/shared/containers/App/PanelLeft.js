@@ -133,7 +133,6 @@ const LinkLogout = styled.div`
 
 class ItemMenuApp extends React.Component {
   render() {
-    console.warn("HEYYYYY:::::",this.props);
     return (
       <div>
         <WrapLink>

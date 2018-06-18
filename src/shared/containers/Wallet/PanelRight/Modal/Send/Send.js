@@ -159,6 +159,7 @@ class Send extends React.Component {
 				networkFees: undefined //it is optional
 			}
 		}
+		console.warn("SEND PROPS::", props);
 	}
 
 	componentDidMount() {
