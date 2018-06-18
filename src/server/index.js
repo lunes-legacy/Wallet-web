@@ -14,8 +14,11 @@ import { errorPattern } from 'Utils/functions';
 import { store }        from 'Redux/stores';
 import App              from 'Containers/App/index';
 import AppSwitcher      from 'Containers/AppSwitcher';
+import helmet           from 'helmet';
 
 const app = express();
+
+app.use(helmet());
 
 app.use(express.static('public'));
 
