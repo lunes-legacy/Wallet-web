@@ -1,11 +1,13 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import Carousel from "nuka-carousel";
+
 
 let Img = styled.img`
-  width: 100%;
+  width: 65%;
   height: auto;
   padding: 8px;
+  margin-left: 14%;
+ 
 `;
 
 let DivCarrousel = styled.div`
@@ -53,7 +55,9 @@ let DivParagraph = styled.div`
 let DivImage = styled.div`
   width: 100%;
   height: auto;
-  padding-right: 20%;
+  padding-right: 15%;
+
+ 
 `;
 class Image extends React.Component {
   handleChange = index => {
@@ -67,7 +71,7 @@ class Image extends React.Component {
       //   </Carousel>
       // </DivCarrousel>
       <DivImage>
-        <Img src={"/img/user_panel_right/lunio-welcome.webp"} />
+        <Img src={"/img/user_panel_right/lunio-welcome.png"} />
         <DivParagraph>
           <P>Welcome to the first multiservice wallet in the world. <br />We offer an innovative and intelligent financial ecosystem with unique features and modern design.</P>
         </DivParagraph>
