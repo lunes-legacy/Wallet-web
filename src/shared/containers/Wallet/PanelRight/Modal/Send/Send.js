@@ -1,4 +1,5 @@
 import { FeeClass }     from 'Classes/crypto';
+import { errorPattern } from 'Utils/functions';
 import { users, coins } from 'lunes-lib';
 import React            from 'react';
 import ReactDOM         from 'react-dom';
@@ -159,11 +160,9 @@ class Send extends React.Component {
 				networkFees: undefined //it is optional
 			}
 		}
-		console.warn("SEND PROPS::", props);
 	}
 
 	componentDidMount() {
-		console.warn("this>PROPS <<<><<><>",this.props);
 		this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
 		this.coinAmount = ReactDOM.findDOMNode(this.ref.coinAmount.current);
@@ -222,8 +221,6 @@ class Send extends React.Component {
 			...this.state,
 			networkFees
 		}, () => {
-			console.warn("SET NETWORKFEES::::", this.state);
-			console.warn('THIS>PROPS:::',this.props);
 			this._setFees();
 		});
 	}
@@ -245,7 +242,6 @@ class Send extends React.Component {
 			amount: '0.01',
 			accessToken: user.accessToken
 		})
-		console.warn("FEES:::",fees);
 		this.setState({
 			choosenFee: fees.low.data.fee / 100000000,
 			fees: {
@@ -254,8 +250,6 @@ class Send extends React.Component {
 				medium: fees.medium.data.fee / 100000000,
 				high:   fees.high.data.fee   / 100000000
 			}
-		}, () => {
-			console.warn("SET_ESTIMATE_FEE::::",this.state);
 		});	
 	}
 
@@ -320,7 +314,7 @@ class Send extends React.Component {
 		} else {
 			element = event.currentTarget;
 		}
-		let type = element.getAttribute('data-amount-type');
+		let type  = element.getAttribute('data-amount-type');
 		let value = element.value;
 		let { coinPrice } = this.props;
 		let usdResult;
@@ -366,10 +360,10 @@ class Send extends React.Component {
 			brlResult = USDToBRL({ amount: parseFloat(value), price: 3.3 });
 			coinResult = USDToCOIN({ amount: parseFloat(value), price: coinPrice.usd });
 
-			if (!brlResult) { brlResult = 0; }
+			if (!brlResult)  { brlResult  = 0; }
 			if (!coinResult) { coinResult = 0; }
 
-			this.brlAmount.value = brlResult.toFixed(2);
+			this.brlAmount.value  = brlResult.toFixed(2);
 			this.coinAmount.value = coinResult.toFixed(8);
 		}
 	}
@@ -422,6 +416,7 @@ class Send extends React.Component {
 		});
 		currentSelected.setAttribute('state', 'selected');
 		currentSelected.style.borderBottom = `5px solid ${style.normalGreen}`;
+		this.props.setterWalletSend({choosenFee: currentSelected.value});
 	}
 
 	handleClickFee = (event) => {
@@ -453,7 +448,9 @@ class Send extends React.Component {
 		);
 	}
 	_renderFeeTotal = () => {
-		if (this.state.fees.status === 'loading') {
+		let { currentNetwork } = this.props.component_wallet;
+		let { choosenFee }     = this.props.component_wallet.send;
+		if (this.state.fees.status === 'loading' || !choosenFee) {
 			return <Loading />;
 		}
 		return (
@@ -464,6 +461,12 @@ class Send extends React.Component {
 	}
 
 	transactionSend = async (address, coinAmount) => {
+		let { currentNetwork } = this.props.component_wallet;
+		let { choosenFee }     = this.props.component_wallet.send;
+		if (!choosenFee || !currentNetwork) {
+			console.error(errorPattern(`let currentNetwork=${currentNetwork}; let choosenFee=${choosenFee}; transactionSend function forbided by one of these variables`,500,'TRANSACTIONSEND_ERROR'));
+			return;
+		}
 		const wallet        = new WalletClass();
 		let seedData        = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
 		let tokenData       = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
