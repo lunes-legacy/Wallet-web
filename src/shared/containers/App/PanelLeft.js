@@ -188,7 +188,8 @@ class PanelLeft extends React.Component {
               <div>
                 <CustomTextPopup>If you sign out, the next time you log in the seed will be asked.</CustomTextPopup>
                 <ButtonGreen onClick={() => this.logoutAction()} width="70%" margin={"3rem auto 3rem auto"} fontSize={'1rem'}>Ok, I want to sign out</ButtonGreen>
-              </div>}
+              </div>
+            }
           />
         }
       </StyledPanelLeft>

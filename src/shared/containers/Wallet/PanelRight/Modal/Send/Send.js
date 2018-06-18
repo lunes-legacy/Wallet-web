@@ -238,22 +238,22 @@ class Send extends React.Component {
 	// 	);
 	// }
 
-	// _renderFeeTotal = () => {
-	// 	let currentNetwork = this.props.wallet.currentNetwork;
-	// 	let coinAmount = this.state.transferValues.coin;
-	// 	let usdAmount = this.state.transferValues.usd;
+	_renderFeeTotal = () => {
+		let currentNetwork = this.props.wallet.currentNetwork;
+		let coinAmount = this.state.transferValues.coin;
+		let usdAmount = this.state.transferValues.usd;
 
-	// 	return (
-	// 		<Col s={12} m={6} l={6}>
-	// 			<Text txRight clWhite>You are sending 
-	// 				<Text clNormalGreen txInline>
-	// 					 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
-	// 				</Text> 
-	// 				({ numeral( usdAmount ).format('$0,0.00') }) + { this.estimateFee() } of fee
-	// 			</Text>
-	// 		</Col>
-	// 	);
-	// }
+		return (
+			<Col s={12} m={6} l={6}>
+				<Text txRight clWhite>You are sending 
+					<Text clNormalGreen txInline>
+						 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
+					</Text> 
+					({ numeral( usdAmount ).format('$0,0.00') }) + { this.estimateFee() } of fee
+				</Text>
+			</Col>
+		);
+	}
 
 	inputControl(value) {
 		switch (value) {
@@ -523,7 +523,7 @@ class Send extends React.Component {
 					<Row css={FourthRowCss}>
 
 						{ /* this._renderFeeButtons() */ }
-						{ /*this._renderFeeTotal() */}
+						{ this._renderFeeTotal() }
 
 					</Row>
 				</Col>
