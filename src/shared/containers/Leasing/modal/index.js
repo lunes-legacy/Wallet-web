@@ -176,7 +176,7 @@ class LeasingModal extends Component {
 
         setTimeout(() => {
             textMessage.style.visibility = 'hidden';
-        }, 3000);
+        }, 1000);
     }
 
     showSuccess = () => {
