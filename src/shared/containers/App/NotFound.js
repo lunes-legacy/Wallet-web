@@ -9,7 +9,7 @@ let StyledNotFound = styled.div`
 	align-items: center;
 `;
 let CustomImg = styled.img`
-	width: 50%;
+	width: 35%;
 	height: auto;
 `;
 
@@ -17,7 +17,7 @@ export default class NotFound extends React.Component {
 	render() {
 		return(
 			<StyledNotFound>
-				<CustomImg src="/img/general/not-found.jpg" alt="Not found"/>
+				<CustomImg src="/img/general/lunio-notfound.png" alt="Not found"/>
 			</StyledNotFound>
 		);
 	}
