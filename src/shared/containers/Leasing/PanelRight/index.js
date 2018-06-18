@@ -83,12 +83,20 @@ const GreenText = styled.div`
     ${TextBase}
     font-size: 1.2rem;
     display:block;
-
+    
     ${props => {
         if (!props.status) {
             return `color: ${style.lightPurple}`;
         }
     }};
+`;
+
+const Noleasingtext = styled.div`
+    ${TextBase}
+    font-size: 1.2rem;
+    display:block;
+    color: white;
+  
 `;
 
 const CancelBox = styled.div`
@@ -233,7 +241,7 @@ class PanelRight extends React.Component {
     // retornando os itens, de acordo com os dados no storage
     _renderLeasings = () => {
         if (!this.props.listLeasing) {
-            return <GreenText txBold txCenter>NO LEASING FOUND</GreenText>
+            return <Noleasingtext txBold txCenter>NO LEASING FOUND</Noleasingtext>
         }
         if (this.props.listLeasing.length < 1) {
             return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
