@@ -233,14 +233,14 @@ class Send extends React.Component {
 	// }
 
 	_renderFeeTotal = () => {
-		let currentNetwork = this.props.wallet.currentNetwork;
+		let currentNetwork = this.props.wallet.currentNetwork;	
 		let coinAmount = this.state.transferValues.coin;
 		let usdAmount = this.state.transferValues.usd;
 
 		return (
 			<Col s={12} m={6} l={6}>
 				<Text txRight clWhite>You are sending 
-					<Text clNormalGreen txInline>
+					<Text color={style.coinsColor[currentNetwork]} txInline>
 						 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
 					</Text> 
 					({ numeral( usdAmount ).format('$0,0.00') }) + { this.estimateFee() } of fee
