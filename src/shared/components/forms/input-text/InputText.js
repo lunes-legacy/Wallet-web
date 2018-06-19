@@ -12,6 +12,19 @@ let InputText = styled.input.attrs({
 	&:focus {
 		outline: none;
 	}
+
+	${props => {
+		if (props.noBrowserAppearance) {
+			console.warn('I"m here sweetheart !!');
+			return `
+				&::-webkit-inner-spin-button, 
+				&::-webkit-outer-spin-button { 
+				  -webkit-appearance: none; 
+				  margin: 0; 
+				}
+			`;
+		}
+	}}
 	
 	&::placeholder {
 		color: white;

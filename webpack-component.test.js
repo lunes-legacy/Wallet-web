@@ -39,15 +39,14 @@ module.exports = {
 	resolve: {
 		alias: {
 			Actions: __dirname+'/src/shared/actions/',
-			Reducers: __dirname+'/src/shared/reducers',
 			Containers: __dirname+'/src/shared/containers/',
 			Components: __dirname+'/src/shared/components/',
-			Stores: __dirname+'/src/shared/stores',
-			Utils: __dirname+'/src/shared/utils',
+			Utils: __dirname+'/src/shared/utils/',
 			Shared: __dirname+'/src/shared/',
 			Auth: __dirname+'/src/shared/auth/',
-			Classes: __dirname+'/src/shared/classes',
-			Config: __dirname+'/src/shared/config'
+			Classes: __dirname+'/src/shared/classes/',
+			Config: __dirname+'/src/shared/config/',
+			Redux: __dirname+'/src/shared/redux/'
 		}
 	}
 };
