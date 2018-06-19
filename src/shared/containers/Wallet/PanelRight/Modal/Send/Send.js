@@ -5,14 +5,8 @@ import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
 import { WalletClass } from "Classes/Wallet";
-
-// CONSTANTS
 import { TESTNET } from 'Config/constants';
-
-// REDUX
 import { connect } from 'react-redux';
-
-// UTILS
 import { numeral }    from 'Utils/numeral';
 
 import {
@@ -389,10 +383,10 @@ class Send extends React.Component {
 				break;
 		}
 	}
-	
 
 	render() {
 		let currentNetwork = this.props.wallet.currentNetwork;
+		
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
 				<Col s={9} m={9} l={9}>
@@ -408,7 +402,7 @@ class Send extends React.Component {
 										defaultChecked
 										onClick={ (input) => { this.inputControl(input.target.value) } }
 									/>
-									<RadioCheckmark />
+									<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
 									<LabelRadio clWhite> { currentNetwork.toUpperCase() } </LabelRadio>
 								</WrapRadio>
 							</div>
@@ -447,7 +441,7 @@ class Send extends React.Component {
 									unique={'true'}
 									onClick={ (input) => { this.inputControl(input.target.value) } }
 								/>
-								<RadioCheckmark />
+								<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
 								<LabelRadio clWhite>BRL</LabelRadio>
 							</WrapRadio>
 							<WrapRadio css={css`margin: 4rem 0 0 0;`}>
@@ -458,7 +452,7 @@ class Send extends React.Component {
 									onClick={ (input) => { this.inputControl(input.target.value) } }
 
 								/>
-								<RadioCheckmark />
+								<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
 								<LabelRadio clWhite>USD</LabelRadio>
 							</WrapRadio>
 						</Col>

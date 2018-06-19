@@ -41,7 +41,7 @@ module.exports = {
 	},
 	coinsColor: {
 		lns: '#4CD566',
-		btc: '#000',
+		btc: '#f7921a',
 
 	}
 }

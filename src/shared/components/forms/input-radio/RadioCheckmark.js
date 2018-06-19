@@ -7,7 +7,14 @@ let RadioCheckmark = styled.div.attrs({
 	width: 1.5rem;
 	height: 1.5rem;
 	border-radius: 100%;
-	background: ${style.normalGreen};
+	background: 
+	${props => {
+		console.log("TESTE LEO ", props.color);
+		if(props.color)
+		   return props.color;
+
+		return style.normalGreen;
+	}};
 	top: -5rem;
 	left: 0.25rem;
 	opacity: 0;
