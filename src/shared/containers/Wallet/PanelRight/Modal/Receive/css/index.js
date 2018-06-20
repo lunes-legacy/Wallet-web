@@ -68,25 +68,25 @@ export let ReceiveLabelTextCss = styled.label`
   position: relative;
   margin-top: 5%;
   font-weight: bold;
-  color: #4cd566;
+  color:  #4cd566;
   font-size: 1.8rem;
   position: center;
 `;
 
 export let ReceiveButtonModalCss = styled.div`
   
-   width: 90px;
-   height: 90px;
-   background-color: #4cd566;
-   border-radius: 60%;
-   align-items: center;
-   margin-top: 8%;
-   margin-right: 5%;
-   padding: 14px;
-   
-   &:hover {
-    box-shadow: 0px 2px 30px 0px #4cd566;
-    cursor: pointer;
+  width: 90px;
+  height: 90px;
+  background-color: ${props => handleFontColor(props.color)}; 
+  border-radius: 60%;
+  align-items: center;
+  margin-top: 8%;
+  margin-right: 5%;
+  padding: 14px;
+  
+  &:hover {
+   box-shadow: 0px 2px 30px 0px ${props => handleFontColor(props.color)};
+   cursor: pointer;
   }
 `;
 
@@ -102,7 +102,6 @@ export let IconAction = styled.img`
   &:hover {
     opacity: 1;
   }
+`;
 
-
-  
-  `;
+let handleFontColor = (color) => color ? color : "#4cd566";
