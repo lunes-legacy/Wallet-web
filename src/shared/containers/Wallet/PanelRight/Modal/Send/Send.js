@@ -394,7 +394,7 @@ class Send extends React.Component {
 									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
 									data-amount-type={'coin'}
 									className={'input-amount coin'}
-									placeholder={'0.00000000'} />
+									placeholder={'0'} />
 							</Row>
 						</Col>
 					</Row>
