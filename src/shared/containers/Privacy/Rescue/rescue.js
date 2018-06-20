@@ -113,6 +113,7 @@ class Rescue extends React.Component {
       };
 
       this.props.setWalletInfo(walletInfo.addresses);
+      this.props.setBalance({ addresses: this.state.walletInfo.addresses });
       localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
       return this.setState({ ...this.state, notification: 'Sucesso'  });
 

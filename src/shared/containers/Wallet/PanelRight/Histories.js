@@ -384,15 +384,20 @@ class Histories extends React.Component {
     let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD
 
     if (currentTxHistory.length < 1) {
-      return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
-    } else if (currentTxHistory.data.history.length < 1) {
-      return <ErrorMessage> No transactions </ErrorMessage>;
-  }
+        return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
+      } else if (currentTxHistory.data.history.length < 1) {
+        return <ErrorMessage> No transactions </ErrorMessage>;
+    }
 
     return currentTxHistory.data.history.map((transaction, key) => {
-      if (transaction.otherParams.type !== 4) return null;
-      let amount = numeral(transaction.nativeAmount / 100000000).format('0,0.00000000');
-      let usdAmount = numeral((transaction.nativeAmount / 100000000) * currentCurrencies).format('$0,0.00')
+
+      if(transaction.otherParams.type === 8 || transaction.otherParams.type === 9) {
+        var amount = numeral(transaction.networkFee / 100000000).format('0,0.00000000');
+        var usdAmount = numeral((transaction.networkFee / 100000000) * currentCurrencies).format('$0,0.00')
+      } else {
+        var amount = numeral(transaction.nativeAmount / 100000000).format('0,0.00000000');
+        var usdAmount = numeral((transaction.nativeAmount / 100000000) * currentCurrencies).format('$0,0.00')        
+      }
 
       return (
         <History key={key}>

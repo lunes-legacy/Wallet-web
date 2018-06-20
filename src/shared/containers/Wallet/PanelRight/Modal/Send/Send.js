@@ -103,7 +103,7 @@ class Send extends React.Component {
 	}
 
 	estimateFee() {
-		let fee = parseFloat(0.001);
+		let fee = parseFloat(100000);
 		return fee;
 	}
 	
@@ -151,7 +151,7 @@ class Send extends React.Component {
 		let fee = this.estimateFee();
 
 		if (address && address.length > 1) {
-			let validateAddress = await this.validateAddress(address, currentNetwork);
+			let validateAddress = await this.validateAddress(currentNetwork, address);
 
 			if (!validateAddress) {
 				this.setState({ ...this.state, addressIsValid: false });
@@ -170,7 +170,7 @@ class Send extends React.Component {
 			return;
 		}
 
-		let dataSend = this.transactionSend(address, coinAmount + fee);
+		let dataSend = this.transactionSend(address, coinAmount, fee);
 
 		setTimeout(() => {
 			this.props.nextStep({ coinAmount, address });
@@ -197,8 +197,8 @@ class Send extends React.Component {
 		this._arrangeFeeButtons(button);
 	}
 
-	validateAddress (address) {
-		let data = wallet.validateAddress(address)
+	validateAddress (network, address) {
+		let data = wallet.validateAddress(network, address)
 		return data;
 	}
 
@@ -262,22 +262,21 @@ class Send extends React.Component {
 		}
 	}
 
-	transactionSend = async (address, coinAmount) => {
+	transactionSend = async (address, amount, fee) => {
 		const wallet = new WalletClass();
-		let seedData = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
+		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
 		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
 		let valueCoinAmount = coinAmount * 100000000;
 		
-		let transactionData = {
-			mnemonic: seedData.seed,
-			network: this.props.wallet.currentNetwork,
-			testnet: TESTNET,
-			toAddress: address,
-			amount: valueCoinAmount.toString(),
-			fee: "100000"
-		};
+		let data = await wallet.transactionSend(
+			walletInfo.seed,
+			this.props.wallet.currentNetwork,
+			address,
+			amount,
+			fee,
+			tokenData.accessToken
+		);
 
-		 let data = await wallet.transactionSend(transactionData, tokenData.accessToken);
 		return data;
 	}
 

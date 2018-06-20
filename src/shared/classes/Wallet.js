@@ -166,9 +166,17 @@ export class WalletClass {
     return await coins.getHistory(object);
   };
 
-  validateAddress = async (address) => {
+  validateAddress = async (coin, address) => {
     try {
-      return await services.wallet.lns.validateAddress(address, networks[APICONFIG]);
+      switch (coin) {
+        case 'lns':
+          return await services.wallet.lns.validateAddress(address, networks[LNSNETWORK]);
+          break;
+      
+        default:
+          return true;
+          break;
+      }
     } catch (error) {
       console.error(error)
       return false;
@@ -205,7 +213,16 @@ export class WalletClass {
     }
   }
 
-  transactionSend = async (transactionData, accessToken) => {
+  transactionSend = async (mnemonic, coin, address, amount, fee, accessToken) => {
+
+    let transactionData = {
+        mnemonic: mnemonic,
+        network: coin,
+        toAddress: address,
+        amount: amount * 100000000,
+        fee: fee
+    };
+
     let data = await coins.services.transaction(transactionData, accessToken);
     return data;
   }
