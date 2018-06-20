@@ -225,7 +225,7 @@ class Histories extends React.Component {
   }
 
   setHistory(currentNetwork) {
-    return this.props.setTxHistory({ network: currentNetwork.toUpperCase(), address: this.props.walletInfo.addresses[currentNetwork.toUpperCase()] });
+    return this.props.setTxHistory({ network: currentNetwork.toUpperCase(), address: this.props.walletInfo.addresses[currentNetwork] });
   }
 
   timeToText = (timestamp) => {
@@ -387,10 +387,7 @@ class Histories extends React.Component {
       return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
     } else if (currentTxHistory.data.history.length < 1) {
       return <ErrorMessage> No transactions </ErrorMessage>;
-    }
-
-
-    const blockexplorerUrl = TESTNET ? 'https://blockexplorer-testnet.lunes.io/tx/' : 'https://blockexplorer.lunes.io/tx/';
+  }
 
     return currentTxHistory.data.history.map((transaction, key) => {
       if (transaction.otherParams.type !== 4) return null;
@@ -432,7 +429,6 @@ class Histories extends React.Component {
             <Row>
               <Col s={12} m={6} l={6}>
                 <HistoryContentItem clWhite >
-                  <Text size={"1.4rem"}> </Text>
                   <Text size={"1.4rem"} txBold margin={"2.5rem 0 0 0"}>
                     <Span>
                       {this.icoStatusToText(transaction.type)}:
@@ -455,7 +451,7 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID:</Text>
                   <Text size={"1.4rem"} txBold>
-                    <TransactionId href={blockexplorerUrl + transaction.txid} target="_blank"> {transaction.txid} </TransactionId>
+                    <TransactionId href="#" target=""> { transaction.txid } </TransactionId>
                   </Text>
                 </HistoryContentItem>
               </Col>

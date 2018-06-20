@@ -1,8 +1,19 @@
 import { errorPattern } from "Utils/functions";
 import { coins, services, networks } from "lunes-lib";
 import sb from "satoshi-bitcoin";
-import { TESTNET, APICONFIG } from "Config/constants";
 import isCoinAvaliable from "Config/isCoinAvaliable";
+
+import { 
+  TESTNET, 
+  APICONFIG, 
+  LNSNETWORK, 
+  BTCNETWORK, 
+  LTCNETWORK, 
+  NANONETWORK, 
+  DASHNETWORK, 
+  ETHNETWORK 
+} from "Config/constants";
+
 
 export class WalletClass {
   static coinsPrice;
@@ -164,11 +175,33 @@ export class WalletClass {
     }
   };
 
-  getNewAddress(seed) {
+  getNewAddress(seed, coin = null) {
     try {
-      return services.wallet.lns.wallet.newAddress(seed, networks[APICONFIG]);
+      switch (coin) {
+        case 'lunes':
+          return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);
+        
+        case 'btc':
+          return services.wallet.btc.wallet.newAddress(seed, networks[BTCNETWORK]);
+
+        case 'eth':
+          return services.wallet.eth.wallet.newAddress(seed, networks[ETHNETWORK]);
+
+        case 'ltc':
+          return services.wallet.ltc.wallet.newAddress(seed, networks[LTCNETWORK]);
+
+        case 'nano':
+          return services.wallet.nano.wallet.newAddress(seed, networks[NANONETWORK]);
+
+        case 'dash':
+          return services.wallet.dash.wallet.newAddress(seed, networks[DASHNETWORK]);
+
+        default:
+          return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);
+      }
     } catch (error) {
       console.log(error);
+      return erro;
     }
   }
 

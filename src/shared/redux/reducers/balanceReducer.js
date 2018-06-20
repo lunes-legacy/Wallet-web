@@ -1,11 +1,12 @@
+// ENABLE COINS
 let initialState = {
-  // BTC: {
-  //   coinName: "Bitcoin",
-  //   img: "btc.svg",
-  //   total_amount: 0,
-  //   total_confirmed: 0,
-  //   total_unconfirmed: 0
-  // },
+  BTC: {
+    coinName: "Bitcoin",
+    img: "btc.svg",
+    total_amount: 0,
+    total_confirmed: 0,
+    total_unconfirmed: 0
+  },
   // ETH: {
   // 	total_confirmed: 1.02,
   // 	total_unconfirmed: 1,
@@ -54,12 +55,14 @@ const balanceReducer = (state = initialState, action) => {
       let coins = action.payload;
       for (const coinKey in coins) {
         let balance = action.payload[coinKey].data;
-        if (state[coinKey]) {
+        let coinKeyUpperCase = coinKey.toLocaleUpperCase();
+
+        if (state[coinKeyUpperCase]) {
           state = {
             ...state,
-            [coinKey]: {
-              coinName: state[coinKey].coinName,
-              img: state[coinKey].img,
+            [coinKeyUpperCase]: {
+              coinName: state[coinKeyUpperCase].coinName,
+              img: state[coinKeyUpperCase].img,
               total_confirmed: balance.confirmed / 100000000,
               total_amount: balance.confirmed / 100000000
             }

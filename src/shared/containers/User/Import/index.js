@@ -22,6 +22,9 @@ import PanelLeft from "./PanelLeft";
 import PanelRight from "./PanelRight";
 import Slide from "../../../containers/User/Login/Slide";
 
+// CONSTANTS
+import { ENABLEDCOINS } from "Config/constants";
+
 const CustomLogo = Logo.extend`
   margin: 40px auto 0 auto;
 `;
@@ -45,7 +48,12 @@ class Import extends React.Component {
       walletInfo: {
         seed: null,
         addresses: {
-          LNS: null
+          lns: null,
+          btc: null,
+          // LTC: null,
+          // ETH: null,
+          // NANO: null,
+          // DASH: null
         }
       }
     };
@@ -59,24 +67,41 @@ class Import extends React.Component {
   }
 
   getAddress(seed) {
+    if (seed.split(" ").length >= 12) {      
     try {
-      if (seed.split(" ").length >= 12) {
-        let address = Wallet.getNewAddress(seed);
-        this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: address } }, notification: null });
-      } else {
+        let walletInfo = {};
+        ENABLEDCOINS.map( coin => {
+          let address = Wallet.getNewAddress(seed, coin.coinKey);
+          walletInfo = {
+            seed: seed,
+            addresses: {
+             ...walletInfo.addresses,
+              [coin.coinKey]: address
+            }
+          }
+        });
+        
         this.setState({
           ...this.state,
-          walletInfo: { seed: seed, addresses: { LNS: "Mínimo 12 palavras" } },
+          walletInfo,
           notification: null
         });
+        
+        return;
+        } catch (error) {
+          console.log(error);
+          this.setState({
+            ...this.state,
+            walletInfo: { seed: seed, adresses: {} },
+            notification: "Invalid Words"
+          });
       }
-    } catch (error) {
+      } else {
       this.setState({
         ...this.state,
-        walletInfo: { seed: seed, addresses: { LNS: "Palavras inválidas" } },
-        notification: null
+          walletInfo: { seed: seed, adresses: {} },
+          notification: "Min. 12 words"
       });
-      console.log(error);
     }
   }
 
@@ -84,9 +109,7 @@ class Import extends React.Component {
     try {
       let walletInfo = {
         seed: this.state.walletInfo.seed,
-        addresses: {
-          LNS: this.state.walletInfo.addresses.LNS
-        }
+        addresses: this.state.walletInfo.addresses
       };
 
       this.props.setWalletInfo(walletInfo.addresses);
@@ -105,7 +128,13 @@ class Import extends React.Component {
   }
 
   renderImport() {
-    if (this.state.walletInfo.addresses.LNS && this.state.walletInfo.addresses.LNS.charAt(0) === "3") {
+    let err = 0;
+    ENABLEDCOINS.map( coin => {
+      if (!this.state.walletInfo.addresses || !this.state.walletInfo.addresses[coin.coinKey]) err += 1;
+    });
+    
+
+    if (err === 0) {
       return (
         <ButtonGreen
           margin={"1.0rem auto"}
@@ -158,15 +187,24 @@ class Import extends React.Component {
             >
               GENERATE NEW SEEDWORD
             </ButtonSecondary>
-            {this.renderImport()}
+            { this.renderImport() }
           </ButtonsRow>
           <Row>
-            <P style={ this.state.walletInfo.seed ? { display: 'block' } : { display : 'none' } } fontSize={"1.4rem"} margin={"3.0rem 0 0 0"} clWhite>
-              Address
+            <P txBold style={ this.state.notification ? { display: 'block' } : { display : 'none' } } fontSize={"1.6rem"} margin={"3.0rem 0 0 0"} clWhite>
+              { this.state.notification }
             </P>
-            <P fontSize={"1.4rem"} clWhite>
-              {this.state.walletInfo.addresses.LNS}
-            </P>
+
+            {
+              ENABLEDCOINS.map( coin => {
+                return (
+                  <P fontSize={"1.4rem"} clWhite>
+                    <b> { this.state.walletInfo.addresses ? this.state.walletInfo.addresses[coin.coinKey] ? coin.coinName.toUpperCase() + ': ' : '' : ''} </b>
+                    { this.state.walletInfo.addresses ? this.state.walletInfo.addresses[coin.coinKey] ? this.state.walletInfo.addresses[coin.coinKey] : '' : '' }
+                  </P>
+                )
+              })
+            }
+
           </Row>
         </PanelLeft>
 

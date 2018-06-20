@@ -8,6 +8,9 @@ import { connect } from 'react-redux';
 //COMPONENTS
 import { Row, Col, H1} from 'Components';
 
+// CONSTANTS
+import { ENABLEDCOINS } from "Config/constants";
+
 const CoinAddress = styled.div`
 	margin: 25px 0;
 `;
@@ -24,20 +27,15 @@ const Input = styled.input`
 	width: 80%;
 `;
 
-const coins = [
-	{ 'coinKey': 'LNS', 'coinName':  'LNS', 'address': '' },
-	{ 'coinKey': 'BTC', 'coinName':  'BTC', 'address': 'Soon...' }
-]
-
 class CoinsAddress extends React.Component { 
 	render() {
 		return (
-			coins.map( coin => {
+			ENABLEDCOINS.map( coin => {
         return (
 					<CoinAddress key={coin.coinKey}>
 						<Row defaultAlign="left">
-							<H1 txBold clWhite width={'65px'} padding={'1.2rem 0 0 0'}> 
-								{ coin.coinName }
+							<H1 txBold clWhite width={'85px'} padding={'1.2rem 0 0 0'}> 
+								{ coin.coinName }:
 							</H1>
 							<Input disabled type="text" placeholder="Carregando..." value={ this.props.walletInfo.addresses[coin.coinKey] ? this.props.walletInfo.addresses[coin.coinKey] : coin.address } />
 						</Row>

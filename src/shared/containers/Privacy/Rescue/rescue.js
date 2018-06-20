@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
 
+// CONSTANTS
+import { ENABLEDCOINS } from "Config/constants";
+
 // LIBS
 import { WalletClass } from "Classes/Wallet";
 import { encrypt } from "../../../utils/crypt";
@@ -12,6 +15,7 @@ import { setWalletInfo, setBalance } from "Redux/actions";
 
 // COMPONENTS
 import { Col, H1, H2 } from "Components";
+import { P } from "Components/P";
 import { ButtonGreen, ButtonDisabled } from "Components/Buttons";
 
 const Content = styled.div``;
@@ -37,79 +41,104 @@ const Wallet = new WalletClass();
 
 class Rescue extends React.Component {
 	constructor() {
-		super();
+    super();
+
+    // ENABLE COINS 
 		this.state = {
 			notification: null,
 			walletInfo: {
 				seed: null,
 				addresses: {
-					LNS: null
+          lns: null,
+					btc: null,
+					// LTC: null,
+          // ETH: null,
+          // NANO: null,
+          // DASH: null
 				}
 			}
 		}
 	}
 
-	getAddress(seed) {
-		try {
-			if (seed.split(" ").length >= 12) {
-				let address = Wallet.getNewAddress(seed);
-				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: address } }, notification: null })
-			} else {
-				this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Minimum 12 words' } }, notification: null })
-			}
-		} catch (error) {
-			this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: 'Invalid words' } }, notification: null })
-			console.log(error);
-		}
+  getAddress(seed) {
+    if (seed.split(" ").length >= 12) {      
+      try {
+        let walletInfo = {};
+        ENABLEDCOINS.map( coin => {
+          let address = Wallet.getNewAddress(seed, coin.coinKey);
+          walletInfo = {
+            seed: seed,
+            addresses: {
+            ...walletInfo.addresses,
+              [coin.coinKey]: address
+            }
+          }
+        });
+        
+        this.setState({
+          ...this.state,
+          walletInfo,
+          notification: null
+        });
+        
+        return;
+        } catch (error) {
+          console.log(error);
+          this.setState({
+            ...this.state,
+            walletInfo: { seed: seed, adresses: {} },
+            notification: "Invalid Words"
+          });
+      }
+    } else {
+      this.setState({
+        ...this.state,
+          walletInfo: { seed: seed, adresses: {} },
+          notification: "Min. 12 words"
+      });
+    }
+  }
+
+
+  setSeed() {
+    try {
+      let walletInfo = {
+        seed: this.state.walletInfo.seed,
+        addresses: this.state.walletInfo.addresses
+      };
+
+      this.props.setWalletInfo(walletInfo.addresses);
+      localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
+      return this.setState({ ...this.state, notification: 'Sucesso'  });
+
+    } catch (error) {
+      console.error(error);
+      return this.setState({ ...this.state, notification: error });
+    }
 	}
-
-
-	setSeed() {
-		try {
-			let walletInfo = {
-				seed: this.state.walletInfo.seed,
-				addresses: {
-					LNS: this.state.walletInfo.addresses.LNS
-				}
-			}
-			if (this.state.walletInfo.seed) {
-				this.props.setBalance(walletInfo);
-				this.props.setWalletInfo(walletInfo.addresses);
-				localStorage.setItem('WALLET-INFO', encrypt(JSON.stringify(walletInfo)));
-				this.setState({ ...this.state, notification: 'Success' })
-			} else {
-				this.setState({ ...this.state, notification: 'Campo vazio' })
-			}
-		} catch (error) {
-			this.setState({ ...this.state, notification: error })
-			console.log(error)
-		}
-
+	
+	randomSeed() {
+    const mnemonic = Wallet.getMnemonic();
+    return this.getAddress(mnemonic);
 	}
-
+	
 	renderImport() {
-		if (this.state.walletInfo.addresses.LNS && this.state.walletInfo.addresses.LNS.charAt(0) === '3') {
-			return (
-				<ButtonGreen width="130px" fontSize={'0.8rem'} onClick={() => { this.setSeed() }}>IMPORT</ButtonGreen>
-			);
-		} else {
-			return (
-				<ButtonDisabled width="130px" fontSize={'0.8rem'}>IMPORT</ButtonDisabled>
-			)
-		}
-	}
+    let err = 0;
 
-	renderMsg() {
-		if (this.state.notification && this.state.notification === 'Success') {
-			return (
-				<H1 fontSize={"2.2rem"} margin={"2rem 0 0 0"} offSide clNormalGreen> Success importing seedwords! </H1>
-			);
-		} else if (this.state.notification && this.state.notification !== 'Success') {
-			return (
-				<H1 fontSize={"2.2rem"} margin={"2rem 0 0 0"} offSide clNormalRed> {this.state.notification} </H1>
-			);
-		}
-	}
+    ENABLEDCOINS.map( coin => {
+      if (!this.state.walletInfo.addresses || !this.state.walletInfo.addresses[coin.coinKey]) err += 1;
+    });
+
+    if (err === 0) {
+      return (
+        <ButtonGreen margin={"1.0rem auto"} width={"130px"} to="/app/home" onClick={() => { this.setSeed() }}>
+          IMPORT
+        </ButtonGreen>
+      );
+    } else {
+      return <ButtonDisabled margin={"1.0rem auto"} padding={"1.0rem"} width={"130px"}>IMPORT</ButtonDisabled>;
+    }
+  }
 
 	render() {
 		return (
@@ -119,13 +148,20 @@ class Rescue extends React.Component {
 				</H1>
 				<Input onChange={(seed) => { this.getAddress(seed.target.value) }} placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish" />
 				<Row>
-					<H2 fontSize={"1.6rem"} margin={"0 0 2.0rem 0"} padding={"1.0rem 0 0 0"} clWhite>
-						{this.state.walletInfo.addresses.LNS}
-					</H2>
-					{this.renderImport()}
-				</Row>
-				<Row>
-					{this.renderMsg()}
+					<P txBold style={ this.state.notification ? { display: 'block' } : { display : 'none' } } fontSize={"1.6rem"} margin={"1.8rem 0 0 0"} clWhite>
+						{ this.state.notification }
+					</P>
+					{
+						ENABLEDCOINS.map( coin => {
+							return (
+								<P fontSize={"1.4rem"} clWhite>
+									<b> { this.state.walletInfo.addresses ? this.state.walletInfo.addresses[coin.coinKey] ? coin.coinName.toUpperCase() + ': ' : '' : ''} </b>
+									{ this.state.walletInfo.addresses ? this.state.walletInfo.addresses[coin.coinKey] ? this.state.walletInfo.addresses[coin.coinKey] : '' : '' }
+								</P>
+							)
+						})
+					}
+					{ this.renderImport() }
 				</Row>
 			</Content>
 		);
