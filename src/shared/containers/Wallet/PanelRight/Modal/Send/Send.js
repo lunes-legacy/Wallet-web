@@ -103,7 +103,7 @@ class Send extends React.Component {
 	}
 
 	estimateFee() {
-		let fee = parseFloat(100000);
+		let fee = parseFloat(0.000001);
 		return fee;
 	}
 	
@@ -165,7 +165,7 @@ class Send extends React.Component {
 			return;
 		}
 		
-		if (!coinAmount || coinAmount <= 1) {
+		if (!coinAmount || coinAmount <= fee) {
 			this.setState({ ...this.state, invalidAmount: true });
 			return;
 		}
@@ -266,7 +266,6 @@ class Send extends React.Component {
 		const wallet = new WalletClass();
 		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
 		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
-		let valueCoinAmount = coinAmount * 100000000;
 		
 		let data = await wallet.transactionSend(
 			walletInfo.seed,

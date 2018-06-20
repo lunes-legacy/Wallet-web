@@ -214,16 +214,24 @@ export class WalletClass {
   }
 
   transactionSend = async (mnemonic, coin, address, amount, fee, accessToken) => {
-
-    let transactionData = {
-        mnemonic: mnemonic,
-        network: coin,
-        toAddress: address,
-        amount: amount * 100000000,
-        fee: fee
-    };
-
-    let data = await coins.services.transaction(transactionData, accessToken);
-    return data;
+    try {
+      console.log(mnemonic, coin, address, amount, fee, accessToken);
+      console.log('amount', amount * 100000000);
+      let transactionData = {
+          mnemonic: mnemonic,
+          network: coin,
+          testnet: TESTNET,
+          toAddress: address,
+          amount: amount * 100000000,
+          fee: fee * 100000000
+      };
+  
+      let data = await coins.services.transaction(transactionData, accessToken);
+      console.log('data', data)
+      return data;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
   }
 }
