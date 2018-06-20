@@ -2,7 +2,10 @@ let initialState = {
 	wallet: {
 		currentNetwork: 'lns',
 		currentTxHistory: [],
-		isPanelRightVisible: false
+		isPanelRightVisible: false,
+		modalSend: {
+			
+		}
 	}
 }
 const componentReducer = (state = initialState, action) => {
@@ -30,6 +33,18 @@ const componentReducer = (state = initialState, action) => {
 				wallet: {
 					...state.wallet,
 					currentTxHistory: action.payload
+				}
+			}
+			return state;
+		case 'WALLET_MODALSEND_SETTER':
+			state = {
+				...state,
+				wallet: {
+					...state.wallet,
+					modalSend: {
+						...state.wallet.modalSend,
+						...action.payload
+					}
 				}
 			}
 			return state;
