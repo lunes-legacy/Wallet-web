@@ -33,6 +33,11 @@ const Input = styled.input`
   width: 100%;
 `;
 
+const LabelCoin= styled.label` 
+  font-weight: bold,
+  font-family: roboto
+`;
+
 const Row = styled.div`
   text-align: center;
 `;

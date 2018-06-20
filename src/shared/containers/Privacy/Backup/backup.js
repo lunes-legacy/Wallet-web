@@ -83,7 +83,7 @@ class Backup extends React.Component {
 					<H1 fontSize={"1.6rem"} txBold clWhite>
 						Wallet addresses
 					</H1>
-					<CoinsAddress  walletInfo={ this.state.walletInfo } />
+					<CoinsAddress walletInfo={ this.state.walletInfo } />
 				</Addresses>
 			</div>
 		);
