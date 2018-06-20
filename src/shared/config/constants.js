@@ -1,4 +1,4 @@
-let testnet           = 'TRUE'; //it should comes from .env, well... maybe
+let testnet           = 'FALSE'; //it should comes from .env, well... maybe
 const ENV             = 'development'; //|| 'production'
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const APICONFIG 	    = TESTNET === true ? 'LNSTESTNET' : 'LNS'; //Uso na geração de seed/endereços
