@@ -320,35 +320,36 @@ class Send extends React.Component {
 			fee: "100000"
 		};
 
-		// let data = await wallet.transactionSend(transactionData, tokenData.accessToken)
-		// 	.catch((err) => {
-		// 		console.error(errorPattern("Error on trying to do the transaction",500,"TRANSACTION_ERROR", err));
-		// 	});
-		// let txid = data && data.data && data.data.txID;
-		// if (!txid) {
-		// 	this.props.setterModalSend({
-		// 		status: {
-		// 			type: 'error',
-		// 			message: 'An error ocurred on trying to do the transaction, please try again later on'
-		// 		}
-		// 	});
-		// 	return data;
-		// }
-		// this.props.setterModalSend({
-		// 	status: {
-		// 		type:'complete',
-		// 		message: 'Transaction done, you can copy the id of this transaction or go to transactions history, /app/wallet'
-		// 	},
-		// 	txid: data.data.txID
-		// })
+		let data = await wallet.transactionSend(transactionData, tokenData.accessToken)
+			.catch((err) => {
+				console.error(errorPattern("Error on trying to do the transaction",500,"TRANSACTION_ERROR", err));
+			});
+		let txid = data && data.data && data.data.txID;
+		if (!txid) {
+			this.props.setterModalSend({
+				status: {
+					type: 'error',
+					message: 'An error ocurred on trying to do the transaction, please try again later on'
+				}
+			});
+			return data;
+		}
 		this.props.setterModalSend({
 			status: {
-				type: 'complete',
+				type:'complete',
 				message: 'Transaction done, you can copy the id of this transaction or go to transactions history, /app/wallet'
 			},
-			txid: '123123123123123123123123213'
+			txid: data.data.txID
 		})
-		// return data;
+		//This is just for test
+		// this.props.setterModalSend({
+		// 	status: {
+		// 		type: 'complete',
+		// 		message: 'Transaction done, you can copy the id of this transaction or go to transactions history, /app/wallet'
+		// 	},
+		// 	txid: '123123123123123123123123213'
+		// })
+		return data;
 	}
 
 	clearFields() {

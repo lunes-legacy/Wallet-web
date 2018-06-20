@@ -39,7 +39,7 @@ class Final extends React.Component {
 		return (
 			<React.Fragment>
 				<Img center width={'40%'} src={'/img/app_wallet/ic_send_final.png'}/>
-				<CustomAnchor txDecoration={"underline"} target="_blank" padding={'25px 0 0 0'} txCenter href={BLOCK_EXPLORER.get("LNS")+'address/'+txid}>Transaciton ID: { txid }</CustomAnchor>
+				<Text padding={'25px 0 0 0'} txCenter clWhite>Transaction ID</Text><CustomAnchor txCenter txDecoration={"underline"} target="_blank" href={BLOCK_EXPLORER.get("LNS")+'tx/'+txid}>{ txid }</CustomAnchor>
 				<Text css={BackCss} clWhite txRight onClick={() => this.props.goToStep(0)}>Back</Text>
 			</React.Fragment>
 		);
