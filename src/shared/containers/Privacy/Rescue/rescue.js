@@ -29,6 +29,11 @@ const Input = styled.input`
   width: 100%;
 `;
 
+const LabelCoin= styled.label` 
+  font-weight: bold,
+  font-family: roboto
+`;
+
 const Row = styled.div`
   text-align: center;
 `;
@@ -43,7 +48,8 @@ class Rescue extends React.Component {
 			walletInfo: {
 				seed: null,
 				addresses: {
-					LNS: null
+					LNS: null,
+					BTC: null
 				}
 			}
 		}
@@ -120,7 +126,7 @@ class Rescue extends React.Component {
 				<Input onChange={(seed) => { this.getAddress(seed.target.value) }} placeholder="Ex: fantasy deliver afford disorder primary protect garbage they defense paddle alert reveal various just dish" />
 				<Row>
 					<H2 fontSize={"1.6rem"} margin={"0 0 2.0rem 0"} padding={"1.0rem 0 0 0"} clWhite>
-						{this.state.walletInfo.addresses.LNS}
+						<LabelCoin>Lunes:</LabelCoin> &nbsp; {this.state.walletInfo.addresses.LNS}
 					</H2>
 					{this.renderImport()}
 				</Row>

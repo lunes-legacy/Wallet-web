@@ -5,36 +5,15 @@ import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
 import { WalletClass } from "Classes/Wallet";
-
-// CONSTANTS
 import { TESTNET } from 'Config/constants';
-
-// REDUX
 import { connect } from 'react-redux';
-
-// UTILS
-import { numeral }    from 'Utils/numeral';
-
-import {
-	InputRadio,
-	WrapRadio,
-	LabelRadio,
-	RadioCheckmark
-} from 'Components/forms/input-radio';
-
+import { numeral } from 'Utils/numeral';
 import { InputText } from 'Components/forms/input-text';
 import { Col, Row, Button, TextBase, Text } from 'Components/index';
-
-//PRIVATE COMPONENTS
+import { SendButtonCss,	FirstRowCss, ThirdRowCss,	FourthRowCss } from './css';
+import { InputRadio, WrapRadio, LabelRadio, RadioCheckmark } from 'Components/forms/input-radio';
 import Hr from '../Hr';
 
-//CUSTOM CSS
-import {
-	SendButtonCss,
-	FirstRowCss,
-	ThirdRowCss,
-	FourthRowCss
-} from './css';
 
 let CssWrapper = css`
 	transform-origin: top;
@@ -127,7 +106,7 @@ class Send extends React.Component {
 		let fee = parseFloat(0.001);
 		return fee;
 	}
-
+	
 	_setNetworkFees = async () => {
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let Fee = new FeeClass;
@@ -149,10 +128,7 @@ class Send extends React.Component {
 			}
 		})
 	}
-
-	toggleModal = (event) => {
-	}
-
+ 
 	handleOnPercentChange = (event) => {
 		let element = event.currentTarget;
 		let value = element.value;
@@ -164,6 +140,7 @@ class Send extends React.Component {
 	animThisComponentIn = () => {
 		this.wrapper.style.transform = 'translateY(0px)';
 	}
+	
 	animThisComponentOut = () => {
 		this.wrapper.style.transform = 'translateY(-100%)';
 	}
@@ -225,28 +202,15 @@ class Send extends React.Component {
 		return data;
 	}
 
-	// _renderFeeButtons = () => {
-	// 	if (this.state.fees.status === 'loading') {
-	// 		// return <Loading />;
-	// 	}
-	// 	return (
-	// 		<Col s={12} m={6} l={6}>
-	// 			<FeeButton onClick={this.handleClickFee} className="fee-button first">{this.state.fees.low} <Text txInline clNormalRed>baixa</Text></FeeButton>
-	// 			<FeeButton onClick={this.handleClickFee} className="fee-button second">{this.state.fees.medium} <Text txInline clNormalGreen>média</Text></FeeButton>
-	// 			<FeeButton onClick={this.handleClickFee} className="fee-button third">{this.state.fees.high} <Text txInline clMostard>alta</Text></FeeButton>
-	// 		</Col>
-	// 	);
-	// }
-
 	_renderFeeTotal = () => {
-		let currentNetwork = this.props.wallet.currentNetwork;
+		let currentNetwork = this.props.wallet.currentNetwork;	
 		let coinAmount = this.state.transferValues.coin;
 		let usdAmount = this.state.transferValues.usd;
 
 		return (
 			<Col s={12} m={6} l={6}>
 				<Text txRight clWhite>You are sending 
-					<Text clNormalGreen txInline>
+					<Text color={style.coinsColor[currentNetwork]} txInline>
 						 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
 					</Text> 
 					({ numeral( usdAmount ).format('$0,0.00') }) + { this.estimateFee() } of fee
@@ -389,10 +353,10 @@ class Send extends React.Component {
 				break;
 		}
 	}
-	
 
 	render() {
 		let currentNetwork = this.props.wallet.currentNetwork;
+		
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
 				<Col s={9} m={9} l={9}>
@@ -408,7 +372,7 @@ class Send extends React.Component {
 										defaultChecked
 										onClick={ (input) => { this.inputControl(input.target.value) } }
 									/>
-									<RadioCheckmark />
+									<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
 									<LabelRadio clWhite> { currentNetwork.toUpperCase() } </LabelRadio>
 								</WrapRadio>
 							</div>
@@ -447,7 +411,7 @@ class Send extends React.Component {
 									unique={'true'}
 									onClick={ (input) => { this.inputControl(input.target.value) } }
 								/>
-								<RadioCheckmark />
+								<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
 								<LabelRadio clWhite>BRL</LabelRadio>
 							</WrapRadio>
 							<WrapRadio css={css`margin: 4rem 0 0 0;`}>
@@ -458,7 +422,7 @@ class Send extends React.Component {
 									onClick={ (input) => { this.inputControl(input.target.value) } }
 
 								/>
-								<RadioCheckmark />
+								<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
 								<LabelRadio clWhite>USD</LabelRadio>
 							</WrapRadio>
 						</Col>

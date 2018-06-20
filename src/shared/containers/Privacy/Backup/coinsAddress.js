@@ -26,7 +26,7 @@ const Input = styled.input`
 
 const coins = [
 	{ 'coinKey': 'LNS', 'coinName':  'LNS', 'address': '' },
-	{ 'coinKey': 'BTC', 'coinName':  'BTC', 'address': 'Soon...' }
+	{ 'coinKey': 'BTC', 'coinName':  'BTC', 'address': '' }
 ]
 
 class CoinsAddress extends React.Component { 
