@@ -81,9 +81,7 @@ class ModalReceive extends React.Component {
     return (
       <Background>
         <ReceiveStyleModalCss className="js-modal-receive">
-          <Close onClick={this._handleClickClose}>
-            <strong>X</strong>
-          </Close>
+          <Close onClick={this._handleClickClose}>&times;</Close>
           <ReceiveContentCss>
             <Col defaultAlign={"center"} s={12} m={12} l={12}>
               <Row>
