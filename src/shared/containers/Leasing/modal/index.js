@@ -78,9 +78,7 @@ class LeasingModal extends Component {
         let message = '';
         let { amount } = this.state;
         let balance = this.props.balance.LNS.total_amount;
-        console.warn('amount',amount);
-        console.warn('balance',balance);
-        console.warn('FEE',LUNES_LEASING_FEE);
+
         this.setState({ ...this.state, loading: true });
 
         if (!this.state.toAddress) {
@@ -90,6 +88,16 @@ class LeasingModal extends Component {
             return this.showError(message);
         }
 
+        //if the user wanna send more than he has...
+        if (amount === balance) {
+            amount = (amount - LUNES_LEASING_FEE - 1).toFixed(8); //we subtract it
+            this.setState({...this.state, amount});
+        } else if ((amount - (balance - 1 - LUNES_LEASING_FEE)) < (1 + LUNES_LEASING_FEE)) {
+            amount = (balance - 1 - LUNES_LEASING_FEE).toFixed(8);
+            this.setState({...this.state, amount});
+        }
+
+
         if (amount < 1) {
             err++;
             message = 'Invalid LNS amount';
@@ -98,16 +106,6 @@ class LeasingModal extends Component {
         if (amount > balance) {
             err++;
             message = 'Insufficient funds';
-        }
-        //if the user wanna send more than he has...
-        if (amount === balance) {
-            console.warn("Amount is equal to balance", amount, balance);
-            amount = (amount - LUNES_LEASING_FEE).toFixed(8); //we subtract it
-            this.setState({...this.state, amount});
-        } else if (amount > (balance - LUNES_LEASING_FEE)) {
-            console.warn("Amount greater than balance minus fee", amount, balance);
-            amount = (balance - LUNES_LEASING_FEE).toFixed(8);
-            this.setState({...this.state, amount});
         }
 
         const isValidAddress = await this.validateAddress(this.state.toAddress);
