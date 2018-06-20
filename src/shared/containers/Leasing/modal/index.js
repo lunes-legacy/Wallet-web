@@ -8,7 +8,7 @@ import { InputText } from 'Components/forms/input-text';
 import { LeasingClass } from 'Classes/Leasing';
 import { WalletClass } from 'Classes/Wallet';
 
-import { TESTNET } from 'Config/constants';
+import { TESTNET, LUNES_LEASING_FEE } from 'Config/constants';
 
 // REDUX
 import { connect } from 'react-redux';
@@ -76,6 +76,8 @@ class LeasingModal extends Component {
     startLeasing = async () => {
         let err = 0;
         let message = '';
+        let { amount } = this.state;
+        let balance = this.props.balance.LNS.total_amount;
 
         this.setState({ ...this.state, loading: true });
 
@@ -86,12 +88,23 @@ class LeasingModal extends Component {
             return this.showError(message);
         }
 
-        if (this.state.amount < 1) {
+        //if the user wanna send more than he has...
+        if (amount === balance) {
+            amount = (amount - LUNES_LEASING_FEE - 1).toFixed(8); //we subtract it
+            this.setState({...this.state, amount});
+        //if the amount that he wanna send out dont have 1.001 of leftover
+        } else if ((amount - (balance - 1 - LUNES_LEASING_FEE)) < (1 + LUNES_LEASING_FEE)) {
+            amount = (balance - 1 - LUNES_LEASING_FEE).toFixed(8);
+            this.setState({...this.state, amount});
+        }
+
+
+        if (amount < 1) {
             err++;
             message = 'Invalid LNS amount';
         }
-
-        if (this.state.amount > this.props.balance.LNS.total_amount) {
+        
+        if (amount > balance) {
             err++;
             message = 'Insufficient funds';
         }
@@ -112,14 +125,14 @@ class LeasingModal extends Component {
 
         const leaseData = {
             toAddress: this.state.toAddress.trim(),
-            amount: this.state.amount,
+            amount: amount,
             fee: "100000",
             testnet: TESTNET
         };
 
         this.props.setLeasingAmount({
             toAddress: this.state.toAddress.trim(),
-            amount: this.state.amount
+            amount: amount
         });
 
         const leasing = new LeasingClass();
@@ -132,7 +145,8 @@ class LeasingModal extends Component {
                 this.setState({ ...this.state, loading: false });
                 return this.showSuccess();
             }).catch(err => {
-                this.showError();
+                this.setState({ ...this.state, loading: false });
+                this.showError(err.message);
                 return console.error(err)
             });
     }
@@ -153,8 +167,14 @@ class LeasingModal extends Component {
 
     // Atualiza o valor percentual
     setInputValue = value => {
+        // let tmp = value.toString();
+        // if (tmp.indexOf('.') !== -1) {
+        //     alert('We do not accept fraction values yet.');
+        //     value = tmp.split('.');
+        // }
         this.setState({
-            amount: value
+            // amount: parseInt(value)
+            amount: parseFloat(value)
         });
     }
 
