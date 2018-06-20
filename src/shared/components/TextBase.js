@@ -8,6 +8,13 @@ export let TextBase = css`
     }
     return "font-size: 1.8rem;";
   }}
+  ${props => {
+    if (props.txDecoration) {
+      return `text-decoration: ${props.txDecoration};`;
+    } else {
+      return `text-decoration: none;`;
+    }
+  }}
 	${props => {
     if (props.clNormalGreen) {
       return `color: ${style.normalGreen}`;

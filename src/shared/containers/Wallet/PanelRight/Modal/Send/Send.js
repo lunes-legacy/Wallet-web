@@ -5,12 +5,13 @@ import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
 import { WalletClass } from "Classes/Wallet";
-
+import { errorPattern } from 'Utils/functions';
 // CONSTANTS
 import { TESTNET } from 'Config/constants';
 
 // REDUX
 import { connect } from 'react-redux';
+import { setterModalSend } from 'Redux/actions';
 
 // UTILS
 import { numeral }    from 'Utils/numeral';
@@ -169,6 +170,12 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
+		this.props.setterModalSend({
+			status: {
+				type: 'loading',
+				message: 'Please wait until the transaction get done'
+			}
+		});
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let fee = this.estimateFee();
@@ -193,7 +200,7 @@ class Send extends React.Component {
 			return;
 		}
 
-		let dataSend = this.transactionSend(address, coinAmount + fee);
+		this.transactionSend(address, coinAmount + fee);
 
 		setTimeout(() => {
 			this.props.nextStep({ coinAmount, address });
@@ -313,8 +320,35 @@ class Send extends React.Component {
 			fee: "100000"
 		};
 
-		 let data = await wallet.transactionSend(transactionData, tokenData.accessToken);
-		return data;
+		// let data = await wallet.transactionSend(transactionData, tokenData.accessToken)
+		// 	.catch((err) => {
+		// 		console.error(errorPattern("Error on trying to do the transaction",500,"TRANSACTION_ERROR", err));
+		// 	});
+		// let txid = data && data.data && data.data.txID;
+		// if (!txid) {
+		// 	this.props.setterModalSend({
+		// 		status: {
+		// 			type: 'error',
+		// 			message: 'An error ocurred on trying to do the transaction, please try again later on'
+		// 		}
+		// 	});
+		// 	return data;
+		// }
+		// this.props.setterModalSend({
+		// 	status: {
+		// 		type:'complete',
+		// 		message: 'Transaction done, you can copy the id of this transaction or go to transactions history, /app/wallet'
+		// 	},
+		// 	txid: data.data.txID
+		// })
+		this.props.setterModalSend({
+			status: {
+				type: 'complete',
+				message: 'Transaction done, you can copy the id of this transaction or go to transactions history, /app/wallet'
+			},
+			txid: '123123123123123123123123213'
+		})
+		// return data;
 	}
 
 	clearFields() {
@@ -554,7 +588,11 @@ const mapStateToProps = (state) => {
 	}
 }
 const mapDispatchToProps = (dispatch) => {
-	return {}
+	return {
+		setterModalSend: (data) => {
+			dispatch(setterModalSend(data));
+		}
+	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Send);
 

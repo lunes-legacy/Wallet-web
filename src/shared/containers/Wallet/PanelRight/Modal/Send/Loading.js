@@ -132,9 +132,9 @@ class Loading extends React.Component {
 			<Row css={CssWrapper} ref={this.ref.wrapper} defaultAlign={'center'}>
 				<Col s={12} m={6} l={6}>
 					<Img center width={'10rem'} src={'/img/app_wallet/ic_enviado_.svg'}/>
-					<Text margin={'1rem 0 1rem 0'} txCenter clWhite size={'3rem'}>Enviando</Text>
+					<Text margin={'1rem 0 1rem 0'} txCenter clWhite size={'3rem'}>You're seding</Text>
 					<Text ref={this.ref.coinAmount} margin={'0 0 1rem 0'} txCenter clNormalGreen size={'2.5rem'}></Text>
-					<Text txCenter clWhite size={'2.5rem'}>Endereço</Text>
+					<Text txCenter clWhite size={'2.5rem'}>Address</Text>
 					<Text txCenter clWhite size={'2rem'}>{this.props.address}</Text>
 				</Col>
 			</Row>

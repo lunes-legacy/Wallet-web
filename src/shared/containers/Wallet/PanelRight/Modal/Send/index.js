@@ -1,4 +1,5 @@
 import React from 'react';
+import { coins } from 'lunes-lib';
 
 //COMPONENTS
 import Send    from './Send';
@@ -15,6 +16,10 @@ import StyledModal from '../StyledModal';
 
 //UI
 import { toggleModal } from './../ui';
+
+//REDUX
+import { connect }         from 'react-redux';
+import { setterModalSend } from 'Redux/actions';
 
 class ModalSend extends React.Component {
 	constructor(props) {
@@ -33,6 +38,11 @@ class ModalSend extends React.Component {
 		this.setState({
 			steps
 		});
+	}
+	goToStep = (step) => {
+		this.setState({
+			currStep: step
+		});		
 	}
 	prevStep = () => {
 
@@ -53,12 +63,12 @@ class ModalSend extends React.Component {
 		});
 		 /*{className={'js-modal-send'}}*/
 	}
-
 	render() {
 		if (!this.state.steps)
 			return null;
 
 		let Component = this.state.steps[this.state.currStep].component;
+		
 		return (
 			<Background>
 				<StyledModal className="js-modal-send">
@@ -69,7 +79,7 @@ class ModalSend extends React.Component {
 					</Head>
 
 					<Content>
-						<Component nextStep={(props) => this.nextStep(props)} {...this.state.generalProps} />
+						<Component goToStep={(step) => this.goToStep(step)} nextStep={(props) => this.nextStep(props)} {...this.state.generalProps} />
 					</Content>
 
 				</StyledModal>
@@ -78,4 +88,16 @@ class ModalSend extends React.Component {
 	}	
 }
 
-export default ModalSend;
+const mapStateToProps = (state) => {
+	return {
+		modalSend: state.component.wallet.modalSend
+	}
+}
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setterModalSend: (data) => {
+			dispatch(setterModalSend(data));
+		}
+	}
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ModalSend);
