@@ -45,6 +45,7 @@
     "aes-js": "^3.1.1",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
+    "helmet": "^3.12.1",
     "history": "^4.7.2",
     "instascan": "^1.0.0",
     "lunes-lib": "git://github.com/Lunes-platform/lunes-lib.git#staging",
