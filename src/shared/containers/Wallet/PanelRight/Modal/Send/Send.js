@@ -69,7 +69,7 @@ class Send extends React.Component {
 				usd: false
 			},
 			fees: {
-				status: 'loading', //loading || complete
+				status: 'loading',
 				low: undefined,
 				medium: undefined,
 				high: undefined
