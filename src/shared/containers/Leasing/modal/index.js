@@ -92,6 +92,7 @@ class LeasingModal extends Component {
         if (amount === balance) {
             amount = (amount - LUNES_LEASING_FEE - 1).toFixed(8); //we subtract it
             this.setState({...this.state, amount});
+        //if the amount that he wanna send out dont have 1.001 of leftover
         } else if ((amount - (balance - 1 - LUNES_LEASING_FEE)) < (1 + LUNES_LEASING_FEE)) {
             amount = (balance - 1 - LUNES_LEASING_FEE).toFixed(8);
             this.setState({...this.state, amount});
