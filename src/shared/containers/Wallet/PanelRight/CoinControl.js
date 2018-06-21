@@ -27,7 +27,7 @@ const WrapAmount = styled.div`
   @media (${style.media.tablet2}) {
     text-align: right;
     margin-bottom: 0;
-    margin-right: 2rem;    
+    margin-right: 2rem;
     padding-right: 10px;
   }
 
@@ -135,7 +135,7 @@ class CoinControl extends React.Component {
   };
 
   _handleClickOpenModal = (name) => {
-    let modal
+    let modal;
     if (name === 'send') {
       modal = document.querySelector('.js-modal-send');
     } else {
