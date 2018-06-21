@@ -165,7 +165,7 @@ class Send extends React.Component {
 			return;
 		}
 		
-		if (!coinAmount || coinAmount <= 1) {
+		if (!coinAmount || coinAmount < fee) {
 			this.setState({ ...this.state, invalidAmount: true });
 			return;
 		}
