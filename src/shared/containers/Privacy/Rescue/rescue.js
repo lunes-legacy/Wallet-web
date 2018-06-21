@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import { setWalletInfo, setBalance } from "Redux/actions";
 
 // COMPONENTS
+import { Loading } from 'Components/Loading';
 import { Col, H1, H2 } from "Components";
 import { P } from "Components/P";
 import { ButtonGreen, ButtonDisabled } from "Components/Buttons";
@@ -50,16 +51,17 @@ class Rescue extends React.Component {
 
     // ENABLE COINS 
 		this.state = {
-			notification: null,
+      loading: false,
+      notification: null,
 			walletInfo: {
 				seed: null,
 				addresses: {
           lns: null,
 					btc: null,
-					// LTC: null,
-          // ETH: null,
-          // NANO: null,
-          // DASH: null
+          eth: null,
+					// ltc: null,
+          // nano: null,
+          // dash: null
 				}
 			}
 		}
@@ -67,23 +69,11 @@ class Rescue extends React.Component {
 
   getAddress(seed) {
     if (seed.split(" ").length >= 12) {      
-      try {
-        let walletInfo = {};
-        ENABLEDCOINS.map( coin => {
-          let address = Wallet.getNewAddress(seed, coin.coinKey);
-          walletInfo = {
-            seed: seed,
-            addresses: {
-            ...walletInfo.addresses,
-              [coin.coinKey]: address
-            }
-          }
-        });
-        
+      try { 
         this.setState({
           ...this.state,
-          walletInfo,
-          notification: null
+          walletInfo: { seed: seed },
+          notification: true
         });
         
         return;
@@ -107,19 +97,30 @@ class Rescue extends React.Component {
 
   setSeed() {
     try {
-      let walletInfo = {
-        seed: this.state.walletInfo.seed,
-        addresses: this.state.walletInfo.addresses
-      };
+      this.setState({ ...this.state, loading: true });
+
+      let seed = this.state.walletInfo.seed;      
+      let walletInfo = {};
+      
+      ENABLEDCOINS.map( coin => {
+        let address = Wallet.getNewAddress(seed, coin.coinKey);
+        walletInfo = {
+          seed: seed,
+          addresses: {
+          ...walletInfo.addresses,
+            [coin.coinKey]: address
+          }
+        }
+      });
 
       this.props.setWalletInfo(walletInfo.addresses);
       this.props.setBalance({ addresses: this.state.walletInfo.addresses });
       localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
-      return this.setState({ ...this.state, notification: 'Sucesso'  });
+      return this.setState({ ...this.state, loading: false, notification: 'Sucesso', walletInfo: { seed: null, addresses: {} } });
 
     } catch (error) {
       console.error(error);
-      return this.setState({ ...this.state, notification: error });
+      return this.setState({ ...this.state, loading: false, notification: error });
     }
 	}
 	
@@ -131,9 +132,7 @@ class Rescue extends React.Component {
 	renderImport() {
     let err = 0;
 
-    ENABLEDCOINS.map( coin => {
-      if (!this.state.walletInfo.addresses || !this.state.walletInfo.addresses[coin.coinKey]) err += 1;
-    });
+    if (this.state.notification !== true)  err += 1;
 
     if (err === 0) {
       return (
@@ -157,16 +156,7 @@ class Rescue extends React.Component {
 					<P txBold style={ this.state.notification ? { display: 'block' } : { display : 'none' } } fontSize={"1.6rem"} margin={"1.8rem 0 0 0"} clWhite>
 						{ this.state.notification }
 					</P>
-					{
-						ENABLEDCOINS.map( coin => {
-							return (
-								<P fontSize={"1.4rem"} clWhite>
-									<b> { this.state.walletInfo.addresses ? this.state.walletInfo.addresses[coin.coinKey] ? coin.coinName.toUpperCase() + ': ' : '' : ''} </b>
-									{ this.state.walletInfo.addresses ? this.state.walletInfo.addresses[coin.coinKey] ? this.state.walletInfo.addresses[coin.coinKey] : '' : '' }
-								</P>
-							)
-						})
-					}
+          <Loading hide={this.state.loading} size={"25px"} />
 					{ this.renderImport() }
 				</Row>
 			</Content>

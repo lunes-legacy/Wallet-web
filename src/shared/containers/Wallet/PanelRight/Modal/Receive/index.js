@@ -39,7 +39,6 @@ class ModalReceive extends React.Component {
   getCurrentAddress = () => {
     let currentNetwork = this.props.currentNetwork;
     let address = this.props.addresses;
-    console.log(currentNetwork)
     return address[currentNetwork];
   };
 

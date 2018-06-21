@@ -52,6 +52,5 @@ const mapStateToProps = state => {
     walletInfo: state.walletInfo,
   };
 };
-const mapDispatchToProps = dispatch => { };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CoinsAddress);
+export default connect(mapStateToProps)(CoinsAddress);
