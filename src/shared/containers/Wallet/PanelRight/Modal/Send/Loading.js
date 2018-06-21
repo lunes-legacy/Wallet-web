@@ -4,7 +4,7 @@ import { timer } from 'Utils/functions';
 //COMPONENTS
 import { Text, Col, Row, Img } from 'Components';
 import { css }  from 'styled-components';
-
+import styled from 'styled-components';
 import { TESTNET } from 'Config/constants';
 
 
@@ -12,6 +12,33 @@ let CssWrapper = css`
 	transform: translateY(-100%);
 	transform-origin: top;
 	transition: all 0.3s;
+`;
+
+let ArcoRotate = styled.img `
+
+
+    -webkit-animation: spin 4s infinite linear;
+    width: 10rem;
+	margin-top: 3rem;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+	
+    
+    @-moz-keyframes spin {
+        from { -moz-transform: rotate(0deg); }
+        to { -moz-transform: rotate(360deg); }
+    }
+    @-webkit-keyframes spin {
+        from { -webkit-transform: rotate(0deg); }
+        to { -webkit-transform: rotate(360deg); }
+    }
+    @keyframes spin {
+        from {transform:rotate(0deg);}
+        to {transform:rotate(360deg);}
+    }
+};
+
 `;
 
 class Loading extends React.Component {
@@ -131,13 +158,14 @@ class Loading extends React.Component {
 		return(
 			<Row css={CssWrapper} ref={this.ref.wrapper} defaultAlign={'center'}>
 				<Col s={12} m={6} l={6}>
-					<Img center width={'10rem'} src={'/img/app_wallet/ic_enviado_.svg'}/>
-					<Text margin={'1rem 0 1rem 0'} txCenter clWhite size={'3rem'}>Enviando</Text>
-					<Text ref={this.ref.coinAmount} margin={'0 0 1rem 0'} txCenter clNormalGreen size={'2.5rem'}></Text>
-					<Text txCenter clWhite size={'2.5rem'}>Endereço</Text>
-					<Text txCenter clWhite size={'2rem'}>{this.props.address}</Text>
-				</Col>
-			</Row>
+
+					<ArcoRotate  width={'10rem'} src={'/img/app_wallet/ic_send_final.svg'}/>
+                    <Text  txBold margin={'5rem 0 1rem 0'} txCenter clWhite size={'3rem'}>Enviando...</Text>
+                    <Text ref={this.ref.coinAmount} margin={'0 0 1rem 0'} txCenter clNormalGreen size={'2.5rem'}></Text>
+                    <Text txCenter clWhite size={'2.5rem'} margin={'2.5rem 0 1rem 0'} >Endereço</Text>
+                    <Text txCenter clWhite size={'2rem'}>{this.props.address}</Text> 
+                </Col>
+            </Row>
 		);
 	}
 }

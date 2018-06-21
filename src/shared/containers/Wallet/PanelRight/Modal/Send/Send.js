@@ -28,6 +28,12 @@ let Image = styled.img`
   margin-bottom: 3px;
 `;
 
+let TextLns = styled.div `
+color: #4CD566;
+display: inline; 
+
+`;
+
 let FeeButton = styled.button`
 	${TextBase}
 	background: transparent;
@@ -213,7 +219,7 @@ class Send extends React.Component {
 					<Text color={style.coinsColor[currentNetwork]} txInline>
 						 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
 					</Text> 
-					({ numeral( usdAmount ).format('$0,0.00') }) + { this.estimateFee() } of fee
+					({ numeral( usdAmount ).format('$0,0.00') }) + { this.estimateFee() } <TextLns> LNS </TextLns> of fee
 				</Text>
 			</Col>
 		);
