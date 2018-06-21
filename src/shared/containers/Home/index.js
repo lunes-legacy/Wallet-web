@@ -58,7 +58,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    this.props.setBalance({ addresses: this.getAddress() });
+    // this.props.setBalance({ addresses: this.getAddress() });
   }
 
   getAddress() {

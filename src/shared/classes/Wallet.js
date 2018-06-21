@@ -89,11 +89,13 @@ export class WalletClass {
     try {
       let balances = {};
       for (const coin in addresses) {
+        if (!addresses[coin]) return false;
         balances[coin] = await coins.services.balance({ network: coin, address: addresses[coin], testnet: TESTNET });
       }
+
       return balances;
     } catch (error) {
-      // console.error(error);
+      console.error(error);
       return false;
     }
   };
@@ -152,7 +154,7 @@ export class WalletClass {
       throw errorPattern("Error on get balance", 500, "WALLET_GETBALANCE_ERROR", err);
     }
   };
-  //"1Q7Jmho4FixWBiTVcZ5aKXv4rTMMp6CjiD"
+
   getTxHistory = async ({ network = undefined, address = undefined }) => {
     console.warn(network, address, "NETWORK | ADDRESS");
     if (!network)
@@ -166,20 +168,22 @@ export class WalletClass {
   };
 
   getCoinHistory = async object => {
-    return await coins.getHistory(object);
+    try {
+      return await coins.getHistory(object);
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
   };
 
   validateAddress = async (coin, address) => {
     try {
-      switch (coin) {
-        case 'lns':
-          return await services.wallet.lns.validateAddress(address, networks[LNSNETWORK]);
-          break;
-      
-        default:
-          return true;
-          break;
-      }
+      let coinUpperCase = coin.toUpperCase();
+      if (coin === 'lns' || coin === 'lunes') {
+        return await services.wallet.lns.validateAddress(address, networks[LNSNETWORK]);
+      } else {
+        return await coins.util.validateAddress(address, coinUpperCase, TESTNET);
+      }  
     } catch (error) {
       console.error(error)
       return false;
@@ -191,6 +195,9 @@ export class WalletClass {
       switch (coin) {
         case 'lunes':
           return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);
+
+        case 'lns':
+          return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);
         
         case 'btc':
           return services.wallet.btc.wallet.newAddress(seed, networks[BTCNETWORK]);
@@ -199,13 +206,13 @@ export class WalletClass {
           return services.wallet.eth.wallet.newAddress(seed, networks[ETHNETWORK]);
 
         case 'ltc':
-          return services.wallet.ltc.wallet.newAddress(seed, networks[LTCNETWORK]);
+          return services.wallet.btc.wallet.newAddress(seed, networks[LTCNETWORK]);
 
         case 'nano':
           return services.wallet.nano.wallet.newAddress(seed, networks[NANONETWORK]);
 
         case 'dash':
-          return services.wallet.dash.wallet.newAddress(seed, networks[DASHNETWORK]);
+          return services.wallet.btc.wallet.newAddress(seed, networks[DASHNETWORK]);
 
         default:
           return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);
