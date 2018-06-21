@@ -194,6 +194,17 @@ class LeasingModal extends Component {
         }, 1000);
     }
 
+    componentDidMount() {
+      // Função para fechar a modal ao pressionar ESC
+      document.addEventListener('keydown', (event) => {
+          event = event || window.event;
+          const modal = document.querySelector('.modal-status');
+          if (event.keyCode == 27) {
+              modal.style.display = 'none';
+          }
+      });
+    }
+
     render() {
         return (
             <div>
@@ -201,7 +212,7 @@ class LeasingModal extends Component {
                     <LeasingStyleModalCss>
                         <Col defaultAlign={"center"} s={12} m={12} l={12}>
                             <Row>
-                                <Close onClick={this.handleModal}>x</Close>
+                                <Close onClick={this.handleModal}>&times;</Close>
 
                                 <Image src="/img/coins/lns.svg" />
                                 <CoinValue margin={ "0 4.0rem 0 0" }offSide>{numeral(this.props.balance.LNS.total_confirmed).format('0,0.00000000')}</CoinValue>
