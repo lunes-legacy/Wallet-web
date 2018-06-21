@@ -13,6 +13,12 @@ export class MoneyClass {
     }
   }
 
+  // Converte o valor em UNIS para LUNES
+  convertToLunes = (value) => { value = value.toString(); return coins.util.unitConverter.toBitcoin(value); }
+
+  // Converte o valor em LUNES para UNIS
+  convertToUnis = (value) => { value = value.toString(); return coins.util.unitConverter.toSatoshi(value); }
+
   // Converte o valor em satoshis para BTC
   convertToBtc = (value) => { value = value.toString(); return coins.util.unitConverter.toBitcoin(value); }
 

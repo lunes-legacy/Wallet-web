@@ -48,8 +48,9 @@
     "helmet": "^3.12.1",
     "history": "^4.7.2",
     "instascan": "^1.0.0",
-    "lunes-lib": "git://github.com/Lunes-platform/lunes-lib.git#staging",
+    "lunes-lib": "git://github.com/Lunes-platform/lunes-lib.git#balance",
     "money-formatter": "^0.1.4",
+    "net": "^1.0.2",
     "node-fetch": "^2.1.2",
     "nuka-carousel": "^4.0.2",
     "numeral": "^2.0.6",
@@ -68,6 +69,7 @@
     "redux-thunk": "^2.2.0",
     "satoshi-bitcoin": "^1.0.4",
     "styled-components": "^3.2.6",
+    "tls": "0.0.1",
     "validator": "^10.2.0"
   }
 }

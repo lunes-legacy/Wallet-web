@@ -90,7 +90,7 @@ export class WalletClass {
       let balances = {};
       for (const coin in addresses) {
         if (!addresses[coin]) return false;
-        balances[coin] = await coins.services.balance({ network: coin, address: addresses[coin], testnet: TESTNET });
+        balances[coin] = await coins.services.balance( coin.toUpperCase(), addresses[coin], TESTNET );
       }
 
       return balances;

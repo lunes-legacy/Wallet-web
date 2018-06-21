@@ -60,6 +60,7 @@ const balanceReducer = (state = initialState, action) => {
       for (const coinKey in coins) {
         let balance = action.payload[coinKey].data;
         let coinKeyUpperCase = coinKey.toUpperCase();
+        console.log('balance', balance)
         if (state[coinKeyUpperCase]) {
           state = {
             ...state,
