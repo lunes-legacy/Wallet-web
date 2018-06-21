@@ -56,10 +56,10 @@ class Rescue extends React.Component {
 				addresses: {
           lns: null,
 					btc: null,
-					// LTC: null,
-          // ETH: null,
-          // NANO: null,
-          // DASH: null
+          eth: null,
+					// ltc: null,
+          // nano: null,
+          // dash: null
 				}
 			}
 		}

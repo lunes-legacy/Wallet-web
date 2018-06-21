@@ -13,12 +13,13 @@ const DASHNETWORK     = TESTNET === true ? 'DASHTESTNET' : 'DASH';
 const ETHNETWORK      = TESTNET === true ? 'ROPSTEN'     : 'ETH';
 // END NETWORK CONFIG
 
+// TO ENABLE OTHER COINS, SERACH IN "SHIFT + CRTL + F" FOR: "ENABLE COINS"
 // ENABLE COINS
 const ENABLEDCOINS = [
 	{ 'coinKey': 'lns', 'coinName':  'Lunes', 'address': '' },
 	{ 'coinKey': 'btc', 'coinName':  'BTC', 'address': '' },
+	{ 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
 	// { 'coinKey': 'ltc', 'coinName':  'LTC', 'address': 'Soon...' },
-	// { 'coinKey': 'eth', 'coinName':  'ETH', 'address': 'Soon...' },
 	// { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
 	// { 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
 ]

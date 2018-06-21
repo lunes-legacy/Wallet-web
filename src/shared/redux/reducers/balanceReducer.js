@@ -7,14 +7,14 @@ let initialState = {
     total_confirmed: 0,
     total_unconfirmed: 0
   },
-  // ETH: {
-  // 	total_confirmed: 1.02,
-  // 	total_unconfirmed: 1,
-  // 	total_amount: 2.2,
-  // 	img: 'eth.svg',
-  // 	coinName: 'Ethereum'
+  ETH: {
+  	total_confirmed: 0,
+  	total_unconfirmed: 0,
+  	total_amount: 0,
+  	img: 'eth.svg',
+  	coinName: 'Ethereum'
 
-  // },
+  },
   LNS: {
     coinName: "Lunes",
     img: "lns.svg",

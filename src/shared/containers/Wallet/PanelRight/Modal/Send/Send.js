@@ -103,7 +103,7 @@ class Send extends React.Component {
 	}
 
 	estimateFee() {
-		let fee = parseFloat(0.000001);
+		let fee = parseFloat(0.001);
 		return fee;
 	}
 	

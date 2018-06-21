@@ -1,7 +1,11 @@
 let initialState = { 
   addresses: {
     LNS: null,
-    BTC: null
+    BTC: null,
+    ETH: null,
+    // LTC: null,
+    // NANO: null,
+    // DASH: null,   
   }
 }
 

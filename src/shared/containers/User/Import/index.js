@@ -41,6 +41,8 @@ const ButtonsRow = styled.div`
 const Wallet = new WalletClass();
 
 class Import extends React.Component {
+
+  // ENABLE COINS 
   constructor() {
     super();
     this.state = {
@@ -50,10 +52,10 @@ class Import extends React.Component {
         addresses: {
           lns: null,
           btc: null,
-          // LTC: null,
-          // ETH: null,
-          // NANO: null,
-          // DASH: null
+          eth: null,
+          // ltc: null,
+          // nano: null,
+          // dash: null
         }
       }
     };

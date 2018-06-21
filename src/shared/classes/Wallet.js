@@ -214,20 +214,36 @@ export class WalletClass {
   }
 
   transactionSend = async (mnemonic, coin, address, amount, fee, accessToken) => {
+        
     try {
-      console.log(mnemonic, coin, address, amount, fee, accessToken);
-      console.log('amount', amount * 100000000);
-      let transactionData = {
+      let amountConvert = amount.toString();
+      let feeConvert = fee.toString();
+
+      if (coin === "btc" || coin === "nano" || coin === "dash" || coin === "ltc") {
+        amountConvert = coins.util.unitConverter.toSatoshi(amount);
+        feeConvert = coins.util.unitConverter.toSatoshi(fee);
+      } else if (coin === "lns" || coin === "lunes"){
+        amountConvert = coins.util.unitConverter.toSatoshi(amount);
+        feeConvert = coins.util.unitConverter.toSatoshi(fee);
+        console.log(amountConvert, feeConvert)
+      } else if (coin === "eth"){
+        amountConvert = coins.util.unitConverter.toWei(amount);
+        feeConvert = coins.util.unitConverter.toWei(fee);
+      } else {
+        return 'Coin not defined';
+      }
+
+      const transactionData = {
           mnemonic: mnemonic,
           network: coin,
           testnet: TESTNET,
           toAddress: address,
-          amount: amount * 100000000,
-          fee: fee * 100000000
+          amount: amountConvert,
+          fee: feeConvert
       };
   
-      let data = await coins.services.transaction(transactionData, accessToken);
-      console.log('data', data)
+      const data = await coins.services.transaction(transactionData, accessToken);
+
       return data;
     } catch (error) {
       console.error(error);
