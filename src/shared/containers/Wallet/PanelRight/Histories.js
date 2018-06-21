@@ -11,6 +11,9 @@ import { Text } from "Components/Text";
 import { Loading } from 'Components/Loading';
 import { numeral } from 'Utils/numeral';
 
+// CLASSES
+import { MoneyClass } from 'Classes/Money';
+
 const StyledHistories = styled.div`
   padding-top: 20px;
   height: 75vh;
@@ -208,6 +211,7 @@ const ErrorMessage = styled.div`
   text-align: center;
 `;
 
+const money = new MoneyClass;
 class Histories extends React.Component {
   constructor() {
     super();
@@ -378,7 +382,7 @@ class Histories extends React.Component {
     }
   };
 
-  _renderHistories() {
+  _renderHistories = () => {
     let { currentNetwork, currentTxHistory } = this.props.componentWallet;
     let { crypto } = this.props.currencies;
     let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD
@@ -389,16 +393,19 @@ class Histories extends React.Component {
         return <ErrorMessage> No transactions </ErrorMessage>;
     }
 
-    return currentTxHistory.data.history.map((transaction, key) => {
-
+    return currentTxHistory.data.history.map( (transaction, key) => {
       if(transaction.otherParams.type === 8 || transaction.otherParams.type === 9) {
-        var amount = numeral(transaction.networkFee / 100000000).format('0,0.00000000');
-        var usdAmount = numeral((transaction.networkFee / 100000000) * currentCurrencies).format('$0,0.00')
+        var amount = money.conevertCoin(currentNetwork, transaction.networkFee);
+        var usdAmount = money.conevertCoin(currentNetwork, transaction.networkFee * currentCurrencies);
+        amount = numeral(amount).format('0,0.00000000');
+        usdAmount = numeral(usdAmount).format('$0,0.00');
       } else {
-        var amount = numeral(transaction.nativeAmount / 100000000).format('0,0.00000000');
-        var usdAmount = numeral((transaction.nativeAmount / 100000000) * currentCurrencies).format('$0,0.00')        
+        var amount = money.conevertCoin(currentNetwork, transaction.nativeAmount);
+        var usdAmount = money.conevertCoin(currentNetwork, transaction.nativeAmount * currentCurrencies);
+        amount = numeral(amount).format('0,0.00000000');
+        usdAmount = numeral(usdAmount).format('$0,0.00');
       }
-
+      
       return (
         <History key={key}>
           <HistoryHead onClick={() => this.handleToggleHistory(key)}>
@@ -420,13 +427,13 @@ class Histories extends React.Component {
                 <HistoryHeadAmount>
                   <HeadAmountCoin type={transaction.type}>
                     {this.SignalControl(transaction.type)}
-                    {amount}
+                    { amount }
                   </HeadAmountCoin>
                   <HeadAmountMoney>
-                    ({usdAmount})
+                    ({ usdAmount })
                   </HeadAmountMoney>
                 </HistoryHeadAmount>
-              </Col>
+              </Col>  
             </Row>
           </HistoryHead>
 
@@ -439,9 +446,9 @@ class Histories extends React.Component {
                       {this.icoStatusToText(transaction.type)}:
                     </Span>
                     <TextT>
-                      {amount}
-                      {currentNetwork.toUpperCase()}
-                      ({usdAmount})
+                      { amount }
+                      { currentNetwork.toUpperCase() }
+                      ({ usdAmount })
                     </TextT>
                   </Text>
                   <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
@@ -471,7 +478,7 @@ class Histories extends React.Component {
     try {
       return (
         <StyledHistories>
-          {this._renderHistories()}
+          { this._renderHistories() }
         </StyledHistories>
       );
     } catch (e) {

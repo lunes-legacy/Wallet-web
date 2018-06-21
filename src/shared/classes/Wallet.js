@@ -3,6 +3,8 @@ import { coins, services, networks } from "lunes-lib";
 import sb from "satoshi-bitcoin";
 import isCoinAvaliable from "Config/isCoinAvaliable";
 
+import { MoneyClass } from 'Classes/Money';
+
 import { 
   TESTNET, 
   APICONFIG, 
@@ -14,6 +16,7 @@ import {
   ETHNETWORK 
 } from "Config/constants";
 
+const money = new MoneyClass;
 
 export class WalletClass {
   static coinsPrice;
@@ -220,15 +223,14 @@ export class WalletClass {
       let feeConvert = fee.toString();
 
       if (coin === "btc" || coin === "nano" || coin === "dash" || coin === "ltc") {
-        amountConvert = coins.util.unitConverter.toSatoshi(amount);
-        feeConvert = coins.util.unitConverter.toSatoshi(fee);
+        amountConvert = money.conevertCoin(coin, amount);
+        feeConvert = money.conevertCoin(coin, fee);
       } else if (coin === "lns" || coin === "lunes"){
-        amountConvert = coins.util.unitConverter.toSatoshi(amount);
-        feeConvert = coins.util.unitConverter.toSatoshi(fee);
-        console.log(amountConvert, feeConvert)
+        amountConvert = money.conevertCoin(coin, amount);
+        eeConvert = money.conevertCoin(coin, fee);
       } else if (coin === "eth"){
-        amountConvert = coins.util.unitConverter.toWei(amount);
-        feeConvert = coins.util.unitConverter.toWei(fee);
+        amountConvert = money.conevertCoin(coin, amount);
+        ffeeConvert = money.conevertCoin(coin, fee);
       } else {
         return 'Coin not defined';
       }
