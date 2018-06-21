@@ -2,18 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import qrcode from "qrcode-generator";
 import { Col, Row } from "Components/index";
-
-// REDUX
 import { connect } from "react-redux";
-
-
-//PRIVATE COMPONENTS
 import Background from "../Background";
 import Close from "../Close";
 import Foot from "../Foot";
-
-//UI
 import { toggleModal } from './../ui';
+import style from 'Shared/style-variables';
 
 import {
   ReceiveStyleModalCss,
@@ -23,7 +17,7 @@ import {
   ReceiveButtonModalCss,
   IconAction,
   ReceiveLabelTextCss,
-  } from "./css";
+} from "./css";
 
 
 class ModalReceive extends React.Component {
@@ -79,16 +73,15 @@ class ModalReceive extends React.Component {
   _handleClickClose = (event) => {
     let modal = document.querySelector('.js-modal-receive');
     toggleModal(modal);
-     /*{className={'js-modal-send'}}*/
+    /*{className={'js-modal-send'}}*/
   }
   render() {
-    // if (!this.state.isOpenModalReceived) return null;
+    let currentNetwork = this.props.currentNetwork;
+
     return (
       <Background>
         <ReceiveStyleModalCss className="js-modal-receive">
-          <Close onClick={this._handleClickClose}>
-            <strong>X</strong>
-          </Close>
+          <Close onClick={this._handleClickClose}>&times;</Close>
           <ReceiveContentCss>
             <Col defaultAlign={"center"} s={12} m={12} l={12}>
               <Row>
@@ -100,24 +93,15 @@ class ModalReceive extends React.Component {
           </ReceiveContentCss>
           <Foot>
             <Row>
-              <ReceiveLabelCss> { this.getCurrentAddress() } </ReceiveLabelCss>
+              <ReceiveLabelCss> {this.getCurrentAddress()} </ReceiveLabelCss>
             </Row>
             <Row>
               <ReceiveLabelTextCss>COPY THIS ADDRESS</ReceiveLabelTextCss>
             </Row>
             <Row>
-              <ReceiveButtonModalCss onClick={() => this.copyPaymentAddress()}>
+              <ReceiveButtonModalCss color={style.coinsColor[currentNetwork]} onClick={() => this.copyPaymentAddress()}>
                 <IconAction src={"/img/app_wallet/modal_receive/ic_copy.svg"} />
               </ReceiveButtonModalCss>
-              {/*<ReceiveButtonModalCss>
-                <IconAction src={"/img/app_wallet/modal_receive/ic_print.svg"} />
-              </ReceiveButtonModalCss>
-              <ReceiveButtonModalCss>
-                <IconAction src={"/img/app_wallet/modal_receive/ic_email.svg"} />
-              </ReceiveButtonModalCss>*/}
-              {/* <ReceiveButtonModalCss>
-                <IconAction src={"/img/app_wallet/modal_receive/ic_link.svg"} />
-              </ReceiveButtonModalCss> */}
             </Row>
           </Foot>
         </ReceiveStyleModalCss>
@@ -132,7 +116,7 @@ const mapStateToProps = state => {
   };
 };
 const mapDispatchToProps = dispatch => {
-  return { };
+  return {};
 };
 
 export default connect(

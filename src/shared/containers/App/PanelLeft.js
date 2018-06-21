@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import styles from 'Shared/style-variables';
 import { TextBase } from 'Components/TextBase';
 import { ButtonGreen } from "Components/Buttons";
-import Modal from 'Components/Modal';
+import { Modal } from 'Components/index';
 import ItemMenuApp from "./ItemMenu";
 import CookieClass from 'Classes/Cookie';
 
@@ -81,15 +81,17 @@ class PanelLeft extends React.Component {
     super(props);
 
     this.state = {
-      isOpenSignout: false, 
+      isOpenSignout: false,
     };
   }
 
-  openModalSignout = () => {
-    this.setState({ isOpenSignout: !this.state.isOpenSignout });
+  toggleModalSignout = () => {
+    this.setState(prevState => ({
+      isOpenSignout: !prevState.isOpenSignout
+    }));
   }
 
- 
+
   logoutAction = () => {
 
     let cookie = new CookieClass();
@@ -104,19 +106,19 @@ class PanelLeft extends React.Component {
         <ItemMenuApp
           label="Home"
           to="/app/home"
-          icon="ic_home.svg" 
+          icon="ic_home.svg"
           activeClassName="active" />
 
         <ItemMenuApp
           label="Wallet"
           to="/app/wallet"
-          icon="ic_wallet.svg" 
+          icon="ic_wallet.svg"
           activeClassName="active" />
 
         <ItemMenuApp
           label="Leasing"
           to="/app/leasing"
-          icon="ic_leasing.svg" 
+          icon="ic_leasing.svg"
           activeClassName="active" />
 
         {/*<ItemMenuApp
@@ -160,26 +162,23 @@ class PanelLeft extends React.Component {
                     activeClassName="active" /> */}
 
 
-        <LinkLogout onClick={() => this.openModalSignout()}>
+        <LinkLogout onClick={() => this.toggleModalSignout()}>
           <CustomText size={'1.4rem'}>Sign out</CustomText>
         </LinkLogout>
-        {
-          this.state.isOpenSignout &&
-          <Modal            
-            isOpen={true}
-            onClose={this.openModalSignout}
-            height={'30%'}
-            width={'40%'}
-            header={''}
-            headerAlign={'justify'}
-            text={
-              <div>
-                <CustomTextPopup>If you sign out, the next time you log in the seed will be asked.</CustomTextPopup>
-                <ButtonGreen onClick={() => this.logoutAction()} width="70%" margin={"3rem auto 3rem auto"} fontSize={'1rem'}>Ok, I want to sign out</ButtonGreen>
-              </div>
-            }
-          />
-        }
+        <Modal
+          isOpen={this.state.isOpenSignout}
+          onClose={this.toggleModalSignout}
+          height={'30%'}
+          width={'40%'}
+          header={''}
+          headerAlign={'justify'}
+          text={
+            <div>
+              <CustomTextPopup>If you sign out, the next time you log in the seed will be asked.</CustomTextPopup>
+              <ButtonGreen onClick={() => this.logoutAction()} width="70%" margin={"3rem auto 3rem auto"} fontSize={'1rem'}>Ok, I want to sign out</ButtonGreen>
+            </div>
+          }
+        />
       </StyledPanelLeft>
     );
   }

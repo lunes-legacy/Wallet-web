@@ -8,7 +8,7 @@ import { InputText } from 'Components/forms/input-text';
 import { LeasingClass } from 'Classes/Leasing';
 import { WalletClass } from 'Classes/Wallet';
 
-import { TESTNET, LUNES_LEASING_FEE } from 'Config/constants';
+import { TESTNET } from 'Config/constants';
 
 // REDUX
 import { connect } from 'react-redux';
@@ -76,8 +76,6 @@ class LeasingModal extends Component {
     startLeasing = async () => {
         let err = 0;
         let message = '';
-        let { amount } = this.state;
-        let balance = this.props.balance.LNS.total_amount;
 
         this.setState({ ...this.state, loading: true });
 
@@ -103,8 +101,8 @@ class LeasingModal extends Component {
             err++;
             message = 'Invalid LNS amount';
         }
-        
-        if (amount > balance) {
+
+        if (this.state.amount > this.props.balance.LNS.total_amount) {
             err++;
             message = 'Insufficient funds';
         }
@@ -125,14 +123,14 @@ class LeasingModal extends Component {
 
         const leaseData = {
             toAddress: this.state.toAddress.trim(),
-            amount: amount,
+            amount: this.state.amount,
             fee: "100000",
             testnet: TESTNET
         };
 
         this.props.setLeasingAmount({
             toAddress: this.state.toAddress.trim(),
-            amount: amount
+            amount: this.state.amount
         });
 
         const leasing = new LeasingClass();
@@ -145,8 +143,7 @@ class LeasingModal extends Component {
                 this.setState({ ...this.state, loading: false });
                 return this.showSuccess();
             }).catch(err => {
-                this.setState({ ...this.state, loading: false });
-                this.showError(err.message);
+                this.showError();
                 return console.error(err)
             });
     }
@@ -167,14 +164,8 @@ class LeasingModal extends Component {
 
     // Atualiza o valor percentual
     setInputValue = value => {
-        // let tmp = value.toString();
-        // if (tmp.indexOf('.') !== -1) {
-        //     alert('We do not accept fraction values yet.');
-        //     value = tmp.split('.');
-        // }
         this.setState({
-            // amount: parseInt(value)
-            amount: parseFloat(value)
+            amount: value
         });
     }
 
@@ -214,6 +205,17 @@ class LeasingModal extends Component {
         }, 1000);
     }
 
+    componentDidMount() {
+      // Função para fechar a modal ao pressionar ESC
+      document.addEventListener('keydown', (event) => {
+          event = event || window.event;
+          const modal = document.querySelector('.modal-status');
+          if (event.keyCode == 27) {
+              modal.style.display = 'none';
+          }
+      });
+    }
+
     render() {
         return (
             <div>
@@ -221,7 +223,7 @@ class LeasingModal extends Component {
                     <LeasingStyleModalCss>
                         <Col defaultAlign={"center"} s={12} m={12} l={12}>
                             <Row>
-                                <Close onClick={this.handleModal}>x</Close>
+                                <Close onClick={this.handleModal}>&times;</Close>
 
                                 <Image src="/img/coins/lns.svg" />
                                 <CoinValue margin={ "0 4.0rem 0 0" }offSide>{numeral(this.props.balance.LNS.total_confirmed).format('0,0.00000000')}</CoinValue>

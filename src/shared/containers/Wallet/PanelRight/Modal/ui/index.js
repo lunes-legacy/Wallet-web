@@ -2,7 +2,7 @@ export const toggleModal = (modal) => {
 	if (typeof modal === 'string')
 		modal = document.querySelector(`.${modal}`);
 
-	let background = modal.parentElement;
+  let background = modal.parentElement;
 
 	let state = modal.getAttribute('state');
 	if (state === 'hidden' || !state) {
@@ -15,5 +15,18 @@ export const toggleModal = (modal) => {
 		background.style.visibility = 'hidden';
 		modal.style.transform       = 'translateY(-100%)';
 		modal.setAttribute('state','hidden');
-	}
+  }
+
+  if (modal) {
+    // Função para fechar a modal ao pressionar ESC
+    document.addEventListener('keydown', (event) => {
+      event = event || window.event;
+      if (event.keyCode == 27) {
+        background.style.opacity    = '0';
+        background.style.visibility = 'hidden';
+        modal.style.transform       = 'translateY(-100%)';
+        modal.setAttribute('state','hidden');
+      }
+    });
+  }
 }

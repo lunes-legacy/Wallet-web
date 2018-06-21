@@ -1,19 +1,14 @@
 import React from 'react';
-
-//COMPONENTS
-import Send    from './Send';
+import { connect } from "react-redux";
+import Send from './Send';
 import Loading from './Loading'
-import Final   from './Final';
-
-//PRIVATE COMPONENTS
-import Background  from '../Background';
-import Close       from '../Close';
-import Content     from '../Content';
-import Head        from '../Head';
-import IconCoin    from '../IconCoin';
+import Final from './Final';
+import Background from '../Background';
+import Close from '../Close';
+import Content from '../Content';
+import Head from '../Head';
+import IconCoin from '../IconCoin';
 import StyledModal from '../StyledModal';
-
-//UI
 import { toggleModal } from './../ui';
 
 class ModalSend extends React.Component {
@@ -26,9 +21,9 @@ class ModalSend extends React.Component {
 	}
 	componentDidMount() {
 		let steps = [
-			{name: 'Step 1', component: Send},
-			{name: 'Step 2', component: Loading},
-			{name: 'Step 3', component: Final}
+			{ name: 'Step 1', component: Send },
+			{ name: 'Step 2', component: Loading },
+			{ name: 'Step 3', component: Final }
 		]
 		this.setState({
 			steps
@@ -51,7 +46,12 @@ class ModalSend extends React.Component {
 			...this.state,
 			currStep: 0
 		});
-		 /*{className={'js-modal-send'}}*/
+		/*{className={'js-modal-send'}}*/
+	}
+
+	handleImageRender = () => {
+		let currentNetwork = this.props.wallet.currentNetwork.toLowerCase();
+		return  `/img/coins/${currentNetwork}.svg`;
 	}
 
 	render() {
@@ -62,10 +62,10 @@ class ModalSend extends React.Component {
 		return (
 			<Background>
 				<StyledModal className="js-modal-send">
-					<Close onClick={this._handleClickClose}>X</Close>
+					<Close onClick={this._handleClickClose}>&times;</Close>
 
 					<Head>
-						<IconCoin src={'/img/coins/lns.svg'}/>
+						<IconCoin src={this.handleImageRender()} />
 					</Head>
 
 					<Content>
@@ -75,7 +75,11 @@ class ModalSend extends React.Component {
 				</StyledModal>
 			</Background>
 		);
-	}	
+	}
 }
 
-export default ModalSend;
+const mapStateToProps = state => ({
+	wallet: state.component.wallet,
+});
+
+export default connect(mapStateToProps)(ModalSend);
