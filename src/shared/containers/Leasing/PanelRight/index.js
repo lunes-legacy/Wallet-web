@@ -203,12 +203,12 @@ class PanelRight extends React.Component {
   }
 
   cancelLeasing = (key) => {
-    // let payload = {
-    //   wallet_info: this.wallet_info,
-    //   key: key
-    // };
+    let payload = {
+      wallet_info: this.wallet_info,
+      key: key
+    };
 
-    // this.props.cancelLeasing(payload);
+    this.props.cancelLeasing(payload);
 
     this.setState({
       canceledTxId: key
@@ -216,7 +216,7 @@ class PanelRight extends React.Component {
 
     // alert("CANCELED: " + key);
     this.toggleConfirmModal();
-    // this.searchLeasing();
+    this.searchLeasing();
   }
 
   // normalizar status do leasing, que hoje é 8 ou 9
