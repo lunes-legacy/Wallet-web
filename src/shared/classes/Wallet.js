@@ -3,6 +3,7 @@ import { coins, services, networks } from "lunes-lib";
 import sb from "satoshi-bitcoin";
 import isCoinAvaliable from "Config/isCoinAvaliable";
 
+import { FeeClass } from 'Classes/crypto';
 import { MoneyClass } from 'Classes/Money';
 
 import { 
@@ -17,6 +18,7 @@ import {
 } from "Config/constants";
 
 const money = new MoneyClass;
+const fee = new FeeClass;
 
 export class WalletClass {
   static coinsPrice;
@@ -90,7 +92,7 @@ export class WalletClass {
       let balances = {};
       for (const coin in addresses) {
         if (!addresses[coin]) return false;
-        balances[coin] = await coins.services.balance( coin.toUpperCase(), addresses[coin], TESTNET );
+        balances[coin] = await coins.services.balance({ network: coin, address: addresses[coin], testnet: TESTNET });
       }
 
       return balances;
@@ -224,20 +226,19 @@ export class WalletClass {
   }
 
   transactionSend = async (mnemonic, coin, address, amount, fee, accessToken) => {
-        
     try {
       let amountConvert = amount.toString();
       let feeConvert = fee.toString();
 
-      if (coin === "btc" || coin === "nano" || coin === "dash" || coin === "ltc") {
-        amountConvert = money.conevertCoin(coin, amount);
-        feeConvert = money.conevertCoin(coin, fee);
+      if (coin === "btc" || coin === "dash" || coin === "ltc") {
+        amountConvert = money.conevertCoin('satoshi', amount);
+        feeConvert = money.conevertCoin('satoshi', fee);
       } else if (coin === "lns" || coin === "lunes"){
-        amountConvert = money.conevertCoin(coin, amount);
-        eeConvert = money.conevertCoin(coin, fee);
+        amountConvert = money.conevertCoin('satoshi', amount);
+        feeConvert = money.conevertCoin('satoshi', fee);
       } else if (coin === "eth"){
-        amountConvert = money.conevertCoin(coin, amount);
-        ffeeConvert = money.conevertCoin(coin, fee);
+        amountConvert = money.conevertCoin('wei', amount);
+        ffeeConvert = money.conevertCoin('wei', fee);
       } else {
         return 'Coin not defined';
       }
@@ -248,15 +249,27 @@ export class WalletClass {
           testnet: TESTNET,
           toAddress: address,
           amount: amountConvert,
-          fee: feeConvert
+          feePerByte: feeConvert
       };
   
       const data = await coins.services.transaction(transactionData, accessToken);
 
       return data;
     } catch (error) {
-      console.error(error);
+      console.error('Method: transactionSend', error);
       return error;
     }
+  }
+
+  getCryptoTx = async (coin) => {
+    try {
+      let result = await fee.getNetworkFees({ network: coin });
+      return result.data;
+      
+    } catch (error) {
+      console.error('Method: getCryptoTx', error);
+      return error;
+    }
+    
   }
 }

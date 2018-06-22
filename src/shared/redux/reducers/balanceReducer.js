@@ -18,14 +18,14 @@ let initialState = {
     total_confirmed: 0,
     total_unconfirmed: 0
   },
-  ETH: {
-    img: 'eth.svg',
-  	coinName: 'Ethereum',
-  	total_confirmed: 0,
-  	total_unconfirmed: 0,
-  	total_amount: 0,
+  // ETH: {
+  //   img: 'eth.svg',
+  // 	coinName: 'Ethereum',
+  // 	total_confirmed: 0,
+  // 	total_unconfirmed: 0,
+  // 	total_amount: 0,
 
-  },
+  // },
   // LTC: {
   // 	total_confirmed: 100,
   // 	total_unconfirmed: 0,
@@ -60,7 +60,6 @@ const balanceReducer = (state = initialState, action) => {
       for (const coinKey in coins) {
         let balance = action.payload[coinKey].data;
         let coinKeyUpperCase = coinKey.toUpperCase();
-        console.log('balance', balance)
         if (state[coinKeyUpperCase]) {
           state = {
             ...state,
@@ -68,7 +67,8 @@ const balanceReducer = (state = initialState, action) => {
               coinName: state[coinKeyUpperCase].coinName,
               img: state[coinKeyUpperCase].img,
               total_confirmed: money.conevertCoin(coinKey, balance.confirmed),
-              total_amount: money.conevertCoin(coinKey, balance.confirmed)
+              total_amount: money.conevertCoin(coinKey, balance.confirmed),
+              total_unconfirmed: balance.unconfirmed ? money.conevertCoin(coinKey, balance.unconfirmed) : 0,
             }
           };   
         }

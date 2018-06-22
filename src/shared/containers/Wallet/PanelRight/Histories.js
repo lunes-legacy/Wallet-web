@@ -392,18 +392,16 @@ class Histories extends React.Component {
       } else if (currentTxHistory.data.history.length < 1) {
         return <ErrorMessage> No transactions </ErrorMessage>;
     }
-
+    
     return currentTxHistory.data.history.map( (transaction, key) => {
       if(transaction.otherParams.type === 8 || transaction.otherParams.type === 9) {
         var amount = money.conevertCoin(currentNetwork, transaction.networkFee);
-        var usdAmount = money.conevertCoin(currentNetwork, transaction.networkFee * currentCurrencies);
+        var usdAmount = numeral(amount * currentCurrencies).format('$0,0.00');
         amount = numeral(amount).format('0,0.00000000');
-        usdAmount = numeral(usdAmount).format('$0,0.00');
       } else {
         var amount = money.conevertCoin(currentNetwork, transaction.nativeAmount);
-        var usdAmount = money.conevertCoin(currentNetwork, transaction.nativeAmount * currentCurrencies);
+        var usdAmount = numeral(amount * currentCurrencies).format('$0,0.00');
         amount = numeral(amount).format('0,0.00000000');
-        usdAmount = numeral(usdAmount).format('$0,0.00');
       }
       
       return (

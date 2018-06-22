@@ -4,15 +4,24 @@ import { FeeClass } from 'Classes/crypto';
 import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
-import { WalletClass } from "Classes/Wallet";
 import { TESTNET } from 'Config/constants';
+
+// REDUX
 import { connect } from 'react-redux';
+
 import { numeral } from 'Utils/numeral';
 import { InputText } from 'Components/forms/input-text';
 import { Col, Row, Button, TextBase, Text } from 'Components/index';
 import { SendButtonCss,	FirstRowCss, ThirdRowCss,	FourthRowCss } from './css';
 import { InputRadio, WrapRadio, LabelRadio, RadioCheckmark } from 'Components/forms/input-radio';
 import Hr from '../Hr';
+
+// CLASSES
+import { MoneyClass } from 'Classes/Money';
+import { WalletClass } from 'Classes/Wallet';
+
+const money = new MoneyClass;
+const wallet = new WalletClass();
 
 
 let CssWrapper = css`
@@ -40,7 +49,6 @@ let FeeButton = styled.button`
 	}
 `;
 
-const wallet = new WalletClass();
 
 class Send extends React.Component {
 	constructor(props) {
@@ -57,6 +65,7 @@ class Send extends React.Component {
 			stateButtonSend: 'Enviar',
 			addressIsValid: true,
 			invalidAmount: false,
+			network: null,
 			sendAddress: '',
 			transferValues: {
 				coin: '',
@@ -68,24 +77,10 @@ class Send extends React.Component {
 				brl: false,
 				usd: false
 			},
-			fees: {
-				status: 'loading',
-				low: undefined,
-				medium: undefined,
-				high: undefined
-			},
 			networkFees: {
 				low: undefined,
 				medium: undefined,
 				high: undefined
-			},
-			estimateParams: {
-				network: undefined,
-				fromAddress: undefined,
-				toAddress: undefined,
-				amount: undefined,
-				accessToken: undefined,
-				networkFees: undefined //it is optional
 			}
 		}
 	}
@@ -102,31 +97,30 @@ class Send extends React.Component {
 		this._setNetworkFees();
 	}
 
-	estimateFee() {
-		let fee = parseFloat(0.001);
-		return fee;
-	}
-	
 	_setNetworkFees = async () => {
 		let currentNetwork = this.props.wallet.currentNetwork;
-		let Fee = new FeeClass;
-		let result;
+		let fee = await wallet.getCryptoTx(currentNetwork);
 		let networkFees;
+
 		if (!currentNetwork)
-			console.error(errorPattern('Current network is not defined', 500, 'SETNETWORKFEES_ERROR'));
+			console.error('Current network is not defined', 500, 'SETNETWORKFEES_ERROR');
+		
+		if (!fee)
+			console.error('Failed on trying to get network fees', 500, "SETNETWORKFEES_ERROR");
 
-		result = await Fee.getNetworkFees({ network: currentNetwork });
-		if (result.status !== 'success')
-			console.error(errorPattern('Failed on trying to get network fees', 500, "SETNETWORKFEES_ERROR"));
+		networkFees = {
+			low: money.conevertCoin(currentNetwork, fee.low),
+			medium: money.conevertCoin(currentNetwork, fee.medium),
+			high: money.conevertCoin(currentNetwork, fee.high)
+		}
 
-		networkFees = result.data;
 		this.setState({
 			...this.state,
-			estimateParams: {
-				...this.state.estimateParams,
-				networkFees
-			}
-		})
+			network: currentNetwork,
+			networkFees
+		});
+
+		return networkFees;
 	}
  
 	handleOnPercentChange = (event) => {
@@ -148,7 +142,7 @@ class Send extends React.Component {
 	handleSend = async (address) => {
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
-		let fee = this.estimateFee();
+		let fee = await this._setNetworkFees();
 
 		if (address && address.length > 1) {
 			let validateAddress = await this.validateAddress(currentNetwork, address);
@@ -164,13 +158,13 @@ class Send extends React.Component {
 
 			return;
 		}
-		
-		if (!coinAmount || coinAmount <= fee) {
+		console.log('fee.lo', fee.low.toFixed(8))
+		if (!coinAmount || coinAmount <= fee.low.toFixed(8)) {
 			this.setState({ ...this.state, invalidAmount: true });
 			return;
 		}
 
-		let dataSend = this.transactionSend(address, coinAmount, fee);
+		let dataSend = this.transactionSend(address, coinAmount, fee.low);
 
 		setTimeout(() => {
 			this.props.nextStep({ coinAmount, address });
@@ -207,13 +201,15 @@ class Send extends React.Component {
 		let coinAmount = this.state.transferValues.coin;
 		let usdAmount = this.state.transferValues.usd;
 
+		if (this.state.network !== currentNetwork) this._setNetworkFees();
+
 		return (
 			<Col s={12} m={6} l={6}>
 				<Text txRight clWhite>You are sending 
 					<Text color={style.coinsColor[currentNetwork]} txInline>
 						 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
 					</Text> 
-					({ numeral( usdAmount ).format('$0,0.00') }) + { this.estimateFee() } of fee
+					({ numeral( usdAmount ).format('$0,0.0000') }) + { this.state.networkFees.low ? this.state.networkFees.low.toFixed(8) : 'error' } of fee
 				</Text>
 			</Col>
 		);
@@ -263,7 +259,6 @@ class Send extends React.Component {
 	}
 
 	transactionSend = async (address, amount, fee) => {
-		const wallet = new WalletClass();
 		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
 		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
 		
@@ -510,13 +505,14 @@ class Send extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		crypto: state.currencies.crypto,
+		// cryptoTx: state.currencies.cryptoTx,
 		wallet: state.component.wallet,
 		balance: state.balance,
 		currencies: state.currencies.currencies,
 	}
 }
 const mapDispatchToProps = (dispatch) => {
-	return {}
+	return { }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Send);
 

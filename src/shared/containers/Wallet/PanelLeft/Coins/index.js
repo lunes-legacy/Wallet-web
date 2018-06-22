@@ -8,7 +8,7 @@ import { decrypt } from "Utils/crypt";
 
 //REDUX
 import { connect } from "react-redux";
-import { openPanelRight, togglePanelLeft, setTxHistory, setWalletInfo } from 'Redux/actions';
+import { openPanelRight, togglePanelLeft, setTxHistory, setCryptoTx, setWalletInfo } from 'Redux/actions';
 
 import { Loading } from 'Components/Loading';
 
@@ -198,6 +198,7 @@ class Coins extends React.Component {
         <Coin
           key={coinKey}
           onClick={() => {
+            this.props.setCryptoTx(coinKey);
             this.props.openPanelRight({currentNetwork: coinKey.toLowerCase()}); 
             this.props.togglePanelLeft();
             this.props.setTxHistory({ network: coinKey.toUpperCase(), address: this.props.walletInfo.addresses[coinKey.toLowerCase()] });
@@ -251,6 +252,9 @@ const mapDispatchToProps = dispatch => {
     },
     setWalletInfo: (data) => {
       dispatch(setWalletInfo(data));
+    },
+    setCryptoTx: (data) => {
+      dispatch(setCryptoTx(data));
     },
     setTxHistory: (data) => {
       dispatch(setTxHistory(data));
