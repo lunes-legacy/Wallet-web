@@ -158,13 +158,12 @@ class Send extends React.Component {
 
 			return;
 		}
-		console.log('fee.lo', fee.low.toFixed(8))
-		if (!coinAmount || coinAmount <= fee.low.toFixed(8)) {
+		if (!coinAmount || coinAmount <= fee.medium.toFixed(8)) {
 			this.setState({ ...this.state, invalidAmount: true });
 			return;
 		}
 
-		let dataSend = this.transactionSend(address, coinAmount, fee.low);
+		let dataSend = this.transactionSend(address, coinAmount, fee.medium);
 
 		setTimeout(() => {
 			this.props.nextStep({ coinAmount, address });
@@ -209,7 +208,7 @@ class Send extends React.Component {
 					<Text color={style.coinsColor[currentNetwork]} txInline>
 						 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
 					</Text> 
-					({ numeral( usdAmount ).format('$0,0.0000') }) + { this.state.networkFees.low ? this.state.networkFees.low.toFixed(8) : 'error' } of fee
+					({ numeral( usdAmount ).format('$0,0.0000') }) + { this.state.networkFees.medium ? this.state.networkFees.medium.toFixed(8) : 'error' } of fee
 				</Text>
 			</Col>
 		);
@@ -299,7 +298,7 @@ class Send extends React.Component {
 		
 		switch (type) {
 			case 'coin':
-				parseFloat(value) + this.state.networkFees.low > balance ? amountStatus = true : amountStatus = false;
+				parseFloat(value) + this.state.networkFees.medium > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({ 
 					...this.state,
@@ -314,7 +313,7 @@ class Send extends React.Component {
 				break;
 
 			case 'brl':
-				(parseFloat(value) / brlValue) + this.state.networkFees.low > balance ? amountStatus = true : amountStatus = false;
+				(parseFloat(value) / brlValue) + this.state.networkFees.medium > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({ 
 					...this.state, 
@@ -329,7 +328,7 @@ class Send extends React.Component {
 				break;
 
 			case 'usd':
-				(parseFloat(value) / usdValue) + this.state.networkFees.low > balance ? amountStatus = true : amountStatus = false;
+				(parseFloat(value) / usdValue) + this.state.networkFees.medium > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({
 					...this.state, 

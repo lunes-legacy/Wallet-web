@@ -165,7 +165,7 @@ export class WalletClass {
           return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return erro;
     }
   }
@@ -195,7 +195,7 @@ export class WalletClass {
           network: coin,
           testnet: TESTNET,
           toAddress: address,
-          amount: amountConvert,
+          amount: amountConvert + feeConvert,
           fee: feeConvert
         };
       } else if (coin === "eth"){
@@ -204,8 +204,6 @@ export class WalletClass {
       } else {
         return 'Coin not defined';
       }
-
-      console.log('transactionData', transactionData)
   
       const data = await coins.services.transaction(transactionData, accessToken);
 
@@ -218,7 +216,6 @@ export class WalletClass {
 
   getCryptoTx = async (coin) => {
     try {
-      console.log(coin)
       let result = await fee.getNetworkFees({ network: coin });
       return result.data;
       
