@@ -92,7 +92,7 @@ export class WalletClass {
       let balances = {};
       for (const coin in addresses) {
         if (!addresses[coin]) return false;
-        balances[coin] = await coins.services.balance({ network: coin, address: addresses[coin], testnet: TESTNET });
+        balances[coin] = await coins.services.balance(coin, addresses[coin], TESTNET);
       }
 
       return balances;
@@ -127,7 +127,7 @@ export class WalletClass {
           //it gets the current addres of the iteration
           let address = addresses[coin][addressKey];
           //it returns a response object
-          let response = await coins.services.balance({ network: coin, address, testnet: TESTNET });
+          let response = await coins.services.balance(coin, address,TESTNET);
           if (response.data) {
             //se não temos nada no objeto
             //então colocamos valores iniciais
