@@ -299,7 +299,7 @@ class Send extends React.Component {
 		
 		switch (type) {
 			case 'coin':
-				parseFloat(value) + 0.01 > balance ? amountStatus = true : amountStatus = false;
+				parseFloat(value) + this.state.networkFees.low > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({ 
 					...this.state,
@@ -314,7 +314,7 @@ class Send extends React.Component {
 				break;
 
 			case 'brl':
-				(parseFloat(value) / brlValue) + 0.01 > balance ? amountStatus = true : amountStatus = false;
+				(parseFloat(value) / brlValue) + this.state.networkFees.low > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({ 
 					...this.state, 
@@ -329,7 +329,7 @@ class Send extends React.Component {
 				break;
 
 			case 'usd':
-				(parseFloat(value) / usdValue) + 0.01 > balance ? amountStatus = true : amountStatus = false;
+				(parseFloat(value) / usdValue) + this.state.networkFees.low > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({
 					...this.state, 
