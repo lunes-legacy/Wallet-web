@@ -5,6 +5,7 @@ import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
 import { TESTNET } from 'Config/constants';
+import { Loading } from 'Components/Loading';
 
 // REDUX
 import { connect } from 'react-redux';
@@ -67,6 +68,7 @@ class Send extends React.Component {
 			invalidAmount: false,
 			network: null,
 			sendAddress: '',
+			loading: false,
 			transferValues: {
 				coin: '',
 				brl: '',
@@ -139,7 +141,12 @@ class Send extends React.Component {
 		this.wrapper.style.transform = 'translateY(-100%)';
 	}
 
+	ctrlLoading(state) {
+		return this.setState({ ...this.state, loading: state });
+	}
+
 	handleSend = async (address) => {
+		this.ctrlLoading(true);
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let fee = await this._setNetworkFees();
@@ -149,22 +156,24 @@ class Send extends React.Component {
 
 			if (!validateAddress) {
 				this.setState({ ...this.state, addressIsValid: false });
+				this.ctrlLoading(false);
 				return;
 			} else {
 				this.setState({ ...this.state, addressIsValid: true });
 			}
 		} else {
 			this.setState({ ...this.state, addressIsValid: false, sendAddress: 'Invalid Address' });
-
+			this.ctrlLoading(false);
 			return;
 		}
 		if (!coinAmount || coinAmount <= fee.medium.toFixed(8)) {
 			this.setState({ ...this.state, invalidAmount: true });
+			this.ctrlLoading(false);
 			return;
 		}
 
 		let dataSend = this.transactionSend(address, coinAmount, fee.medium);
-
+		this.ctrlLoading(false);
 		setTimeout(() => {
 			this.props.nextStep({ coinAmount, address });
 		}, 1000);
@@ -495,6 +504,7 @@ class Send extends React.Component {
 							Enviar
 						</Button>
 					</Row>
+					<Loading hide={this.state.loading} size={"25px"} />
 				</Col>
 			</Row>
 		);
