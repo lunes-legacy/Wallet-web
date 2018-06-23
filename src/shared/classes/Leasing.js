@@ -14,11 +14,11 @@ export class LeasingClass {
       try {
         let walletInfo = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')));
 
-        const lunesValue = await coins.services.balance({
-          network: 'LNS',
-          address: walletInfo.addresses.LNS, // Para testar deve-se substituir por um endereço válido
-          testnet: TESTNET
-        });
+        const lunesValue = await coins.services.balance(
+          'LNS',
+          walletInfo.addresses.LNS, // Para testar deve-se substituir por um endereço válido
+          TESTNET
+        );
 
         const leaseValue = await coins.services.leaseBalance({
           address: walletInfo.addresses.LNS,
