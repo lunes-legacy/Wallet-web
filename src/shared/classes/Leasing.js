@@ -14,14 +14,14 @@ export class LeasingClass {
       try {
         let walletInfo = JSON.parse(decrypt(localStorage.getItem('WALLET-INFO')));
 
-        const lunesValue = await coins.services.balance({
-          network: 'LNS',
-          address: walletInfo.addresses.LNS, // Para testar deve-se substituir por um endereço válido
-          testnet: TESTNET
-        });
+        const lunesValue = await coins.services.balance(
+          'LNS',
+          walletInfo.addresses.lns, // Para testar deve-se substituir por um endereço válido
+          TESTNET
+        );
 
         const leaseValue = await coins.services.leaseBalance({
-          address: walletInfo.addresses.LNS,
+          address: walletInfo.addresses.lns,
           testnet: TESTNET
         });
 
@@ -46,7 +46,7 @@ export class LeasingClass {
         let wallet_info = JSON.parse(decrypt(data));
 
         let consultLeasing = await coins.services.leaseHistory({
-            address: wallet_info.addresses.LNS,
+            address: wallet_info.addresses.lns,
             network: 'LNS',
             testnet: TESTNET
         }).then((e)=>{
