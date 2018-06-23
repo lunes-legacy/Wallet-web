@@ -30,7 +30,11 @@ import PanelRight from "./PanelRight";
 import { AuthRoute } from "Components/AuthRoute";
 // import { checkAuth }    from 'Auth/index';
 
+// LIBS
 import { numeral } from "Utils/numeral";
+
+// CONSTANTS
+import { ENABLEDCOINS } from "Config/constants";
 
 let Panels = styled.div`
   width: 100%;
@@ -103,13 +107,34 @@ class App extends React.Component {
   }
 
   checkAccess() {
+    let err = 0;
     let walletInfo = localStorage.getItem("WALLET-INFO");
     let accessToken = localStorage.getItem("ACCESS-TOKEN");
-    if (!walletInfo || !accessToken) {
-      this.props.history.push("/");
-      return false;
+
+
+    if (!walletInfo) {
+      err += 1;
+    } else {
+      walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
+      ENABLEDCOINS.map( coin => {
+        if (!walletInfo.addresses[coin.coinKey]) {
+          err += 1;
+        }
+      });
     }
 
+
+    if (!accessToken) {
+      err += 1;
+    } 
+
+    if(err > 0) {
+      localStorage.clear();
+      this.props.history.push("/");
+      location.reload();
+      return false;
+    }
+    
     return true;
   }
 

@@ -22,6 +22,9 @@ import PanelLeft from "./PanelLeft";
 import PanelRight from "./PanelRight";
 import Slide from "../../../containers/User/Login/Slide";
 
+// CONSTANTS
+import { ENABLEDCOINS } from "Config/constants";
+
 const CustomLogo = Logo.extend`
   margin: 40px auto 0 auto;
 `;
@@ -38,6 +41,8 @@ const ButtonsRow = styled.div`
 const Wallet = new WalletClass();
 
 class Import extends React.Component {
+
+  // ENABLE COINS 
   constructor() {
     super();
     this.state = {
@@ -45,7 +50,12 @@ class Import extends React.Component {
       walletInfo: {
         seed: null,
         addresses: {
-          LNS: null
+          lns: null,
+          btc: null,
+          // eth: null,
+          // ltc: null,
+          // nano: null,
+          // dash: null
         }
       }
     };
@@ -59,45 +69,67 @@ class Import extends React.Component {
   }
 
   getAddress(seed) {
-    try {
-      if (seed.split(" ").length >= 12) {
-        let address = Wallet.getNewAddress(seed);
-        this.setState({ ...this.state, walletInfo: { seed: seed, addresses: { LNS: address } }, notification: null });
-      } else {
+    if (seed.split(" ").length >= 12) {      
+      try { 
         this.setState({
           ...this.state,
-          walletInfo: { seed: seed, addresses: { LNS: "Mínimo 12 palavras" } },
-          notification: null
+          walletInfo: { seed: seed },
+          notification: true
         });
+        
+        return;
+        } catch (error) {
+          console.log(error);
+          this.setState({
+            ...this.state,
+            walletInfo: { seed: seed, adresses: {} },
+            notification: "Invalid Words"
+          });
       }
-    } catch (error) {
+    } else {
       this.setState({
         ...this.state,
-        walletInfo: { seed: seed, addresses: { LNS: "Palavras inválidas" } },
-        notification: null
+          walletInfo: { seed: seed, adresses: {} },
+          notification: "Min. 12 words"
       });
-      console.log(error);
     }
   }
 
   setSeed() {
     try {
-      let walletInfo = {
-        seed: this.state.walletInfo.seed,
-        addresses: {
-          LNS: this.state.walletInfo.addresses.LNS
+      let err = 0;
+      let seed = this.state.walletInfo.seed;      
+      let walletInfo = {};
+      
+      ENABLEDCOINS.map( coin => {
+        try {
+          let address = Wallet.getNewAddress(seed, coin.coinKey);
+          walletInfo = {
+            seed: seed,
+            addresses: {
+            ...walletInfo.addresses,
+              [coin.coinKey]: address
+            }
+          }  
+        } catch (error) {
+          err += 1;
+          return this.setState({ ...this.state, loading: false, notification: error.message, walletInfo: { seed: null, addresses: {} } });          
         }
-      };
+      });
 
-      this.props.setWalletInfo(walletInfo.addresses);
-      localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
+      if (err === 0) {
+        this.props.setWalletInfo(walletInfo.addresses);
+        localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
+        return this.props.history.push("/app/home");
+      }
 
-      return this.props.history.push("/app/home");
+      return this.setState({ ...this.state, loading: false, notification: 'Invalid Words', walletInfo: { seed: null, addresses: {} } });
     } catch (error) {
       this.setState({ ...this.state, notification: error });
       console.log(error);
+      return error;
     }
-  }
+	}
 
   randomSeed() {
     const mnemonic = Wallet.getMnemonic();
@@ -105,7 +137,11 @@ class Import extends React.Component {
   }
 
   renderImport() {
-    if (this.state.walletInfo.addresses.LNS && this.state.walletInfo.addresses.LNS.charAt(0) === "3") {
+    let err = 0;
+    
+    if (this.state.notification !== true)  err += 1;
+
+    if (err === 0) {
       return (
         <ButtonGreen
           margin={"1.0rem auto"}
@@ -158,14 +194,11 @@ class Import extends React.Component {
             >
               GENERATE NEW SEEDWORD
             </ButtonSecondary>
-            {this.renderImport()}
+            { this.renderImport() }
           </ButtonsRow>
           <Row>
-            <P style={ this.state.walletInfo.seed ? { display: 'block' } : { display : 'none' } } fontSize={"1.4rem"} margin={"3.0rem 0 0 0"} clWhite>
-              Address
-            </P>
-            <P fontSize={"1.4rem"} clWhite>
-              {this.state.walletInfo.addresses.LNS}
+            <P txBold style={ this.state.notification ? { display: 'block' } : { display : 'none' } } fontSize={"1.6rem"} margin={"3.0rem 0 0 0"} clWhite>
+              { this.state.notification }
             </P>
           </Row>
         </PanelLeft>
