@@ -175,7 +175,7 @@ export class WalletClass {
       let amountConvert = amount.toString();
       let feeConvert = fee.toString();
       let transactionData;
-
+      console.log('AQUI');
       if (coin === "btc" || coin === "dash" || coin === "ltc") {
         amountConvert = money.conevertCoin('satoshi', amount);
         feeConvert = money.conevertCoin('satoshi', fee);
@@ -205,7 +205,7 @@ export class WalletClass {
         return 'Coin not defined';
       }
 
-      
+      console.log('transactionData', transactionData)
   
       const data = await coins.services.transaction(transactionData, accessToken);
 
