@@ -97,27 +97,36 @@ class Rescue extends React.Component {
 
   setSeed() {
     try {
+      let err = 0;
       this.setState({ ...this.state, loading: true });
 
       let seed = this.state.walletInfo.seed;      
       let walletInfo = {};
-      
+      console.log('1')
       ENABLEDCOINS.map( coin => {
-        let address = Wallet.getNewAddress(seed, coin.coinKey);
-        walletInfo = {
-          seed: seed,
-          addresses: {
-          ...walletInfo.addresses,
-            [coin.coinKey]: address
+        try {
+          let address = Wallet.getNewAddress(seed, coin.coinKey);
+          walletInfo = {
+            seed: seed,
+            addresses: {
+            ...walletInfo.addresses,
+              [coin.coinKey]: address
+            }
           }
+        } catch (error) {
+          err += 1;
+          return this.setState({ ...this.state, loading: false, notification: error.message, walletInfo: { seed: null, addresses: {} } });
         }
       });
 
-      this.props.setWalletInfo(walletInfo.addresses);
-      this.props.setBalance({ addresses: this.state.walletInfo.addresses });
-      localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
-      return this.setState({ ...this.state, loading: false, notification: 'Sucesso', walletInfo: { seed: null, addresses: {} } });
+      if (err === 0) {
+        this.props.setWalletInfo(walletInfo.addresses);
+        this.props.setBalance({ addresses: this.state.walletInfo.addresses });
+        localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
+        return this.setState({ ...this.state, loading: false, notification: 'Sucesso', walletInfo: { seed: null, addresses: {} } });
+      }
 
+      return this.setState({ ...this.state, loading: false, notification: 'Invalid Words', walletInfo: { seed: null, addresses: {} } });
     } catch (error) {
       console.error(error);
       return this.setState({ ...this.state, loading: false, notification: error });

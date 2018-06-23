@@ -97,25 +97,34 @@ class Import extends React.Component {
 
   setSeed() {
     try {
-
+      let err = 0;
       let seed = this.state.walletInfo.seed;      
       let walletInfo = {};
       
       ENABLEDCOINS.map( coin => {
-        let address = Wallet.getNewAddress(seed, coin.coinKey);
-        walletInfo = {
-          seed: seed,
-          addresses: {
-          ...walletInfo.addresses,
-            [coin.coinKey]: address
-          }
+        try {
+          let address = Wallet.getNewAddress(seed, coin.coinKey);
+          walletInfo = {
+            seed: seed,
+            addresses: {
+            ...walletInfo.addresses,
+              [coin.coinKey]: address
+            }
+          }  
+        } catch (error) {
+          console.log('1')
+          err += 1;
+          return this.setState({ ...this.state, loading: false, notification: error.message, walletInfo: { seed: null, addresses: {} } });          
         }
       });
 
-      this.props.setWalletInfo(walletInfo.addresses);
-      localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
+      if (err === 0) {
+        this.props.setWalletInfo(walletInfo.addresses);
+        localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
+        return this.props.history.push("/app/home");
+      }
 
-      return this.props.history.push("/app/home");
+      return this.setState({ ...this.state, loading: false, notification: 'Invalid Words', walletInfo: { seed: null, addresses: {} } });
     } catch (error) {
       this.setState({ ...this.state, notification: error });
       console.log(error);
