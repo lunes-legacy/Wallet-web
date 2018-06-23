@@ -92,68 +92,13 @@ export class WalletClass {
       let balances = {};
       for (const coin in addresses) {
         if (!addresses[coin]) return false;
-        balances[coin] = await coins.services.balance({ network: coin, address: addresses[coin], testnet: TESTNET });
+        balances[coin] = await coins.services.balance(coin, addresses[coin], TESTNET);
       }
 
       return balances;
     } catch (error) {
       console.error(error);
       return false;
-    }
-  };
-
-  getBalance = async user => {
-    try {
-      if (typeof user === "string") {
-        user = JSON.parse(user);
-      }
-      // let coinsPrice = await this.getCoinsPrice([
-      //   { fromSymbol: "BTC", toSymbol: "BRL,USD" },
-      //   { fromSymbol: "LTC", toSymbol: "BRL,USD" },
-      //   { fromSymbol: "ETH", toSymbol: "BRL,USD" }
-      // ]);
-      // this.coinsPrice = coinsPrice;
-      let addresses = this.getUserAddresses(user);
-      let balance = {};
-      //coin = 'btc' (example)
-      for (let coin in addresses) {
-        coin = coin.toUpperCase();
-        //addressKey = 1 (example)
-        let i = 0;
-        for (let addressKey in addresses[coin]) {
-          //we need to upper case it because of our pattern on redux
-          let ucCoin = coin.toUpperCase();
-          if (isCoinAvaliable(coin) === false) continue;
-          //it gets the current addres of the iteration
-          let address = addresses[coin][addressKey];
-          //it returns a response object
-          let response = await coins.services.balance({ network: coin, address, testnet: TESTNET });
-          if (response.data) {
-            //se não temos nada no objeto
-            //então colocamos valores iniciais
-            if (!balance[ucCoin]) {
-              balance[ucCoin] = {};
-              balance[ucCoin]["total_confirmed"] = sb.toSatoshi(0);
-              balance[ucCoin]["total_unconfirmed"] = sb.toSatoshi(0);
-              balance[ucCoin]["total_amount"] = 0;
-            }
-            //new total_(un)confirmed
-            let confirmed = response.data.confirmed ? response.data.confirmed : 0;
-            let unconfirmed = response.data.unconfirmed ? response.data.unconfirmed : 0;
-            //it sums the old total_confirmed with the new
-            balance[ucCoin]["total_confirmed"] += confirmed;
-            balance[ucCoin]["total_unconfirmed"] += unconfirmed;
-            //it converts total_(un)confirmed to bitcoin
-            balance[ucCoin]["total_unconfirmed"] = sb.toBitcoin(balance[ucCoin]["total_unconfirmed"]);
-            balance[ucCoin]["total_confirmed"] = sb.toBitcoin(balance[ucCoin]["total_confirmed"]);
-
-            balance[ucCoin]["total_amount"] = balance[ucCoin]["total_confirmed"] + balance[ucCoin]["total_unconfirmed"];
-          }
-        }
-      }
-      return balance;
-    } catch (err) {
-      throw errorPattern("Error on get balance", 500, "WALLET_GETBALANCE_ERROR", err);
     }
   };
 
@@ -180,11 +125,11 @@ export class WalletClass {
 
   validateAddress = async (coin, address) => {
     try {
-      let coinUpperCase = coin.toUpperCase();
+      // let coinUpperCase = coin.toUpperCase();
       if (coin === 'lns' || coin === 'lunes') {
         return await services.wallet.lns.validateAddress(address, networks[LNSNETWORK]);
       } else {
-        return await coins.util.validateAddress(address, coinUpperCase, TESTNET);
+        return await coins.util.validateAddress(address, coin, TESTNET);
       }  
     } catch (error) {
       console.error(error)
@@ -229,13 +174,30 @@ export class WalletClass {
     try {
       let amountConvert = amount.toString();
       let feeConvert = fee.toString();
+      let transactionData;
 
       if (coin === "btc" || coin === "dash" || coin === "ltc") {
         amountConvert = money.conevertCoin('satoshi', amount);
         feeConvert = money.conevertCoin('satoshi', fee);
+        transactionData = {
+          mnemonic: mnemonic,
+          network: coin,
+          testnet: TESTNET,
+          toAddress: address,
+          amount: amountConvert,
+          feePerByte: feeConvert
+        };
       } else if (coin === "lns" || coin === "lunes"){
         amountConvert = money.conevertCoin('satoshi', amount);
         feeConvert = money.conevertCoin('satoshi', fee);
+        transactionData = {
+          mnemonic: mnemonic,
+          network: coin,
+          testnet: TESTNET,
+          toAddress: address,
+          amount: amountConvert,
+          fee: feeConvert
+        };
       } else if (coin === "eth"){
         amountConvert = money.conevertCoin('wei', amount);
         ffeeConvert = money.conevertCoin('wei', fee);
@@ -243,14 +205,7 @@ export class WalletClass {
         return 'Coin not defined';
       }
 
-      const transactionData = {
-          mnemonic: mnemonic,
-          network: coin,
-          testnet: TESTNET,
-          toAddress: address,
-          amount: amountConvert,
-          feePerByte: feeConvert
-      };
+      
   
       const data = await coins.services.transaction(transactionData, accessToken);
 
@@ -263,6 +218,7 @@ export class WalletClass {
 
   getCryptoTx = async (coin) => {
     try {
+      console.log(coin)
       let result = await fee.getNetworkFees({ network: coin });
       return result.data;
       
