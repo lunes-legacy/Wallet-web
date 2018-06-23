@@ -125,8 +125,8 @@ export class WalletClass {
 
   validateAddress = async (coin, address) => {
     try {
-      // let coinUpperCase = coin.toUpperCase();
-      if (coin === 'lns' || coin === 'lunes') {
+      coin = coin.toUpperCase();
+      if (coin === 'LNS' || coin === 'LUNES') {
         return await services.wallet.lns.validateAddress(address, networks[LNSNETWORK]);
       } else {
         return await coins.util.validateAddress(address, coin, TESTNET);

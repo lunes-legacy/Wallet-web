@@ -68,7 +68,7 @@ class LeasingModal extends Component {
 
     validateAddress = async (address) => {
         const wallet = new WalletClass();
-        const isValid = wallet.validateAddress(address)
+        const isValid = wallet.validateAddress('lns', address)
 
         return isValid;
     }
@@ -284,6 +284,7 @@ class LeasingModal extends Component {
 const mapStateToProps = state => {
     return {
         balance: state.balance,
+        wallet: state.component.wallet,
     }
 }
 
