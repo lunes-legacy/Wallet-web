@@ -102,7 +102,6 @@ class Rescue extends React.Component {
 
       let seed = this.state.walletInfo.seed;      
       let walletInfo = {};
-      console.log('1')
       ENABLEDCOINS.map( coin => {
         try {
           let address = Wallet.getNewAddress(seed, coin.coinKey);

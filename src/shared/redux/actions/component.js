@@ -11,7 +11,6 @@ export const openPanelRight = (data) => {
 	}
 }
 export const setTxHistory = (data) => {
-	console.log('data history', data)
 	return {
 		type: 'WALLET_SET_COIN_HISTORY',
 		payload: Wallet.getTxHistory({network: data.network, address: data.address})

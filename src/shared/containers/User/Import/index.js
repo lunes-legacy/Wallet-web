@@ -112,7 +112,6 @@ class Import extends React.Component {
             }
           }  
         } catch (error) {
-          console.log('1')
           err += 1;
           return this.setState({ ...this.state, loading: false, notification: error.message, walletInfo: { seed: null, addresses: {} } });          
         }
