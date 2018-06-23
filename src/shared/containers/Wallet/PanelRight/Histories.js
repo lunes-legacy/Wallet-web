@@ -11,6 +11,9 @@ import { Text } from "Components/Text";
 import { Loading } from 'Components/Loading';
 import { numeral } from 'Utils/numeral';
 
+// CLASSES
+import { MoneyClass } from 'Classes/Money';
+
 const StyledHistories = styled.div`
   padding-top: 20px;
   height: 75vh;
@@ -208,6 +211,7 @@ const ErrorMessage = styled.div`
   text-align: center;
 `;
 
+const money = new MoneyClass;
 class Histories extends React.Component {
   constructor() {
     super();
@@ -225,7 +229,7 @@ class Histories extends React.Component {
   }
 
   setHistory(currentNetwork) {
-    return this.props.setTxHistory({ network: currentNetwork.toUpperCase(), address: this.props.walletInfo.addresses[currentNetwork.toUpperCase()] });
+    return this.props.setTxHistory({ network: currentNetwork.toUpperCase(), address: this.props.walletInfo.addresses[currentNetwork] });
   }
 
   timeToText = (timestamp) => {
@@ -378,25 +382,28 @@ class Histories extends React.Component {
     }
   };
 
-  _renderHistories() {
+  _renderHistories = () => {
     let { currentNetwork, currentTxHistory } = this.props.componentWallet;
     let { crypto } = this.props.currencies;
     let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD
 
     if (currentTxHistory.length < 1) {
-      return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
-    } else if (currentTxHistory.data.history.length < 1) {
-      return <ErrorMessage> No transactions </ErrorMessage>;
+        return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
+      } else if (currentTxHistory.data.history.length < 1) {
+        return <ErrorMessage> No transactions </ErrorMessage>;
     }
-
-
-    const blockexplorerUrl = TESTNET ? 'https://blockexplorer-testnet.lunes.io/tx/' : 'https://blockexplorer.lunes.io/tx/';
-
-    return currentTxHistory.data.history.map((transaction, key) => {
-      if (transaction.otherParams.type !== 4) return null;
-      let amount = numeral(transaction.nativeAmount / 100000000).format('0,0.00000000');
-      let usdAmount = numeral((transaction.nativeAmount / 100000000) * currentCurrencies).format('$0,0.00')
-
+    
+    return currentTxHistory.data.history.map( (transaction, key) => {
+      if(transaction.otherParams.type === 8 || transaction.otherParams.type === 9) {
+        var amount = money.conevertCoin(currentNetwork, transaction.networkFee);
+        var usdAmount = numeral(amount * currentCurrencies).format('$0,0.00');
+        amount = numeral(amount).format('0,0.00000000');
+      } else {
+        var amount = money.conevertCoin(currentNetwork, transaction.nativeAmount);
+        var usdAmount = numeral(amount * currentCurrencies).format('$0,0.00');
+        amount = numeral(amount).format('0,0.00000000');
+      }
+      
       return (
         <History key={key}>
           <HistoryHead onClick={() => this.handleToggleHistory(key)}>
@@ -418,13 +425,13 @@ class Histories extends React.Component {
                 <HistoryHeadAmount>
                   <HeadAmountCoin type={transaction.type}>
                     {this.SignalControl(transaction.type)}
-                    {amount}
+                    { amount }
                   </HeadAmountCoin>
                   <HeadAmountMoney>
-                    ({usdAmount})
+                    ({ usdAmount })
                   </HeadAmountMoney>
                 </HistoryHeadAmount>
-              </Col>
+              </Col>  
             </Row>
           </HistoryHead>
 
@@ -432,15 +439,14 @@ class Histories extends React.Component {
             <Row>
               <Col s={12} m={6} l={6}>
                 <HistoryContentItem clWhite >
-                  <Text size={"1.4rem"}> </Text>
                   <Text size={"1.4rem"} txBold margin={"2.5rem 0 0 0"}>
                     <Span>
                       {this.icoStatusToText(transaction.type)}:
                     </Span>
                     <TextT>
-                      {amount}
-                      {currentNetwork.toUpperCase()}
-                      ({usdAmount})
+                      { amount }
+                      { currentNetwork.toUpperCase() }
+                      ({ usdAmount })
                     </TextT>
                   </Text>
                   <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
@@ -455,7 +461,7 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID:</Text>
                   <Text size={"1.4rem"} txBold>
-                    <TransactionId href={blockexplorerUrl + transaction.txid} target="_blank"> {transaction.txid} </TransactionId>
+                    <TransactionId href="#" target=""> { transaction.txid } </TransactionId>
                   </Text>
                 </HistoryContentItem>
               </Col>
@@ -470,7 +476,7 @@ class Histories extends React.Component {
     try {
       return (
         <StyledHistories>
-          {this._renderHistories()}
+          { this._renderHistories() }
         </StyledHistories>
       );
     } catch (e) {

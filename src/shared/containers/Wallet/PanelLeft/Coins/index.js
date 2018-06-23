@@ -8,7 +8,7 @@ import { decrypt } from "Utils/crypt";
 
 //REDUX
 import { connect } from "react-redux";
-import { openPanelRight, togglePanelLeft, setTxHistory, setWalletInfo } from 'Redux/actions';
+import { openPanelRight, togglePanelLeft, setTxHistory, setCryptoTx, setWalletInfo } from 'Redux/actions';
 
 import { Loading } from 'Components/Loading';
 
@@ -188,21 +188,20 @@ class Coins extends React.Component {
     }
     
     let components = [];
-    // EX: coinKey = 'btc';
     for (let coinKey in balance) {
       let { crypto }  = this.props.currencies;
       let usdCurrent = crypto[coinKey].USD
       let coinAmount = this.props.balance[coinKey].total_confirmed;
       let coinBalance = numeral(coinAmount).format('0,0.000');
       let usdBalance = numeral(coinAmount * usdCurrent).format('0,0.000');
-
       let tmp = (
         <Coin
           key={coinKey}
           onClick={() => {
+            this.props.setCryptoTx(coinKey);
             this.props.openPanelRight({currentNetwork: coinKey.toLowerCase()}); 
             this.props.togglePanelLeft();
-            this.props.setTxHistory({ network: coinKey.toUpperCase(), address: this.props.walletInfo.addresses[coinKey.toUpperCase()] });
+            this.props.setTxHistory({ network: coinKey.toUpperCase(), address: this.props.walletInfo.addresses[coinKey.toLowerCase()] });
           }}
         >
           <WrapCoinImg>
@@ -253,6 +252,9 @@ const mapDispatchToProps = dispatch => {
     },
     setWalletInfo: (data) => {
       dispatch(setWalletInfo(data));
+    },
+    setCryptoTx: (data) => {
+      dispatch(setCryptoTx(data));
     },
     setTxHistory: (data) => {
       dispatch(setTxHistory(data));

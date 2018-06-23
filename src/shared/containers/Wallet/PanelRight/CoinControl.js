@@ -9,9 +9,13 @@ import { numeral }    from 'Utils/numeral';
 import { toggleModal } from './Modal/ui';
 
 // REDUX
-import {connect}    from "react-redux";
-import { setBalance, setCryptoPrice, setCurrenciesPrice } from "Redux/actions";
+import { connect }    from "react-redux";
+import { setBalance, setCryptoPrice, setCryptoTx, setCurrenciesPrice } from "Redux/actions";
 
+// CLASSES
+import { WalletClass } from 'Classes/Wallet';
+
+const wallet = new WalletClass();
 
 const StyledCoinControl = styled.div`
   width: 100%;
@@ -123,6 +127,8 @@ class CoinControl extends React.Component {
   }
 
   onModalSendClick() {
+    let { currentNetwork } = this.props.component.wallet;
+    this.props.setCryptoTx(currentNetwork);
     this.props.setBalance({ addresses: this.props.addresses });
     this.props.setCurrenciesPrice();
     this.props.setCryptoPrice();
@@ -130,12 +136,14 @@ class CoinControl extends React.Component {
 
   showModalReceived = () => {
     this.setState({
+      ...this.state,
       isOpenModalReceived: !this.state.isOpenModalReceived
     });
   };
 
   _handleClickOpenModal = (name) => {
-    let modal;
+    let modal
+
     if (name === 'send') {
       modal = document.querySelector('.js-modal-send');
     } else {
@@ -154,7 +162,7 @@ class CoinControl extends React.Component {
 
     return (
       <StyledCoinControl>
-        <ModalSend/>
+        <ModalSend network={ currentNetwork }/>
         <ModalReceive/>
         <Row overflowHidden>
           <Col s={12} m={6} l={8}>
@@ -189,8 +197,9 @@ class CoinControl extends React.Component {
 const mapStateToProps = (state) => {
 	return {
     balance:    state.balance,
-    component:  state.component,
+    cryptoTx: state.currencies.cryptoTx,
     adresses: state.walletInfo.addresses,
+    component:  state.component,
     currencies: state.currencies,
 	}
 }
@@ -201,6 +210,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setCryptoPrice: data => {
       dispatch(setCryptoPrice(data));
+    },
+    setCryptoTx: (data) => {
+      dispatch(setCryptoTx(data));
     },
     setCurrenciesPrice: data => {
       dispatch(setCurrenciesPrice(data));
