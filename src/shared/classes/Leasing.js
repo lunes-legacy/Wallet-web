@@ -95,22 +95,22 @@ export class LeasingClass {
     }
 
     cancelLease = async (data) => {
-        let wallet_info = JSON.parse(decrypt(data.wallet_info));
+        try {
+            let wallet_info = JSON.parse(decrypt(data.wallet_info));
+            
+            const cancelLeasingData = {
+                mnemonic: wallet_info.seed,
+                txID: data.key,
+                fee: "100000",
+                testnet: TESTNET //TESTNET
+            };
 
-        const cancelLeasingData = {
-            mnemonic: wallet_info.seed,
-            txID: data.key,
-            fee: "100000",
-            testnet: TESTNET //TESTNET
-        };
+            const result = await coins.services.leaseCancel(cancelLeasingData);
 
-        const cancelLeaseResult = await coins.services.leaseCancel(cancelLeasingData).then((e)=>{
-            return e
-        }).catch((e)=>{
-            //console.log(e);
-            return false
-        });
-
-        return cancelLeaseResult;
+            return result;
+        } catch (error) {
+            console.error(error);
+            return error;
+        }
     }
 }
