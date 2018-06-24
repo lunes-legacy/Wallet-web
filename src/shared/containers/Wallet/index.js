@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 //REDUX
 import { connect } from "react-redux";
-import { togglePanelLeft, setBalance, setCryptoPrice, setCurrenciesPrice } from "Redux/actions";
+import { togglePanelLeft, setBalance, setCryptoPrice, setCryptoTx, setCurrenciesPrice } from "Redux/actions";
 
 //COMPONENTS
 import PanelLeft from "./PanelLeft/index";
@@ -31,11 +31,6 @@ class Wallet extends React.Component {
     this.props.setCryptoPrice();
   }
 
-  componentDidMount = async () => {
-    this.props.setCurrenciesPrice();
-    this.props.setCryptoPrice();
-  };
-
   render() {
     return (
       <Panels>
@@ -49,12 +44,7 @@ class Wallet extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    wallet: state.wallet,
-    balance: state.balance,
     walletInfo: state.walletInfo,
-    currencies: state.currencies,
-    cryptoPrice: state.currencies.crypto,
-    currenciePrice: state.currencies.currencies
   };
 };
 const mapDispatchToProps = dispatch => {

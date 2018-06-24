@@ -1,26 +1,31 @@
-let initialState = {
-  // BTC: {
-  //   coinName: "Bitcoin",
-  //   img: "btc.svg",
-  //   total_amount: 0,
-  //   total_confirmed: 0,
-  //   total_unconfirmed: 0
-  // },
-  // ETH: {
-  // 	total_confirmed: 1.02,
-  // 	total_unconfirmed: 1,
-  // 	total_amount: 2.2,
-  // 	img: 'eth.svg',
-  // 	coinName: 'Ethereum'
+// CLASSES
+import { MoneyClass } from 'Classes/Money';
+const money = new MoneyClass;
 
-  // },
+// ENABLE COINS
+let initialState = {
   LNS: {
     coinName: "Lunes",
     img: "lns.svg",
     total_amount: 0,
     total_confirmed: 0,
     total_unconfirmed: 0
-  }
+  },
+  BTC: {
+    coinName: "Bitcoin",
+    img: "btc.svg",
+    total_amount: 0,
+    total_confirmed: 0,
+    total_unconfirmed: 0
+  },
+  // ETH: {
+  //   img: 'eth.svg',
+  // 	coinName: 'Ethereum',
+  // 	total_confirmed: 0,
+  // 	total_unconfirmed: 0,
+  // 	total_amount: 0,
+
+  // },
   // LTC: {
   // 	total_confirmed: 100,
   // 	total_unconfirmed: 0,
@@ -54,14 +59,16 @@ const balanceReducer = (state = initialState, action) => {
       let coins = action.payload;
       for (const coinKey in coins) {
         let balance = action.payload[coinKey].data;
-        if (state[coinKey]) {
+        let coinKeyUpperCase = coinKey.toUpperCase();
+        if (state[coinKeyUpperCase]) {
           state = {
             ...state,
-            [coinKey]: {
-              coinName: state[coinKey].coinName,
-              img: state[coinKey].img,
-              total_confirmed: balance.confirmed / 100000000,
-              total_amount: balance.confirmed / 100000000
+            [coinKeyUpperCase]: {
+              coinName: state[coinKeyUpperCase].coinName,
+              img: state[coinKeyUpperCase].img,
+              total_confirmed: money.conevertCoin(coinKey, balance.confirmed),
+              total_amount: money.conevertCoin(coinKey, balance.confirmed),
+              total_unconfirmed: balance.unconfirmed ? money.conevertCoin(coinKey, balance.unconfirmed) : 0,
             }
           };   
         }

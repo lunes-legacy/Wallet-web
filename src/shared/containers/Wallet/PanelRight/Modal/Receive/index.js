@@ -38,8 +38,8 @@ class ModalReceive extends React.Component {
 
   getCurrentAddress = () => {
     let currentNetwork = this.props.currentNetwork;
-    let walletInfo = this.props.addresses;
-    return walletInfo[currentNetwork.toUpperCase()];
+    let address = this.props.addresses;
+    return address[currentNetwork];
   };
 
   makeQrCode = () => {
@@ -81,13 +81,11 @@ class ModalReceive extends React.Component {
     return (
       <Background>
         <ReceiveStyleModalCss className="js-modal-receive">
-          <Close onClick={this._handleClickClose}>
-            <strong>X</strong>
-          </Close>
+          <Close onClick={this._handleClickClose}>&times;</Close>
           <ReceiveContentCss>
             <Col defaultAlign={"center"} s={12} m={12} l={12}>
               <Row>
-                <ReceiveButtonQrCodeCss innerRef={this.ref.wrapperQr} blockCenter clWhite bgWhite>
+                <ReceiveButtonQrCodeCss innerRef={ this.ref.wrapperQr } blockCenter clWhite bgWhite>
                   QR Code
                 </ReceiveButtonQrCodeCss>
               </Row>

@@ -68,7 +68,7 @@ class LeasingModal extends Component {
 
     validateAddress = async (address) => {
         const wallet = new WalletClass();
-        const isValid = wallet.validateAddress(address)
+        const isValid = wallet.validateAddress('lns', address)
 
         return isValid;
     }
@@ -86,7 +86,18 @@ class LeasingModal extends Component {
             return this.showError(message);
         }
 
-        if (this.state.amount < 1) {
+        //if the user wanna send more than he has...
+        if (amount === balance) {
+            amount = ((amount - LUNES_LEASING_FEE) - 1).toFixed(8); //we subtract it
+            this.setState({...this.state, amount});
+        //if the amount that he wanna send out dont have 1.001 of leftover
+        } else if (((balance - 1 - LUNES_LEASING_FEE) - amount) < (1 + LUNES_LEASING_FEE)) {
+            amount = (balance - LUNES_LEASING_FEE) - 1;
+            this.setState({...this.state, amount});
+        }
+
+
+        if (amount < 1) {
             err++;
             message = 'Invalid LNS amount';
         }
@@ -194,6 +205,17 @@ class LeasingModal extends Component {
         }, 1000);
     }
 
+    componentDidMount() {
+      // Função para fechar a modal ao pressionar ESC
+      document.addEventListener('keydown', (event) => {
+          event = event || window.event;
+          const modal = document.querySelector('.modal-status');
+          if (event.keyCode == 27) {
+              modal.style.display = 'none';
+          }
+      });
+    }
+
     render() {
         return (
             <div>
@@ -201,7 +223,7 @@ class LeasingModal extends Component {
                     <LeasingStyleModalCss>
                         <Col defaultAlign={"center"} s={12} m={12} l={12}>
                             <Row>
-                                <Close onClick={this.handleModal}>x</Close>
+                                <Close onClick={this.handleModal}>&times;</Close>
 
                                 <Image src="/img/coins/lns.svg" />
                                 <CoinValue margin={ "0 4.0rem 0 0" }offSide>{numeral(this.props.balance.LNS.total_confirmed).format('0,0.00000000')}</CoinValue>
@@ -273,6 +295,7 @@ class LeasingModal extends Component {
 const mapStateToProps = state => {
     return {
         balance: state.balance,
+        wallet: state.component.wallet,
     }
 }
 

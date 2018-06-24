@@ -27,4 +27,12 @@ export const setCryptoPrice = (price) => {
 	}
 }
 
+// ENABLE COINS
+export const setCryptoTx = (coin) => {
+	return {
+		type: 'CRYTPO_SET_TX',
+		payload: Wallet.getCryptoTx(coin)
+	};
+}
+
 export const autoSetCurrenciesPrice = () => { }

@@ -62,7 +62,7 @@ class ModalSend extends React.Component {
 		return (
 			<Background>
 				<StyledModal className="js-modal-send">
-					<Close onClick={this._handleClickClose}>X</Close>
+					<Close onClick={this._handleClickClose}>&times;</Close>
 
 					<Head>
 						<IconCoin src={this.handleImageRender()} />

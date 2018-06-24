@@ -16,6 +16,11 @@ import {
     getLeasingHistory,
     cancelLeasing
 } from 'Redux/actions';
+
+// CLASSES
+import { MoneyClass } from 'Classes/Money';
+
+// LIBS
 import { numeral } from 'Utils/numeral';
 
 
@@ -167,6 +172,8 @@ const BoxLineLeasing = Row.extend`
     }
 `;
 
+const money = new MoneyClass;
+
 class PanelRight extends React.Component {
     constructor(props) {
         super(props)
@@ -247,8 +254,7 @@ class PanelRight extends React.Component {
             return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
         } else {
             return this.props.listLeasing.map((obj, key) => {
-
-                let nativeAmount = numeral(obj.nativeAmount / 100000000).format('0,0.00000000');
+                let nativeAmount = numeral(money.conevertCoin('btc', obj.nativeAmount)).format('0,0.00000000');
                 let status = this._normalizeStatus(obj.otherParams.status);
 
                 return (

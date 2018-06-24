@@ -71,14 +71,14 @@ const ModalBox = styled.div`
 `;
 
 const Close = styled.span`
-  color: #aaa;
+  color: #fff;
   float: right;
   font-size: 2rem;
   font-weight: bold;
   margin-top: -1.5rem;
 
   &:hover {
-    color: #333;
+    color: #bbb;
     text-decoration: none;
     cursor: pointer;
   }
@@ -163,6 +163,23 @@ const Error = styled.div`
 `;
 
 class Modal extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  handleCloseOnPressEscape() {
+    document.addEventListener('keydown', (event) => {
+      event = event || window.event;
+      if (event.keyCode == 27 && this.props.isOpen) {
+        this.props.onClose();
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.handleCloseOnPressEscape();
+  }
+
   render() {
     if (!this.props.isOpen) return null;
 
