@@ -1,4 +1,5 @@
-import {LeasingClass} from "Classes/Leasing";
+import { LeasingClass } from "Classes/Leasing";
+const leasing = new LeasingClass;
 
 export const setLeasingAmount = leasingInfo => {
   return {
@@ -17,6 +18,6 @@ export const getLeasingHistory = (payload) => {
 export const cancelLeasing = (payload) => {
     return {
         type: 'CANCEL_LEASING',
-        payload: new LeasingClass().cancelLease(payload)
+        payload: leasing.cancelLease(payload)
     }
 }
