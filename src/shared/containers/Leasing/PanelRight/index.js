@@ -12,7 +12,15 @@ import { encrypt, decrypt } from '../../../utils/crypt';
 
 // REDUX
 import { connect } from 'react-redux';
-import { getLeasingHistory, cancelLeasing } from 'Redux/actions';
+import {
+    getLeasingHistory,
+    cancelLeasing
+} from 'Redux/actions';
+
+// CLASSES
+import { MoneyClass } from 'Classes/Money';
+
+// LIBS
 import { numeral } from 'Utils/numeral';
 
 
@@ -163,6 +171,8 @@ const BoxLineLeasing = Row.extend`
   }
 `;
 
+const money = new MoneyClass;
+
 class PanelRight extends React.Component {
   constructor(props) {
     super(props)
@@ -251,10 +261,34 @@ class PanelRight extends React.Component {
     }
   }
 
-  // retornando os itens, de acordo com os dados no storage
-  _renderLeasings = () => {
-    if (!this.props.listLeasing) {
-      return <Noleasingtext txBold txCenter>NO LEASING FOUND</Noleasingtext>
+    // retornando os itens, de acordo com os dados no storage
+    _renderLeasings = () => {
+        if (!this.props.listLeasing) {
+            return <Noleasingtext txBold txCenter>NO LEASING FOUND</Noleasingtext>
+        }
+        if (this.props.listLeasing.length < 1) {
+            return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
+        } else {
+            return this.props.listLeasing.map((obj, key) => {
+                let nativeAmount = numeral(money.conevertCoin('btc', obj.nativeAmount)).format('0,0.00000000');
+                let status = this._normalizeStatus(obj.otherParams.status);
+
+                return (
+                    <BoxLineLeasing key={obj.txid} >
+                        <Col s={12} m={6} l={6}>
+                            <DateText clWhite status={status}> {new Date(obj.date).toLocaleDateString()} </DateText>
+                            <HashText clWhite txBold status={status}> {obj.txid} </HashText>
+                        </Col>
+                        <Col s={12} m={4} l={4}>
+                            <GreenText clNormalGreen txBold txCenter status={status}> {nativeAmount} LNS</GreenText>
+                        </Col>
+                        <Col s={12} m={2} l={2}>
+                            {this._buttonCancel(status, obj.txid, obj.otherParams.type)}
+                        </Col>
+                    </BoxLineLeasing>
+                );
+            });
+        }
     }
     if (this.props.listLeasing.length < 1) {
       return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
