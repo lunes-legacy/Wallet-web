@@ -26,6 +26,7 @@ const ENABLEDCOINS = [
 
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'
 const LUNES_LIB_LOGIN = 'manual'//| 'auto' || 'manual', isso serve para fazer login automático para nao ficar apertando o botão de login sempre
+const LUNES_LEASING_FEE = 0.001;
 
 export {
 	TESTNET,
@@ -37,6 +38,7 @@ export {
 	ETHNETWORK,
 	ENABLEDCOINS,
 	LUNES_LIB_ENV,
-	LUNES_LIB_LOGIN,
+  LUNES_LIB_LOGIN,
+  LUNES_LEASING_FEE,
 	ENV
 }
