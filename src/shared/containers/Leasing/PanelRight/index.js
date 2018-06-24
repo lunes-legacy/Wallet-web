@@ -289,7 +289,7 @@ class PanelRight extends React.Component {
                 );
             });
         }
-    }
+    
     if (this.props.listLeasing.length < 1) {
       return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
     } else {
