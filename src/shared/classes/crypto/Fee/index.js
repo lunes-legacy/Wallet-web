@@ -29,19 +29,18 @@ export default class FeeClass {
 	*/
 	getNetworkFees = async ({network, testnet = TESTNET}) => {
 		try {
-			if (!testnet)
-				testnet = true;
 			if (!network)
 				throw errorPattern("Network parameter is pending",500,"FEE_NETWORKFEES_ERROR");
 			if (this.getStaticNetworkFees() !== undefined) {
 				return this.getStaticNetworkFees();
 			}
-			return coins.services.networkFees({ network, testnet:true });
+			return coins.services.networkFees({ network, testnet: TESTNET });
 			
 		} catch (err) {
 			throw errorPattern(`An error ocurred on trying to get ${network}'s network fees`, 500, "FEE_NETWORKFEES_ERROR", err);
 		}
 	}
+
 	estimate = async (data) => {
 		try {
 			if (!data.networkFees) {
