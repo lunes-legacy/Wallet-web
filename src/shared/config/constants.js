@@ -1,7 +1,7 @@
 // DEFINITION
-const testnet         = 'TRUE'; 
+const testnet         = 'FALSE'; 
 const TESTNET         = testnet === 'TRUE' ? true : false;
-const ENV             = 'development'; // AMBIENTE
+const ENV             = 'production'; // AMBIENTE
 
 // START NETWORK CONFIG
 const APICONFIG 	    = TESTNET === true ? 'LNSTESTNET'  : 'LNS'; //TEMP
