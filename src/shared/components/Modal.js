@@ -185,7 +185,7 @@ class Modal extends React.Component {
 
     const types = {
       success: <Icon color={style.normalGreen}><SuccessContent /></Icon>,
-      error: <Icon color={style.normalRed}><SuccessContent /></Icon>
+      // error: <Icon color={style.normalRed}><SuccessContent /></Icon>
     };
 
     return (
