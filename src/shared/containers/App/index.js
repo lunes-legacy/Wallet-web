@@ -1,4 +1,4 @@
-require("dotenv").load();
+// require("dotenv").load();
 import React, { PropTypes } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import styled from "styled-components";
@@ -111,7 +111,6 @@ class App extends React.Component {
     let walletInfo = localStorage.getItem("WALLET-INFO");
     let accessToken = localStorage.getItem("ACCESS-TOKEN");
 
-
     if (!walletInfo) {
       err += 1;
     } else {
@@ -187,7 +186,7 @@ class App extends React.Component {
               <Route exact path={"/app/leasing"} component={Leasing} />
               <Route exact path={"/app/configuration"} component={Configuration} />
               <Route exact path={"/app/privacy"} component={Privacy} />
-              <Route exact path={"**"} component={NotFound} />
+              <Route path={"**"} component={NotFound} />
             </Switch>
           </PanelRight>
         </Panels>
