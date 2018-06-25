@@ -15,7 +15,7 @@ const Anim = styled.div`
 	margin: 0 auto;
 	width: 300px;
 	height: 300px;
-	background-image: url('http://127.0.0.1:8080/test3.png');
+	background-image: url('/img/app_wallet/modal_send/sprite_animation_done.png');
 	animation: ${StepByStepLoading} .6s steps(19);
 	animation-fill-mode: forwards;
 `;

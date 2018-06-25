@@ -361,7 +361,7 @@ class Send extends React.Component {
 		
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
-				<link rel="preload" href="http://127.0.0.1:8080/test3.png" as="image"/>
+				<link rel="preload" href="/img/app_wallet/modal_send/sprite_animation_done.png" as="image"/>
 				<Col s={9} m={9} l={9}>
 					{/*FIRST ROW*/}
 					<Row css={FirstRowCss}>
