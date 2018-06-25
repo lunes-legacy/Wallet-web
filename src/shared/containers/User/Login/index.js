@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import validator from "validator";
 import style from "Shared/style-variables";
-
 // LIBS
 import { encrypt } from '../../../utils/crypt'
 
