@@ -28,6 +28,9 @@ class ModalSend extends React.Component {
 		this.setState({
 			steps
 		});
+		setTimeout(() => {
+			toggleModal(document.querySelector('.js-modal-send'));
+		});
 	}
 	prevStep = () => {
 

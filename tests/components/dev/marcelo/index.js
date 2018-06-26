@@ -5,6 +5,12 @@ import Receive    from 'Containers/Wallet/PanelRight/Modal/Receive/index';
 // import LeasingModal    from 'Containers/leasing/modal/index';
 import Input      from 'Components/forms/Input';
 import { Col, Row } from 'Components/index';
+//REDUX
+import { store }  from 'Redux/stores';
+import { Provider } from 'react-redux';
+//UI
+import { toggleModal } from 'Containers/Wallet/PanelRight/Modal/ui';
+
 
 
 // let toRender = () => {
@@ -89,7 +95,9 @@ let props = {
 
 const toRender = () => {
   return(
-    <Modal {...props}/> 
+    <Provider store={store}>
+      <Modal {...props}/> 
+    </Provider>
   );
 }
 // const toRender = () => {
