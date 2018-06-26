@@ -110,7 +110,7 @@ const HeadAmountCoin = styled.div`
   }
 `;
 
-const HeadAmountMoney = styled.div`
+const HeadCoinName = styled.div`
   ${TextBase}
   font-size: 1.2rem;
   color: white;
@@ -385,7 +385,8 @@ class Histories extends React.Component {
   _renderHistories = () => {
     let { currentNetwork, currentTxHistory } = this.props.componentWallet;
     let { crypto } = this.props.currencies;
-    let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD
+    let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD;
+    
 
     if (currentTxHistory.length < 1) {
         return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
@@ -427,9 +428,9 @@ class Histories extends React.Component {
                     {this.SignalControl(transaction.type)}
                     { amount }
                   </HeadAmountCoin>
-                  <HeadAmountMoney>
-                    ({ usdAmount })
-                  </HeadAmountMoney>
+                  <HeadCoinName>
+                    { currentNetwork.toUpperCase() } 
+                  </HeadCoinName>
                 </HistoryHeadAmount>
               </Col>  
             </Row>
