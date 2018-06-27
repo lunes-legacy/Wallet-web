@@ -545,6 +545,7 @@ class Send extends React.Component {
 									whiteTheme
 									txRight
 									noBorder
+									noBrowserAppearance
 									disabled={ !this.state.radioControl.coin }
 									type={ 'number' }
 									value = { this.state.transferValues.coin }
@@ -595,6 +596,7 @@ class Send extends React.Component {
 									txRight
 									noBorder
 									disabled={ !this.state.radioControl.brl }
+									noBrowserAppearance
 									type={ 'number' }
 									ref={this.ref.brlAmount}
 									onChange={ (input) => { this.convertCoins(input.target.value, 'brl') } }
@@ -613,6 +615,7 @@ class Send extends React.Component {
 									noBorder
 									grayTheme
 									phMediumFont
+									noBrowserAppearance
 									type={ 'number' }
 									ref={this.ref.usdAmount}
 									value={ this.state.transferValues.usd }
