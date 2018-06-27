@@ -48,6 +48,7 @@ let FeeButton = styled.button`
 	&:focus {
 		outline: none;
 	}
+	transition: border-color .3s;
 `;
 
 
@@ -149,17 +150,17 @@ class Send extends React.Component {
 			fees: {
 				low: {
 					value: 0.001,
-					txColor: 'red',
+					txColor: style.normalRed,
 					textContent: 'Low',
 				},
 				medium: {
 					value: 0.002,
-					txColor: 'yellow',
+					txColor: style.normalYellow,
 					textContent: 'Medium',
 				},
 				high: {
 					value: 0.003,
-					txColor: 'green',
+					txColor: style.normalGreen,
 					textContent: 'High',
 				}
 			}
@@ -175,7 +176,7 @@ class Send extends React.Component {
 			this.animThisComponentIn();
 		}, 500);
 
-		this._setNetworkFees();
+		// this._setNetworkFees();
 		this.setState({
 			...this.state,
 			chosenFee: 'low'
@@ -292,8 +293,10 @@ class Send extends React.Component {
 		});
 	}
 
-	handleClickFee = (event) => {
-		let button = event.currentTarget;
+	handleClickFee = (fee) => {
+		this.setState({
+			chosenFee: fee
+		});
 	}
 
 	validateAddress (network, address) {
@@ -306,7 +309,7 @@ class Send extends React.Component {
 		let coinAmount = this.state.transferValues.coin;
 		let usdAmount = this.state.transferValues.usd;
 
-		if (this.state.network !== currentNetwork) this._setNetworkFees();
+		// if (this.state.network !== currentNetwork) this._setNetworkFees();
 
 		return (
 			<Col s={12} m={6} l={6} txInline>
@@ -314,7 +317,7 @@ class Send extends React.Component {
 					<Text color={style.coinsColor[currentNetwork]} txInline>
 						 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
 					</Text> 
-					({ numeral( usdAmount ).format('$0,0.0000') }) + { this.state.fees.medium.value ? this.state.fees.medium.value.toFixed(8) : 'error' } of fee
+					({ numeral( usdAmount ).format('$0,0.0000') }) + { this.state.fees[this.state.chosenFee].value ? this.state.fees[this.state.chosenFee].value.toFixed(8) : 'error' } of fee
 				</Text>
 			</Col>
 		);
@@ -327,13 +330,15 @@ class Send extends React.Component {
 			<Col s={12} m={6} l={6}>
 				{
 					(() => {
+						let { chosenFee } = this.state;
 						let objects = [];
-						for (let fee in this.state.fees) {
-							console.warn('really?', fee);
-							fee = this.state.fees[fee];
-							console.warn(':::::::::::::;', fee);
+						let borderBottom;
+						let fee;
+						for (let key in this.state.fees) {
+							fee = this.state.fees[key];
+							borderBottom = chosenFee === key ? '5px solid green' : 'none';
 							objects.push(
-								<FeeButton onClick={this.handleClickFee} style={{background: fee.txColor}} value={fee.value}>{fee.value} <Text txInline clNormalRed>{fee.textContent}</Text></FeeButton>
+								<FeeButton style={{ borderBottom }} onClick={() => { this.handleClickFee(key) }} value={fee.value}>{fee.value} <Text txInline style={{color: fee.txColor}}>{fee.textContent}</Text></FeeButton>
 							);
 						}
 						return objects;
@@ -427,7 +432,7 @@ class Send extends React.Component {
 		
 		switch (type) {
 			case 'coin':
-				parseFloat(value) + this.state.fees.medium.value > balance ? amountStatus = true : amountStatus = false;
+				parseFloat(value) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({ 
 					...this.state,
@@ -442,7 +447,7 @@ class Send extends React.Component {
 				break;
 
 			case 'brl':
-				(parseFloat(value) / brlValue) + this.state.fees.medium.value > balance ? amountStatus = true : amountStatus = false;
+				(parseFloat(value) / brlValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({ 
 					...this.state, 
@@ -457,7 +462,7 @@ class Send extends React.Component {
 				break;
 
 			case 'usd':
-				(parseFloat(value) / usdValue) + this.state.fees.medium.value > balance ? amountStatus = true : amountStatus = false;
+				(parseFloat(value) / usdValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({
 					...this.state, 
