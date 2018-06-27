@@ -2,6 +2,7 @@
 import { coins } from 'lunes-lib';
 import { errorPattern } from 'Utils/functions';
 import { TESTNET } from 'Config/constants';
+import { decrypt } from 'Utils/crypt';
 
 export default class FeeClass {
 	static staticNetworkFees;
@@ -45,6 +46,22 @@ export default class FeeClass {
 		try {
 			if (!data.networkFees) {
 				data.networkFees = await this.getNetworkFees({...data});
+				if (!data.networkFees) {
+					throw errorPattern(`We've tried to get ${data.network}'s network fees, but it have resulted in error`, 500, 'FEE_ESTIMATE_ERROR');
+				}
+				data.networkFees = data.networkFees.data;
+			} else {
+				data.networkFees = data.networkFees.data;
+			}
+			if (!data.toAddress || !data.fromAddress) {
+				throw errorPattern('You should pass through a valid address', 500, 'FEE_ESTIMATE_ERROR')
+			}
+			if (!data.accessToken) {
+				if (window || document) {
+					data.accessToken = JSON.parse(decrypt(localStorage.getItem('ACCESS-TOKEN'))).accessToken;
+				} else {
+					throw errorPattern('We can\'t estimate the fee, without the user\'s access token', 500,'FEE_ESTIMATE_ERROR');
+				}
 			}
 			let params = {
 				high:   {},
@@ -97,6 +114,7 @@ export default class FeeClass {
 			// }
 			return result;
 		} catch (err) {
+			console.error(err);
 			return err;
 		}
 	}

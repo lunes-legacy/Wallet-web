@@ -189,7 +189,7 @@ class Send extends React.Component {
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let result = await wallet.getCryptoTx(currentNetwork);
 		let fees;
-
+		console.warn("RESULT>>>>>>",result);
 		if (!currentNetwork)
 			console.error('Current network is not defined', 500, 'SETNETWORKFEES_ERROR');
 		

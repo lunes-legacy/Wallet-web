@@ -220,8 +220,8 @@ export class WalletClass {
       let result = await Fee.estimate({ 
         network: coin,
         testnet: true,
-        fromAddress: 'mrmBsCMa8jw2btb9rTPpYyZHCED5UDPh5N',
-        toAddress: '37YcNLmqSS2BfXHvTaKDwrC7yCdtJXNomZt',
+        fromAddress: 'mj1oZJa8pphtdjeo51LvEnzxFKHoMcmtFA',
+        toAddress: 'mqdhezmGxxVYzMnp9TsNU63LBxHEz2RNyD',
         amount: 0.1
       });
       return result;
@@ -230,6 +230,5 @@ export class WalletClass {
       console.error('Method: getCryptoTx', error);
       return error;
     }
-    
   }
 }
