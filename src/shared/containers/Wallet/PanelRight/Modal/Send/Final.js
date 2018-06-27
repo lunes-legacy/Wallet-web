@@ -1,6 +1,7 @@
 import React from 'react';
 import { Img, Row, Col } from 'Components';
 import styled, { keyframes } from 'styled-components';
+import { connect } from 'react-redux';
 
 const StepByStepLoading = keyframes`
 	0% {
@@ -43,5 +44,5 @@ const mapDispatchToProps = () => {
 
 	}
 }
-export default connect()(Final);
-// export default Final;
+export default connect(mapStateToProps, mapDispatchToProps)(Final);
+// export default Final; 

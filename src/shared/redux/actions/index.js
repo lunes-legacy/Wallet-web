@@ -21,5 +21,6 @@ export {
 	openPanelRight,
 	getLeasingHistory,
 	cancelLeasing,
-	setLeasingAmount
+	setLeasingAmount,
+	setterModalSend
 }

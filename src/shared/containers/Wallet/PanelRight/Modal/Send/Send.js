@@ -438,9 +438,9 @@ class Send extends React.Component {
 			fee,
 			tokenData.accessToken
 		).catch((err) => {
-			console.error("ERROR:::::",err);
+			console.error(err,">:>:>>:>:>:>:>:>:>TRANSACTIONSEND ERROR");
 		});
-		console.warn('TRANSACTIONSEND DATA::::',data)
+		console.warn(data,'>:>>:>:>:>:>>:>TRANSACTIONSEND DATA')
 		return data;
 	}
 

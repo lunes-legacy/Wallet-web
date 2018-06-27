@@ -14,9 +14,12 @@ const componentReducer = (state = initialState, action) => {
 		case 'WALLET_MODAL_SEND_SETTER':
 				state = {
 					...state,
-					modalSend: {
-						...state.modalSend,
-						...action.payload
+					wallet: {
+						...state.wallet,
+						modalSend: {
+							...state.wallet.modalSend,
+							...action.payload
+						}
 					}
 				}
 			return state;
