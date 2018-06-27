@@ -166,7 +166,6 @@ class Send extends React.Component {
 			}
 		}
 	}
-
 	componentDidMount() {
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
 		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
@@ -515,7 +514,7 @@ class Send extends React.Component {
 
 	render() {
 		let currentNetwork = this.props.wallet.currentNetwork;
-		
+
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
 				<link rel="preload" href="/img/app_wallet/modal_send/sprite_animation_done.png" as="image"/>

@@ -222,7 +222,7 @@ export class WalletClass {
         testnet: true,
         fromAddress: 'mj1oZJa8pphtdjeo51LvEnzxFKHoMcmtFA',
         toAddress: 'mqdhezmGxxVYzMnp9TsNU63LBxHEz2RNyD',
-        amount: 0.1
+        amount: 0.0000001
       });
       return result;
       

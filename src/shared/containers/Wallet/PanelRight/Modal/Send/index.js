@@ -19,6 +19,12 @@ class ModalSend extends React.Component {
 			generalProps: props
 		}
 	}
+	componentDidCatch(info, error) {
+		console.warn(info,error,"INFO | ERROR");
+		return (
+			<h1>Tentamos renderizar o componente mas não foi possível</h1>
+		);
+	}
 	componentDidMount() {
 		let steps = [
 			{ name: 'Step 1', component: Send },

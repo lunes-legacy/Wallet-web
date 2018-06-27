@@ -75,7 +75,8 @@ export default class FeeClass {
 			}
 			let { networkFees } = data;
 			let currentEstimate;
-			data.amount = coins.util.unitConverter.toSatoshi(data.amount).toString();
+			// data.amount = coins.util.unitConverter.toSatoshi(data.amount).toString();
+			data.amount = '100';
 			for (let level in params) {
 				if (this.network === "ETH") {
 					params[level] = {
