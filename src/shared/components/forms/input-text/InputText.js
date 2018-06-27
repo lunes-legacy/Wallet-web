@@ -15,7 +15,6 @@ let InputText = styled.input.attrs({
 
 	${props => {
 		if (props.noBrowserAppearance) {
-			console.warn('I"m here sweetheart !!');
 			return `
 				&::-webkit-inner-spin-button, 
 				&::-webkit-outer-spin-button { 
