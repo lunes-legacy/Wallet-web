@@ -1,5 +1,5 @@
 // DEFINITION
-const testnet         = 'TRUE'; 
+const testnet         = 'TRUE';
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const ENV             = 'development'; // AMBIENTE
 
@@ -19,7 +19,7 @@ const ENABLEDCOINS = [
 	{ 'coinKey': 'lns', 'coinName':  'Lunes', 'address': '' },
 	{ 'coinKey': 'btc', 'coinName':  'BTC', 'address': '' },
 	// { 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
-	// { 'coinKey': 'ltc', 'coinName':  'LTC', 'address': 'Soon...' },
+	{ 'coinKey': 'ltc', 'coinName':  'LTC', 'address': '' },
 	// { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
 	// { 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
 ]

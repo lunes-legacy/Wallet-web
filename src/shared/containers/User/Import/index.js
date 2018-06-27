@@ -42,7 +42,7 @@ const Wallet = new WalletClass();
 
 class Import extends React.Component {
 
-  // ENABLE COINS 
+  // ENABLE COINS
   constructor() {
     super();
     this.state = {
@@ -53,7 +53,7 @@ class Import extends React.Component {
           lns: null,
           btc: null,
           // eth: null,
-          // ltc: null,
+          ltc: null,
           // nano: null,
           // dash: null
         }
@@ -69,14 +69,14 @@ class Import extends React.Component {
   }
 
   getAddress(seed) {
-    if (seed.split(" ").length >= 12) {      
-      try { 
+    if (seed.split(" ").length >= 12) {
+      try {
         this.setState({
           ...this.state,
           walletInfo: { seed: seed },
           notification: true
         });
-        
+
         return;
         } catch (error) {
           console.log(error);
@@ -98,9 +98,9 @@ class Import extends React.Component {
   setSeed() {
     try {
       let err = 0;
-      let seed = this.state.walletInfo.seed;      
+      let seed = this.state.walletInfo.seed;
       let walletInfo = {};
-      
+
       ENABLEDCOINS.map( coin => {
         try {
           let address = Wallet.getNewAddress(seed, coin.coinKey);
@@ -110,10 +110,10 @@ class Import extends React.Component {
             ...walletInfo.addresses,
               [coin.coinKey]: address
             }
-          }  
+          }
         } catch (error) {
           err += 1;
-          return this.setState({ ...this.state, loading: false, notification: error.message, walletInfo: { seed: null, addresses: {} } });          
+          return this.setState({ ...this.state, loading: false, notification: error.message, walletInfo: { seed: null, addresses: {} } });
         }
       });
 
@@ -138,7 +138,7 @@ class Import extends React.Component {
 
   renderImport() {
     let err = 0;
-    
+
     if (this.state.notification !== true)  err += 1;
 
     if (err === 0) {
