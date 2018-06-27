@@ -9,6 +9,7 @@ import { Loading } from 'Components/Loading';
 
 // REDUX
 import { connect } from 'react-redux';
+import { setterModalSend } from 'Redux/actions';
 
 import { numeral } from 'Utils/numeral';
 import { InputText } from 'Components/forms/input-text';
@@ -423,6 +424,9 @@ class Send extends React.Component {
 	}
 
 	transactionSend = async (address, amount, fee) => {
+		this.props.setterModalSend({
+			status: 'loading'
+		});
 		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
 		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
 		
@@ -433,8 +437,10 @@ class Send extends React.Component {
 			amount,
 			fee,
 			tokenData.accessToken
-		);
-
+		).catch((err) => {
+			console.error("ERROR:::::",err);
+		});
+		console.warn('TRANSACTIONSEND DATA::::',data)
 		return data;
 	}
 
@@ -682,7 +688,10 @@ const mapStateToProps = (state) => {
 	}
 }
 const mapDispatchToProps = (dispatch) => {
-	return { }
+	return { 
+		setterModalSend: (data) => {
+			dispatch(setterModalSend(data));
+		}
+	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Send);
-

@@ -33,4 +33,15 @@ class Final extends React.Component {
 	}
 }
 
-export default Final;
+const mapStateToProps = (state) => {
+	return {
+		modalSend: state.component.modalSend
+	}
+}
+const mapDispatchToProps = () => {
+	return {
+
+	}
+}
+export default connect()(Final);
+// export default Final;

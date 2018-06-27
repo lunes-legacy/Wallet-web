@@ -91,28 +91,28 @@ export default class FeeClass {
 					}
 				}
 				currentEstimate = params[level];
-				result[level]   = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
+				// result[level]   = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
 			}
-			// result = {
-			// 	low: {
-			// 		network: data.network,
-			// 		data: {
-			// 			fee: 0.001 * 100000000
-			// 		}		
-			// 	},
-			// 	medium: {
-			// 		network: data.network,
-			// 		data: {
-			// 			fee: 0.001 * 100000000
-			// 		}	
-			// 	},
-			// 	high: {
-			// 		network: data.network,
-			// 		data: {
-			// 			fee: 0.001 * 100000000
-			// 		}
-			// 	}
-			// }
+			result = {
+				low: {
+					network: data.network,
+					data: {
+						fee: 0.001 * 100000000
+					}		
+				},
+				medium: {
+					network: data.network,
+					data: {
+						fee: 0.001 * 100000000
+					}	
+				},
+				high: {
+					network: data.network,
+					data: {
+						fee: 0.001 * 100000000
+					}
+				}
+			}
 			return result;
 		} catch (err) {
 			console.error(err);
