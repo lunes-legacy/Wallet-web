@@ -176,14 +176,16 @@ class Send extends React.Component {
 			this.animThisComponentIn();
 		}, 500);
 
-		// this._setNetworkFees();
 		this.setState({
 			...this.state,
 			chosenFee: 'low'
 		});
 	}
-
-	_setNetworkFees = async () => {
+	
+	/*
+		It will be usually be called when the user dispatch a blur event.
+	*/
+	_setFees = async () => {
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let result = await wallet.getCryptoTx(currentNetwork);
 		let fees;
@@ -243,7 +245,7 @@ class Send extends React.Component {
 		this.ctrlLoading(true);
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
-		let fee = await this._setNetworkFees();
+		let fee = await this._setFees();
 
 		if (address && address.length > 1) {
 			let validateAddress = await this.validateAddress(currentNetwork, address);
@@ -260,13 +262,13 @@ class Send extends React.Component {
 			this.ctrlLoading(false);
 			return;
 		}
-		if (!coinAmount || coinAmount <= fee.medium.toFixed(8)) {
+		if (!coinAmount || coinAmount <= fee[this.state.chosenFee].value.toFixed(8)) {
 			this.setState({ ...this.state, invalidAmount: true });
 			this.ctrlLoading(false);
 			return;
 		}
 
-		let dataSend = this.transactionSend(address, coinAmount, fee.medium);
+		let dataSend = this.transactionSend(address, coinAmount, fee[this.state.chosenFee].value);
 		this.ctrlLoading(false);
 		setTimeout(() => {
 			this.props.nextStep({ coinAmount, address });
@@ -309,7 +311,7 @@ class Send extends React.Component {
 		let coinAmount = this.state.transferValues.coin;
 		let usdAmount = this.state.transferValues.usd;
 
-		// if (this.state.network !== currentNetwork) this._setNetworkFees();
+		// if (this.state.network !== currentNetwork) this._setFees();
 
 		return (
 			<Col s={12} m={6} l={6} txInline>
@@ -322,6 +324,35 @@ class Send extends React.Component {
 			</Col>
 		);
 	}
+	arrangeFeeButtons = () => {
+		let { fees } = this.state;
+		let newFees = {};
+		
+		//this for loop is to filter the the duplicated values in the fees
+		for (let key in fees) {
+			let fee    = fees[key];
+			let val    = fee.value;
+			let low    = newFees.low && newFees.low.value || undefined;
+			let medium = newFees.medium && newFees.medium.value || undefined;
+			let high   = newFees.high && newFees.high.value || undefined;
+
+			if (val === low || val === medium || val === high) {
+				continue;
+			} else {
+				newFees[key] = fee;
+			}
+		}
+		//this for loop arrange the meanings 
+		if (Object.keys(newFees).length === 2) {
+			newFees[Object.keys(newFees)[0]].textContent = 'Low';
+			newFees[Object.keys(newFees)[1]].textContent = 'High';
+			newFees[Object.keys(newFees)[1]].txColor = style.normalGreen;
+		} else if (Object.keys(newFees).length === 1) {
+			newFees[Object.keys(newFees)[0]].textContent = 'Normal';
+			newFees[Object.keys(newFees)[0]].txColor = style.normalGreen;
+		}
+		return newFees;
+	}
 	_renderFeeButtons = () => {
 		// if (this.state.networkfees.status === 'loading') {
 		// 	return <Loading />;
@@ -330,18 +361,19 @@ class Send extends React.Component {
 			<Col s={12} m={6} l={6}>
 				{
 					(() => {
-						let { chosenFee } = this.state;
-						let objects = [];
+						let { chosenFee, fees } = this.state;
+						let components = [];
 						let borderBottom;
-						let fee;
-						for (let key in this.state.fees) {
-							fee = this.state.fees[key];
+						let fee; //it will be to be fit inside the for loop
+						fees = this.arrangeFeeButtons();
+						for (let key in fees) {
+							fee = fees[key];
 							borderBottom = chosenFee === key ? '5px solid green' : 'none';
-							objects.push(
+							components.push(
 								<FeeButton style={{ borderBottom }} onClick={() => { this.handleClickFee(key) }} value={fee.value}>{fee.value} <Text txInline style={{color: fee.txColor}}>{fee.textContent}</Text></FeeButton>
 							);
 						}
-						return objects;
+						return components;
 					})()
 				}
 			</Col>
@@ -517,6 +549,7 @@ class Send extends React.Component {
 									type={ 'number' }
 									value = { this.state.transferValues.coin }
 									onChange = { (input) => { this.convertCoins(input.target.value, 'coin') } }
+									onBlur={() => { this._setFees() }}
 									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
 									data-amount-type={'coin'}
 									className={'input-amount coin'}
@@ -565,6 +598,7 @@ class Send extends React.Component {
 									type={ 'number' }
 									ref={this.ref.brlAmount}
 									onChange={ (input) => { this.convertCoins(input.target.value, 'brl') } }
+									onBlur={() => { this._setFees() }}
 									value={ this.state.transferValues.brl }
 									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
 									className={'input-amount brl'}
@@ -584,6 +618,7 @@ class Send extends React.Component {
 									value={ this.state.transferValues.usd }
 									disabled={ !this.state.radioControl.usd }
 									onChange = { (input) => { this.convertCoins(input.target.value, 'usd') } }
+									onBlur={() => { this._setFees() }}
 									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
 									className={'input-amount usd'}
 									data-amount-type={'usd'}
