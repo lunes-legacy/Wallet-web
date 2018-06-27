@@ -13,7 +13,8 @@ module.exports = {
 		path: __dirname+'/tests/components/bundle/'
 	},
 	node: {
-		fs: 'empty'
+		fs: 'empty',
+		net: 'empty'
 	},
 	module: {
 		rules: [
