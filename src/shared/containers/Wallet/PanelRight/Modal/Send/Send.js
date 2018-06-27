@@ -149,17 +149,17 @@ class Send extends React.Component {
 			chosenFee: 'low',
 			fees: {
 				low: {
-					value: 0.001,
+					value: undefined,
 					txColor: style.normalRed,
 					textContent: 'Low',
 				},
 				medium: {
-					value: 0.002,
+					value: undefined,
 					txColor: style.normalYellow,
 					textContent: 'Medium',
 				},
 				high: {
-					value: 0.003,
+					value: undefined,
 					txColor: style.normalGreen,
 					textContent: 'High',
 				}
