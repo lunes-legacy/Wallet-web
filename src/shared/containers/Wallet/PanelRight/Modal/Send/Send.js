@@ -245,7 +245,7 @@ class Send extends React.Component {
 		this.ctrlLoading(true);
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
-		let fee = await this._setFees();
+		let fee = this.state.fees[this.state.chosenFee];
 
 		if (address && address.length > 1) {
 			let validateAddress = await this.validateAddress(currentNetwork, address);
@@ -262,13 +262,13 @@ class Send extends React.Component {
 			this.ctrlLoading(false);
 			return;
 		}
-		if (!coinAmount || coinAmount <= fee[this.state.chosenFee].value.toFixed(8)) {
+		if (!coinAmount || coinAmount <= fee.value.toFixed(8)) {
 			this.setState({ ...this.state, invalidAmount: true });
 			this.ctrlLoading(false);
 			return;
 		}
 
-		let dataSend = this.transactionSend(address, coinAmount, fee[this.state.chosenFee].value);
+		let dataSend = this.transactionSend(address, coinAmount, fee.value);
 		this.ctrlLoading(false);
 		setTimeout(() => {
 			this.props.nextStep({ coinAmount, address });
