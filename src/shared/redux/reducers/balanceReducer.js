@@ -7,7 +7,11 @@ let initialState = {
   LNS: {
     coinName: "Lunes",
     img: "lns.svg",
-    total_amount: 0,
+<<<<<<< HEAD
+    total_amount: 12,
+=======
+    total_amount: 100,
+>>>>>>> pck-lock conflict
     total_confirmed: 0,
     total_unconfirmed: 0
   },

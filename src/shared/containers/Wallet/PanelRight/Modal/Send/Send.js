@@ -302,7 +302,8 @@ class Send extends React.Component {
 		let brlValue = cryptoCurrencies[currentNetwork].BRL;
 		let amountStatus = false;
 
-		value.replace(",", ".");
+		value = value.replace(",", ".");
+		value = value.replace(/[^0-9.]/igm, '');
 		balance = parseFloat(balance.toFixed(8));
 		
 		switch (type) {
@@ -360,6 +361,7 @@ class Send extends React.Component {
 		
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
+				<link rel="preload" href="/img/app_wallet/modal_send/sprite_animation_done.png" as="image"/>
 				<Col s={9} m={9} l={9}>
 					{/*FIRST ROW*/}
 					<Row css={FirstRowCss}>
@@ -388,8 +390,8 @@ class Send extends React.Component {
 									whiteTheme
 									txRight
 									noBorder
+									noBrowserAppearance
 									disabled={ !this.state.radioControl.coin }
-									type={ 'number' }
 									value = { this.state.transferValues.coin }
 									onChange = { (input) => { this.convertCoins(input.target.value, 'coin') } }
 									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
@@ -437,7 +439,7 @@ class Send extends React.Component {
 									txRight
 									noBorder
 									disabled={ !this.state.radioControl.brl }
-									type={ 'number' }
+									noBrowserAppearance
 									ref={this.ref.brlAmount}
 									onChange={ (input) => { this.convertCoins(input.target.value, 'brl') } }
 									value={ this.state.transferValues.brl }
@@ -454,7 +456,7 @@ class Send extends React.Component {
 									noBorder
 									grayTheme
 									phMediumFont
-									type={ 'number' }
+									noBrowserAppearance
 									ref={this.ref.usdAmount}
 									value={ this.state.transferValues.usd }
 									disabled={ !this.state.radioControl.usd }
