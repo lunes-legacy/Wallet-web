@@ -27,7 +27,14 @@ const ENABLEDCOINS = [
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'
 const LUNES_LIB_LOGIN = 'manual'//| 'auto' || 'manual', isso serve para fazer login automático para nao ficar apertando o botão de login sempre
 const LUNES_LEASING_FEE = 0.001;
-
+const BLOCK_EXPLORERS = {
+	LUNES:        'https://blockexplorer.lunes.io/',
+	LUNESTESTNET: 'https://blockexplorer-testnet.lunes.io/',
+	BTC:          'https://chain.so/',
+	BTCTESTNET:   'https://chain.so/',
+	LTC:          'https://chain.so/',
+	LTCTESTNET:   'https://chain.so/'
+}
 export {
 	TESTNET,
 	APICONFIG,
@@ -38,7 +45,8 @@ export {
 	ETHNETWORK,
 	ENABLEDCOINS,
 	LUNES_LIB_ENV,
-  LUNES_LIB_LOGIN,
-  LUNES_LEASING_FEE,
-	ENV
+	LUNES_LIB_LOGIN,
+	LUNES_LEASING_FEE,
+	ENV,
+	BLOCK_EXPLORERS
 }

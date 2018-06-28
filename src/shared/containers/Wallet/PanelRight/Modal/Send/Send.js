@@ -6,6 +6,7 @@ import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
 import { TESTNET } from 'Config/constants';
 import { Loading } from 'Components/Loading';
+import { errorPattern } from 'Utils/functions';
 
 // REDUX
 import { connect } from 'react-redux';
@@ -439,19 +440,20 @@ class Send extends React.Component {
 			fee,
 			tokenData.accessToken
 		).catch((err) => {
-			console.error(err);
 			this.props.setterModalSend({
 				status: 'error',
 				message: 'Error on trying do to the transaction'
 			});
+			throw errorPattern(err, 500, 'MODALSEND_TRANSACTION_ERROR');
 		});
+		
 		let txid = data && data.data && data.data.txID;
 		if (!txid) {
 			this.props.setterModalSend({
 				status: 'error',
-				message: 'No one transaction ID was returned'
+				message: 'No transaction ID was returned'
 			});
-			return;
+			throw errorPattern('No transaction ID was returned', 500, 'MODALSEND_TRANSACTION_ERROR');
 		}
 		this.props.setterModalSend({
 			status: 'completed',

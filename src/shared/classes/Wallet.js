@@ -171,7 +171,7 @@ export class WalletClass {
   }
 
   transactionSend = async (mnemonic, coin, address, amount, fee, accessToken) => {
-    try {
+    // try {
       let amountConvert = amount.toString();
       let feeConvert = fee.toString();
       let transactionData;
@@ -208,10 +208,12 @@ export class WalletClass {
       const data = await coins.services.transaction(transactionData, accessToken);
 
       return data;
-    } catch (error) {
-      console.error('Method: transactionSend', error);
-      return error;
-    }
+    // } catch (error) {
+    //   console.error('Method: transactionSend', error);
+    //   return error;
+    //   //console.log('test');
+    //   //throw errorPattern('Error on trying to do the transaction', 500, 'WALLET_TRANSACTION_ERROR', error);
+    // }
   }
 
   getCryptoTx = async (coin) => {

@@ -1,6 +1,10 @@
-import React from 'react';
+import React                   from 'react';
 import { Img, Row, Col, Text } from 'Components';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css }   from 'styled-components';
+import { TextBase }            from 'Components';
+
+//UTILS
+import { getTxidLink } from 'Utils/crypto';
 
 //REDUX
 import { connect } from 'react-redux';
@@ -23,6 +27,20 @@ const Anim = styled.div`
 	animation: ${StepByStepLoading} .6s steps(19);
 	animation-fill-mode: forwards;
 `;
+const Anchor = styled.a`
+	${TextBase};
+	color: white;
+	text-align: center;
+`;
+const CssColCompleted = css`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-flow: wrap;
+	& .txid {
+		width: 100%;
+	}
+`;
 
 class Final extends React.Component {
 	_renderLoading = (message) => {
@@ -34,11 +52,13 @@ class Final extends React.Component {
 			</Row>
 		);
 	}
-	_renderCompleted = () => {
+	_renderCompleted = (currentNetwork, txid) => {
+		let linkToExplorer = getTxidLink(currentNetwork, txid);
 		return(
 			<Row defaultAlign={'center'}>
-				<Col s={6} m={6} l={6}>
+				<Col s={12} m={12} l={12} css={CssColCompleted}>
 					<Anim/>
+					<Text className={'txid'}>txid: <Anchor href={linkToExplorer} target="_blank">{ txid }</Anchor></Text>
 				</Col>
 			</Row>
 		);
@@ -47,19 +67,20 @@ class Final extends React.Component {
 		return (
 			<Row>
 				<Col>
-					<Text txCenter clWhite>{ message }</Text>
+					<Text txCenter clNormalRed txBold>{ message }</Text>
 				</Col>
 			</Row>
 		);
 	}
 	render() {
 		let { status, txid, message } = this.props.modalSend;
+		let { currentNetwork } = this.props.component_wallet;
 		
 		switch (status) {
 			case 'error':
 				return this._renderError(message); break;
 			case 'completed':
-				return this._renderCompleted(message); break;
+				return this._renderCompleted(currentNetwork, txid); break;
 			default:
 				return null;
 		}
@@ -68,6 +89,7 @@ class Final extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		component_wallet: state.component.wallet,
 		modalSend: state.component.wallet.modalSend
 	}
 }
