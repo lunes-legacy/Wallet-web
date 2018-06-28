@@ -1,7 +1,10 @@
 import React from 'react';
-import { Img, Row, Col } from 'Components';
+import { Img, Row, Col, Text } from 'Components';
 import styled, { keyframes } from 'styled-components';
+
+//REDUX
 import { connect } from 'react-redux';
+import { setterModalSend } from 'Redux/actions';
 
 const StepByStepLoading = keyframes`
 	0% {
@@ -22,26 +25,57 @@ const Anim = styled.div`
 `;
 
 class Final extends React.Component {
-	render() {
+	_renderLoading = (message) => {
+		return (
+			<Row>
+				<Col>
+					<Text txCenter clWhite>{ message }</Text>
+				</Col>
+			</Row>
+		);
+	}
+	_renderCompleted = () => {
 		return(
 			<Row defaultAlign={'center'}>
 				<Col s={6} m={6} l={6}>
-					{/*<Img center width={'70%'} src={'/img/app_wallet/ic_send_final.png'}/>*/}
 					<Anim/>
 				</Col>
 			</Row>
 		);
 	}
+	_renderError = (message) => {
+		return (
+			<Row>
+				<Col>
+					<Text txCenter clWhite>{ message }</Text>
+				</Col>
+			</Row>
+		);
+	}
+	render() {
+		let { status, txid, message } = this.props.modalSend;
+		
+		switch (status) {
+			case 'error':
+				return this._renderError(message); break;
+			case 'completed':
+				return this._renderCompleted(message); break;
+			default:
+				return null;
+		}
+	}
 }
 
 const mapStateToProps = (state) => {
 	return {
-		modalSend: state.component.modalSend
+		modalSend: state.component.wallet.modalSend
 	}
 }
 const mapDispatchToProps = () => {
-	return {
-
+	return { 
+		setterModalSend: (data) => {
+			dispatch(setterModalSend(data));
+		}
 	}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Final);

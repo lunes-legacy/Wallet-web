@@ -425,7 +425,8 @@ class Send extends React.Component {
 
 	transactionSend = async (address, amount, fee) => {
 		this.props.setterModalSend({
-			status: 'loading'
+			status: 'loading',
+			message: 'Wait until the transaction got finished',
 		});
 		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
 		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
@@ -438,10 +439,25 @@ class Send extends React.Component {
 			fee,
 			tokenData.accessToken
 		).catch((err) => {
-			console.error(err,">:>:>>:>:>:>:>:>:>TRANSACTIONSEND ERROR");
+			console.error(err);
+			this.props.setterModalSend({
+				status: 'error',
+				message: 'Error on trying do to the transaction'
+			});
 		});
-		console.warn(data,'>:>>:>:>:>:>>:>TRANSACTIONSEND DATA')
-		return data;
+		let txid = data && data.data && data.data.txID;
+		if (!txid) {
+			this.props.setterModalSend({
+				status: 'error',
+				message: 'No one transaction ID was returned'
+			});
+			return;
+		}
+		this.props.setterModalSend({
+			status: 'completed',
+			message: 'Success on sending transaction',
+			txid: txid
+		});
 	}
 
 	clearFields() {

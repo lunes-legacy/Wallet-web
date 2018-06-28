@@ -22,7 +22,7 @@ class ModalSend extends React.Component {
 	componentDidCatch(info, error) {
 		console.warn(info,error,"INFO | ERROR");
 		return (
-			<h1>Tentamos renderizar o componente mas não foi possível</h1>
+			<h1>Error on trying to render modal</h1>
 		);
 	}
 	componentDidMount() {

@@ -4,7 +4,8 @@ let initialState = {
 		currentTxHistory: [],
 		isPanelRightVisible: false,
 		modalSend: {
-			status: 'initial', //initial | loading | complete | error
+			status: 'initial', //initial | loading | completed | error
+			message: undefined,
 			txid: undefined
 		}
 	}
