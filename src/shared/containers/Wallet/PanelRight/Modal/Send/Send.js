@@ -106,7 +106,7 @@ class Send extends React.Component {
 
 		if (!currentNetwork)
 			console.error('Current network is not defined', 500, 'SETNETWORKFEES_ERROR');
-		
+
 		if (!fee)
 			console.error('Failed on trying to get network fees', 500, "SETNETWORKFEES_ERROR");
 
@@ -124,7 +124,7 @@ class Send extends React.Component {
 
 		return networkFees;
 	}
- 
+
 	handleOnPercentChange = (event) => {
 		let element = event.currentTarget;
 		let value = element.value;
@@ -136,7 +136,7 @@ class Send extends React.Component {
 	animThisComponentIn = () => {
 		this.wrapper.style.transform = 'translateY(0px)';
 	}
-	
+
 	animThisComponentOut = () => {
 		this.wrapper.style.transform = 'translateY(-100%)';
 	}
@@ -205,7 +205,7 @@ class Send extends React.Component {
 	}
 
 	_renderFeeTotal = () => {
-		let currentNetwork = this.props.wallet.currentNetwork;	
+		let currentNetwork = this.props.wallet.currentNetwork;
 		let coinAmount = this.state.transferValues.coin;
 		let usdAmount = this.state.transferValues.usd;
 
@@ -213,10 +213,10 @@ class Send extends React.Component {
 
 		return (
 			<Col s={12} m={6} l={6}>
-				<Text txRight clWhite>You are sending 
+				<Text txRight clWhite>You are sending
 					<Text color={style.coinsColor[currentNetwork]} txInline>
-						 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
-					</Text> 
+						 { coinAmount ? coinAmount : 0} { currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase() } 
+					</Text>
 					({ numeral( usdAmount ).format('$0,0.0000') }) + { this.state.networkFees.medium ? this.state.networkFees.medium.toFixed(8) : 'error' } of fee
 				</Text>
 			</Col>
@@ -260,7 +260,7 @@ class Send extends React.Component {
 				});
 
 				break;
-		
+
 			default:
 				break;
 		}
@@ -269,7 +269,7 @@ class Send extends React.Component {
 	transactionSend = async (address, amount, fee) => {
 		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
 		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
-		
+
 		let data = await wallet.transactionSend(
 			walletInfo.seed,
 			this.props.wallet.currentNetwork,
@@ -283,11 +283,11 @@ class Send extends React.Component {
 	}
 
 	clearFields() {
-		this.setState({ 
-			...this.state, 
-			transferValues: { 
-				coin: '', 
-				brl: '' , 
+		this.setState({
+			...this.state,
+			transferValues: {
+				coin: '',
+				brl: '' ,
 				usd: ''
 			}
 		})
@@ -305,15 +305,15 @@ class Send extends React.Component {
 		value = value.replace(",", ".");
 		value = value.replace(/[^0-9.]/igm, '');
 		balance = parseFloat(balance.toFixed(8));
-		
+
 		switch (type) {
 			case 'coin':
 				parseFloat(value) + this.state.networkFees.medium > balance ? amountStatus = true : amountStatus = false;
 
-				this.setState({ 
+				this.setState({
 					...this.state,
 					invalidAmount: amountStatus,
-					transferValues: { 
+					transferValues: {
 						coin: value,
 						brl: (brlValue * value).toFixed(2),
 						usd: (usdValue * value).toFixed(2)
@@ -325,32 +325,32 @@ class Send extends React.Component {
 			case 'brl':
 				(parseFloat(value) / brlValue) + this.state.networkFees.medium > balance ? amountStatus = true : amountStatus = false;
 
-				this.setState({ 
-					...this.state, 
+				this.setState({
+					...this.state,
 					invalidAmount: amountStatus,
-					transferValues: { 
+					transferValues: {
 						coin: (value / brlValue).toFixed(8),
 						brl: value,
 						usd: ((usdValue * value) / brlValue).toFixed(2)
-					} 
+					}
 				});
-				
+
 				break;
 
 			case 'usd':
 				(parseFloat(value) / usdValue) + this.state.networkFees.medium > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({
-					...this.state, 
+					...this.state,
 					invalidAmount: amountStatus,
-					transferValues: { 
-						coin: (value / usdValue).toFixed(8), 
+					transferValues: {
+						coin: (value / usdValue).toFixed(8),
 						brl: ((brlValue * value) / usdValue).toFixed(2),
 						usd: value
-					} 
+					}
 				});
 				break;
-		
+
 			default:
 				break;
 		}
@@ -358,7 +358,7 @@ class Send extends React.Component {
 
 	render() {
 		let currentNetwork = this.props.wallet.currentNetwork;
-		
+
 		return (
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
 				<link rel="preload" href="/img/app_wallet/modal_send/sprite_animation_done.png" as="image"/>
@@ -376,7 +376,9 @@ class Send extends React.Component {
 										onClick={ (input) => { this.inputControl(input.target.value) } }
 									/>
 									<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
-									<LabelRadio clWhite> { currentNetwork.toUpperCase() } </LabelRadio>
+									<LabelRadio clWhite>
+                    { currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase() }
+                  </LabelRadio>
 								</WrapRadio>
 							</div>
 						</Col>

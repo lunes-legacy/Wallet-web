@@ -60,13 +60,13 @@ let Logo = styled.img`
   width: 100px;
   padding-top: 0.5rem;
 `;
-let Version = styled.div`  
+let Version = styled.div`
   border-left: 2px solid #4CD566;
   float: right;
   margin-left: 1rem;
   padding: 1rem;
   color: #4CD566;
-  font-size: 20px;  
+  font-size: 20px;
   font-weight: 700;
 `;
 
@@ -125,7 +125,7 @@ class App extends React.Component {
 
     if (!accessToken) {
       err += 1;
-    } 
+    }
 
     if(err > 0) {
       localStorage.clear();
@@ -133,7 +133,7 @@ class App extends React.Component {
       location.reload();
       return false;
     }
-    
+
     return true;
   }
 
@@ -160,7 +160,7 @@ class App extends React.Component {
                 Balance:{" "}
               </Text>
               <Text clNormalGreen txNormal txInline offSide size={"2.3rem"}>
-                LNS{" "}
+                LUNES{" "}
               </Text>
               <Text clWhite txNormal txInline offSide size={"2.0rem"}>
                 {lnsBalance}

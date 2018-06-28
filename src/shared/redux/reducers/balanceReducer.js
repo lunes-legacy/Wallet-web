@@ -7,11 +7,7 @@ let initialState = {
   LNS: {
     coinName: "Lunes",
     img: "lns.svg",
-<<<<<<< HEAD
-    total_amount: 12,
-=======
-    total_amount: 100,
->>>>>>> pck-lock conflict
+    total_amount: 0,
     total_confirmed: 0,
     total_unconfirmed: 0
   },
@@ -74,7 +70,7 @@ const balanceReducer = (state = initialState, action) => {
               total_amount: money.conevertCoin(coinKey, balance.confirmed),
               total_unconfirmed: balance.unconfirmed ? money.conevertCoin(coinKey, balance.unconfirmed) : 0,
             }
-          };   
+          };
         }
       }
 

@@ -280,7 +280,7 @@ class PanelRight extends React.Component {
                             <HashText clWhite txBold status={status}> {obj.txid} </HashText>
                         </Col>
                         <Col s={12} m={4} l={4}>
-                            <GreenText clNormalGreen txBold txCenter status={status}> {nativeAmount} LNS</GreenText>
+                            <GreenText clNormalGreen txBold txCenter status={status}> {nativeAmount} LUNES</GreenText>
                         </Col>
                         <Col s={12} m={2} l={2}>
                             {this._buttonCancel(status, obj.txid, obj.otherParams.type)}
@@ -289,7 +289,7 @@ class PanelRight extends React.Component {
                 );
             });
         }
-    
+
     if (this.props.listLeasing.length < 1) {
       return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
     } else {
@@ -304,7 +304,7 @@ class PanelRight extends React.Component {
               <HashText clWhite txBold status={status}> {obj.txid} </HashText>
             </Col>
             <Col s={12} m={4} l={4}>
-              <GreenText clNormalGreen txBold txCenter status={status}> {nativeAmount} LNS</GreenText>
+              <GreenText clNormalGreen txBold txCenter status={status}> {nativeAmount} LUNES</GreenText>
             </Col>
             <Col s={12} m={2} l={2}>
               {this._buttonCancel(status, obj.txid, obj.otherParams.type)}

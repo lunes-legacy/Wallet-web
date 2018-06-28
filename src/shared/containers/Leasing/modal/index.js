@@ -101,7 +101,7 @@ class LeasingModal extends Component {
 
       if (amount < 1) {
           err++;
-          message = 'Invalid LNS amount';
+          message = 'Invalid LUNES amount';
       }
 
       if (amount > balance) {
