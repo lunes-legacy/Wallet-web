@@ -7,7 +7,7 @@ let initialState = {
   LNS: {
     coinName: "Lunes",
     img: "lns.svg",
-    total_amount: 100,
+    total_amount: 0,
     total_confirmed: 0,
     total_unconfirmed: 0
   },
