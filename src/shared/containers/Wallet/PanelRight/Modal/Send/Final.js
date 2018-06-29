@@ -39,6 +39,8 @@ const CssColCompleted = css`
 	flex-flow: wrap;
 	& .txid {
 		width: 100%;
+		text-align: center;
+		color: white;
 	}
 `;
 
@@ -56,7 +58,7 @@ class Final extends React.Component {
 		let linkToExplorer = getTxidLink(currentNetwork, txid);
 		return(
 			<Row defaultAlign={'center'}>
-				<Col s={12} m={12} l={12} css={CssColCompleted}>
+				<Col css={CssColCompleted}>
 					<Anim/>
 					<Text className={'txid'}>txid: <Anchor href={linkToExplorer} target="_blank">{ txid }</Anchor></Text>
 				</Col>
