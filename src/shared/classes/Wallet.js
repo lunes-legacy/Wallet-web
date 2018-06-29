@@ -18,7 +18,7 @@ import {
 } from "Config/constants";
 
 const money = new MoneyClass;
-const fee = new FeeClass;
+const Fee = new FeeClass;
 
 export class WalletClass {
   static coinsPrice;
@@ -223,9 +223,16 @@ export class WalletClass {
 
   getCryptoTx = async (coin) => {
     try {
-      let result = await fee.getNetworkFees({ network: coin });
-      return result.data;
-
+      // let result = await Fee.getNetworkFees({ network: coin });
+      let result = await Fee.estimate({ 
+        network: coin,
+        testnet: true,
+        fromAddress: 'mrmBsCMa8jw2btb9rTPpYyZHCED5UDPh5N',
+        toAddress: '37YcNLmqSS2BfXHvTaKDwrC7yCdtJXNomZt',
+        amount: 0.1
+      });
+      return result;
+      
     } catch (error) {
       console.error('Method: getCryptoTx', error);
       return error;
