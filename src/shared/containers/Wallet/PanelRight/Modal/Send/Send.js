@@ -42,6 +42,7 @@ let Image = styled.img`
 
 let FeeButton = styled.button`
 	${TextBase}
+	display: block;
 	background: transparent;
 	border: none;
 	padding: 5px 10px 5px 10px;
@@ -51,6 +52,9 @@ let FeeButton = styled.button`
 		outline: none;
 	}
 	transition: border-color .3s;
+	@media (${style.media.desktop2}) {
+		display: inline;
+	}
 `;
 
 
@@ -113,8 +117,6 @@ Todos os estados que precisamos e/ou iremos usar
 */
 
 
-
-
 class Send extends React.Component {
 	constructor(props) {
 		super(props);
@@ -149,6 +151,10 @@ class Send extends React.Component {
 			// 	high: undefined
 			// },
 			chosenFee: 'low',
+			feeButtonsStatus: {
+				type: 'initial', //'loading' | 'initial' | 'completed' | 'error'
+				message: 'Put an address and a value to get the right fee',
+			}, 
 			fees: {
 				low: {
 					value: undefined,
@@ -184,13 +190,63 @@ class Send extends React.Component {
 	}
 	
 	/*
-		It will be usually be called when the user dispatch a blur event.
+		It will be usually called when the user dispatch a blur event.
 	*/
 	_setFees = async () => {
-		let currentNetwork = this.props.wallet.currentNetwork;
-		let result = await wallet.getCryptoTx(currentNetwork);
+		let { currentNetwork } = this.props.wallet;
+		let amount      = parseFloat(this.state.transferValues.coin);
+		let fromAddress = this.props.walletInfo.addresses[currentNetwork.toLowerCase()];
+		let toAddress   = this.state.sendAddress;
+
+		if (amount < 0 || amount === 0) {
+			this.setState({
+				feeButtonsStatus: {
+					type: 'error',
+					message: 'Amount is less or equals to 0'
+				}
+			});
+			return;	
+		}
+		if (!this.state.addressIsValid || !toAddress) {
+			this.setState({
+				feeButtonsStatus: {
+					type: 'error',
+					message: 'Receiver\'s address isn\'t right'
+				}
+			});
+			return;
+		}
+		if (!fromAddress) {
+			this.setState({
+				feeButtonsStatus: {
+					type: 'error',
+					message: 'Sender\'s address isn\'t right'
+				}
+			});
+			return;
+		}
+		this.setState({
+			feeButtonsStatus: {
+				type: 'loading',
+				message: 'Wait until the estimate get finished'
+			}
+		});
+		let data = {
+			toAddress,
+			fromAddress,
+			amount,
+			network: currentNetwork
+		}
+		let result = await wallet.getCryptoTx(data).catch(e => {
+			this.setState({
+				stateButtonSend: {
+					type: 'error',
+					message: `Error on trying to do the estimation. Server message: ${e}`
+				}
+			});
+		});
 		let fees;
-		console.warn("RESULT>>>>>>",result);
+
 		if (!currentNetwork)
 			console.error('Current network is not defined', 500, 'SETNETWORKFEES_ERROR');
 		
@@ -210,11 +266,15 @@ class Send extends React.Component {
 			high: {
 				...this.state.fees.high,
 				value: money.conevertCoin(currentNetwork, result.high.data.fee),
-			},
+			}
 		}
 
 		this.setState({
 			...this.state,
+			feeButtonsStatus: {
+				type: 'completed',
+				message: 'Success on getting the estimation'
+			},
 			network: currentNetwork,
 			fees
 		});
@@ -308,11 +368,17 @@ class Send extends React.Component {
 	}
 
 	_renderFeeTotal = () => {
+		// if (this.state.network !== currentNetwork) this._setFees();
+		let { feeButtonsStatus } = this.state;
+		if (feeButtonsStatus.type === 'loading') {
+			return <Loading />;
+		} else if (feeButtonsStatus.type === 'initial' || feeButtonsStatus.type === 'error') {
+			return null;
+		}
 		let currentNetwork = this.props.wallet.currentNetwork;	
 		let coinAmount = this.state.transferValues.coin;
 		let usdAmount = this.state.transferValues.usd;
 
-		// if (this.state.network !== currentNetwork) this._setFees();
 
 		return (
 			<Col s={12} m={6} l={6} txInline>
@@ -333,9 +399,9 @@ class Send extends React.Component {
 		for (let key in fees) {
 			let fee    = fees[key];
 			let val    = fee.value;
-			let low    = newFees.low && newFees.low.value || undefined;
-			let medium = newFees.medium && newFees.medium.value || undefined;
-			let high   = newFees.high && newFees.high.value || undefined;
+			let low    = parseFloat(newFees.low && newFees.low.value) || undefined;
+			let medium = parseFloat(newFees.medium && newFees.medium.value) || undefined;
+			let high   = parseFloat(newFees.high && newFees.high.value) || undefined;
 
 			if (val === low || val === medium || val === high) {
 				continue;
@@ -344,20 +410,24 @@ class Send extends React.Component {
 			}
 		}
 		//this for loop arrange the meanings 
-		if (Object.keys(newFees).length === 2) {
-			newFees[Object.keys(newFees)[0]].textContent = 'Low';
-			newFees[Object.keys(newFees)[1]].textContent = 'High';
-			newFees[Object.keys(newFees)[1]].txColor = style.normalGreen;
-		} else if (Object.keys(newFees).length === 1) {
-			newFees[Object.keys(newFees)[0]].textContent = 'Normal';
-			newFees[Object.keys(newFees)[0]].txColor = style.normalGreen;
+		let feeKeys = Object.keys(newFees);
+		if (feeKeys.length === 2) {
+			newFees[feeKeys[0]].textContent = 'Low';
+			newFees[feeKeys[1]].textContent = 'High';
+			newFees[feeKeys[1]].txColor = style.normalGreen;
+		} else if (feeKeys.length === 1) {
+			newFees[feeKeys[0]].textContent = 'Normal';
+			newFees[feeKeys[0]].txColor = style.normalGreen;
 		}
 		return newFees;
 	}
 	_renderFeeButtons = () => {
-		// if (this.state.networkfees.status === 'loading') {
-		// 	return <Loading />;
-		// }
+		let { feeButtonsStatus } = this.state;
+		if (feeButtonsStatus.type === 'loading') {
+			return <Loading />;
+		} else if (feeButtonsStatus.type === 'error' || feeButtonsStatus.type === 'initial') {
+			return <Text clWhite>{ feeButtonsStatus.message }</Text>;
+		}
 		return (
 			<Col s={12} m={6} l={6}>
 				{
@@ -658,12 +728,14 @@ class Send extends React.Component {
 						<Col s={12} m={12} l={12}>
 							<InputText
 								style={ this.state.addressIsValid ? { color: "white" } : { color: "red" } }
+								name={"to-address"}
 								whiteTheme
 								normal
 								noBorder
 								type={'text'}
 								value={ this.state.sendAddress }
 								onChange={ (input) => { this.setState({ ...this.state, sendAddress: input.target.value }) } }
+								onBlur={() => { this._setFees() }}
 								placeholder={'Address'} />
 						</Col>
 					</Row>
@@ -703,6 +775,8 @@ const mapStateToProps = (state) => {
 		wallet: state.component.wallet,
 		balance: state.balance,
 		currencies: state.currencies.currencies,
+		walletInfo: state.walletInfo,
+		component_wallet: state.component.wallet
 	}
 }
 const mapDispatchToProps = (dispatch) => {

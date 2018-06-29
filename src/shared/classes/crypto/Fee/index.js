@@ -1,7 +1,7 @@
 // import { estimateBTC, estimateETH } from './families';
 import { coins } from 'lunes-lib';
 import { errorPattern } from 'Utils/functions';
-import { TESTNET } from 'Config/constants';
+import { TESTNET, LUNES_TRANSACTION_FEE } from 'Config/constants';
 import { decrypt } from 'Utils/crypt';
 
 export default class FeeClass {
@@ -44,6 +44,31 @@ export default class FeeClass {
 
 	estimate = async (data) => {
 		try {
+			if (!data.network) {
+				throw errorPattern('No network name was found', 500, 'FEE_ESTIMATE_ERROR');
+			}
+			if (data.network.search(/(lns)|(lunes)/i) !== -1) {
+				return {
+					low: {
+						network: data.network,
+						data: {
+							fee: LUNES_TRANSACTION_FEE * 100000000
+						}		
+					},
+					medium: {
+						network: data.network,
+						data: {
+							fee: LUNES_TRANSACTION_FEE * 100000000
+						}	
+					},
+					high: {
+						network: data.network,
+						data: {
+							fee: LUNES_TRANSACTION_FEE * 100000000
+						}
+					}
+				}
+			}
 			if (!data.networkFees) {
 				data.networkFees = await this.getNetworkFees({...data});
 				if (!data.networkFees) {
@@ -74,11 +99,11 @@ export default class FeeClass {
 				low:    {}	
 			}
 			let { networkFees } = data;
+			delete data.networkFees;
 			let currentEstimate;
-			// data.amount = coins.util.unitConverter.toSatoshi(data.amount).toString();
-			data.amount = '100';
+			data.amount = coins.util.unitConverter.toSatoshi(data.amount).toString();
 			for (let level in params) {
-				if (this.network === "ETH") {
+				if (data.network === "ETH") {
 					params[level] = {
 						...data,
 						gasLimit: 21000,
@@ -87,32 +112,13 @@ export default class FeeClass {
 				} else {
 					params[level] = {
 						...data,
-						feePeerByte: networkFees[level]
+						feePerByte: networkFees[level]
 					}
 				}
 				currentEstimate = params[level];
-				// result[level]   = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
+				result[level]   = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
 			}
-			result = {
-				low: {
-					network: data.network,
-					data: {
-						fee: 0.001 * 100000000
-					}		
-				},
-				medium: {
-					network: data.network,
-					data: {
-						fee: 0.001 * 100000000
-					}	
-				},
-				high: {
-					network: data.network,
-					data: {
-						fee: 0.001 * 100000000
-					}
-				}
-			}
+
 			return result;
 		} catch (err) {
 			console.error(err);

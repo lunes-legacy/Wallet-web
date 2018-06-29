@@ -216,18 +216,18 @@ export class WalletClass {
     // }
   }
 
-  getCryptoTx = async (coin) => {
+  // data = { 
+  //   network: coin,
+  //   testnet: true,
+  //   fromAddress: 'mj1oZJa8pphtdjeo51LvEnzxFKHoMcmtFA',
+  //   toAddress: 'mqdhezmGxxVYzMnp9TsNU63LBxHEz2RNyD',
+  //   amount: 0.0000001
+  // }
+  getCryptoTx = async (data) => {
     try {
       // let result = await Fee.getNetworkFees({ network: coin });
-      let result = await Fee.estimate({ 
-        network: coin,
-        testnet: true,
-        fromAddress: 'mj1oZJa8pphtdjeo51LvEnzxFKHoMcmtFA',
-        toAddress: 'mqdhezmGxxVYzMnp9TsNU63LBxHEz2RNyD',
-        amount: 0.0000001
-      });
+      let result = await Fee.estimate(data);
       return result;
-      
     } catch (error) {
       console.error('Method: getCryptoTx', error);
       return error;
