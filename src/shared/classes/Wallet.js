@@ -6,15 +6,15 @@ import isCoinAvaliable from "Config/isCoinAvaliable";
 import { FeeClass } from 'Classes/crypto';
 import { MoneyClass } from 'Classes/Money';
 
-import { 
-  TESTNET, 
-  APICONFIG, 
-  LNSNETWORK, 
-  BTCNETWORK, 
-  LTCNETWORK, 
-  NANONETWORK, 
-  DASHNETWORK, 
-  ETHNETWORK 
+import {
+  TESTNET,
+  APICONFIG,
+  LNSNETWORK,
+  BTCNETWORK,
+  LTCNETWORK,
+  NANONETWORK,
+  DASHNETWORK,
+  ETHNETWORK
 } from "Config/constants";
 
 const money = new MoneyClass;
@@ -92,7 +92,14 @@ export class WalletClass {
       let balances = {};
       for (const coin in addresses) {
         if (!addresses[coin]) return false;
-        balances[coin] = await coins.services.balance(coin, addresses[coin], TESTNET);
+        try {
+          balances[coin] = await coins.services.balance(coin, addresses[coin], TESTNET);
+        } catch (e) {
+          // TODO: fix this error
+          console.error('Wallet.js - line 96');
+          console.log(e);
+          continue;
+        }
       }
 
       return balances;
@@ -130,7 +137,7 @@ export class WalletClass {
         return await services.wallet.lns.validateAddress(address, networks[LNSNETWORK]);
       } else {
         return await coins.util.validateAddress(address, coin, TESTNET);
-      }  
+      }
     } catch (error) {
       console.error(error)
       return false;
@@ -145,7 +152,7 @@ export class WalletClass {
 
         case 'lns':
           return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);
-        
+
         case 'btc':
           return services.wallet.btc.wallet.newAddress(seed, networks[BTCNETWORK]);
 
@@ -175,7 +182,7 @@ export class WalletClass {
       let amountConvert = amount.toString();
       let feeConvert = fee.toString();
       let transactionData;
-      
+
       if (coin === "btc" || coin === "dash" || coin === "ltc") {
         amountConvert = money.conevertCoin('satoshi', amount);
         feeConvert = money.conevertCoin('satoshi', fee);
@@ -204,7 +211,7 @@ export class WalletClass {
       } else {
         return 'Coin not defined';
       }
-  
+
       const data = await coins.services.transaction(transactionData, accessToken);
 
       return data;
@@ -230,6 +237,6 @@ export class WalletClass {
       console.error('Method: getCryptoTx', error);
       return error;
     }
-    
+
   }
 }
