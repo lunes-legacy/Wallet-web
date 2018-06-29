@@ -27,7 +27,6 @@ const History = styled.div`
 `;
 
 const TextT = styled.div`
-  letter-spacing: 0.2rem;
   font-weight: bold;
   display: inline;
 `;
@@ -392,7 +391,7 @@ class Histories extends React.Component {
       } else if (currentTxHistory.data.history.length < 1) {
         return <ErrorMessage> No transactions </ErrorMessage>;
     }
-    
+
     return currentTxHistory.data.history.map( (transaction, key) => {
       if(transaction.otherParams.type === 8 || transaction.otherParams.type === 9) {
         var amount = money.conevertCoin(currentNetwork, transaction.networkFee);
@@ -403,7 +402,7 @@ class Histories extends React.Component {
         var usdAmount = numeral(amount * currentCurrencies).format('$0,0.00');
         amount = numeral(amount).format('0,0.00000000');
       }
-      
+
       return (
         <History key={key}>
           <HistoryHead onClick={() => this.handleToggleHistory(key)}>
@@ -431,7 +430,7 @@ class Histories extends React.Component {
                     ({ usdAmount })
                   </HeadAmountMoney>
                 </HistoryHeadAmount>
-              </Col>  
+              </Col>
             </Row>
           </HistoryHead>
 
@@ -444,9 +443,7 @@ class Histories extends React.Component {
                       {this.icoStatusToText(transaction.type)}:
                     </Span>
                     <TextT>
-                      { amount }
-                      { currentNetwork.toUpperCase() }
-                      ({ usdAmount })
+                      { ` ${amount} ${(currentNetwork === 'lns') ? 'LUNES' : currentNetwork.toUpperCase()} (${usdAmount})` }
                     </TextT>
                   </Text>
                   <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
