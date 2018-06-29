@@ -109,6 +109,7 @@ export let NumberPorcent = styled.div`
 	font-weight: 300;
 	float: left;
 	cursor: pointer;
+	margin-top: -1.9rem;
 	${props => {
 		if (props.marginRight)
 			return `margin-right ${props.marginRight}`;
@@ -122,7 +123,7 @@ export let NumberPorcent = styled.div`
 `;
 
 export let Line = styled.hr`
-	margin-top: 3rem;
+	margin-top: 1rem;
 	border: 0.7px solid #654fa4;
 `;
 
@@ -159,6 +160,7 @@ ${TextBase};
 	margin-bottom: 9px;
 	text-align: center;
 `;
+
 
 export let TextFee = styled.div`
 ${TextBase};
