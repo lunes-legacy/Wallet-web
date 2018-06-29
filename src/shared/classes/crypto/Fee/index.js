@@ -47,6 +47,9 @@ export default class FeeClass {
 			if (!data.network) {
 				throw errorPattern('No network name was found', 500, 'FEE_ESTIMATE_ERROR');
 			}
+			if (!data.testnet) {
+				data.testnet = TESTNET;
+			}
 			if (data.network.search(/(lns)|(lunes)/i) !== -1) {
 				return {
 					low: {
