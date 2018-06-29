@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import { TESTNET } from 'Config/constants';
+import { BLOCK_EXPLORER_URL } from 'Config/constants';
 import { timestampDiff } from "Utils/functions";
 import { connect } from "react-redux";
 import { setTxHistory } from 'Redux/actions';
@@ -392,7 +392,7 @@ class Histories extends React.Component {
       } else if (currentTxHistory.data.history.length < 1) {
         return <ErrorMessage> No transactions </ErrorMessage>;
     }
-    
+
     return currentTxHistory.data.history.map( (transaction, key) => {
       if(transaction.otherParams.type === 8 || transaction.otherParams.type === 9) {
         var amount = money.conevertCoin(currentNetwork, transaction.networkFee);
@@ -403,7 +403,7 @@ class Histories extends React.Component {
         var usdAmount = numeral(amount * currentCurrencies).format('$0,0.00');
         amount = numeral(amount).format('0,0.00000000');
       }
-      
+
       return (
         <History key={key}>
           <HistoryHead onClick={() => this.handleToggleHistory(key)}>
@@ -431,7 +431,7 @@ class Histories extends React.Component {
                     ({ usdAmount })
                   </HeadAmountMoney>
                 </HistoryHeadAmount>
-              </Col>  
+              </Col>
             </Row>
           </HistoryHead>
 
@@ -461,7 +461,9 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID:</Text>
                   <Text size={"1.4rem"} txBold>
-                    <TransactionId href="#" target=""> { transaction.txid } </TransactionId>
+                    <TransactionId href={BLOCK_EXPLORER_URL[currentNetwork] + transaction.txid} target="_blank">
+                      { transaction.txid }
+                    </TransactionId>
                   </Text>
                 </HistoryContentItem>
               </Col>
