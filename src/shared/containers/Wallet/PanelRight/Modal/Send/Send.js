@@ -281,7 +281,7 @@ class Send extends React.Component {
 
 		return fees;
 	}
- 
+
 	handleOnPercentChange = (event) => {
 		let element = event.currentTarget;
 		let value = element.value;
@@ -293,7 +293,7 @@ class Send extends React.Component {
 	animThisComponentIn = () => {
 		this.wrapper.style.transform = 'translateY(0px)';
 	}
-	
+
 	animThisComponentOut = () => {
 		this.wrapper.style.transform = 'translateY(-100%)';
 	}
@@ -488,7 +488,7 @@ class Send extends React.Component {
 				});
 
 				break;
-		
+
 			default:
 				break;
 		}
@@ -501,7 +501,7 @@ class Send extends React.Component {
 		});
 		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
 		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
-		
+
 		let data = await wallet.transactionSend(
 			walletInfo.seed,
 			this.props.wallet.currentNetwork,
@@ -533,11 +533,11 @@ class Send extends React.Component {
 	}
 
 	clearFields() {
-		this.setState({ 
-			...this.state, 
-			transferValues: { 
-				coin: '', 
-				brl: '' , 
+		this.setState({
+			...this.state,
+			transferValues: {
+				coin: '',
+				brl: '' ,
 				usd: ''
 			}
 		})
@@ -555,15 +555,15 @@ class Send extends React.Component {
 		value = value.replace(",", ".");
 		value = value.replace(/[^0-9.]/igm, '');
 		balance = parseFloat(balance.toFixed(8));
-		
+
 		switch (type) {
 			case 'coin':
 				parseFloat(value) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
 
-				this.setState({ 
+				this.setState({
 					...this.state,
 					invalidAmount: amountStatus,
-					transferValues: { 
+					transferValues: {
 						coin: value,
 						brl: (brlValue * value).toFixed(2),
 						usd: (usdValue * value).toFixed(2)
@@ -575,32 +575,32 @@ class Send extends React.Component {
 			case 'brl':
 				(parseFloat(value) / brlValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
 
-				this.setState({ 
-					...this.state, 
+				this.setState({
+					...this.state,
 					invalidAmount: amountStatus,
-					transferValues: { 
+					transferValues: {
 						coin: (value / brlValue).toFixed(8),
 						brl: value,
 						usd: ((usdValue * value) / brlValue).toFixed(2)
-					} 
+					}
 				});
-				
+
 				break;
 
 			case 'usd':
 				(parseFloat(value) / usdValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
 
 				this.setState({
-					...this.state, 
+					...this.state,
 					invalidAmount: amountStatus,
-					transferValues: { 
-						coin: (value / usdValue).toFixed(8), 
+					transferValues: {
+						coin: (value / usdValue).toFixed(8),
 						brl: ((brlValue * value) / usdValue).toFixed(2),
 						usd: value
-					} 
+					}
 				});
 				break;
-		
+
 			default:
 				break;
 		}

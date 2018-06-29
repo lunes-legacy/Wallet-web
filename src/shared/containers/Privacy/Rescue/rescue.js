@@ -34,7 +34,7 @@ const Input = styled.input`
   width: 100%;
 `;
 
-const LabelCoin= styled.label` 
+const LabelCoin= styled.label`
   font-weight: bold,
   font-family: roboto
 `;
@@ -49,7 +49,7 @@ class Rescue extends React.Component {
 	constructor() {
     super();
 
-    // ENABLE COINS 
+    // ENABLE COINS
 		this.state = {
       loading: false,
       notification: null,
@@ -59,7 +59,7 @@ class Rescue extends React.Component {
           lns: null,
 					btc: null,
           // eth: null,
-					// ltc: null,
+					ltc: null,
           // nano: null,
           // dash: null
 				}
@@ -68,14 +68,14 @@ class Rescue extends React.Component {
 	}
 
   getAddress(seed) {
-    if (seed.split(" ").length >= 12) {      
-      try { 
+    if (seed.split(" ").length >= 12) {
+      try {
         this.setState({
           ...this.state,
           walletInfo: { seed: seed },
           notification: true
         });
-        
+
         return;
         } catch (error) {
           console.log(error);
@@ -100,7 +100,7 @@ class Rescue extends React.Component {
       let err = 0;
       this.setState({ ...this.state, loading: true });
 
-      let seed = this.state.walletInfo.seed;      
+      let seed = this.state.walletInfo.seed;
       let walletInfo = {};
       ENABLEDCOINS.map( coin => {
         try {
@@ -131,12 +131,12 @@ class Rescue extends React.Component {
       return this.setState({ ...this.state, loading: false, notification: error });
     }
 	}
-	
+
 	randomSeed() {
     const mnemonic = Wallet.getMnemonic();
     return this.getAddress(mnemonic);
 	}
-	
+
 	renderImport() {
     let err = 0;
 
