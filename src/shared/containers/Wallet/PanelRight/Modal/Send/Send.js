@@ -253,6 +253,7 @@ class Send extends React.Component {
 		if (!result)
 			console.error('Failed on trying to get network fees', 500, "SETNETWORKFEES_ERROR");
 
+		console.warn('setFees -> result', result);
 		fees = {
 			...this.state.fees,
 			low: {
@@ -268,6 +269,7 @@ class Send extends React.Component {
 				value: money.conevertCoin(currentNetwork, result.high.data.fee),
 			}
 		}
+		console.warn('setFees -> fees', fees);
 
 		this.setState({
 			...this.state,
@@ -393,6 +395,7 @@ class Send extends React.Component {
 	}
 	arrangeFeeButtons = () => {
 		let { fees } = this.state;
+		let { currentNetwork }= this.props.wallet;
 		let newFees = {};
 		
 		//this for loop is to filter the the duplicated values in the fees
@@ -419,6 +422,12 @@ class Send extends React.Component {
 			newFees[feeKeys[0]].textContent = 'Normal';
 			newFees[feeKeys[0]].txColor = style.normalGreen;
 		}
+		//THIS UNIQUE CONDITIONAL NEED TO BE REMOVED LATER ON
+		if (currentNetwork.search(/ltc/i) !== -1) {
+			delete newFees.low;
+			delete newFees.high;
+		}
+		//_______________________________________
 		return newFees;
 	}
 	_renderFeeButtons = () => {
@@ -495,6 +504,7 @@ class Send extends React.Component {
 	}
 
 	transactionSend = async (address, amount, fee) => {
+		console.warn("FEE, AMOUNT, ADDRESS", fee, amount, address);
 		this.props.setterModalSend({
 			status: 'loading',
 			message: 'Wait until the transaction got finished',
