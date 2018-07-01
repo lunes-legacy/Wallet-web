@@ -31,15 +31,23 @@ class ModalReceive extends React.Component {
   }
 
   componentDidMount() {
+    
     this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
-
     this.makeQrCode();
+    
+  }
+
+  componentDidUpdate() {
+    this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
+    this.makeQrCode();
+    
   }
 
   getCurrentAddress = () => {
     let currentNetwork = this.props.currentNetwork;
     let address = this.props.addresses;
     return address[currentNetwork];
+    
   };
 
   makeQrCode = () => {
@@ -72,6 +80,7 @@ class ModalReceive extends React.Component {
 
   _handleClickClose = (event) => {
     let modal = document.querySelector('.js-modal-receive');
+    //this.props.dispatch({});
     toggleModal(modal);
     /*{className={'js-modal-send'}}*/
   }
