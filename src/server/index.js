@@ -73,7 +73,7 @@ app.get('*', (req, res) => {
 		let styleTags = sheet.getStyleTags();
 		res.send(render(html, styleTags));
 	} catch(err) {
-		console.log(errorPattern(err));
+		console.log('ERROR::', errorPattern(err));
 	}
 });
 
@@ -97,15 +97,15 @@ const render = (html, styleTags) => {
 				<meta name="viewport" content="width=device-width, initial-scale=1">
 				<link rel="shortcut icon" type="image/x-icon" href="/img/favicon.ico" />
 				<link rel="stylesheet" type="text/css" href="/css/style.css"/>
-        <title>Lunes Wallet Web</title>
-        <link rel="icon" href="favicon.ico">
-        <link rel="icon" type="image/png" sizes="16x16" href="/img/favicons/favicon-16x16.png">
-        <link rel="shortcut icon" type="image/png" sizes="32x32" href="/img/favicons/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="96x96" href="/img/favicons/favicon-96x96.png">
-        <meta name="apple-mobile-web-app-title" content="Lunes Wallet Web">
-        <meta name="application-name" content="Lunes Wallet Web">
-        <meta name="msapplication-TileColor" content="#9f00a7">
-        <meta name="theme-color" content="#ffffff">
+				<title>Lunes Wallet Web</title>
+				<link rel="icon" href="favicon.ico">
+				<link rel="icon" type="image/png" sizes="16x16" href="/img/favicons/favicon-16x16.png">
+				<link rel="shortcut icon" type="image/png" sizes="32x32" href="/img/favicons/favicon-32x32.png">
+				<link rel="icon" type="image/png" sizes="96x96" href="/img/favicons/favicon-96x96.png">
+				<meta name="apple-mobile-web-app-title" content="Lunes Wallet Web">
+				<meta name="application-name" content="Lunes Wallet Web">
+				<meta name="msapplication-TileColor" content="#9f00a7">
+				<meta name="theme-color" content="#ffffff">
 				${styleTags}
 			</head>
 			<body>

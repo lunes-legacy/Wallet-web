@@ -30,7 +30,8 @@ let client = {
 	entry: ['babel-polyfill',clientEntry],
 	output: clientOutput,
 	node: {
-		fs: 'empty'
+		fs: 'empty',
+		net: 'empty'
 	}, 
 	mode: webpackEnv,
 	module: {

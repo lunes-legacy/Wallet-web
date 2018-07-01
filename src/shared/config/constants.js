@@ -1,5 +1,5 @@
 // DEFINITION
-const testnet         = 'FALSE'; 
+const testnet         = 'TRUE';
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const ENV             = 'development'; // AMBIENTE
 
@@ -19,7 +19,7 @@ const ENABLEDCOINS = [
 	{ 'coinKey': 'lns', 'coinName':  'Lunes', 'address': '' },
 	{ 'coinKey': 'btc', 'coinName':  'BTC', 'address': '' },
 	// { 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
-	// { 'coinKey': 'ltc', 'coinName':  'LTC', 'address': 'Soon...' },
+	{ 'coinKey': 'ltc', 'coinName':  'LTC', 'address': '' },
 	// { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
 	// { 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
 ]
@@ -27,7 +27,15 @@ const ENABLEDCOINS = [
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'
 const LUNES_LIB_LOGIN = 'manual'//| 'auto' || 'manual', isso serve para fazer login automático para nao ficar apertando o botão de login sempre
 const LUNES_LEASING_FEE = 0.001;
-
+const LUNES_TRANSACTION_FEE = 0.001;
+const BLOCK_EXPLORERS = {
+	LUNES:        'https://blockexplorer.lunes.io/',
+	LUNESTESTNET: 'https://blockexplorer-testnet.lunes.io/',
+	BTC:          'https://chain.so/',
+	BTCTESTNET:   'https://chain.so/',
+	LTC:          'https://chain.so/',
+	LTCTESTNET:   'https://chain.so/'
+}
 export {
 	TESTNET,
 	APICONFIG,
@@ -38,7 +46,9 @@ export {
 	ETHNETWORK,
 	ENABLEDCOINS,
 	LUNES_LIB_ENV,
-  LUNES_LIB_LOGIN,
-  LUNES_LEASING_FEE,
-	ENV
+	LUNES_LIB_LOGIN,
+	LUNES_LEASING_FEE,
+	ENV,
+	BLOCK_EXPLORERS,
+	LUNES_TRANSACTION_FEE
 }
