@@ -25,27 +25,21 @@ const ENABLEDCOINS = [
 ]
 
 // URLs para o blockexplorer de cada moeda de acordo com a rede utilizada
-const BLOCK_EXPLORER_URL = {
-  lns: TESTNET ? 'https://blockexplorer-testnet.lunes.io/tx/' : 'https://blockexplorer.lunes.io/tx/',
-  btc: TESTNET ? 'https://www.chain.so/tx/BTCTEST/' : 'https://www.chain.so/tx/BTC/',
-  ltc: TESTNET ? 'https://chain.so/tx/LTCTEST/' : 'https://www.chain.so/tx/LTC/',
-  nano: TESTNET ? '#' : '#',
-  dash: TESTNET ? '#' : '#',
-  eth: TESTNET ? '#' : '#'
+const BLOCK_EXPLORERS = {
+  lns: TESTNET ? 'https://blockexplorer-testnet.lunes.io/' : 'https://blockexplorer.lunes.io/',
+  lunes: TESTNET ? 'https://blockexplorer-testnet.lunes.io/' : 'https://blockexplorer.lunes.io/',
+  btc: 'https://www.chain.so/',
+  ltc: 'https://www.chain.so/',
+  nano: 'https://www.chain.so/',
+  dash: 'https://www.chain.so/',
+  eth: 'https://www.chain.so/'
 }
 
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'
 const LUNES_LIB_LOGIN = 'manual'//| 'auto' || 'manual', isso serve para fazer login automático para nao ficar apertando o botão de login sempre
 const LUNES_LEASING_FEE = 0.001;
 const LUNES_TRANSACTION_FEE = 0.001;
-const BLOCK_EXPLORERS = {
-	LUNES:        'https://blockexplorer.lunes.io/',
-	LUNESTESTNET: 'https://blockexplorer-testnet.lunes.io/',
-	BTC:          'https://chain.so/',
-	BTCTESTNET:   'https://chain.so/',
-	LTC:          'https://chain.so/',
-	LTCTESTNET:   'https://chain.so/'
-}
+
 export {
 	TESTNET,
 	APICONFIG,
