@@ -6,7 +6,7 @@ Get the repository using this command <br>
 To compile the application with webpack run this: <br>
 ``` npm run dev ``` <br>
 
-To start the server and get listening to port 3000 <br>
+To start the server and get listening to port 3010 <br>
 ``` npm run start ``` <br>
 
 <h1>Info</h1>
