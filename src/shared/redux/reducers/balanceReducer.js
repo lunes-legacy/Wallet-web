@@ -24,16 +24,14 @@ let initialState = {
   // 	total_confirmed: 0,
   // 	total_unconfirmed: 0,
   // 	total_amount: 0,
-
   // },
-  // LTC: {
-  // 	total_confirmed: 100,
-  // 	total_unconfirmed: 0,
-  // 	total_amount: 100,
-  // 	img: 'ltc.svg',
-  // 	coinName: 'Litecoin'
-
-  // },
+  LTC: {
+  	coinName: 'Litecoin',
+  	img: 'ltc.svg',
+  	total_amount: 0,
+  	total_confirmed: 0,
+  	total_unconfirmed: 0
+  },
   // DASH: {
   // 	total_confirmed: 100,
   // 	total_unconfirmed: 0,

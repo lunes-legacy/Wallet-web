@@ -85,7 +85,7 @@ class CoinStatus extends React.Component {
         <Row>
           <Col s={12} m={3} l={3}>
             <CoinDetails>
-              <CoinDetailsText offSide>{ coinName }</CoinDetailsText>
+              <CoinDetailsText offSide>{coinName}</CoinDetailsText>
               <CoinDetailsText >{ '1 ' + coinSymbol } { currentCurrencie }</CoinDetailsText>
             </CoinDetails>
           </Col>

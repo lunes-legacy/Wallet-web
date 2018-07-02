@@ -19,6 +19,12 @@ class ModalSend extends React.Component {
 			generalProps: props
 		}
 	}
+	componentDidCatch(info, error) {
+		console.warn(info,error,"INFO | ERROR");
+		return (
+			<h1>Error on trying to render modal</h1>
+		);
+	}
 	componentDidMount() {
 		let steps = [
 			{ name: 'Step 1', component: Send },
@@ -27,9 +33,6 @@ class ModalSend extends React.Component {
 		]
 		this.setState({
 			steps
-		});
-		setTimeout(() => {
-			toggleModal(document.querySelector('.js-modal-send'));
 		});
 	}
 	prevStep = () => {

@@ -1,5 +1,5 @@
 // DEFINITION
-const testnet         = 'TRUE'; 
+const testnet         = 'TRUE';
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const ENV             = 'development'; // AMBIENTE
 
@@ -19,14 +19,26 @@ const ENABLEDCOINS = [
 	{ 'coinKey': 'lns', 'coinName':  'Lunes', 'address': '' },
 	{ 'coinKey': 'btc', 'coinName':  'BTC', 'address': '' },
 	// { 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
-	// { 'coinKey': 'ltc', 'coinName':  'LTC', 'address': 'Soon...' },
+	{ 'coinKey': 'ltc', 'coinName':  'LTC', 'address': '' },
 	// { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
 	// { 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
 ]
 
+// URLs para o blockexplorer de cada moeda de acordo com a rede utilizada
+const BLOCK_EXPLORERS = {
+  lns: TESTNET ? 'https://blockexplorer-testnet.lunes.io/' : 'https://blockexplorer.lunes.io/',
+  lunes: TESTNET ? 'https://blockexplorer-testnet.lunes.io/' : 'https://blockexplorer.lunes.io/',
+  btc: 'https://www.chain.so/',
+  ltc: 'https://www.chain.so/',
+  nano: 'https://www.chain.so/',
+  dash: 'https://www.chain.so/',
+  eth: 'https://www.chain.so/'
+}
+
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'
 const LUNES_LIB_LOGIN = 'manual'//| 'auto' || 'manual', isso serve para fazer login automático para nao ficar apertando o botão de login sempre
 const LUNES_LEASING_FEE = 0.001;
+const LUNES_TRANSACTION_FEE = 0.001;
 
 export {
 	TESTNET,
@@ -38,7 +50,9 @@ export {
 	ETHNETWORK,
 	ENABLEDCOINS,
 	LUNES_LIB_ENV,
-  LUNES_LIB_LOGIN,
-  LUNES_LEASING_FEE,
-	ENV
+	LUNES_LIB_LOGIN,
+	LUNES_LEASING_FEE,
+	ENV,
+	BLOCK_EXPLORERS,
+	LUNES_TRANSACTION_FEE
 }

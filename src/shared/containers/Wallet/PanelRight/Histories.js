@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import { TESTNET } from 'Config/constants';
+import { getTxidLink } from 'Utils/crypto';
 import { timestampDiff } from "Utils/functions";
 import { connect } from "react-redux";
 import { setTxHistory } from 'Redux/actions';
@@ -109,7 +109,7 @@ const HeadAmountCoin = styled.div`
   }
 `;
 
-const HeadAmountMoney = styled.div`
+const HeadCoinName = styled.div`
   ${TextBase}
   font-size: 1.2rem;
   color: white;
@@ -384,7 +384,8 @@ class Histories extends React.Component {
   _renderHistories = () => {
     let { currentNetwork, currentTxHistory } = this.props.componentWallet;
     let { crypto } = this.props.currencies;
-    let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD
+    let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD;
+    
 
     if (currentTxHistory.length < 1) {
         return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
@@ -426,9 +427,9 @@ class Histories extends React.Component {
                     {this.SignalControl(transaction.type)}
                     { amount }
                   </HeadAmountCoin>
-                  <HeadAmountMoney>
-                    ({ usdAmount })
-                  </HeadAmountMoney>
+                  <HeadCoinName>
+                    { currentNetwork.toUpperCase() } 
+                  </HeadCoinName>
                 </HistoryHeadAmount>
               </Col>
             </Row>
@@ -458,7 +459,9 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID:</Text>
                   <Text size={"1.4rem"} txBold>
-                    <TransactionId href="#" target=""> { transaction.txid } </TransactionId>
+                    <TransactionId href={ getTxidLink(currentNetwork, transaction.txid) } target="_blank">
+                      { transaction.txid }
+                    </TransactionId>
                   </Text>
                 </HistoryContentItem>
               </Col>
