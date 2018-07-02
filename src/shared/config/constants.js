@@ -24,6 +24,16 @@ const ENABLEDCOINS = [
 	// { 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
 ]
 
+// URLs para o blockexplorer de cada moeda de acordo com a rede utilizada
+const BLOCK_EXPLORER_URL = {
+  lns: TESTNET ? 'https://blockexplorer-testnet.lunes.io/tx/' : 'https://blockexplorer.lunes.io/tx/',
+  btc: TESTNET ? 'https://www.chain.so/tx/BTCTEST/' : 'https://www.chain.so/tx/BTC/',
+  ltc: TESTNET ? 'https://chain.so/tx/LTCTEST/' : 'https://www.chain.so/tx/LTC/',
+  nano: TESTNET ? '#' : '#',
+  dash: TESTNET ? '#' : '#',
+  eth: TESTNET ? '#' : '#'
+}
+
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'
 const LUNES_LIB_LOGIN = 'manual'//| 'auto' || 'manual', isso serve para fazer login automático para nao ficar apertando o botão de login sempre
 const LUNES_LEASING_FEE = 0.001;
