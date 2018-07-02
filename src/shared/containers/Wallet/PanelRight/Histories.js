@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
-import { BLOCK_EXPLORER_URL } from 'Config/constants';
+import { getTxidLink } from 'Utils/crypto';
 import { timestampDiff } from "Utils/functions";
 import { connect } from "react-redux";
 import { setTxHistory } from 'Redux/actions';
@@ -27,7 +27,6 @@ const History = styled.div`
 `;
 
 const TextT = styled.div`
-  letter-spacing: 0.2rem;
   font-weight: bold;
   display: inline;
 `;
@@ -444,9 +443,7 @@ class Histories extends React.Component {
                       {this.icoStatusToText(transaction.type)}:
                     </Span>
                     <TextT>
-                      { amount }
-                      { currentNetwork.toUpperCase() }
-                      ({ usdAmount })
+                      { ` ${amount} ${currentNetwork.toUpperCase()} (${usdAmount})` }
                     </TextT>
                   </Text>
                   <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
@@ -461,7 +458,7 @@ class Histories extends React.Component {
                 <HistoryContentItem clWhite>
                   <Text size={"1.4rem"} margin={"2.5rem 0 0 0"}>Transaction ID:</Text>
                   <Text size={"1.4rem"} txBold>
-                    <TransactionId href={BLOCK_EXPLORER_URL[currentNetwork] + transaction.txid} target="_blank">
+                    <TransactionId href={ getTxidLink(currentNetwork, transaction.txid) } target="_blank">
                       { transaction.txid }
                     </TransactionId>
                   </Text>
