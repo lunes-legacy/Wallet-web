@@ -383,12 +383,12 @@ class Send extends React.Component {
 
 
 		return (
-			<Col s={12} m={6} l={6} txInline>
-				<Text clWhite>You are sending 
+			<Col s={12} m={6} l={6}>
+				<Text txRight clWhite>You are sending
 					<Text color={style.coinsColor[currentNetwork]} txInline>
-						 { coinAmount ? coinAmount : 0} { currentNetwork.toUpperCase() } 
-					</Text> 
-					({ numeral( usdAmount ).format('$0,0.0000') }) + { this.state.fees[this.state.chosenFee].value ? this.state.fees[this.state.chosenFee].value.toFixed(8) : 'error' } of fee
+						 { coinAmount ? coinAmount : 0} { currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase() } 
+					</Text>
+					({ numeral( usdAmount ).format('$0,0.0000') }) + { this.state.networkFees.medium ? this.state.networkFees.medium.toFixed(8) : 'error' } of fee
 				</Text>
 			</Col>
 		);
@@ -636,7 +636,9 @@ class Send extends React.Component {
 										onClick={ (input) => { this.inputControl(input.target.value) } }
 									/>
 									<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
-									<LabelRadio clWhite> { currentNetwork.toUpperCase() } </LabelRadio>
+									<LabelRadio clWhite>
+                    { currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase() }
+                  </LabelRadio>
 								</WrapRadio>
 							</div>
 						</Col>
