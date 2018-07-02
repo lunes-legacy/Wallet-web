@@ -385,7 +385,7 @@ class Histories extends React.Component {
     let { currentNetwork, currentTxHistory } = this.props.componentWallet;
     let { crypto } = this.props.currencies;
     let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD;
-    
+
 
     if (currentTxHistory.length < 1) {
         return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
@@ -428,7 +428,7 @@ class Histories extends React.Component {
                     { amount }
                   </HeadAmountCoin>
                   <HeadCoinName>
-                    { currentNetwork.toUpperCase() } 
+                    { (currentNetwork === 'lns') ? 'LUNES' : currentNetwork.toUpperCase() }
                   </HeadCoinName>
                 </HistoryHeadAmount>
               </Col>
