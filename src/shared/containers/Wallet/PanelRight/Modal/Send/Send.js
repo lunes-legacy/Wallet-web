@@ -388,7 +388,7 @@ class Send extends React.Component {
 					<Text color={style.coinsColor[currentNetwork]} txInline>
 						 { coinAmount ? coinAmount : 0} { currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase() } 
 					</Text>
-					({ numeral( usdAmount ).format('$0,0.0000') }) + { this.state.networkFees.medium ? this.state.networkFees.medium.toFixed(8) : 'error' } of fee
+					({ numeral( usdAmount ).format('$0,0.0000') }) + { this.state.fees[this.state.chosenFee].value ? this.state.fees[this.state.chosenFee].value.toFixed(8) : 'error' } of fee
 				</Text>
 			</Col>
 		);
