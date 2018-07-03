@@ -107,10 +107,12 @@ export let CoinValue = styled.div`
 export let NumberPorcent = styled.div`
 	${TextBase};
 	font-weight: 300;
-	display: inline;
-	cursor: pointer;
+	display: inline-block;
+  cursor: pointer;
+  width: calc((100% / 3) - 4%); /* Subtrai 4% para deixar nas margens */
+  margin: -1rem 2% 1rem 2%;
+  text-align: center;
 
-	
 	${props => {
 		if (props.marginRight)
 			return `margin-right ${props.marginRight}`;
@@ -124,7 +126,7 @@ export let NumberPorcent = styled.div`
 `;
 
 export let Line = styled.hr`
-	
+
 	border: 0.7px solid #654fa4;
 `;
 
