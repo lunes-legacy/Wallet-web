@@ -110,6 +110,12 @@ class App extends React.Component {
       this.props.setUniqueBalance({address: currentAddress, network: upperCasedKey});
     }
   }
+  componentDidCatch(err, info) {
+    console.warn(err, info, "ERROR | INFO");
+    return (
+      <div>Ocorreu um erro fatal na aplicação, pressione F12(se estiver no chrome) e mande-nos um print</div>
+    );
+  }
   componentDidMount() {
     let addresses = this.getAddress();
     this.setBalances(addresses);

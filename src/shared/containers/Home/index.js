@@ -69,6 +69,8 @@ class Home extends React.Component {
   }
 
   render() {
+    let faca = 1;
+    return faca.substr(0,1)
     return (
       <Container>
         <MainRectangle>
