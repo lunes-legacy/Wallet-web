@@ -45,7 +45,7 @@ export default class FeeClass {
 	estimate = async (data) => {
 		try {
 			if (!data.network) {
-				throw errorPattern('No network name was found', 500, 'FEE_ESTIMATE_ERROR');
+				throw errorPattern('No network name was found', 500, 'FEE_ESTIMATE_ERROR', data);
 			}
 			if (!data.testnet) {
 				data.testnet = TESTNET;

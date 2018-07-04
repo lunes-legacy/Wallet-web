@@ -1,6 +1,6 @@
 import { userReset, userLogin, userCreate, userClear }   from './user';
 import { togglePanelLeft }                               from './wallet';
-import { setBalance }                                    from './balance';
+import { setBalance, setUniqueBalance }                                    from './balance';
 import { setWalletInfo }                                 from './privacy';
 import { openPanelRight, setTxHistory, setterModalSend }      from './component';
 import { setCurrenciesPrice, setCryptoPrice, setCryptoTx }    from './currencies';
@@ -22,5 +22,6 @@ export {
 	getLeasingHistory,
 	cancelLeasing,
 	setLeasingAmount,
-	setterModalSend
+	setterModalSend,
+	setUniqueBalance
 }
