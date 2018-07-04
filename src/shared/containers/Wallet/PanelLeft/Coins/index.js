@@ -190,6 +190,7 @@ class Coins extends React.Component {
     let components = [];
     for (let coinKey in balance) {
       let { crypto }  = this.props.currencies;
+      if (!crypto[coinKey]) continue;
       let usdCurrent = crypto[coinKey].USD
       let coinAmount = this.props.balance[coinKey].total_confirmed;
       let coinBalance = numeral(coinAmount).format('0,0.000');
