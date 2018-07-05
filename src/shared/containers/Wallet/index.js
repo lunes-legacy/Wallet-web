@@ -21,12 +21,12 @@ class Wallet extends React.Component {
     this.state = {
       balance: undefined,
       myCoins: undefined,
-      coinsPrice: undefined
+      coinsPrice: undefined,
     };
   }
 
   componentWillMount() {
-    this.props.setBalance({ addresses: this.props.walletInfo.addresses });
+    // this.props.setBalance({ addresses: this.props.walletInfo.addresses });
     this.props.setCurrenciesPrice();
     this.props.setCryptoPrice();
   }

@@ -511,7 +511,6 @@ class Send extends React.Component {
 		});
 		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
 		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
-
 		let data = await wallet.transactionSend(
 			walletInfo.seed,
 			this.props.wallet.currentNetwork,
@@ -529,6 +528,7 @@ class Send extends React.Component {
 		
 		let txid = data && data.data && data.data.txID;
 		if (!txid) {
+			console.error('TRANSACTIONSEND_DATA', data);
 			this.props.setterModalSend({
 				status: 'error',
 				message: 'No transaction ID was returned'

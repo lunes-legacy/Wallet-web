@@ -11,6 +11,7 @@ import { Text }       from './Text';
 import { Img }        from './Img';
 import { Loading }    from './Loading';
 import Modal          from './Modal';
+import HandleRenderError from './HandleRenderError';
 
 
 export {
@@ -25,6 +26,7 @@ export {
 	H3,
 	Text,
 	Img,
-  Loading,
-  Modal
+	Loading,
+	Modal,
+	HandleRenderError
 }

@@ -4,8 +4,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 
 //COMPONENTS
-import { TextBase } from "Components/TextBase";
-import { Text } from "Components/Text";
+import { TextBase, Text, HandleRenderError } from 'Components';
 
 //PRIVATE COMPONENTS
 import Histories from './Histories';
@@ -49,15 +48,20 @@ class PanelRight extends React.Component {
     return true;
   };
   render() {
-    if (!this._shouldRender()) return <Default />;
-
-    return (
-      <StyledPanelRight>
-        <CoinStatus />
-        <CoinControl />
-        <Histories />
-      </StyledPanelRight>
-    );
+    try {
+      if (!this._shouldRender()) return <Default />;
+      // let test = 123;
+      // test.subtr(0,1);
+      return (
+        <StyledPanelRight>
+          <CoinStatus />
+          <CoinControl />
+          <Histories />
+        </StyledPanelRight>
+      );
+    } catch (err) {
+      return <HandleRenderError err={err}/>
+    }
   }
 }
 const mapStateToProps = state => {
