@@ -18,7 +18,7 @@ const ETHNETWORK      = TESTNET === true ? 'ROPSTEN'     : 'ETH';
 const ENABLEDCOINS = [
 	{ 'coinKey': 'lns', 'coinName':  'Lunes', 'address': '' },
 	{ 'coinKey': 'btc', 'coinName':  'BTC', 'address': '' },
-	// { 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
+	{ 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
 	{ 'coinKey': 'ltc', 'coinName':  'LTC', 'address': '' },
 	// { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
 	// { 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
@@ -32,7 +32,7 @@ const BLOCK_EXPLORERS = {
   ltc: 'https://www.chain.so/',
   nano: 'https://www.chain.so/',
   dash: 'https://www.chain.so/',
-  eth: 'https://www.chain.so/'
+  eth: TESTNET ? 'https://ropsten.etherscan.io/' : 'https://etherscan.io'
 }
 
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'

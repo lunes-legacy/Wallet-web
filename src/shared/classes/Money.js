@@ -2,13 +2,17 @@ import { coins } from 'lunes-lib';
 
 export class MoneyClass {
   conevertCoin = (to, amount) => {
-    if (to === 'btc' || to === 'lns' || to === 'lunes' || to === 'ltc') {
+    const _to = to.toLowerCase();
+
+    console.warn('to: ' + _to + ' amount: ' + amount);
+
+    if (_to === 'btc' || _to === 'lns' || _to === 'lunes' || _to === 'ltc') {
       return this.convertToBtc(amount);
-    } else if (to === 'satoshi') {
+    } else if (_to === 'satoshi') {
       return this.convertToSatoshi(amount);
-    } else if (to === 'eth') {
+    } else if (_to === 'eth') {
       return this.convertToEth(amount);
-    } else if (to === 'wei') {
+    } else if (_to === 'wei') {
       return this.convertToWei(amount);
     }
   }

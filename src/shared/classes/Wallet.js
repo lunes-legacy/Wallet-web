@@ -177,11 +177,11 @@ export class WalletClass {
     }
   }
 
-  transactionSend = async (mnemonic, coin, address, amount, fee, accessToken) => {
+  transactionSend = async (mnemonic, coin, address, amount, fee, accessToken, gasPrice = '0') => {
     // try {
       let amountConvert = amount.toString();
       let feeConvert = fee.toString();
-      let transactionData;
+      let transactionData = {};
 
       if (coin === "btc" || coin === "dash" || coin === "ltc") {
         amountConvert = money.conevertCoin('satoshi', amount);
@@ -202,12 +202,21 @@ export class WalletClass {
           network: coin,
           testnet: TESTNET,
           toAddress: address,
-          amount: amountConvert + feeConvert,
+          amount: String(parseInt(amountConvert) + parseInt(feeConvert)), // A lib espera uma String, mas para somar deve ser convertido para Int antes
           fee: feeConvert
         };
       } else if (coin === "eth"){
         amountConvert = money.conevertCoin('wei', amount);
-        ffeeConvert = money.conevertCoin('wei', fee);
+        feeConvert = money.conevertCoin('wei', fee);
+        transactionData = {
+          mnemonic: mnemonic,
+          network: coin,
+          testnet: TESTNET,
+          toAddress: address,
+          amount: String(parseInt(amountConvert) + parseInt(feeConvert)), // A lib espera uma String, mas para somar deve ser convertido para Int antes
+          gasLimit: '21000',
+          gasPrice,
+        }
       } else {
         return 'Coin not defined';
       }
@@ -223,7 +232,7 @@ export class WalletClass {
     // }
   }
 
-  // data = { 
+  // data = {
   //   network: coin,
   //   testnet: true,
   //   fromAddress: 'mj1oZJa8pphtdjeo51LvEnzxFKHoMcmtFA',
@@ -234,6 +243,7 @@ export class WalletClass {
     try {
       // let result = await Fee.getNetworkFees({ network: coin });
       let result = await Fee.estimate(data);
+
       return result;
     } catch (error) {
       console.error('Method: getCryptoTx', error);

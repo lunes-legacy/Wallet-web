@@ -43,7 +43,7 @@ module.exports = {
 		lns: '#4CD566',
 		btc: '#f7921a',
 		ltc: '#b6b7ba',
-		eth: '#000',
+		eth: '#497391',
 		nano: '#000',
 		dash: '#000',
 	}

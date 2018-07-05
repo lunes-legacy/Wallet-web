@@ -52,7 +52,7 @@ class Import extends React.Component {
         addresses: {
           lns: null,
           btc: null,
-          // eth: null,
+          eth: null,
           ltc: null,
           // nano: null,
           // dash: null
