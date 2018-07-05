@@ -258,15 +258,15 @@ class Send extends React.Component {
 			...this.state.fees,
 			low: {
 				...this.state.fees.low,
-				value: money.conevertCoin(currentNetwork, result.low.data.fee),
+				value: money.conevertCoin(currentNetwork, result.low.data.fee) || 0,
 			},
 			medium: {
 				...this.state.fees.medium,
-				value: money.conevertCoin(currentNetwork, result.medium.data.fee),
+				value: money.conevertCoin(currentNetwork, result.medium.data.fee) || 0,
 			},
 			high: {
 				...this.state.fees.high,
-				value: money.conevertCoin(currentNetwork, result.high.data.fee),
+				value: money.conevertCoin(currentNetwork, result.high.data.fee) || 0,
 			}
 		}
 		console.warn('setFees -> fees', fees);
@@ -521,14 +521,14 @@ class Send extends React.Component {
 		).catch((err) => {
 			this.props.setterModalSend({
 				status: 'error',
-				message: 'Error on trying do to the transaction'
+				message: 'Error on trying to do the transaction'
 			});
 			throw errorPattern(err, 500, 'MODALSEND_TRANSACTION_ERROR');
 		});
 		
 		let txid = data && data.data && data.data.txID;
 		if (!txid) {
-			console.error('TRANSACTIONSEND_DATA', data);
+			console.error('MODALSEND_TRANSACTIONSEND_DATA', data);
 			this.props.setterModalSend({
 				status: 'error',
 				message: 'No transaction ID was returned'
