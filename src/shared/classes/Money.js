@@ -4,8 +4,6 @@ export class MoneyClass {
   conevertCoin = (to, amount) => {
     const _to = to.toLowerCase();
 
-    console.warn('to: ' + _to + ' amount: ' + amount);
-
     if (_to === 'btc' || _to === 'lns' || _to === 'lunes' || _to === 'ltc') {
       return this.convertToBtc(amount);
     } else if (_to === 'satoshi') {

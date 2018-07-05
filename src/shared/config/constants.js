@@ -32,7 +32,7 @@ const BLOCK_EXPLORERS = {
   ltc: 'https://www.chain.so/',
   nano: 'https://www.chain.so/',
   dash: 'https://www.chain.so/',
-  eth: TESTNET ? 'https://ropsten.etherscan.io/' : 'https://etherscan.io'
+  eth: TESTNET ? 'https://ropsten.etherscan.io/' : 'https://etherscan.io/'
 }
 
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'

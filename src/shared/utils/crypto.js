@@ -6,11 +6,12 @@ export const getTxidLink = (network, txid) => {
 	}
 
 	const networkConstant = TESTNET ? network.toUpperCase() + 'TEST' : network.toUpperCase();
-	const explorer = BLOCK_EXPLORERS[network];
+  const explorer = BLOCK_EXPLORERS[network];
 
-	if (network.indexOf('lunes') === -1) {
-		return `${explorer}tx/${networkConstant}/${txid}`
+  // Se for Lunes ou Ethereum utiliza um formato diferente de url para o block explorer
+  if (['lunes', 'eth'].filter(net => net === network)) {
+    return `${explorer}tx/${txid}`;
   }
 
-	return `${explorer}tx/${txid}`;
+  return `${explorer}tx/${networkConstant}/${txid}`
 }
