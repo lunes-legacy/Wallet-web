@@ -51,6 +51,8 @@ const arrangeUniqueNetworkBalance = (balance, state) => {
   let { network } = balance;
   let { confirmed, unconfirmed } = balance.data;
   let upperCasedNetwork = network.toUpperCase();
+  console.warn('arrange network', network);
+  console.warn('arrange confirmed', confirmed);
   return {
     coinName: state[upperCasedNetwork].coinName,
     img: state[upperCasedNetwork].img,

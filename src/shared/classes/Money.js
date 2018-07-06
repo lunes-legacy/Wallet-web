@@ -14,11 +14,11 @@ export class MoneyClass {
     // if (to === 'btc' || to === 'lns' || to === 'lunes' || to === 'ltc') {
     if (to.search(/(btc)|(lns)|(lunes)|(ltc)|(dash)/i) !== -1) {
       return this.convertToBtc(amount);
-    } else if (to === 'satoshi') {
+    } else if (to.search(/(satoshi)/i) !== -1) {
       return this.convertToSatoshi(amount);
-    } else if (to === 'eth') {
+    } else if (to.search(/(eth)/i) !== -1) {
       return this.convertToEth(amount);
-    } else if (to === 'wei') {
+    } else if (to.search(/(wei)/i) !== -1) {
       return this.convertToWei(amount);
     }
   }
