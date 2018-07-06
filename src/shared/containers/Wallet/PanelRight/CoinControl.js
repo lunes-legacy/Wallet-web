@@ -129,7 +129,7 @@ class CoinControl extends React.Component {
   onModalSendClick() {
     let { currentNetwork } = this.props.component.wallet;
     this.props.setCryptoTx(currentNetwork);
-    this.props.setBalance({ addresses: this.props.addresses });
+    // this.props.setBalance({ addresses: this.props.addresses });
     this.props.setCurrenciesPrice();
     this.props.setCryptoPrice();
   }
