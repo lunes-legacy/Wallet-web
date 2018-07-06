@@ -108,7 +108,7 @@ class ModalReceive extends React.Component {
               <ReceiveLabelTextCss>COPY THIS ADDRESS</ReceiveLabelTextCss>
             </Row>
             <Row>
-              <ReceiverAddressCopiedCss id="address-copied">Address copied to the clipboard</ReceiverAddressCopiedCss>
+              <ReceiverAddressCopiedCss id="address-copied">Address copied to the clipboard!</ReceiverAddressCopiedCss>
             </Row>
             <Row>
               <ReceiveButtonModalCss color={style.coinsColor[currentNetwork]} onClick={() => this.copyPaymentAddress()}>
