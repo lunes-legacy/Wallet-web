@@ -206,8 +206,11 @@ export class WalletClass {
           fee: feeConvert
         };
       } else if (coin === "eth"){
-        amountConvert = money.conevertCoin('wei', amount);
-        feeConvert = money.conevertCoin('wei', fee);
+        // Como o ETH possui muitas casas decimais (até 18), estava chegando  o valor como notação científica (Ex: 1.5e-15).
+        // Então foi necessário converter para Number e fixar em 18 casas decimais para enviar para a conversão para Wei o valor correto.
+        amountConvert = money.conevertCoin('wei', Number(amount).toFixed(18));
+        feeConvert = money.conevertCoin('wei', Number(fee).toFixed(18));
+
         transactionData = {
           mnemonic: mnemonic,
           network: coin,

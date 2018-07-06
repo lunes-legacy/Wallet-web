@@ -404,6 +404,11 @@ class Send extends React.Component {
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let coinAmount = this.state.transferValues.coin;
 		let usdAmount = this.state.transferValues.usd;
+    let chosenFeeValue = this.state.fees[this.state.chosenFee].value || 'error';
+
+    if (chosenFeeValue !== 'error') {
+      chosenFeeValue = currentNetwork === 'eth' ? chosenFeeValue : parseFloat(chosenFeeValue).toFixed(8);
+    }
 
 		return (
 			<Col s={12} m={6} l={6}>
@@ -412,7 +417,7 @@ class Send extends React.Component {
 						 { coinAmount ? coinAmount : 0} { currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase() } 
 					</Text>
 					({ numeral( usdAmount ).format('$0,0.0000') }) +
-          { this.state.fees[this.state.chosenFee].value ? parseFloat(this.state.fees[this.state.chosenFee].value).toFixed(8) : 'error' } of fee
+          { chosenFeeValue } of fee
 				</Text>
 			</Col>
 		);
@@ -540,7 +545,7 @@ class Send extends React.Component {
 			message: 'Wait until the transaction got finished',
 		});
 		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
-		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
+    let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
 
 		let data = await wallet.transactionSend(
 			walletInfo.seed,
