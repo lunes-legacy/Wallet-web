@@ -1,5 +1,5 @@
 // DEFINITION
-const testnet         = 'TRUE';
+const testnet         = 'FALSE';
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const ENV             = 'development'; // AMBIENTE
 
@@ -21,7 +21,7 @@ const ENABLEDCOINS = [
 	// { 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
 	{ 'coinKey': 'ltc', 'coinName':  'LTC', 'address': '' },
 	// { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
-	// { 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
+	{ 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
 ]
 
 // URLs para o blockexplorer de cada moeda de acordo com a rede utilizada
