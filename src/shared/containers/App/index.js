@@ -8,7 +8,11 @@ import { decrypt } from "../../utils/crypt";
 
 // REDUX
 import { connect } from "react-redux";
-import { setBalance, setCurrenciesPrice, setCryptoPrice } from "Redux/actions";
+import { 
+  setBalance, 
+  setCurrenciesPrice, 
+  setCryptoPrice, 
+  setUniqueBalance } from "Redux/actions";
 
 //COMPONENTS
 import Home from "Containers/Home/index";
@@ -97,9 +101,19 @@ class App extends React.Component {
       }
     }
   }
-
+  setBalances = (addresses) => {
+    let upperCasedKey;
+    let currentAddress;
+    for (let key in addresses) {
+      currentAddress = addresses[key];
+      upperCasedKey  = key.toUpperCase();
+      this.props.setUniqueBalance({address: currentAddress, network: upperCasedKey});
+    }
+  }
   componentDidMount() {
-    this.props.setBalance({ addresses: this.getAddress() });
+    let addresses = this.getAddress();
+    this.setBalances(addresses);
+    // this.props.setBalance({ addresses });
   }
 
   componentDidUpdate() {
@@ -214,6 +228,9 @@ const mapDispatchToProps = dispatch => {
     setBalance: data => {
       dispatch(setBalance(data));
     },
+    setUniqueBalance: data => {
+      dispatch(setUniqueBalance(data));
+    }
   };
 };
 

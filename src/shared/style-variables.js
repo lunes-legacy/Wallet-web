@@ -45,6 +45,6 @@ module.exports = {
 		ltc: '#b6b7ba',
 		eth: '#497391',
 		nano: '#000',
-		dash: '#000',
+		dash: '#008de4',
 	}
 }

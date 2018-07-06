@@ -6,7 +6,7 @@ import { decrypt } from 'Utils/crypt';
 import { MoneyClass } from 'Classes/Money';
 
 export default class FeeClass {
-  static staticNetworkFees;
+	static staticNetworkFees;
 
 	constructor(){
 		this.families = {
@@ -178,10 +178,10 @@ export default class FeeClass {
         result[level] = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
       }
 
-			return result;
-		} catch (err) {
-			console.error(err);
-			return err;
-		}
-	}
+      return result;
+  } catch (err) {
+  	console.error(err);
+  	return err;
+  }
+}
 }
