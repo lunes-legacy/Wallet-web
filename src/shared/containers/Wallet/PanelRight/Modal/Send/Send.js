@@ -120,7 +120,7 @@ Todos os estados que precisamos e/ou iremos usar
 class Send extends React.Component {
 	constructor(props) {
 		super(props);
-
+		this.isUserAlreadySending = false; //this will be to forbid the user to send twice
 		this.ref = {};
 		this.ref.radioCoinAmount = React.createRef();
 		this.ref.coinAmount = React.createRef();
@@ -305,10 +305,19 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
+		console.warn('IS USER SENDING?', this.isUserAlreadySending);
+		if (this.isUserAlreadySending === true) {
+			alert('Você já está enviando, aguarde...');
+			return;
+		} else {
+			this.isUserAlreadySending = true;
+		}
+		console.warn("I've passed through here beibi", this.isUserAlreadySending);
 		this.ctrlLoading(true);
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let fee = this.state.fees[this.state.chosenFee];
+
 
 		if (address && address.length > 1) {
 			let validateAddress = await this.validateAddress(currentNetwork, address);
@@ -540,6 +549,7 @@ class Send extends React.Component {
 			message: 'Success on sending transaction',
 			txid: txid
 		});
+		this.isUserAlreadySending = false;
 	}
 
 	clearFields() {
@@ -766,11 +776,12 @@ class Send extends React.Component {
 						<Button
 							style={ this.state.invalidAmount ? { 'backgroundColor': style.disabledText } : { 'backgroundColor': style.coinsColor[currentNetwork] }}
 							css={SendButtonCss}
+							className={'send-button'}
 							blockCenter
 							clWhite
 							onClick={ this.state.invalidAmount ? () => { alert("Invalid Amount") } : () => { this.handleSend(this.state.sendAddress) } }
 							innerRef={ this.ref.sendButton }>
-							Enviar
+							Send
 						</Button>
 					</Row>
 					<Loading hide={this.state.loading} size={"25px"} />
