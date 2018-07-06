@@ -9,6 +9,7 @@ import Login from "Containers/User/Login/index";
 import Import from "Containers/User/Import/index";
 import Registry from "Containers/User/Registry/index";
 import Reset from "Containers/User/Reset/index";
+import { ErrorBoundary } from 'Components';
 
 
 
@@ -32,8 +33,17 @@ let Paragraphmobile = styled.div`
    margin-left: 5%;
    margin-right: 5%;  
 `;
-class AppSwitcher extends React.Component {
 
+
+const Wrapper = (props, component) => {
+  const Component = component;
+  return (
+    <ErrorBoundary>
+      <Component/>
+    </ErrorBoundary>
+  );
+}
+class AppSwitcher extends React.Component {
 
   render() {
     // 791 = iPad
@@ -51,12 +61,12 @@ class AppSwitcher extends React.Component {
 
     return (
       <Switch>
-        <Route strict path={"/app"} component={App} />
-        <Route exact path={"/"} component={Login} />
-        <Route exact path={"/login"} component={Login} />
-        <Route exact path={"/import"} component={Import} />
-        <Route exact path={"/registry"} component={Registry} />
-        <Route exact path={"/reset"} component={Reset} />
+        <Route strict path={"/app"} render={() => Wrapper(null, App)} />
+        <Route exact path={"/"} render={() => Wrapper(null, Login)} />
+        <Route exact path={"/login"} render={() => Wrapper(null, Login)} />
+        <Route exact path={"/import"} render={() => Wrapper(null, Import)} />
+        <Route exact path={"/registry"} render={() => Wrapper(null, Registry)} />
+        <Route exact path={"/reset"} render={() => Wrapper(null, Reset)} />
         <Route render={() => {
           return <Redirect to="/login"/>;
         }}/>
@@ -64,5 +74,6 @@ class AppSwitcher extends React.Component {
     );
   }
 }
+
 
 export default AppSwitcher;

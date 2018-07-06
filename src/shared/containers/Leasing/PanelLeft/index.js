@@ -148,7 +148,8 @@ class PanelLeft extends React.Component {
       totalBalance: 0,
       leaseBalance: 0,
       availableBalance: 0,
-      showModalConfirm: false
+      showModalConfirm: false,
+      throwError: false
     }
   }
 
@@ -179,6 +180,9 @@ class PanelLeft extends React.Component {
   }
 
   render() {
+    if (this.state.throwError)
+      throw new Error('PanelLeft error');
+
     return (
       <StyledPanelLeft>
         <LeftHeader txLight>LUNES LEASING</LeftHeader>

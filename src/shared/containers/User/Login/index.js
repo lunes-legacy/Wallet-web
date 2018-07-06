@@ -68,7 +68,9 @@ const Paragraph = styled.div`
   font-size: 1.5rem;
 `;
 class Login extends React.Component {
-
+  constructor(props) {
+    super(props)
+  }
   componentDidUpdate() {
     this.handleStatus();
   }

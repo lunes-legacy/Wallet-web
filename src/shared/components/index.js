@@ -11,7 +11,7 @@ import { Text }       from './Text';
 import { Img }        from './Img';
 import { Loading }    from './Loading';
 import Modal          from './Modal';
-import HandleRenderError from './HandleRenderError';
+import ErrorBoundary from './ErrorBoundary';
 
 
 export {
@@ -28,5 +28,5 @@ export {
 	Img,
 	Loading,
 	Modal,
-	HandleRenderError
+	ErrorBoundary
 }

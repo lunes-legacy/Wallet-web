@@ -4,6 +4,7 @@ import styled from "styled-components";
 //REDUX
 import { connect } from "react-redux";
 import { togglePanelLeft, setBalance, setCryptoPrice, setCryptoTx, setCurrenciesPrice } from "Redux/actions";
+import { ErrorBoundary } from 'Components';
 
 //COMPONENTS
 import PanelLeft from "./PanelLeft/index";
@@ -34,9 +35,12 @@ class Wallet extends React.Component {
   render() {
     return (
       <Panels>
-        <PanelLeft />
-
-        <PanelRight />
+        <ErrorBoundary>
+          <PanelLeft/>
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <PanelRight />
+        </ErrorBoundary>
       </Panels>
     );
   }
