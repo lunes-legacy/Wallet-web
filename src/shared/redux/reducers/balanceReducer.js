@@ -18,13 +18,13 @@ let initialState = {
     total_confirmed: 0,
     total_unconfirmed: 0
   },
-  // ETH: {
-  //   img: 'eth.svg',
-  // 	coinName: 'Ethereum',
-  // 	total_confirmed: 0,
-  // 	total_unconfirmed: 0,
-  // 	total_amount: 0,
-  // },
+  ETH: {
+  	coinName: 'Ethereum',
+    img: 'eth.svg',
+  	total_amount: 0,
+  	total_confirmed: 0,
+  	total_unconfirmed: 0,
+  },
   LTC: {
   	coinName: 'Litecoin',
   	img: 'ltc.svg',
@@ -88,9 +88,9 @@ const balanceReducer = (state = initialState, action) => {
             [coinKeyUpperCase]: {
               coinName: state[coinKeyUpperCase].coinName,
               img: state[coinKeyUpperCase].img,
-              total_confirmed: money.conevertCoin(coinKey, balance.confirmed),
-              total_amount: money.conevertCoin(coinKey, balance.confirmed),
-              total_unconfirmed: balance.unconfirmed ? money.conevertCoin(coinKey, balance.unconfirmed) : 0,
+              total_confirmed: parseFloat(money.conevertCoin(coinKey, balance.confirmed)),
+              total_amount: parseFloat(money.conevertCoin(coinKey, balance.confirmed)),
+              total_unconfirmed: balance.unconfirmed ? parseFloat(money.conevertCoin(coinKey, balance.unconfirmed)) : 0,
             }
           };
         }

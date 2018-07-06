@@ -2,7 +2,7 @@ import { coins } from 'lunes-lib';
 import { errorPattern } from 'Utils/functions';
 
 export class MoneyClass {
-  conevertCoin = (to, amount) => {
+  conevertCoin = (to, amount) => { 
     if (!to) {
       console.error(`We've got ${to} value from variable 'to'`,500,'MONEY_CONVERTCOIN_ERROR');
       return;
@@ -14,11 +14,11 @@ export class MoneyClass {
     // if (to === 'btc' || to === 'lns' || to === 'lunes' || to === 'ltc') {
     if (to.search(/(btc)|(lns)|(lunes)|(ltc)|(dash)/i) !== -1) {
       return this.convertToBtc(amount);
-    } else if (to === 'satoshi') {
+    } else if (_to === 'satoshi') {
       return this.convertToSatoshi(amount);
-    } else if (to === 'eth') {
+    } else if (_to === 'eth') {
       return this.convertToEth(amount);
-    } else if (to === 'wei') {
+    } else if (_to === 'wei') {
       return this.convertToWei(amount);
     }
   }
