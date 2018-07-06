@@ -602,8 +602,7 @@ class Send extends React.Component {
 	convertCoins(value, type) {
 		let cryptoCurrencies = this.props.crypto;
 		let currentNetwork = this.props.wallet.currentNetwork;
-    currentNetwork = currentNetwork.toUpperCase();
-
+	    currentNetwork = currentNetwork.toUpperCase();
 		let balance = this.props.balance[currentNetwork].total_amount;
 		let usdValue = cryptoCurrencies[currentNetwork].USD;
 		let brlValue = cryptoCurrencies[currentNetwork].BRL;
@@ -611,7 +610,8 @@ class Send extends React.Component {
 
 		value = value.replace(",", ".");
 		value = value.replace(/[^0-9.]/igm, '');
-		balance = parseFloat(balance.toFixed(8));
+		// balance = parseFloat(balance.toFixed(8));
+		balance = parseFloat(balance).toFixed(8);
 
 		switch (type) {
 			case 'coin':
