@@ -100,16 +100,16 @@ class PanelLeft extends React.Component {
 		this._toggleIcon();
 	}
 
-	render() {
-		return (
-			<StyledPanelLeft id="myPanelLeft">
-				<TogglePanelLeft>
-					<Icon id="arrowIcon"/>
-				</TogglePanelLeft>
-				<Coins/>
-			</StyledPanelLeft>
-		);
-	}
+    render() {
+        return(
+            <StyledPanelLeft id="myPanelLeft">
+                <TogglePanelLeft onClick={ () => this.props.togglePanelLeft() }>
+          	<Icon id="arrowIcon"/>
+        	</TogglePanelLeft>
+                <Coins/>
+            </StyledPanelLeft>
+        );
+    }
 }
 
 const mapStateToProps = state => {
