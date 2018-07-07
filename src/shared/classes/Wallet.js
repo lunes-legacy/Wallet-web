@@ -177,13 +177,14 @@ export class WalletClass {
     }
   }
 
-  transactionSend = async (mnemonic, coin, address, amount, fee, accessToken) => {
+  transactionSend = async (mnemonic, coin, address, amount, fee, accessToken, gasPrice = '0') => {
     // try {
       let amountConvert = amount.toString();
       let feeConvert = fee.toString();
       let transactionData;
 
-      if (coin === "btc" || coin === "dash" || coin === "ltc") {
+      // if (coin === "btc" || coin === "dash" || coin === "ltc") {
+      if (coin.search(/(btc)|(dash)|(ltc)/i) !== -1) {
         amountConvert = money.conevertCoin('satoshi', amount);
         feeConvert = money.conevertCoin('satoshi', fee);
         transactionData = {
@@ -191,10 +192,10 @@ export class WalletClass {
           network: coin,
           testnet: TESTNET,
           toAddress: address,
-          amount: amountConvert,
-          feePerByte: feeConvert
+          amount: amountConvert.toString(),
+          feePerByte: feeConvert.toString()
         };
-      } else if (coin === "lns" || coin === "lunes"){
+      } else if (coin.search(/(lns)|(lunes)/) !== -1){
         amountConvert = money.conevertCoin('satoshi', amount);
         feeConvert = money.conevertCoin('satoshi', fee);
         transactionData = {
@@ -202,17 +203,29 @@ export class WalletClass {
           network: coin,
           testnet: TESTNET,
           toAddress: address,
-          amount: amountConvert + feeConvert,
+          amount: String(parseInt(amountConvert) + parseInt(feeConvert)), // A lib espera uma String, mas para somar deve ser convertido para Int antes
           fee: feeConvert
         };
       } else if (coin === "eth"){
-        amountConvert = money.conevertCoin('wei', amount);
-        ffeeConvert = money.conevertCoin('wei', fee);
+        // Como o ETH possui muitas casas decimais (até 18), estava chegando  o valor como notação científica (Ex: 1.5e-15).
+        // Então foi necessário converter para Number e fixar em 18 casas decimais para enviar para a conversão para Wei o valor correto.
+        amountConvert = money.conevertCoin('wei', Number(amount).toFixed(18));
+        feeConvert = money.conevertCoin('wei', Number(fee).toFixed(18));
+
+        transactionData = {
+          mnemonic: mnemonic,
+          network: coin,
+          testnet: TESTNET,
+          toAddress: address,
+          amount: String(parseInt(amountConvert) + parseInt(feeConvert)), // A lib espera uma String, mas para somar deve ser convertido para Int antes
+          gasLimit: '21000',
+          gasPrice,
+        }
       } else {
         return 'Coin not defined';
       }
 
-      const data = await coins.services.transaction(transactionData, accessToken);
+      return coins.services.transaction(transactionData, accessToken);
 
       return data;
     // } catch (error) {
@@ -223,7 +236,7 @@ export class WalletClass {
     // }
   }
 
-  // data = { 
+  // data = {
   //   network: coin,
   //   testnet: true,
   //   fromAddress: 'mj1oZJa8pphtdjeo51LvEnzxFKHoMcmtFA',
@@ -234,6 +247,7 @@ export class WalletClass {
     try {
       // let result = await Fee.getNetworkFees({ network: coin });
       let result = await Fee.estimate(data);
+
       return result;
     } catch (error) {
       console.error('Method: getCryptoTx', error);

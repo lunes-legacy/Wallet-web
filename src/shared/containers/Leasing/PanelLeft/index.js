@@ -148,7 +148,8 @@ class PanelLeft extends React.Component {
       totalBalance: 0,
       leaseBalance: 0,
       availableBalance: 0,
-      showModalConfirm: false
+      showModalConfirm: false,
+      throwError: false
     }
   }
 
@@ -179,13 +180,16 @@ class PanelLeft extends React.Component {
   }
 
   render() {
+    if (this.state.throwError)
+      throw new Error('PanelLeft error');
+
     return (
       <StyledPanelLeft>
         <LeftHeader txLight>LUNES LEASING</LeftHeader>
         <CardLeasing>
           <RowCardText>Available balance</RowCardText>
           <TextBalance clNormalGreen txBold>{this.state.availableBalance}</TextBalance>
-          <LabelBalance fontSize='1rem' txBold>LNS</LabelBalance>
+          <LabelBalance fontSize='1rem' txBold>LUNES</LabelBalance>
 
           <RowCardBalance>
             <RowCardText>Leasing balance</RowCardText>

@@ -55,7 +55,7 @@ class Import extends React.Component {
           // eth: null,
           ltc: null,
           // nano: null,
-          // dash: null
+          dash: null
         }
       }
     };

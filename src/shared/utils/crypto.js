@@ -2,19 +2,16 @@ import { BLOCK_EXPLORERS, TESTNET } from 'Config/constants';
 
 export const getTxidLink = (network, txid) => {
 	if (network.search(/lns/i) !== -1) {
-		network = 'LUNES';
+		network = 'lunes';
 	}
-	let networkConstant      = network.toUpperCase();
-	let testnetConstant  = TESTNET ? 'TESTNET' : '';
-	networkConstant      = networkConstant + testnetConstant;
-	let explorer = BLOCK_EXPLORERS[networkConstant];
 
-	let networkBlockExplorer      = network.toUpperCase();
-	let testnetBlockExplorer  = TESTNET ? 'TEST' : '';
-	networkBlockExplorer      = networkBlockExplorer + testnetBlockExplorer;
+	const networkConstant = TESTNET ? network.toUpperCase() + 'TEST' : network.toUpperCase();
+  const explorer = BLOCK_EXPLORERS[network];
 
-	if (network.indexOf('LUNES') === -1) {
-		return `${explorer}tx/${networkBlockExplorer}/${txid}`
-	}
-	return `${explorer}tx/${txid}`;
+  // Se for Lunes ou Ethereum utiliza um formato diferente de url para o block explorer
+  if (network.search(/lns|lunes|eth/i) !== -1) {
+    return `${explorer}tx/${txid}`;
+  }
+
+  return `${explorer}tx/${networkConstant}/${txid}`
 }

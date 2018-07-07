@@ -9,6 +9,7 @@ import Login from "Containers/User/Login/index";
 import Import from "Containers/User/Import/index";
 import Registry from "Containers/User/Registry/index";
 import Reset from "Containers/User/Reset/index";
+import { ErrorBoundary } from 'Components';
 
 
 
@@ -32,8 +33,17 @@ let Paragraphmobile = styled.div`
    margin-left: 5%;
    margin-right: 5%;  
 `;
-class AppSwitcher extends React.Component {
 
+
+const Wrapper = (props, component) => {
+  const Component = component;
+  return (
+    <ErrorBoundary>
+      <Component/>
+    </ErrorBoundary>
+  );
+}
+class AppSwitcher extends React.Component {
 
   render() {
     // 791 = iPad
@@ -64,5 +74,6 @@ class AppSwitcher extends React.Component {
     );
   }
 }
+
 
 export default AppSwitcher;

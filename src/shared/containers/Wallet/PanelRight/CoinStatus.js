@@ -65,13 +65,13 @@ class CoinStatus extends React.Component {
       coin_porcentage_price: []
     };
   }
-  
+
   render() {
     let { currentNetwork }      = this.props.wallet;
     let { crypto, currencies }  = this.props.currencies;
     let { balance }             = this.props;
 
-    let coinSymbol    = currentNetwork.toUpperCase();
+    let coinSymbol    = currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase();
     let coinName      = balance[currentNetwork.toUpperCase()].coinName;
     let currentCurrencie = numeral(crypto[currentNetwork.toUpperCase()].USD).format('$0,0.00');
     let usdBalance    = numeral(balance[currentNetwork.toUpperCase()].total_confirmed * crypto[currentNetwork.toUpperCase()].USD).format('$0,0.00');
@@ -85,7 +85,7 @@ class CoinStatus extends React.Component {
         <Row>
           <Col s={12} m={3} l={3}>
             <CoinDetails>
-              <CoinDetailsText offSide>{ coinName }</CoinDetailsText>
+              <CoinDetailsText offSide>{coinName}</CoinDetailsText>
               <CoinDetailsText >{ '1 ' + coinSymbol } { currentCurrencie }</CoinDetailsText>
             </CoinDetails>
           </Col>

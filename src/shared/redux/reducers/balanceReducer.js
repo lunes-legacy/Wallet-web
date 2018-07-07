@@ -19,11 +19,11 @@ let initialState = {
     total_unconfirmed: 0
   },
   // ETH: {
-  //   img: 'eth.svg',
   // 	coinName: 'Ethereum',
+  //   img: 'eth.svg',
+  // 	total_amount: 0,
   // 	total_confirmed: 0,
   // 	total_unconfirmed: 0,
-  // 	total_amount: 0,
   // },
   LTC: {
   	coinName: 'Litecoin',
@@ -32,13 +32,13 @@ let initialState = {
   	total_confirmed: 0,
   	total_unconfirmed: 0
   },
-  // DASH: {
-  // 	total_confirmed: 100,
-  // 	total_unconfirmed: 0,
-  // 	total_amount: 100,
-  // 	img: 'dash.svg',
-  // 	coinName: 'Dashcoin'
-  // },
+  DASH: {
+  	total_confirmed: 0,
+  	total_unconfirmed: 0,
+  	total_amount: 0,
+  	img: 'dash.svg',
+  	coinName: 'Dashcoin'
+  },
   // NANO: {
   // 	total_confirmed: 100,
   // 	total_unconfirmed: 0,
@@ -47,12 +47,38 @@ let initialState = {
   // 	coinName: 'Nano'
   // }
 };
+const arrangeUniqueNetworkBalance = (balance, state) => {
+  let { network } = balance;
+  let { confirmed, unconfirmed } = balance.data;
+  let upperCasedNetwork = network.toUpperCase();
+  console.warn('arrange network', network);
+  console.warn('arrange confirmed', confirmed);
+  return {
+    coinName: state[upperCasedNetwork].coinName,
+    img: state[upperCasedNetwork].img,
+    total_confirmed: money.conevertCoin(network, confirmed),
+    total_amount: money.conevertCoin(network, confirmed),
+    total_unconfirmed: unconfirmed ? money.conevertCoin(network, unconfirmed) : 0,
+  }
+}
 
 const balanceReducer = (state = initialState, action) => {
   switch (action.type) {
     case "WALLET_SET_BALANCE":
       return state;
-
+    case 'WALLET_SET_UNIQUE_BALANCE_REJECTED': 
+      return state;  
+    case 'WALLET_SET_UNIQUE_BALANCE_FULFILLED':
+      let balance = arrangeUniqueNetworkBalance(action.payload, state);
+      console.warn('BALANCE::', balance);
+      console.warn('PAYLOAD::', action.payload);
+      state = {
+        ...state,
+        [action.payload.network]: {
+          ...balance
+        }
+      }
+      return state;
     case "WALLET_SET_BALANCE_FULFILLED":
       let coins = action.payload;
       for (const coinKey in coins) {
@@ -64,9 +90,9 @@ const balanceReducer = (state = initialState, action) => {
             [coinKeyUpperCase]: {
               coinName: state[coinKeyUpperCase].coinName,
               img: state[coinKeyUpperCase].img,
-              total_confirmed: money.conevertCoin(coinKey, balance.confirmed),
-              total_amount: money.conevertCoin(coinKey, balance.confirmed),
-              total_unconfirmed: balance.unconfirmed ? money.conevertCoin(coinKey, balance.unconfirmed) : 0,
+              total_confirmed: parseFloat(money.conevertCoin(coinKey, balance.confirmed)),
+              total_amount: parseFloat(money.conevertCoin(coinKey, balance.confirmed)),
+              total_unconfirmed: balance.unconfirmed ? parseFloat(money.conevertCoin(coinKey, balance.unconfirmed)) : 0,
             }
           };
         }

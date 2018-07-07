@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 //COMPONENTS
 import TabsBuilder from "Components/Tabs";
+import { ErrorBoundary } from 'Components';
 
 // PAGE
 import Backup from "./Backup/backup";
@@ -19,11 +20,15 @@ const tabTitle = [
 ]
 
 class Privacy extends React.Component {
-  
+  constructor(props) {
+    super(props)
+  }
   render() {
     return (
       <Container>
-        <TabsBuilder tabTitle={tabTitle} tabContent={[<Backup />, <Rescue />]}/>
+        <ErrorBoundary>
+          <TabsBuilder tabTitle={tabTitle} tabContent={[<Backup />, <Rescue />]}/>
+        </ErrorBoundary>
       </Container>
     );
   }

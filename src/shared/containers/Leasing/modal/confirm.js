@@ -38,7 +38,7 @@ class ModalConfirm extends React.Component {
         hr
         text={
           <div>
-            <H3>{this.props.lastLeasingAmount} <Green>LNS</Green></H3>
+            <H3>{this.props.lastLeasingAmount} <Green>LUNES</Green></H3>
             <Text size={'1.2rem'} margin={'1rem'} clNormalGreen> are allocated to leasing on lunes network</Text>
             <Text size={'1.2rem'} margin={'1rem'}>Mining node address:</Text>
             <Text size={'1.2rem'} margin={'1rem'}>{this.props.toAddress}</Text>
