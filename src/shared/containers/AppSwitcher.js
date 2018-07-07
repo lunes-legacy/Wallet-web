@@ -61,12 +61,12 @@ class AppSwitcher extends React.Component {
 
     return (
       <Switch>
-        <Route strict path={"/app"} render={() => Wrapper(null, App)} />
-        <Route exact path={"/"} render={() => Wrapper(null, Login)} />
-        <Route exact path={"/login"} render={() => Wrapper(null, Login)} />
-        <Route exact path={"/import"} render={() => Wrapper(null, Import)} />
-        <Route exact path={"/registry"} render={() => Wrapper(null, Registry)} />
-        <Route exact path={"/reset"} render={() => Wrapper(null, Reset)} />
+        <Route strict path={"/app"} component={App} />
+        <Route exact path={"/"} component={Login} />
+        <Route exact path={"/login"} component={Login} />
+        <Route exact path={"/import"} component={Import} />
+        <Route exact path={"/registry"} component={Registry} />
+        <Route exact path={"/reset"} component={Reset} />
         <Route render={() => {
           return <Redirect to="/login"/>;
         }}/>
