@@ -270,7 +270,6 @@ class Send extends React.Component {
       result.medium.data.fee = parseInt(result.medium.data.txFee);
       result.high.data.fee = parseInt(result.high.data.txFee);
     }
-
 		let fees = {
 			...this.state.fees,
 			low: {

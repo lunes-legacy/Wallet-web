@@ -18,13 +18,13 @@ let initialState = {
     total_confirmed: 0,
     total_unconfirmed: 0
   },
-  ETH: {
-  	coinName: 'Ethereum',
-    img: 'eth.svg',
-  	total_amount: 0,
-  	total_confirmed: 0,
-  	total_unconfirmed: 0,
-  },
+  // ETH: {
+  // 	coinName: 'Ethereum',
+  //   img: 'eth.svg',
+  // 	total_amount: 0,
+  // 	total_confirmed: 0,
+  // 	total_unconfirmed: 0,
+  // },
   LTC: {
   	coinName: 'Litecoin',
   	img: 'ltc.svg',

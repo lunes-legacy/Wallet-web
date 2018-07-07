@@ -192,10 +192,10 @@ export class WalletClass {
           network: coin,
           testnet: TESTNET,
           toAddress: address,
-          amount: amountConvert,
-          feePerByte: feeConvert
+          amount: amountConvert.toString(),
+          feePerByte: feeConvert.toString()
         };
-      } else if (coin === "lns" || coin === "lunes"){
+      } else if (coin.search(/(lns)|(lunes)/) !== -1){
         amountConvert = money.conevertCoin('satoshi', amount);
         feeConvert = money.conevertCoin('satoshi', fee);
         transactionData = {
@@ -225,7 +225,7 @@ export class WalletClass {
         return 'Coin not defined';
       }
 
-      const data = await coins.services.transaction(transactionData, accessToken);
+      return coins.services.transaction(transactionData, accessToken);
 
       return data;
     // } catch (error) {
