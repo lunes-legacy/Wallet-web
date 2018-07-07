@@ -58,7 +58,7 @@ class Rescue extends React.Component {
 				addresses: {
           lns: null,
 					btc: null,
-          // eth: null,
+          eth: null,
 					ltc: null,
           // nano: null,
           // dash: null
@@ -120,7 +120,7 @@ class Rescue extends React.Component {
 
       if (err === 0) {
         this.props.setWalletInfo(walletInfo.addresses);
-        this.props.setBalance({ addresses: this.state.walletInfo.addresses });
+        // this.props.setBalance({ addresses: this.state.walletInfo.addresses });
         localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
         return this.setState({ ...this.state, loading: false, notification: 'Sucesso', walletInfo: { seed: null, addresses: {} } });
       }

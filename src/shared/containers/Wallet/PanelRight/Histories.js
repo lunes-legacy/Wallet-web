@@ -386,15 +386,15 @@ class Histories extends React.Component {
     let { crypto } = this.props.currencies;
     let currentCurrencies = crypto[currentNetwork.toUpperCase()].USD;
 
-
     if (currentTxHistory.length < 1) {
         return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
-      } else if (currentTxHistory.data.history.length < 1) {
+    // A segunda verificação foi necessária pois quando não havia histórico o valor retornado era o array com um objeto vazio
+    } else if (currentTxHistory.data.history.length < 1 || Object.keys(currentTxHistory.data.history[0]).length === 0) {
         return <ErrorMessage> No transactions </ErrorMessage>;
     }
 
     return currentTxHistory.data.history.map( (transaction, key) => {
-      if(transaction.otherParams.type === 8 || transaction.otherParams.type === 9) {
+      if (transaction.otherParams.type === 8 || transaction.otherParams.type === 9) {
         var amount = money.conevertCoin(currentNetwork, transaction.networkFee);
         var usdAmount = numeral(amount * currentCurrencies).format('$0,0.00');
         amount = numeral(amount).format('0,0.00000000');
