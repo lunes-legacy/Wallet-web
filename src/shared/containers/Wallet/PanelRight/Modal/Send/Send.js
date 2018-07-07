@@ -275,18 +275,15 @@ class Send extends React.Component {
 			...this.state.fees,
 			low: {
 				...this.state.fees.low,
-        value: money.conevertCoin(currentNetwork, result.low.data.fee),
-        gasPrice: result.low.data.gasPrice || '0'
+				value: money.conevertCoin(currentNetwork, result.low.data.fee) || 0,
 			},
 			medium: {
 				...this.state.fees.medium,
-        value: money.conevertCoin(currentNetwork, result.medium.data.fee),
-        gasPrice: result.medium.data.gasPrice || '0'
+				value: money.conevertCoin(currentNetwork, result.medium.data.fee) || 0,
 			},
 			high: {
 				...this.state.fees.high,
-        value: money.conevertCoin(currentNetwork, result.high.data.fee),
-        gasPrice: result.high.data.gasPrice || '0'
+				value: money.conevertCoin(currentNetwork, result.high.data.fee) || 0,
 			}
     }
 
@@ -554,8 +551,7 @@ class Send extends React.Component {
 			message: 'Wait until the transaction got finished',
 		});
 		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
-    let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
-
+		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
 		let data = await wallet.transactionSend(
 			walletInfo.seed,
 			this.props.wallet.currentNetwork,
@@ -574,6 +570,7 @@ class Send extends React.Component {
 
 		let txid = data && data.data && data.data.txID;
 		if (!txid) {
+			console.error('MODALSEND_TRANSACTIONSEND_DATA', data);
 			this.props.setterModalSend({
 				status: 'error',
 				message: 'No transaction ID was returned'

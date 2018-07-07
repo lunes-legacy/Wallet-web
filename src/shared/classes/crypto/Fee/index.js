@@ -85,9 +85,9 @@ export default class FeeClass {
         let tmp = await coins.services.estimateFee({...data}, data.accessToken);
 
 				return {
-					low: {data:{fee:''}},
+					low: {data:{fee:0}},
 					medium: tmp,
-					high: {data:{fee:''}}
+					high: {data:{fee:0}}
 				};
 			}
 			//_________________________________________

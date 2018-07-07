@@ -4,14 +4,13 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 
 //COMPONENTS
-import { TextBase } from "Components/TextBase";
-import { Text } from "Components/Text";
+import { TextBase, Text, ErrorBoundary } from 'Components';
 
 //PRIVATE COMPONENTS
-import Histories from './Histories';
+import Histories   from './Histories';
 import CoinControl from './CoinControl';
-import CoinStatus from './CoinStatus';
-import Default from './Default';
+import CoinStatus  from './CoinStatus';
+import Default     from './Default';
 // import ModalSend from "./Modal/Send/index";
 
 const TextBold = Text.extend`
@@ -46,8 +45,9 @@ class PanelRight extends React.Component {
   _shouldRender = () => {
     let { isPanelRightVisible } = this.props.component_wallet;
     if (!isPanelRightVisible) return false;
-    return true;
-  };
+      return true;
+  }
+
   render() {
     if (!this._shouldRender()) return <Default />;
 

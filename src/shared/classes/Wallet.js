@@ -181,10 +181,10 @@ export class WalletClass {
     // try {
       let amountConvert = amount.toString();
       let feeConvert = fee.toString();
-      let transactionData = {};
+      let transactionData;
 
       // if (coin === "btc" || coin === "dash" || coin === "ltc") {
-      if (coin.search(/(btc)(dash)(ltc)i/i) !== -1) {
+      if (coin.search(/(btc)|(dash)|(ltc)/i) !== -1) {
         amountConvert = money.conevertCoin('satoshi', amount);
         feeConvert = money.conevertCoin('satoshi', fee);
         transactionData = {

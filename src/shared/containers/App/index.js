@@ -86,6 +86,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     numeral.locale(this.props.currencies.locale);
+    this.state = {
+      render: {
+        status: 'initial',
+        message: ''
+      }
+    }
   }
 
   componentWillMount() {
@@ -109,6 +115,16 @@ class App extends React.Component {
       upperCasedKey  = key.toUpperCase();
       this.props.setUniqueBalance({address: currentAddress, network: upperCasedKey});
     }
+  }
+  componentDidCatch(err, info) {
+    console.error('ERROR::',err);
+    console.error('INFO::', info);
+    this.setState({
+      render: {
+        status: 'error',
+        message: `Fatal error on trying to access ${this.props.location.pathname}`
+      }
+    });
   }
   componentDidMount() {
     let addresses = this.getAddress();
@@ -153,6 +169,14 @@ class App extends React.Component {
   }
 
   render() {
+    if (this.state.render.status === 'error') {
+      return (
+        <div style={{height: '100vh', color:'white', display: 'flex', justifyContent:'center',alignItems:'center'}}>
+          <h1>{this.state.render.message}</h1>
+        </div>
+      );
+    }
+    
     let { crypto } = this.props.currencies;
 
     let usdCurrent = crypto.LNS.USD;
