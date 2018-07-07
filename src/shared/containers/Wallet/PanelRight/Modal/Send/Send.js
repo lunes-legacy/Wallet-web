@@ -321,14 +321,14 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
-		console.warn('IS USER SENDING?', this.isUserAlreadySending);
+		//console.warn('IS USER SENDING?', this.isUserAlreadySending);
 		if (this.isUserAlreadySending === true) {
 			alert('Você já está enviando, aguarde...');
 			return;
 		} else {
 			this.isUserAlreadySending = true;
 		}
-		console.warn("I've passed through here beibi", this.isUserAlreadySending);
+		//console.warn("I've passed through here beibi", this.isUserAlreadySending);
 		this.ctrlLoading(true);
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
