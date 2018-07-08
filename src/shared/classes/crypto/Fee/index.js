@@ -164,7 +164,7 @@ export default class FeeClass {
 			if (data.network.search(/(eth)/i) !== -1) {
 				params[level] = {
 					...data,
-					gasLimit: '21000',
+					gasLimit: '37393',
 					gasPrice: networkFees[level]
 				}
 			} else {
