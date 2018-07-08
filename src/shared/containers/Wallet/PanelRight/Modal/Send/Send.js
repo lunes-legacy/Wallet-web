@@ -264,27 +264,32 @@ class Send extends React.Component {
 			console.error('Failed on trying to get network fees', 500, "SETNETWORKFEES_ERROR");
     }
 
-    // TODO: remover após padronização do parâmetro para *fee* em todas as moedas no back-end
-    if (currentNetwork.toLowerCase() === 'eth') {
-      result.low.data.fee = parseInt(result.low.data.txFee);
-      result.medium.data.fee = parseInt(result.medium.data.txFee);
-      result.high.data.fee = parseInt(result.high.data.txFee);
-    }
+	    // TODO: remover após padronização do parâmetro para *fee* em todas as moedas no back-end
+	    if (currentNetwork.toLowerCase() === 'eth') {
+	      result.low.data.fee = parseInt(result.low.data.txFee);
+	      result.medium.data.fee = parseInt(result.medium.data.txFee);
+	      result.high.data.fee = parseInt(result.high.data.txFee);
+	      console.warn('RESULT::::', result);
+	      console.warn('STATE.FEES::::', this.state.fees);
+	    }
 		let fees = {
 			...this.state.fees,
 			low: {
 				...this.state.fees.low,
 				value: money.conevertCoin(currentNetwork, result.low.data.fee) || 0,
+				gasPrice: result.low.data.gasPrice
 			},
 			medium: {
 				...this.state.fees.medium,
 				value: money.conevertCoin(currentNetwork, result.medium.data.fee) || 0,
+				gasPrice: result.medium.data.gasPrice
 			},
 			high: {
 				...this.state.fees.high,
 				value: money.conevertCoin(currentNetwork, result.high.data.fee) || 0,
+				gasPrice: result.high.data.gasPrice
 			}
-    }
+	    }
 
 		this.setState({
 			...this.state,
@@ -357,7 +362,9 @@ class Send extends React.Component {
 			this.ctrlLoading(false);
 			return;
 		}
-
+		
+		console.warn('FEE.GASPRICE:::', fee);
+		console.warn('FEEVALUE:::', feeValue);
 		let dataSend = this.transactionSend(address, coinAmount, feeValue, fee.gasPrice);
 		this.ctrlLoading(false);
 		setTimeout(() => {

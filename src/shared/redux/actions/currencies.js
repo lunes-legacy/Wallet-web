@@ -20,7 +20,7 @@ export const setCryptoPrice = (price) => {
 		payload: Wallet.getCoinsPrice({
 			LNS:  { fromSymbol:'LNS',  toSymbol },
 			BTC:  { fromSymbol:'BTC',  toSymbol },
-			// ETH:  { fromSymbol:'ETH',  toSymbol },
+			ETH:  { fromSymbol:'ETH',  toSymbol },
 			LTC:  { fromSymbol:'LTC',  toSymbol },
 			DASH: { fromSymbol:'DASH', toSymbol },
 		})
