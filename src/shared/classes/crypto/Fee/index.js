@@ -13,15 +13,15 @@ export default class FeeClass {
 			BTC: 'BTCFamily',
 			ETH: 'ETHFamily'
 		}
-  }
+	}
 
 	getStaticNetworkFees = () => {
 		return this.staticNetworkFees;
-  }
+	}
 
 	setStaticNetworkFees = (value) => {
 		this.staticNetworkFees = value;
-  }
+	}
 
 	/*
 	return  {
@@ -39,7 +39,7 @@ export default class FeeClass {
 				throw errorPattern("Network parameter is pending",500,"FEE_NETWORKFEES_ERROR");
 			if (this.getStaticNetworkFees() !== undefined) {
 				return this.getStaticNetworkFees();
-      }
+			}
 
 			return coins.services.networkFees({ network, testnet: TESTNET });
 		} catch (err) {
@@ -50,13 +50,13 @@ export default class FeeClass {
 	estimate = async (data) => {
 		try {
       // Verifica se foi passada rede
-			if (!data.network) {
-				throw errorPattern('No network name was found', 500, 'FEE_ESTIMATE_ERROR');
+      if (!data.network) {
+      	throw errorPattern('No network name was found', 500, 'FEE_ESTIMATE_ERROR');
       }
 
       // Se não for passado o parâmetro testnet: true || false, seta o valor padrão da constant TESTNET
-			if (!data.testnet) {
-				data.testnet = TESTNET;
+      if (!data.testnet) {
+      	data.testnet = TESTNET;
       }
 
       // Instancia a classe Money para converter os valores quando necessário
@@ -65,24 +65,24 @@ export default class FeeClass {
 			//THIS ENTIRE CONDITIONAL WILL BE REMOVED
 			if (data.network.search(/ltc/i) !== -1) {
 				if (!data.networkFees) {
-          data.networkFees = await this.getNetworkFees({...data});
+					data.networkFees = await this.getNetworkFees({...data});
 
 					if (!data.networkFees) {
 						throw errorPattern(`We've tried to get ${data.network}'s network fees, but it have resulted in error`, 500, 'FEE_ESTIMATE_ERROR');
 					}
-        }
+				}
 
 				if (window || document) {
 					data.accessToken = JSON.parse(decrypt(localStorage.getItem('ACCESS-TOKEN'))).accessToken;
 				} else {
 					throw errorPattern("We can't estimate the fee, without the user's access token", 500,'FEE_ESTIMATE_ERROR');
-        }
+				}
 
 				data.feePerByte = data.networkFees.data.medium;
+				
+				data.amount = money.conevertCoin('satoshi', data.amount).toString();
 
-        data.amount = money.conevertCoin('satoshi', data.amount).toString();
-
-        let tmp = await coins.services.estimateFee({...data}, data.accessToken);
+				let tmp = await coins.services.estimateFee({...data}, data.accessToken);
 
 				return {
 					low: {data:{fee:0}},
@@ -114,23 +114,23 @@ export default class FeeClass {
 						}
 					}
 				}
-      }
+			}
 
 			if (!data.networkFees) {
-        data.networkFees = await this.getNetworkFees({...data});
+				data.networkFees = await this.getNetworkFees({...data});
 
 				if (!data.networkFees) {
 					throw errorPattern(`We've tried to get ${data.network}'s network fees, but it have resulted in error`, 500, 'FEE_ESTIMATE_ERROR');
-        }
+				}
 
 				data.networkFees = data.networkFees.data;
 			} else {
 				data.networkFees = data.networkFees.data;
-      }
+			}
 
 			if (!data.toAddress || !data.fromAddress) {
 				throw errorPattern('You should pass through a valid address', 500, 'FEE_ESTIMATE_ERROR')
-      }
+			}
 
 			if (!data.accessToken) {
 				if (window || document) {
@@ -138,50 +138,50 @@ export default class FeeClass {
 				} else {
 					throw errorPattern('We can\'t estimate the fee, without the user\'s access token', 500,'FEE_ESTIMATE_ERROR');
 				}
-      }
+			}
 
 			let params = {
 				low:    {},
 				medium: {},
 				high:   {},
-      };
+			};
 
 			let result = {
 				low:    {},
 				medium: {},
 				high:   {}
-      }
+			}
 
 			let { networkFees } = data;
-      delete data.networkFees;
+			delete data.networkFees;
 
-      // Se for ETH converte para Wei (menor unidade do ETH), senão, converte para Satoshi (menor unidade do BTC)
-      data.amount = data.network.toUpperCase() === "ETH" ?
-        money.conevertCoin('wei', data.amount).toString() :
-        money.conevertCoin('satoshi', data.amount).toString();
+		// Se for ETH converte para Wei (menor unidade do ETH), senão, converte para Satoshi (menor unidade do BTC)
+		data.amount = data.network.toUpperCase() === "ETH" ?
+		money.conevertCoin('wei', data.amount).toString() :
+		money.conevertCoin('satoshi', data.amount).toString();
 
-			for (let level in params) {
-        if (data.network.toUpperCase() === "ETH") {
-          params[level] = {
-						...data,
-						gasLimit: '21000',
-						gasPrice: networkFees[level]
-					}
-				} else {
-          params[level] = {
-						...data,
-						feePerByte: networkFees[level]
-					}
-        }
+		for (let level in params) {
+			if (data.network.search(/(eth)/i) !== -1) {
+				params[level] = {
+					...data,
+					gasLimit: '37393',
+					gasPrice: networkFees[level]
+				}
+			} else {
+				params[level] = {
+					...data,
+					feePerByte: networkFees[level]
+				}
+			}
 
-			  let currentEstimate = params[level];
-        result[level] = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
-      }
+			let currentEstimate = params[level];
+			result[level] = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
+		}
 
-      return result;
-  } catch (err) {
-  	console.error(err);
-  	return err;
-  }
+		return result;
+	} catch (err) {
+		console.error(err);
+		return err;
+	}
 }
 }
