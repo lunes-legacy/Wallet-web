@@ -300,7 +300,10 @@ class Histories extends React.Component {
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
 
+    if (day < 10) {
 
+      return `${weekDay} ${month < 10 ? "0" + month : month}/0${day}/${year}`;
+    }
     return `${weekDay} ${month < 10 ? "0" + month : month}/${day}/${year}`;
   };
 
