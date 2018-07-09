@@ -120,7 +120,6 @@ Todos os estados que precisamos e/ou iremos usar
 class Send extends React.Component {
 	constructor(props) {
 		super(props);
-		this.isUserAlreadySending = false; //this will be to forbid the user to send twice
 		this.ref = {};
 		this.ref.radioCoinAmount = React.createRef();
 		this.ref.coinAmount = React.createRef();
@@ -129,6 +128,7 @@ class Send extends React.Component {
 
 		//quantity types: real, dollar, coin
 		this.state = {
+			isUserAlreadySending: false, //this will be to forbid the user to send twice
 			stateButtonSend: 'Enviar',
 			addressIsValid: true,
 			invalidAmount: false,
@@ -325,14 +325,15 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
-		//console.warn('IS USER SENDING?', this.isUserAlreadySending);
-		if (this.isUserAlreadySending === true) {
-			alert('Você já está enviando, aguarde...');
+		//console.warn('IS USER SENDING?', this.state.isUserAlreadySending);
+		if (this.state.isUserAlreadySending === true) {
 			return;
 		} else {
-			this.isUserAlreadySending = true;
+			this.setState({
+				isUserAlreadySending: true
+			});
 		}
-		//console.warn("I've passed through here beibi", this.isUserAlreadySending);
+		//console.warn("I've passed through here beibi", this.state.isUserAlreadySending);
 		this.ctrlLoading(true);
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
@@ -588,7 +589,9 @@ class Send extends React.Component {
 			message: 'Success on sending transaction',
 			txid: txid
 		});
-		this.isUserAlreadySending = false;
+		this.setState({
+			isUserAlreadySending: false
+		});
 	}
 
 	clearFields() {
@@ -803,7 +806,9 @@ class Send extends React.Component {
 
 						{ this._renderFeeButtons() }
 						{ this._renderFeeTotal() }
-
+						<Col>
+							{ this.state.isUserAlreadySending ? `You're already sending, hold on until the transaction get finished` : '' }
+						</Col>
 					</Row>
 				</Col>
 				<Col defaultAlign={'center'} s={6} m={3} l={2}>
