@@ -325,19 +325,6 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
-		//só clicar em enviar na hora de testar
-		//remove esse bloco quando terminado
-		//PARA TESTAR_________________________
-		this.setState({
-			messageUserIsAlreadySending: `You're already sending, hold on until the transaction get finished`
-		});
-		setTimeout(() => {
-			this.setState({
-				messageUserIsAlreadySending: ''
-			});
-		}, 3000);
-		//PARA TESTAR_________________________
-
 		if (this.state.isUserAlreadySending === true) {
 			this.setState({
 				messageUserIsAlreadySending: `You're already sending, hold on until the transaction get finished`
