@@ -35,14 +35,6 @@ let Paragraphmobile = styled.div`
 `;
 
 
-const Wrapper = (props, component = null) => {
-  const Component = props.component;
-  return (
-    <ErrorBoundary entirePageError>
-      <Component/>
-    </ErrorBoundary>
-  );
-}
 class AppSwitcher extends React.Component {
 
   render() {
@@ -60,17 +52,19 @@ class AppSwitcher extends React.Component {
     }
 
     return (
-      <Switch>
-        <Route strict path={"/app"} render={() => <Wrapper component={App}/>} />
-        <Route exact path={"/"} render={() => <Wrapper component={Login}/>} />
-        <Route exact path={"/login"} render={() => <Wrapper component={Login}/>} />
-        <Route exact path={"/import"} render={() => <Wrapper component={Import}/>} />
-        <Route exact path={"/registry"} render={() => <Wrapper component={Registry}/>} />
-        <Route exact path={"/reset"} render={() => <Wrapper component={Reset}/>} />
-        <Route render={() => {
-          return <Redirect to="/login"/>;
-        }}/>
-      </Switch>
+      <ErrorBoundary entirePageError>
+        <Switch>
+          <Route strict path={"/app"} component={App} />
+          <Route exact path={"/"} component={Login} />
+          <Route exact path={"/login"} component={Login} />
+          <Route exact path={"/import"} component={Import} />
+          <Route exact path={"/registry"} component={Registry} />
+          <Route exact path={"/reset"} component={Reset} />
+          <Route render={() => {
+            return <Redirect to="/login"/>;
+          }}/>
+        </Switch>
+      </ErrorBoundary>
     );
   }
 }

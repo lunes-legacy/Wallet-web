@@ -19,7 +19,7 @@ import { CustomLinkFooter } from "Components/Link";
 import { H1 } from "Components/H1";
 import { Logo } from "Components/Logo";
 import { P } from "Components/P";
-import { Col, ErrorBoundary } from 'Components';
+import { Col } from 'Components';
 
 
 //PRIVATE COMPONENTS
@@ -70,6 +70,9 @@ const Paragraph = styled.div`
 class Login extends React.Component {
   constructor(props) {
     super(props)
+    this.state = {
+      erro: false
+    }
   }
   componentDidUpdate() {
     this.handleStatus();
@@ -142,9 +145,12 @@ class Login extends React.Component {
 
   render() {
     let { status, logged } = this.props.user;
+    
+    if (this.state.erro)
+      throw new Error('Error');
 
     return (
-      <div>
+      <div onClick={() => { this.setState({erro: true}); }}>
         <PanelLeft>
           <CustomLogo />
 
