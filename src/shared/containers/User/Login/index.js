@@ -70,9 +70,6 @@ const Paragraph = styled.div`
 class Login extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      erro: false
-    }
   }
   componentDidUpdate() {
     this.handleStatus();
@@ -146,11 +143,8 @@ class Login extends React.Component {
   render() {
     let { status, logged } = this.props.user;
     
-    if (this.state.erro)
-      throw new Error('Error');
-
     return (
-      <div onClick={() => { this.setState({erro: true}); }}>
+      <div>
         <PanelLeft>
           <CustomLogo />
 
