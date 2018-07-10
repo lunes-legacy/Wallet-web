@@ -325,6 +325,10 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
 		//console.warn('IS USER SENDING?', this.state.isUserAlreadySending);
 		if (this.state.isUserAlreadySending === true) {
 			return;
@@ -332,7 +336,10 @@ class Send extends React.Component {
 			this.setState({
 				isUserAlreadySending: true
 			});
-		}
+    }
+
+    await sleep(30000);
+
 		//console.warn("I've passed through here beibi", this.state.isUserAlreadySending);
 		this.ctrlLoading(true);
 		let coinAmount = parseFloat(this.state.transferValues.coin);
@@ -363,7 +370,7 @@ class Send extends React.Component {
 			this.ctrlLoading(false);
 			return;
 		}
-		
+
 		console.warn('FEE.GASPRICE:::', fee);
 		console.warn('FEEVALUE:::', feeValue);
 		let dataSend = this.transactionSend(address, coinAmount, feeValue, fee.gasPrice);
@@ -807,7 +814,9 @@ class Send extends React.Component {
 						{ this._renderFeeButtons() }
 						{ this._renderFeeTotal() }
 						<Col>
-							{ this.state.isUserAlreadySending ? `You're already sending, hold on until the transaction get finished` : '' }
+              <Text color={'#fff'} txCenter margin={'1.5rem'} size={'1.2rem'}>
+							  { this.state.isUserAlreadySending ? `You're already sending, hold on until the transaction get finished` : '' }
+              </Text>
 						</Col>
 					</Row>
 				</Col>
