@@ -7,6 +7,10 @@ export class MoneyClass {
       console.error(`We've got ${to} value from variable 'to'`,500,'MONEY_CONVERTCOIN_ERROR');
       return;
     }
+    
+    if (amount === 0) 
+      return amount;
+
     if (!amount) {
       console.error(errorPattern(`Error on trying to convert ${to}, got ${amount} value from 'amount' variable`,500,'MONEY_CONVERTCOIN_ERROR'));
       return;
