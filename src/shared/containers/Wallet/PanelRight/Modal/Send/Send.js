@@ -815,7 +815,11 @@ class Send extends React.Component {
 						{ this._renderFeeButtons() }
 						{ this._renderFeeTotal() }
 						{/*When user is already sending a transaction*/}
-						{ this.state.messageUserIsAlreadySending ? <Text clWhite txCenter>{this.state.messageUserIsAlreadySending}</Text> : '' }
+						{
+              this.state.messageUserIsAlreadySending ?
+              <Col><Text clWhite txCenter margin={'1.5rem 0 0 0'}>{this.state.messageUserIsAlreadySending}</Text></Col> :
+              ''
+            }
 					</Row>
 				</Col>
 				<Col defaultAlign={'center'} s={6} m={3} l={2}>
