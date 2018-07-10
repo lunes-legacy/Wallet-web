@@ -340,7 +340,6 @@ class Send extends React.Component {
 				isUserAlreadySending: true
 			});
 		}
-		await timer(3000);
 		//console.warn("I've passed through here beibi", this.state.isUserAlreadySending);
 		this.ctrlLoading(true);
 		let coinAmount = parseFloat(this.state.transferValues.coin);
