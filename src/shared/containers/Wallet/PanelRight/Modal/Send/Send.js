@@ -6,7 +6,7 @@ import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
 import { TESTNET } from 'Config/constants';
 import { Loading } from 'Components/Loading';
-import { errorPattern } from 'Utils/functions';
+import { errorPattern, timer } from 'Utils/functions';
 
 // REDUX
 import { connect } from 'react-redux';
@@ -120,7 +120,6 @@ Todos os estados que precisamos e/ou iremos usar
 class Send extends React.Component {
 	constructor(props) {
 		super(props);
-		this.isUserAlreadySending = false; //this will be to forbid the user to send twice
 		this.ref = {};
 		this.ref.radioCoinAmount = React.createRef();
 		this.ref.coinAmount = React.createRef();
@@ -129,6 +128,7 @@ class Send extends React.Component {
 
 		//quantity types: real, dollar, coin
 		this.state = {
+			isUserAlreadySending: false, //this will be to forbid the user to send twice
 			stateButtonSend: 'Enviar',
 			addressIsValid: true,
 			invalidAmount: false,
@@ -325,14 +325,23 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
-		//console.warn('IS USER SENDING?', this.isUserAlreadySending);
-		if (this.isUserAlreadySending === true) {
-			alert('Você já está enviando, aguarde...');
+		if (this.state.isUserAlreadySending === true) {
+			this.setState({
+				messageUserIsAlreadySending: `You're already sending, hold on until the transaction get finished`
+			});
+			setTimeout(() => {
+				this.setState({
+					messageUserIsAlreadySending: ''
+				});
+			}, 3000);
 			return;
 		} else {
-			this.isUserAlreadySending = true;
+			this.setState({
+				isUserAlreadySending: true
+			});
 		}
-		//console.warn("I've passed through here beibi", this.isUserAlreadySending);
+		await timer(3000);
+		//console.warn("I've passed through here beibi", this.state.isUserAlreadySending);
 		this.ctrlLoading(true);
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
@@ -362,9 +371,7 @@ class Send extends React.Component {
 			this.ctrlLoading(false);
 			return;
 		}
-		
-		console.warn('FEE.GASPRICE:::', fee);
-		console.warn('FEEVALUE:::', feeValue);
+
 		let dataSend = this.transactionSend(address, coinAmount, feeValue, fee.gasPrice);
 		this.ctrlLoading(false);
 		setTimeout(() => {
@@ -588,7 +595,9 @@ class Send extends React.Component {
 			message: 'Success on sending transaction',
 			txid: txid
 		});
-		this.isUserAlreadySending = false;
+		this.setState({
+			isUserAlreadySending: false
+		});
 	}
 
 	clearFields() {
@@ -668,6 +677,8 @@ class Send extends React.Component {
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
 				<link rel="preload" href="/img/app_wallet/modal_send/sprite_animation_done.png" as="image"/>
 				<Col s={9} m={9} l={9}>
+					{/*When user is already sending a transaction*/}
+					{ this.state.messageUserIsAlreadySending ? <Text clWhite txCenter>{this.state.messageUserIsAlreadySending}</Text> : '' }
 					{/*FIRST ROW*/}
 					<Row css={FirstRowCss}>
 						<Col offset={'s3'} s={6} m={6} l={6}>
@@ -803,7 +814,12 @@ class Send extends React.Component {
 
 						{ this._renderFeeButtons() }
 						{ this._renderFeeTotal() }
-
+						{/*When user is already sending a transaction*/}
+						{
+              this.state.messageUserIsAlreadySending ?
+              <Col><Text clWhite txCenter margin={'1.5rem 0 0 0'}>{this.state.messageUserIsAlreadySending}</Text></Col> :
+              ''
+            }
 					</Row>
 				</Col>
 				<Col defaultAlign={'center'} s={6} m={3} l={2}>
