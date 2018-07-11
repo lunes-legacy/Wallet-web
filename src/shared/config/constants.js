@@ -3,6 +3,14 @@ const testnet         = 'TRUE';
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const ENV             = 'development'; // AMBIENTE
 
+// let host;
+//   // host = 'http://localhost:3010';
+// if (!window && !document && !window.location)
+//   console.log('hey');
+// else
+//   host = window.location.protocol + '//' + window.location.hostname;
+// const HOST = host;
+
 // START NETWORK CONFIG
 const APICONFIG 	    = TESTNET === true ? 'LNSTESTNET'  : 'LNS'; //TEMP
 const LNSNETWORK      = TESTNET === true ? 'LNSTESTNET'  : 'LNS';
