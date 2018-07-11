@@ -325,6 +325,10 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
+    if(this.props.wallet.currentNetwork.search(/(btc)|(ltc)|(dash)/i) !== -1) {
+      alert('BTC, LTC and DASH in maintenance');
+      return;
+    }
 		//console.warn('IS USER SENDING?', this.isUserAlreadySending);
 		if (this.isUserAlreadySending === true) {
 			alert('Você já está enviando, aguarde...');
