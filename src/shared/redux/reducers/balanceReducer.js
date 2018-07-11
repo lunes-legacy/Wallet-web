@@ -11,13 +11,13 @@ let initialState = {
     total_confirmed: 0,
     total_unconfirmed: 0
   },
-  /*BTC: {
+  BTC: {
     coinName: "Bitcoin",
     img: "btc.svg",
     total_amount: 0,
     total_confirmed: 0,
     total_unconfirmed: 0
-  },*/
+  },
   ETH: {
   	coinName: 'Ethereum',
     img: 'eth.svg',
@@ -25,7 +25,7 @@ let initialState = {
   	total_confirmed: 0,
   	total_unconfirmed: 0,
   },
-  /*LTC: {
+  LTC: {
   	coinName: 'Litecoin',
   	img: 'ltc.svg',
   	total_amount: 0,
@@ -38,7 +38,7 @@ let initialState = {
   	total_amount: 0,
   	img: 'dash.svg',
   	coinName: 'Dashcoin'
-  },*/
+  },
   // NANO: {
   // 	total_confirmed: 100,
   // 	total_unconfirmed: 0,
