@@ -74,31 +74,52 @@ class CoinGraph extends React.Component {
   constructor() {
     super();
     this.state = {
-      currentNetwork: 'LNS',
+      lastNetwork: undefined,
       history_time_price: []
     };
   }
 
   componentDidMount() {
-    this.coinGraphHistory(this.state.currentNetwork);
+    this.coinGraphHistory(this.props.wallet.currentNetwork);
+  }
+  componentDidUpdate() {
+    let { lastNetwork }    = this.state;
+    let { currentNetwork } = this.props.wallet;
+    console.warn('LAST AND CURR', lastNetwork, currentNetwork);
+    if (typeof lastNetwork === 'undefined') {
+      lastNetwork = '';
+    }
+    if (lastNetwork.toUpperCase() !== currentNetwork.toUpperCase()) {
+      this.coinGraphHistory(currentNetwork);
+      this.setState({
+        lastNetwork: currentNetwork
+      });
+    }
   }
 
   coinGraphHistory = async (currentNetwork) => {
     try {
-
+      //for now, we dont have any lunes history
+      if (this.props.wallet.currentNetwork.search(/(lns)|(lunes)/i) !== -1) {
+        return;
+      }
       this.setState({
         ...this.state,
-        currentNetwork: currentNetwork
+        currentNetwork: currentNetwork,
       });
 
+
+      console.warn(`Attempting to get ${currentNetwork} history`);
       // GRAPH
-      let graphData = { fromSymbol: currentNetwork, toSymbol: "USD", range: "RANGE_1D" };
+      let graphData = { fromSymbol: currentNetwork.toUpperCase(), toSymbol: "USD", range: "RANGE_1D" };
       let res       = await new WalletClass().getCoinHistory(graphData)
       // PERCENT
       let coinPrices      = this.convertTimestampToDate(res.data)
       let coinPriceLength = coinPrices.length;
-      // let firstValueCoin = coinPrices[0].close;
-      let firstValueCoin   = 0;
+      if (!coinPrices[0])
+        return;
+      let firstValueCoin  = coinPrices[0].close;
+      // let firstValueCoin   = 0;
       let currentValueCoin = coinPrices[coinPriceLength - 1].close;
 
       this.setState( () => {
@@ -130,8 +151,12 @@ class CoinGraph extends React.Component {
   render() {
     let currentNetwork = this.props.wallet.currentNetwork.toUpperCase();
 
-    if (currentNetwork !== this.state.currentNetwork) {
-      this.coinGraphHistory(currentNetwork);
+    // if (!this.state.isGraphBeingSettled) {
+    //   this.coinGraphHistory(currentNetwork);
+    // }
+
+    if (currentNetwork.search(/(lns)|(lunes)/i) !== -1) {
+      return null;
     }
 
     return (
