@@ -127,7 +127,7 @@ class App extends React.Component {
   }
   componentDidMount() {
     let addresses = this.getAddress();
-    console.warn('ADDRESSES::::',addresses);
+
     this.setBalances(addresses);
     // this.props.setBalance({ addresses });
     this.props.setCurrenciesPrice();

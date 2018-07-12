@@ -185,7 +185,7 @@ class Send extends React.Component {
 
 		setTimeout(() => {
 			this.animThisComponentIn();
-		}, 500);
+    }, 500);
 
 		this.setState({
 			...this.state,
@@ -309,7 +309,8 @@ class Send extends React.Component {
 				type: 'completed',
 				message: 'Success on getting the estimation'
 			},
-			network: currentNetwork,
+      network: currentNetwork,
+      chosenFee: currentNetwork === 'ltc' ? 'medium' : 'low', // Como LTC tem apenas a medium fee, define ela como a selecionada
 			fees
     });
 
@@ -365,8 +366,7 @@ class Send extends React.Component {
 
     console.warn('feePerByte and estimatedFee__________');
     console.warn(feePerByte, estimatedFee);
-    console.warn('feePerByte and estimatedFee__________');
-
+    console.warn('feePerByte and estimatedFee__________
 		if (address && address.length > 1) {
 			let validateAddress = await this.validateAddress(currentNetwork, address);
 
@@ -449,7 +449,8 @@ class Send extends React.Component {
 
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let coinAmount = this.state.transferValues.coin;
-		let usdAmount = this.state.transferValues.usd;
+    let usdAmount = this.state.transferValues.usd;
+
     let chosenFeeValue = this.state.fees[this.state.chosenFee].value || 'error';
 
     if (chosenFeeValue !== 'error') {
