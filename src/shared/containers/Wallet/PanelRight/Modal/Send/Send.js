@@ -342,9 +342,11 @@ class Send extends React.Component {
 				isUserAlreadySending: true
 			});
 		}
+
 		await timer(3000);
 
     this.ctrlLoading(true);
+
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
     let fee = this.state.fees[this.state.chosenFee];
