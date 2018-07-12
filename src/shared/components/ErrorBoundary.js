@@ -23,6 +23,16 @@ export default class ErrorBoundary extends React.Component {
 		let { message } = this.state.render;
 		if (!message)
 			return <Text>Error on trying to render this component, no error was returned.</Text>;
+		if (this.props.entirePageError) {
+			return (
+				<div style={{height:'100vh',widht:'100%',color:'white',display:'flex',alignItems:'center',justifyContent:'center'}}>
+					<h1>{ message.message }</h1>
+					<h1>{ message.lineNumber }</h1>
+					<h1>{ message.fileName }</h1>
+				</div>
+			);
+		}
+
 		return (
 			<React.Fragment>
 				<h1>{ message.message }</h1>
