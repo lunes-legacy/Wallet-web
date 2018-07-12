@@ -366,7 +366,7 @@ class Send extends React.Component {
 
     console.warn('feePerByte and estimatedFee__________');
     console.warn(feePerByte, estimatedFee);
-    console.warn('feePerByte and estimatedFee__________
+    console.warn('feePerByte and estimatedFee__________');
 		if (address && address.length > 1) {
 			let validateAddress = await this.validateAddress(currentNetwork, address);
 
