@@ -19,7 +19,7 @@ import { CustomLinkFooter } from "Components/Link";
 import { H1 } from "Components/H1";
 import { Logo } from "Components/Logo";
 import { P } from "Components/P";
-import { Col } from 'Components/index';
+import { Col } from 'Components';
 
 
 //PRIVATE COMPONENTS
@@ -142,6 +142,7 @@ class Login extends React.Component {
 
   render() {
     let { status, logged } = this.props.user;
+    
     return (
       <div>
         <PanelLeft>

@@ -35,14 +35,6 @@ let Paragraphmobile = styled.div`
 `;
 
 
-const Wrapper = (props, component) => {
-  const Component = component;
-  return (
-    <ErrorBoundary>
-      <Component/>
-    </ErrorBoundary>
-  );
-}
 class AppSwitcher extends React.Component {
 
   render() {
@@ -52,7 +44,7 @@ class AppSwitcher extends React.Component {
         <DivStyled>
 
           <Paragraphmobile offSide>
-            Notice! For a better use experience, we recommend that you visit Lunes Wallet for computers or tablets. We're asking you to wait, in an upcoming update, for full mobile device compatibility. Thank you!
+            Notice! For a better use experience, we recommend that you visit Lunes Wallet for computers or tablets. We ask you to wait for full mobile device compatibility in an upcoming update. Thank you!
           </Paragraphmobile>
 
         </DivStyled>
@@ -60,17 +52,19 @@ class AppSwitcher extends React.Component {
     }
 
     return (
-      <Switch>
-        <Route strict path={"/app"} component={App} />
-        <Route exact path={"/"} component={Login} />
-        <Route exact path={"/login"} component={Login} />
-        <Route exact path={"/import"} component={Import} />
-        <Route exact path={"/registry"} component={Registry} />
-        <Route exact path={"/reset"} component={Reset} />
-        <Route render={() => {
-          return <Redirect to="/login"/>;
-        }}/>
-      </Switch>
+      <ErrorBoundary entirePageError>
+        <Switch>
+          <Route strict path={"/app"} component={App} />
+          <Route exact path={"/"} component={Login} />
+          <Route exact path={"/login"} component={Login} />
+          <Route exact path={"/import"} component={Import} />
+          <Route exact path={"/registry"} component={Registry} />
+          <Route exact path={"/reset"} component={Reset} />
+          <Route render={() => {
+            return <Redirect to="/login"/>;
+          }}/>
+        </Switch>
+      </ErrorBoundary>
     );
   }
 }
