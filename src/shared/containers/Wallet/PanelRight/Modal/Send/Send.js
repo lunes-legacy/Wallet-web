@@ -184,7 +184,7 @@ class Send extends React.Component {
 
 		setTimeout(() => {
 			this.animThisComponentIn();
-		}, 500);
+    }, 500);
 
 		this.setState({
 			...this.state,
@@ -264,14 +264,13 @@ class Send extends React.Component {
 			console.error('Failed on trying to get network fees', 500, "SETNETWORKFEES_ERROR");
     }
 
-	    // TODO: remover após padronização do parâmetro para *fee* em todas as moedas no back-end
-	    if (currentNetwork.toLowerCase() === 'eth') {
-	      result.low.data.fee = parseInt(result.low.data.txFee);
-	      result.medium.data.fee = parseInt(result.medium.data.txFee);
-	      result.high.data.fee = parseInt(result.high.data.txFee);
-	      console.warn('RESULT::::', result);
-	      console.warn('STATE.FEES::::', this.state.fees);
-	    }
+    // TODO: remover após padronização do parâmetro para *fee* em todas as moedas no back-end
+    if (currentNetwork.toLowerCase() === 'eth') {
+      result.low.data.fee = parseInt(result.low.data.txFee);
+      result.medium.data.fee = parseInt(result.medium.data.txFee);
+      result.high.data.fee = parseInt(result.high.data.txFee);
+    }
+
 		let fees = {
 			...this.state.fees,
 			low: {
@@ -289,7 +288,9 @@ class Send extends React.Component {
 				value: money.conevertCoin(currentNetwork, result.high.data.fee) || 0,
 				gasPrice: result.high.data.gasPrice
 			}
-	    }
+    }
+
+    console.log('network', currentNetwork)
 
 		this.setState({
 			...this.state,
@@ -297,7 +298,8 @@ class Send extends React.Component {
 				type: 'completed',
 				message: 'Success on getting the estimation'
 			},
-			network: currentNetwork,
+      network: currentNetwork,
+      chosenFee: currentNetwork === 'ltc' ? 'medium' : 'low', // Como LTC tem apenas a medium fee, define ela como a selecionada
 			fees
     });
 
@@ -340,12 +342,14 @@ class Send extends React.Component {
 				isUserAlreadySending: true
 			});
 		}
-		//console.warn("I've passed through here beibi", this.state.isUserAlreadySending);
-		this.ctrlLoading(true);
+
+		await timer(3000);
+
+    this.ctrlLoading(true);
+
 		let coinAmount = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
     let fee = this.state.fees[this.state.chosenFee];
-
 
 		if (address && address.length > 1) {
 			let validateAddress = await this.validateAddress(currentNetwork, address);
@@ -421,7 +425,8 @@ class Send extends React.Component {
 
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let coinAmount = this.state.transferValues.coin;
-		let usdAmount = this.state.transferValues.usd;
+    let usdAmount = this.state.transferValues.usd;
+
     let chosenFeeValue = this.state.fees[this.state.chosenFee].value || 'error';
 
     if (chosenFeeValue !== 'error') {
