@@ -96,7 +96,7 @@ export class WalletClass {
           balances[coin] = await coins.services.balance(coin, addresses[coin], TESTNET);
         } catch (e) {
           // TODO: fix this error
-          console.error('Wallet.js - line 96');
+          console.error(' - line 96');
           console.log(e);
           continue;
         }
@@ -206,7 +206,7 @@ export class WalletClass {
           network: coin,
           testnet: TESTNET,
           toAddress: address,
-          amount: String(parseInt(amountConvert) + parseInt(feeConvert)), // A lib espera uma String, mas para somar deve ser convertido para Int antes
+          amount: String(parseInt(amountConvert)), // A lib espera uma String, mas para somar deve ser convertido para Int antes
           fee: feeConvert
         };
       } else if (coin.search(/eth/i) !== -1){
