@@ -386,12 +386,10 @@ class Send extends React.Component {
     // const feeValue = parseFloat(fee.value);
     const feeValue = parseFloat(feePerByte);
     let feeValueInBTC;
-    if (currentNetwork.search(/btc/i) !== -1)
-      feeValueInBTC = Money.convertCoin('btc',feeValue);
-    else if (currentNetwork.search(/eth/i) !== -1)
+    if (currentNetwork.search(/eth/i) !== -1)
       feeValueInBTC = Money.convertCoin('eth',feeValue);
     else
-      throw errorPattern(`Error on trying to convert ${currentNetwork}'s amount`,500,'MODALSEND_HANDLESEND_ERROR');
+      feeValueInBTC = Money.convertCoin('btc',feeValue);
 
     console.warn('COINAMOUNT | FEEVALUE',coinAmount, feeValue);
 		if (!coinAmount || coinAmount <= feeValueInBTC) {
