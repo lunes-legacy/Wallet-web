@@ -29,13 +29,13 @@ const currenciesReducer = (state = initialState, action) => {
 		case 'CURRENCIES_SET_PRICE_FULFILLED':
 			return {
 				...state,
-				currencies: action.payload
+				currencies: action.payload.data
 			}
 
 		case 'CRYTPO_SET_PRICE_FULFILLED':
 			return {
 				...state,
-				crypto: action.payload
+				crypto: action.payload.data
 			}
 
 		case 'CRYTPO_SET_TX_FULFILLED':

@@ -1,7 +1,16 @@
 // DEFINITION
-const testnet         = 'TRUE';
+const testnet         = 'FALSE';
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const ENV             = 'development'; // AMBIENTE
+
+const EXRATES_API = 'https://exrates.me/public/coinmarketcap/ticker';
+
+let host;
+if (typeof window !== 'undefined')
+  host = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
+else
+  host = 'http://localhost:3010';
+const HOST = host;
 
 // START NETWORK CONFIG
 const APICONFIG 	    = TESTNET === true ? 'LNSTESTNET'  : 'LNS'; //TEMP
@@ -54,5 +63,7 @@ export {
 	LUNES_LEASING_FEE,
 	ENV,
 	BLOCK_EXPLORERS,
-	LUNES_TRANSACTION_FEE
+	LUNES_TRANSACTION_FEE,
+  HOST,
+  EXRATES_API
 }

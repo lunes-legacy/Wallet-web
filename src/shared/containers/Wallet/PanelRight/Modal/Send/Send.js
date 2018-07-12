@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { FeeClass } from 'Classes/crypto';
 import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
@@ -20,7 +19,8 @@ import { InputRadio, WrapRadio, LabelRadio, RadioCheckmark } from 'Components/fo
 import Hr from '../Hr';
 
 // CLASSES
-import { MoneyClass } from 'Classes/Money';
+import { MoneyClass }  from 'Classes/Money';
+import { FeeClass }    from 'Classes/crypto';
 import { WalletClass } from 'Classes/Wallet';
 
 const money = new MoneyClass;
@@ -115,7 +115,8 @@ Todos os estados que precisamos e/ou iremos usar
 		coinPrice,
 	}
 */
-
+const Fee = new FeeClass();
+const Money = new MoneyClass();
 
 class Send extends React.Component {
 	constructor(props) {
@@ -145,11 +146,11 @@ class Send extends React.Component {
 				brl: false,
 				usd: false
 			},
-			// networkFees: {
-			// 	low: undefined,
-			// 	medium: undefined,
-			// 	high: undefined
-			// },
+			feePerByte: {
+				low: undefined,
+				medium: undefined,
+				high: undefined
+			},
 			chosenFee: 'low',
 			feeButtonsStatus: {
 				type: 'initial', //'loading' | 'initial' | 'completed' | 'error'
@@ -177,7 +178,7 @@ class Send extends React.Component {
 			}
 		}
 	}
-	componentDidMount() {
+	componentDidMount = async () => {
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
 		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
 		this.wrapper = ReactDOM.findDOMNode(this.ref.wrapper.current);
@@ -200,6 +201,19 @@ class Send extends React.Component {
 		let amount      = parseFloat(this.state.transferValues.coin);
 		let fromAddress = this.props.walletInfo.addresses[currentNetwork.toLowerCase()];
 		let toAddress   = this.state.sendAddress;
+
+    let feePerByteNetwork = this.state.feePerByte.network;
+    if (!feePerByteNetwork || feePerByteNetwork.toLowerCase() !== currentNetwork.toLowerCase()) {
+      let networkFees = await Fee.getNetworkFees({network: currentNetwork});
+      this.setState({
+        feePerByte: {...networkFees}
+      }, () => {
+        console.warn('feePerByte:::', this.state.feePerByte);
+      });
+      console.warn('NETWORKFEES::::-----------------------------');
+      console.warn('NETWORKFEES::::',networkFees);
+      console.warn('NETWORKFEES::::-----------------------------');
+    }
 
 		if (amount <= 0) {
 			this.setState({
@@ -270,7 +284,6 @@ class Send extends React.Component {
       result.medium.data.fee = parseInt(result.medium.data.txFee);
       result.high.data.fee = parseInt(result.high.data.txFee);
     }
-
 		let fees = {
 			...this.state.fees,
 			low: {
@@ -289,8 +302,6 @@ class Send extends React.Component {
 				gasPrice: result.high.data.gasPrice
 			}
     }
-
-    console.log('network', currentNetwork)
 
 		this.setState({
 			...this.state,
@@ -327,6 +338,10 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
+		// if(this.props.wallet.currentNetwork.search(/(btc)|(ltc)|(dash)/i) !== -1) {
+		//   alert('BTC, LTC and DASH in maintenance');
+		//   return;
+		// }
 		if (this.state.isUserAlreadySending === true) {
 			this.setState({
 				messageUserIsAlreadySending: `You're already sending, hold on until the transaction get finished`
@@ -342,15 +357,16 @@ class Send extends React.Component {
 				isUserAlreadySending: true
 			});
 		}
-
-		await timer(3000);
-
-    this.ctrlLoading(true);
-
-		let coinAmount = parseFloat(this.state.transferValues.coin);
+		//console.warn("I've passed through here beibi", this.state.isUserAlreadySending);
+		this.ctrlLoading(true);
+		let coinAmount     = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
-    let fee = this.state.fees[this.state.chosenFee];
+    let feePerByte     = this.state.feePerByte.data[this.state.chosenFee];
+    let estimatedFee   = this.state.fees[this.state.chosenFee];
 
+    console.warn('feePerByte and estimatedFee__________');
+    console.warn(feePerByte, estimatedFee);
+    console.warn('feePerByte and estimatedFee__________
 		if (address && address.length > 1) {
 			let validateAddress = await this.validateAddress(currentNetwork, address);
 
@@ -367,15 +383,23 @@ class Send extends React.Component {
 			return;
     }
 
-    const feeValue = parseFloat(fee.value);
+    // const feeValue = parseFloat(fee.value);
+    const feeValue = parseFloat(feePerByte);
+    let feeValueInBTC;
+    if (currentNetwork.search(/eth/i) !== -1)
+      feeValueInBTC = Money.convertCoin('eth',feeValue);
+    else
+      feeValueInBTC = Money.convertCoin('btc',feeValue);
 
-		if (!coinAmount || coinAmount <= feeValue.toFixed(8)) {
+    console.warn('COINAMOUNT | FEEVALUE',coinAmount, feeValue);
+		if (!coinAmount || coinAmount <= feeValueInBTC) {
+      console.error(errorPattern('Invalid amount',500,'MODALSEND_HANDLESEND_ERROR'));
 			this.setState({ ...this.state, invalidAmount: true });
 			this.ctrlLoading(false);
 			return;
 		}
 
-		let dataSend = this.transactionSend(address, coinAmount, feeValue, fee.gasPrice);
+		let dataSend = this.transactionSend(address, coinAmount, feePerByte, estimatedFee.gasPrice);
 		this.ctrlLoading(false);
 		setTimeout(() => {
 			this.props.nextStep({ coinAmount, address });
@@ -508,7 +532,7 @@ class Send extends React.Component {
 							fee = fees[key];
 							borderBottom = chosenFee === key ? '5px solid green' : 'none';
 							components.push(
-								<FeeButton style={{ borderBottom }} onClick={() => { this.handleClickFee(key) }} value={fee.value}>{fee.value} <Text txInline style={{color: fee.txColor}}>{fee.textContent}</Text></FeeButton>
+								<FeeButton key={key} style={{ borderBottom }} onClick={() => { this.handleClickFee(key) }} value={fee.value}>{fee.value} <Text txInline style={{color: fee.txColor}}>{fee.textContent}</Text></FeeButton>
 							);
 						}
 						return components;
@@ -632,34 +656,36 @@ class Send extends React.Component {
 		switch (type) {
 			case 'coin':
         amountStatus = (parseFloat(value) + this.state.fees[this.state.chosenFee].value) > balance;
+        amountStatus ? console.error(errorPattern('Invalid amount',500,'MODALSEND_CONVERTCOINS_ERROR')) : null;
+        this.setState({
+          ...this.state,
+          invalidAmount: amountStatus,
+          transferValues: {
+            coin: value,
+            brl: (brlValue * value).toFixed(2),
+            usd: (usdValue * value).toFixed(2)
+          },
+        });
+
+        break;
+      case 'brl':
+        (parseFloat(value) / brlValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
+        amountStatus ? console.error(errorPattern('Invalid amount',500,'MODALSEND_CONVERTCOINS_ERROR')) : null;
 
         this.setState({
-					...this.state,
-					invalidAmount: amountStatus,
-					transferValues: {
-						coin: value,
-						brl: (brlValue * value).toFixed(2),
-						usd: (usdValue * value).toFixed(2)
-					},
-				});
+          ...this.state,
+          invalidAmount: amountStatus,
+          transferValues: {
+            coin: (value / brlValue).toFixed(8),
+            brl: value,
+            usd: ((usdValue * value) / brlValue).toFixed(2)
+          }
+        });
 
-				break;
-			case 'brl':
-				(parseFloat(value) / brlValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
-
-				this.setState({
-					...this.state,
-					invalidAmount: amountStatus,
-					transferValues: {
-						coin: (value / brlValue).toFixed(8),
-						brl: value,
-						usd: ((usdValue * value) / brlValue).toFixed(2)
-					}
-				});
-
-				break;
-			case 'usd':
-				(parseFloat(value) / usdValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
+        break;
+      case 'usd':
+        (parseFloat(value) / usdValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
+        amountStatus ? console.error(errorPattern('Invalid amount',500,'MODALSEND_CONVERTCOINS_ERROR')) : null;
 
 				this.setState({
 					...this.state,

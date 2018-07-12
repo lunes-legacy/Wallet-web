@@ -7,8 +7,8 @@ export class MoneyClass {
       console.error(`We've got ${to} value from variable 'to'`,500,'MONEY_CONVERTCOIN_ERROR');
       return;
     }
-    
-    if (amount === 0) 
+
+    if (amount === 0)
       return amount;
 
     if (!amount) {
@@ -25,6 +25,9 @@ export class MoneyClass {
     } else if (to.search(/(wei)/i) !== -1) {
       return this.convertToWei(amount);
     }
+  }
+  convertCoin = (to, amount) => {
+    return this.conevertCoin(to, amount);
   }
 
   // Converte o valor em UNIS para LUNES

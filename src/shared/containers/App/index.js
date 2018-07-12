@@ -95,8 +95,7 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    this.props.setCurrenciesPrice();
-    this.props.setCryptoPrice();
+
   }
 
   getAddress() {
@@ -131,6 +130,8 @@ class App extends React.Component {
 
     this.setBalances(addresses);
     // this.props.setBalance({ addresses });
+    this.props.setCurrenciesPrice();
+    this.props.setCryptoPrice();
   }
 
   componentDidUpdate() {
