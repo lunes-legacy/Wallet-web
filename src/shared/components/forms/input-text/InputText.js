@@ -27,6 +27,7 @@ let InputText = styled.input.attrs({
 	
 	&::placeholder {
 		color: white;
+		opacity: 0.3;
 		${props => {
 		if (props.phRight) {
 			return 'text-align: right;';
