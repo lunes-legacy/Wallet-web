@@ -1,5 +1,5 @@
 // DEFINITION
-const testnet         = 'TRUE';
+const testnet         = 'FALSE';
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const ENV             = 'development'; // AMBIENTE
 
