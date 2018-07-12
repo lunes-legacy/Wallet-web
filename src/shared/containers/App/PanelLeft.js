@@ -62,6 +62,7 @@ const LinkLogout = styled.div`
   text-align:center;
   transition: .2s;
   opacity: 0.3;
+  z-index: 3;
 
   padding: 10px;
 

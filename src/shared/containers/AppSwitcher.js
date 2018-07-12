@@ -44,7 +44,7 @@ class AppSwitcher extends React.Component {
         <DivStyled>
 
           <Paragraphmobile offSide>
-            Notice! For a better use experience, we recommend that you visit Lunes Wallet for computers or tablets. We're asking you to wait, in an upcoming update, for full mobile device compatibility. Thank you!
+            Notice! For a better use experience, we recommend that you visit Lunes Wallet for computers or tablets. We ask you to wait for full mobile device compatibility in an upcoming update. Thank you!
           </Paragraphmobile>
 
         </DivStyled>

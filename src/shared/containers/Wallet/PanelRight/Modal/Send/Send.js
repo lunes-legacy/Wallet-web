@@ -1,12 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { FeeClass } from 'Classes/crypto';
 import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
 import { TESTNET } from 'Config/constants';
 import { Loading } from 'Components/Loading';
-import { errorPattern } from 'Utils/functions';
+import { errorPattern, timer } from 'Utils/functions';
 
 // REDUX
 import { connect } from 'react-redux';
@@ -20,7 +19,8 @@ import { InputRadio, WrapRadio, LabelRadio, RadioCheckmark } from 'Components/fo
 import Hr from '../Hr';
 
 // CLASSES
-import { MoneyClass } from 'Classes/Money';
+import { MoneyClass }  from 'Classes/Money';
+import { FeeClass }    from 'Classes/crypto';
 import { WalletClass } from 'Classes/Wallet';
 
 const money = new MoneyClass;
@@ -115,12 +115,12 @@ Todos os estados que precisamos e/ou iremos usar
 		coinPrice,
 	}
 */
-
+const Fee = new FeeClass();
+const Money = new MoneyClass();
 
 class Send extends React.Component {
 	constructor(props) {
 		super(props);
-		this.isUserAlreadySending = false; //this will be to forbid the user to send twice
 		this.ref = {};
 		this.ref.radioCoinAmount = React.createRef();
 		this.ref.coinAmount = React.createRef();
@@ -129,6 +129,7 @@ class Send extends React.Component {
 
 		//quantity types: real, dollar, coin
 		this.state = {
+			isUserAlreadySending: false, //this will be to forbid the user to send twice
 			stateButtonSend: 'Enviar',
 			addressIsValid: true,
 			invalidAmount: false,
@@ -145,11 +146,11 @@ class Send extends React.Component {
 				brl: false,
 				usd: false
 			},
-			// networkFees: {
-			// 	low: undefined,
-			// 	medium: undefined,
-			// 	high: undefined
-			// },
+			feePerByte: {
+				low: undefined,
+				medium: undefined,
+				high: undefined
+			},
 			chosenFee: 'low',
 			feeButtonsStatus: {
 				type: 'initial', //'loading' | 'initial' | 'completed' | 'error'
@@ -177,14 +178,14 @@ class Send extends React.Component {
 			}
 		}
 	}
-	componentDidMount() {
+	componentDidMount = async () => {
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
 		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
 		this.wrapper = ReactDOM.findDOMNode(this.ref.wrapper.current);
 
 		setTimeout(() => {
 			this.animThisComponentIn();
-		}, 500);
+    }, 500);
 
 		this.setState({
 			...this.state,
@@ -200,6 +201,19 @@ class Send extends React.Component {
 		let amount      = parseFloat(this.state.transferValues.coin);
 		let fromAddress = this.props.walletInfo.addresses[currentNetwork.toLowerCase()];
 		let toAddress   = this.state.sendAddress;
+
+    let feePerByteNetwork = this.state.feePerByte.network;
+    if (!feePerByteNetwork || feePerByteNetwork.toLowerCase() !== currentNetwork.toLowerCase()) {
+      let networkFees = await Fee.getNetworkFees({network: currentNetwork});
+      this.setState({
+        feePerByte: {...networkFees}
+      }, () => {
+        console.warn('feePerByte:::', this.state.feePerByte);
+      });
+      console.warn('NETWORKFEES::::-----------------------------');
+      console.warn('NETWORKFEES::::',networkFees);
+      console.warn('NETWORKFEES::::-----------------------------');
+    }
 
 		if (amount <= 0) {
 			this.setState({
@@ -264,14 +278,12 @@ class Send extends React.Component {
 			console.error('Failed on trying to get network fees', 500, "SETNETWORKFEES_ERROR");
     }
 
-	    // TODO: remover após padronização do parâmetro para *fee* em todas as moedas no back-end
-	    if (currentNetwork.toLowerCase() === 'eth') {
-	      result.low.data.fee = parseInt(result.low.data.txFee);
-	      result.medium.data.fee = parseInt(result.medium.data.txFee);
-	      result.high.data.fee = parseInt(result.high.data.txFee);
-	      console.warn('RESULT::::', result);
-	      console.warn('STATE.FEES::::', this.state.fees);
-	    }
+    // TODO: remover após padronização do parâmetro para *fee* em todas as moedas no back-end
+    if (currentNetwork.toLowerCase() === 'eth') {
+      result.low.data.fee = parseInt(result.low.data.txFee);
+      result.medium.data.fee = parseInt(result.medium.data.txFee);
+      result.high.data.fee = parseInt(result.high.data.txFee);
+    }
 		let fees = {
 			...this.state.fees,
 			low: {
@@ -289,7 +301,7 @@ class Send extends React.Component {
 				value: money.conevertCoin(currentNetwork, result.high.data.fee) || 0,
 				gasPrice: result.high.data.gasPrice
 			}
-	    }
+    }
 
 		this.setState({
 			...this.state,
@@ -297,7 +309,8 @@ class Send extends React.Component {
 				type: 'completed',
 				message: 'Success on getting the estimation'
 			},
-			network: currentNetwork,
+      network: currentNetwork,
+      chosenFee: currentNetwork === 'ltc' ? 'medium' : 'low', // Como LTC tem apenas a medium fee, define ela como a selecionada
 			fees
     });
 
@@ -325,24 +338,35 @@ class Send extends React.Component {
 	}
 
 	handleSend = async (address) => {
-    if(this.props.wallet.currentNetwork.search(/(btc)|(ltc)|(dash)/i) !== -1) {
-      alert('BTC, LTC and DASH in maintenance');
-      return;
-    }
-		//console.warn('IS USER SENDING?', this.isUserAlreadySending);
-		if (this.isUserAlreadySending === true) {
-			alert('Você já está enviando, aguarde...');
+		// if(this.props.wallet.currentNetwork.search(/(btc)|(ltc)|(dash)/i) !== -1) {
+		//   alert('BTC, LTC and DASH in maintenance');
+		//   return;
+		// }
+		if (this.state.isUserAlreadySending === true) {
+			this.setState({
+				messageUserIsAlreadySending: `You're already sending, hold on until the transaction get finished`
+			});
+			setTimeout(() => {
+				this.setState({
+					messageUserIsAlreadySending: ''
+				});
+			}, 3000);
 			return;
 		} else {
-			this.isUserAlreadySending = true;
+			this.setState({
+				isUserAlreadySending: true
+			});
 		}
-		//console.warn("I've passed through here beibi", this.isUserAlreadySending);
+		//console.warn("I've passed through here beibi", this.state.isUserAlreadySending);
 		this.ctrlLoading(true);
-		let coinAmount = parseFloat(this.state.transferValues.coin);
+		let coinAmount     = parseFloat(this.state.transferValues.coin);
 		let currentNetwork = this.props.wallet.currentNetwork;
-    let fee = this.state.fees[this.state.chosenFee];
+    let feePerByte     = this.state.feePerByte.data[this.state.chosenFee];
+    let estimatedFee   = this.state.fees[this.state.chosenFee];
 
-
+    console.warn('feePerByte and estimatedFee__________');
+    console.warn(feePerByte, estimatedFee);
+    console.warn('feePerByte and estimatedFee__________');
 		if (address && address.length > 1) {
 			let validateAddress = await this.validateAddress(currentNetwork, address);
 
@@ -359,17 +383,23 @@ class Send extends React.Component {
 			return;
     }
 
-    const feeValue = parseFloat(fee.value);
+    // const feeValue = parseFloat(fee.value);
+    const feeValue = parseFloat(feePerByte);
+    let feeValueInBTC;
+    if (currentNetwork.search(/eth/i) !== -1)
+      feeValueInBTC = Money.convertCoin('eth',feeValue);
+    else
+      feeValueInBTC = Money.convertCoin('btc',feeValue);
 
-		if (!coinAmount || coinAmount <= feeValue.toFixed(8)) {
+    console.warn('COINAMOUNT | FEEVALUE',coinAmount, feeValue);
+		if (!coinAmount || coinAmount <= feeValueInBTC) {
+      console.error(errorPattern('Invalid amount',500,'MODALSEND_HANDLESEND_ERROR'));
 			this.setState({ ...this.state, invalidAmount: true });
 			this.ctrlLoading(false);
 			return;
 		}
-		
-		console.warn('FEE.GASPRICE:::', fee);
-		console.warn('FEEVALUE:::', feeValue);
-		let dataSend = this.transactionSend(address, coinAmount, feeValue, fee.gasPrice);
+
+		let dataSend = this.transactionSend(address, coinAmount, feePerByte, estimatedFee.gasPrice);
 		this.ctrlLoading(false);
 		setTimeout(() => {
 			this.props.nextStep({ coinAmount, address });
@@ -419,7 +449,8 @@ class Send extends React.Component {
 
 		let currentNetwork = this.props.wallet.currentNetwork;
 		let coinAmount = this.state.transferValues.coin;
-		let usdAmount = this.state.transferValues.usd;
+    let usdAmount = this.state.transferValues.usd;
+
     let chosenFeeValue = this.state.fees[this.state.chosenFee].value || 'error';
 
     if (chosenFeeValue !== 'error') {
@@ -501,7 +532,7 @@ class Send extends React.Component {
 							fee = fees[key];
 							borderBottom = chosenFee === key ? '5px solid green' : 'none';
 							components.push(
-								<FeeButton style={{ borderBottom }} onClick={() => { this.handleClickFee(key) }} value={fee.value}>{fee.value} <Text txInline style={{color: fee.txColor}}>{fee.textContent}</Text></FeeButton>
+								<FeeButton key={key} style={{ borderBottom }} onClick={() => { this.handleClickFee(key) }} value={fee.value}>{fee.value} <Text txInline style={{color: fee.txColor}}>{fee.textContent}</Text></FeeButton>
 							);
 						}
 						return components;
@@ -592,7 +623,9 @@ class Send extends React.Component {
 			message: 'Success on sending transaction',
 			txid: txid
 		});
-		this.isUserAlreadySending = false;
+		this.setState({
+			isUserAlreadySending: false
+		});
 	}
 
 	clearFields() {
@@ -623,34 +656,36 @@ class Send extends React.Component {
 		switch (type) {
 			case 'coin':
         amountStatus = (parseFloat(value) + this.state.fees[this.state.chosenFee].value) > balance;
+        amountStatus ? console.error(errorPattern('Invalid amount',500,'MODALSEND_CONVERTCOINS_ERROR')) : null;
+        this.setState({
+          ...this.state,
+          invalidAmount: amountStatus,
+          transferValues: {
+            coin: value,
+            brl: (brlValue * value).toFixed(2),
+            usd: (usdValue * value).toFixed(2)
+          },
+        });
+
+        break;
+      case 'brl':
+        (parseFloat(value) / brlValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
+        amountStatus ? console.error(errorPattern('Invalid amount',500,'MODALSEND_CONVERTCOINS_ERROR')) : null;
 
         this.setState({
-					...this.state,
-					invalidAmount: amountStatus,
-					transferValues: {
-						coin: value,
-						brl: (brlValue * value).toFixed(2),
-						usd: (usdValue * value).toFixed(2)
-					},
-				});
+          ...this.state,
+          invalidAmount: amountStatus,
+          transferValues: {
+            coin: (value / brlValue).toFixed(8),
+            brl: value,
+            usd: ((usdValue * value) / brlValue).toFixed(2)
+          }
+        });
 
-				break;
-			case 'brl':
-				(parseFloat(value) / brlValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
-
-				this.setState({
-					...this.state,
-					invalidAmount: amountStatus,
-					transferValues: {
-						coin: (value / brlValue).toFixed(8),
-						brl: value,
-						usd: ((usdValue * value) / brlValue).toFixed(2)
-					}
-				});
-
-				break;
-			case 'usd':
-				(parseFloat(value) / usdValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
+        break;
+      case 'usd':
+        (parseFloat(value) / usdValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
+        amountStatus ? console.error(errorPattern('Invalid amount',500,'MODALSEND_CONVERTCOINS_ERROR')) : null;
 
 				this.setState({
 					...this.state,
@@ -672,6 +707,8 @@ class Send extends React.Component {
 			<Row css={CssWrapper} ref={this.ref.wrapper}>
 				<link rel="preload" href="/img/app_wallet/modal_send/sprite_animation_done.png" as="image"/>
 				<Col s={9} m={9} l={9}>
+					{/*When user is already sending a transaction*/}
+					{ this.state.messageUserIsAlreadySending ? <Text clWhite txCenter>{this.state.messageUserIsAlreadySending}</Text> : '' }
 					{/*FIRST ROW*/}
 					<Row css={FirstRowCss}>
 						<Col offset={'s3'} s={6} m={6} l={6}>
@@ -807,7 +844,12 @@ class Send extends React.Component {
 
 						{ this._renderFeeButtons() }
 						{ this._renderFeeTotal() }
-
+						{/*When user is already sending a transaction*/}
+						{
+              this.state.messageUserIsAlreadySending ?
+              <Col><Text clWhite txCenter margin={'1.5rem 0 0 0'}>{this.state.messageUserIsAlreadySending}</Text></Col> :
+              ''
+            }
 					</Row>
 				</Col>
 				<Col defaultAlign={'center'} s={6} m={3} l={2}>

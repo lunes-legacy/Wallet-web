@@ -51,8 +51,7 @@ const arrangeUniqueNetworkBalance = (balance, state) => {
   let { network } = balance;
   let { confirmed, unconfirmed } = balance.data;
   let upperCasedNetwork = network.toUpperCase();
-  console.warn('arrange network', network);
-  console.warn('arrange confirmed', confirmed);
+
   return {
     coinName: state[upperCasedNetwork].coinName,
     img: state[upperCasedNetwork].img,
@@ -66,12 +65,10 @@ const balanceReducer = (state = initialState, action) => {
   switch (action.type) {
     case "WALLET_SET_BALANCE":
       return state;
-    case 'WALLET_SET_UNIQUE_BALANCE_REJECTED': 
-      return state;  
+    case 'WALLET_SET_UNIQUE_BALANCE_REJECTED':
+      return state;
     case 'WALLET_SET_UNIQUE_BALANCE_FULFILLED':
       let balance = arrangeUniqueNetworkBalance(action.payload, state);
-      console.warn('BALANCE::', balance);
-      console.warn('PAYLOAD::', action.payload);
       state = {
         ...state,
         [action.payload.network]: {

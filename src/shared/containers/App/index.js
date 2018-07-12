@@ -8,10 +8,10 @@ import { decrypt } from "../../utils/crypt";
 
 // REDUX
 import { connect } from "react-redux";
-import { 
-  setBalance, 
-  setCurrenciesPrice, 
-  setCryptoPrice, 
+import {
+  setBalance,
+  setCurrenciesPrice,
+  setCryptoPrice,
   setUniqueBalance } from "Redux/actions";
 
 //COMPONENTS
@@ -95,8 +95,7 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-    this.props.setCurrenciesPrice();
-    this.props.setCryptoPrice();
+
   }
 
   getAddress() {
@@ -128,9 +127,11 @@ class App extends React.Component {
   }
   componentDidMount() {
     let addresses = this.getAddress();
-    console.warn('ADDRESSES::::',addresses);
+
     this.setBalances(addresses);
     // this.props.setBalance({ addresses });
+    this.props.setCurrenciesPrice();
+    this.props.setCryptoPrice();
   }
 
   componentDidUpdate() {
@@ -176,7 +177,7 @@ class App extends React.Component {
         </div>
       );
     }
-    
+
     let { crypto } = this.props.currencies;
 
     let usdCurrent = crypto.LNS.USD;

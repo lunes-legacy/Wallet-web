@@ -8,17 +8,23 @@ import { StaticRouter, Router } from 'react-router';
 import express            from 'express';
 import { ServerStyleSheet } from 'styled-components'
 import CookieClass        from 'Classes/Cookie';
-import { users }          from 'lunes-lib';
+import { users, coins }          from 'lunes-lib';
 
 import { errorPattern } from 'Utils/functions';
 import { store }        from 'Redux/stores';
 import App              from 'Containers/App/index';
 import AppSwitcher      from 'Containers/AppSwitcher';
 import helmet           from 'helmet';
+import bodyParser       from 'body-parser';
 
 const app = express();
 
 app.use(helmet());
+
+app.use(bodyParser.json({ extended: true }));
+
+let routes = require('./routes');
+routes(app);
 
 app.use(express.static('public'));
 
@@ -60,6 +66,7 @@ app.use((req, res, next) => {
 	next();
 });
 global.window = {};
+
 app.get('*', (req, res) => {
 	let sheet = new ServerStyleSheet();
 	try {
