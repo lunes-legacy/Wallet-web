@@ -157,21 +157,6 @@ class LeasingModal extends Component {
           this.showError(err.message);
           return console.error(err)
         });
-
-        const leasing = new LeasingClass();
-
-        leasing.startLease(leaseData)
-            .then(res => {
-                if (res.code) {
-                    throw res;
-                }
-                this.setState({ ...this.state, loading: false });
-                return this.showSuccess();
-            }).catch(err => {
-                this.setState({ ...this.state, loading: false });
-                this.showError(err.message);
-                return console.error(err)
-            });
     }
 
     // Chama o envento da modal
