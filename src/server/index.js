@@ -15,10 +15,13 @@ import { store }        from 'Redux/stores';
 import App              from 'Containers/App/index';
 import AppSwitcher      from 'Containers/AppSwitcher';
 import helmet           from 'helmet';
+import bodyParser       from 'body-parser';
 
 const app = express();
 
 app.use(helmet());
+
+app.use(bodyParser.json({ extended: true }));
 
 let routes = require('./routes');
 routes(app);

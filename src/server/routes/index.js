@@ -1,15 +1,17 @@
-import { 
-	Currencies as CurrenciesClass,
-	Currency as CurrencyClass
+import {
+	Cryptocurrency as CryptoController,
+	Currency as CurrencyController
 } from './../controllers';
 
-const Currencies = new CurrenciesClass();
-const Currency  = new CurrencyClass();
+const Crypto    = new CryptoController;
+const Currency  = new CurrencyController;
 
 module.exports = (app) => {
 	return (() => {
-		app.get('/currency/price',        Currency.getPrice);
-		app.get('/currencies/price',      Currencies.getPrice);
+    app.post('/currencies/price', Currency.getPrices);
+		app.post('/currency/price',   Currency.getPrice);
+    app.post('/crypto/price',     Crypto.getPrice);
+		app.post('/cryptos/price',    Crypto.getPrices);
 		// app.get('/address/history',   Address.getHistory);
 		// app.get('/addresses/history', Addresses.getHistory);
 		// app.get('/address/balance',   Address.getBalance);

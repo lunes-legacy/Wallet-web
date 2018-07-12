@@ -36,14 +36,14 @@ const WrapCoinPercent = styled.div`
 
 const CoinPercent = styled.div`
   ${TextBase}
-  
+
   width: 130px;
   height: 52px;
-  border-radius: 10px; 
+  border-radius: 10px;
   color: white;
   text-align: center;
   padding: 15px 25px 25px 25px;
-  
+
   @media (${style.media.tablet2}) {
     font-size: 2rem;
   }
@@ -79,37 +79,35 @@ class CoinGraph extends React.Component {
     };
   }
 
-  componentDidMount() {    
+  componentDidMount() {
     this.coinGraphHistory(this.state.currentNetwork);
   }
 
-  coinGraphHistory(currentNetwork) {
+  coinGraphHistory = async (currentNetwork) => {
     try {
 
       this.setState({
         ...this.state,
         currentNetwork: currentNetwork
-      });  
+      });
 
       // GRAPH
       let graphData = { fromSymbol: currentNetwork, toSymbol: "USD", range: "RANGE_1D" };
-      let wallet = new WalletClass().getCoinHistory(graphData)
-        .then((res) => {
+      let res       = await new WalletClass().getCoinHistory(graphData)
+      // PERCENT
+      let coinPrices      = this.convertTimestampToDate(res.data)
+      let coinPriceLength = coinPrices.length;
+      // let firstValueCoin = coinPrices[0].close;
+      let firstValueCoin   = 0;
+      let currentValueCoin = coinPrices[coinPriceLength - 1].close;
 
-          // PERCENT
-          let coinPrices = this.convertTimestampToDate(res.data)
-          let coinPriceLength = coinPrices.length;
-          let firstValueCoin = coinPrices[0].close;
-          let currentValueCoin = coinPrices[coinPriceLength - 1].close;
-
-          this.setState( () => {
-            return {
-              ...this.state,
-              history_time_price: coinPrices,
-              coin_percent: (currentValueCoin * 100 / firstValueCoin - 100).toFixed(2)
-            }
-          });
-        });
+      this.setState( () => {
+        return {
+          ...this.state,
+          history_time_price: coinPrices,
+          coin_percent: (currentValueCoin * 100 / firstValueCoin - 100).toFixed(2)
+        }
+      });
     } catch (error) {
       console.log(error)
     }
@@ -121,7 +119,7 @@ class CoinGraph extends React.Component {
 
       let months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
-      timeStamp.time = `${date.getDate()} / ${months[date.getMonth()]} / ${date.getFullYear()}  
+      timeStamp.time = `${date.getDate()} / ${months[date.getMonth()]} / ${date.getFullYear()}
       ${(date.getHours() < 10 ? "0" : "") + date.getHours()}:${(date.getMinutes() < 10 ? "0" : "") +
         date.getMinutes()}`;
     });

@@ -1,7 +1,6 @@
-import Currencies from './Currencies';
-import Currency from './Currency';
+import { Currency, Cryptocurrency } from './Currencies';
 
 export {
 	Currency,
-	Currencies
+	Cryptocurrency
 }
