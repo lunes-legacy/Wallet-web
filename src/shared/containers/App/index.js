@@ -8,7 +8,11 @@ import { decrypt } from "../../utils/crypt";
 
 // REDUX
 import { connect } from "react-redux";
-import { setBalance, setCurrenciesPrice, setCryptoPrice } from "Redux/actions";
+import {
+  setBalance,
+  setCurrenciesPrice,
+  setCryptoPrice,
+  setUniqueBalance } from "Redux/actions";
 
 //COMPONENTS
 import Home from "Containers/Home/index";
@@ -60,13 +64,13 @@ let Logo = styled.img`
   width: 100px;
   padding-top: 0.5rem;
 `;
-let Version = styled.div`  
+let Version = styled.div`
   border-left: 2px solid #4CD566;
   float: right;
   margin-left: 1rem;
   padding: 1rem;
   color: #4CD566;
-  font-size: 20px;  
+  font-size: 20px;
   font-weight: 700;
 `;
 
@@ -82,11 +86,16 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     numeral.locale(this.props.currencies.locale);
+    this.state = {
+      render: {
+        status: 'initial',
+        message: ''
+      }
+    }
   }
 
   componentWillMount() {
-    this.props.setCurrenciesPrice();
-    this.props.setCryptoPrice();
+
   }
 
   getAddress() {
@@ -97,9 +106,32 @@ class App extends React.Component {
       }
     }
   }
-
+  setBalances = (addresses) => {
+    let upperCasedKey;
+    let currentAddress;
+    for (let key in addresses) {
+      currentAddress = addresses[key];
+      upperCasedKey  = key.toUpperCase();
+      this.props.setUniqueBalance({address: currentAddress, network: upperCasedKey});
+    }
+  }
+  componentDidCatch(err, info) {
+    console.error('ERROR::',err);
+    console.error('INFO::', info);
+    this.setState({
+      render: {
+        status: 'error',
+        message: `Fatal error on trying to access ${this.props.location.pathname}`
+      }
+    });
+  }
   componentDidMount() {
-    this.props.setBalance({ addresses: this.getAddress() });
+    let addresses = this.getAddress();
+
+    this.setBalances(addresses);
+    // this.props.setBalance({ addresses });
+    this.props.setCurrenciesPrice();
+    this.props.setCryptoPrice();
   }
 
   componentDidUpdate() {
@@ -125,7 +157,7 @@ class App extends React.Component {
 
     if (!accessToken) {
       err += 1;
-    } 
+    }
 
     if(err > 0) {
       localStorage.clear();
@@ -133,11 +165,19 @@ class App extends React.Component {
       location.reload();
       return false;
     }
-    
+
     return true;
   }
 
   render() {
+    if (this.state.render.status === 'error') {
+      return (
+        <div style={{height: '100vh', color:'white', display: 'flex', justifyContent:'center',alignItems:'center'}}>
+          <h1>{this.state.render.message}</h1>
+        </div>
+      );
+    }
+
     let { crypto } = this.props.currencies;
 
     let usdCurrent = crypto.LNS.USD;
@@ -160,7 +200,7 @@ class App extends React.Component {
                 Balance:{" "}
               </Text>
               <Text clNormalGreen txNormal txInline offSide size={"2.3rem"}>
-                LNS{" "}
+                LUNES{" "}
               </Text>
               <Text clWhite txNormal txInline offSide size={"2.0rem"}>
                 {lnsBalance}
@@ -214,6 +254,9 @@ const mapDispatchToProps = dispatch => {
     setBalance: data => {
       dispatch(setBalance(data));
     },
+    setUniqueBalance: data => {
+      dispatch(setUniqueBalance(data));
+    }
   };
 };
 

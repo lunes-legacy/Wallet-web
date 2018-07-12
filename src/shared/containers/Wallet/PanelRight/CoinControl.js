@@ -129,7 +129,7 @@ class CoinControl extends React.Component {
   onModalSendClick() {
     let { currentNetwork } = this.props.component.wallet;
     this.props.setCryptoTx(currentNetwork);
-    this.props.setBalance({ addresses: this.props.addresses });
+    // this.props.setBalance({ addresses: this.props.addresses });
     this.props.setCurrenciesPrice();
     this.props.setCryptoPrice();
   }
@@ -167,7 +167,7 @@ class CoinControl extends React.Component {
         <Row overflowHidden>
           <Col s={12} m={6} l={8}>
             <WrapAmount>
-              <Amount offSide>{ this.props.component.wallet.currentNetwork.toUpperCase() } { numeral(this.props.balance[this.props.component.wallet.currentNetwork.toUpperCase()].total_confirmed).format('0,0.0000') }</Amount>
+              <Amount offSide>{ currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase() } { numeral(this.props.balance[currentNetwork.toUpperCase()].total_confirmed).format('0,0.0000') }</Amount>
               <Usd>USD { usdCoinAmount }</Usd>
               <Divisor />
               <Brl>BRL { brlCoinAmount }</Brl>

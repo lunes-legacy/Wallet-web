@@ -11,7 +11,9 @@ let initialState = {
 	crypto: {
 		BTC: { USD: 0, BRL: 0, EUR: 0 },
 		ETH: { USD: 0, BRL: 0, EUR: 0 },
-		LNS: { USD: 0, BRL: 0, EUR: 0 }
+		LNS: { USD: 0, BRL: 0, EUR: 0 },
+		LTC: { USD: 0, BRL: 0, EUR: 0 },
+		DASH: { USD: 0, BRL: 0, EUR: 0 }
 	},
 	cryptoTx: {
 		LNS: { high: 0, medium: 0, low: 0 },
@@ -27,13 +29,13 @@ const currenciesReducer = (state = initialState, action) => {
 		case 'CURRENCIES_SET_PRICE_FULFILLED':
 			return {
 				...state,
-				currencies: action.payload
+				currencies: action.payload.data
 			}
 
 		case 'CRYTPO_SET_PRICE_FULFILLED':
 			return {
 				...state,
-				crypto: action.payload
+				crypto: action.payload.data
 			}
 
 		case 'CRYTPO_SET_TX_FULFILLED':

@@ -17,7 +17,7 @@ import { ButtonGreen } from "Components/Buttons";
 const Container = styled.div`
   text-align: center;
   padding: 50px 50px;
-  width: 100%;  
+  width: 100%;
 `;
 
 const MainRectangle = styled.div`
@@ -27,13 +27,13 @@ const MainRectangle = styled.div`
   width: 299px;
   border-radius: 10px;
   background-color: #442181;
-  box-shadow: 0 2px 12px 9px rgba(0,0,0,0.05);  
+  box-shadow: 0 2px 12px 9px rgba(0,0,0,0.05);
 `;
 
 const Icon = styled.img`
   margin-top: 10px;
   height: 50px;
-  
+
 `;
 
 const TextRectangle = styled.div`
@@ -41,10 +41,10 @@ const TextRectangle = styled.div`
   width: 100%;
   height: 96px;
   text-align: center;
-  
+
 `;
 const Paragraph = styled.div`
-line-height: 1.5; 
+line-height: 1.5;
 font-size: 1.4rem;
 color: white;
 text-align: center;
@@ -58,7 +58,7 @@ class Home extends React.Component {
   }
 
   componentDidMount() {
-    this.props.setBalance({ addresses: this.getAddress() });
+    // this.props.setBalance({ addresses: this.getAddress() });
   }
 
   getAddress() {
@@ -93,7 +93,7 @@ class Home extends React.Component {
           </H1>
           <TextRectangle>
             <Paragraph fontSize={"1.4rem"} txCenter clWhite>
-              Lend the forging power of your LNS to nodes and guarantee up to 5% per year with no risk.
+              Lend the forging power of your LUNES to nodes and guarantee up to 5% per year with no risk.
             </Paragraph>
           </TextRectangle>
           <ButtonGreen width="97px" margin={"3rem auto 0.8rem auto"} onClick={() => this.props.history.push('/app/leasing')}>

@@ -27,19 +27,19 @@ const Input = styled.input`
 	width: 80%;
 `;
 
-class CoinsAddress extends React.Component { 
+class CoinsAddress extends React.Component {
 	render() {
 		return (
 			ENABLEDCOINS.map( coin => {
         return (
 					<CoinAddress key={coin.coinKey}>
 						<Row defaultAlign="left">
-							<H1 txBold clWhite width={'85px'} padding={'1.2rem 0 0 0'}> 
+							<H1 txBold clWhite width={'85px'} padding={'1.2rem 0 0 0'}>
 								{ coin.coinName }:
 							</H1>
-							<Input disabled type="text" placeholder="Carregando..." value={ this.props.walletInfo.addresses[coin.coinKey] ? this.props.walletInfo.addresses[coin.coinKey] : coin.address } />
+							<Input disabled type="text" placeholder="Loading..." value={ this.props.walletInfo.addresses[coin.coinKey] ? this.props.walletInfo.addresses[coin.coinKey] : coin.address } />
 						</Row>
-					</CoinAddress>	
+					</CoinAddress>
         )
       })
 		);

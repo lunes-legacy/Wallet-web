@@ -17,6 +17,7 @@ import {
   ReceiveButtonModalCss,
   IconAction,
   ReceiveLabelTextCss,
+  ReceiverAddressCopiedCss
 } from "./css";
 
 
@@ -31,15 +32,23 @@ class ModalReceive extends React.Component {
   }
 
   componentDidMount() {
+    
     this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
-
     this.makeQrCode();
+    
+  }
+
+  componentDidUpdate() {
+    this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
+    this.makeQrCode();
+    
   }
 
   getCurrentAddress = () => {
     let currentNetwork = this.props.currentNetwork;
     let address = this.props.addresses;
     return address[currentNetwork];
+    
   };
 
   makeQrCode = () => {
@@ -63,7 +72,15 @@ class ModalReceive extends React.Component {
     element.select();
     document.execCommand("copy");
     document.body.removeChild(element);
-    alert("Copiado com sucesso!");
+    const addressCopied = document.querySelector('#address-copied');
+
+    // Exibe a mensagem que o endereço foi copiado para a área de transferência
+    addressCopied.style.visibility = 'visible';
+
+    // Esconde a mensagem de endereço copiado
+    setTimeout(() => {
+      addressCopied.style.visibility = 'hidden';
+    }, 3000);
   };
 
   toggleModalReceived = isShow => {
@@ -72,6 +89,7 @@ class ModalReceive extends React.Component {
 
   _handleClickClose = (event) => {
     let modal = document.querySelector('.js-modal-receive');
+    //this.props.dispatch({});
     toggleModal(modal);
     /*{className={'js-modal-send'}}*/
   }
@@ -97,6 +115,9 @@ class ModalReceive extends React.Component {
             </Row>
             <Row>
               <ReceiveLabelTextCss>COPY THIS ADDRESS</ReceiveLabelTextCss>
+            </Row>
+            <Row>
+              <ReceiverAddressCopiedCss id="address-copied">Address copied to the clipboard</ReceiverAddressCopiedCss>
             </Row>
             <Row>
               <ReceiveButtonModalCss color={style.coinsColor[currentNetwork]} onClick={() => this.copyPaymentAddress()}>

@@ -1,7 +1,16 @@
 // DEFINITION
-const testnet         = 'TRUE'; 
+const testnet         = 'FALSE';
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const ENV             = 'development'; // AMBIENTE
+
+const EXRATES_API = 'https://exrates.me/public/coinmarketcap/ticker';
+
+let host;
+if (typeof window !== 'undefined')
+  host = window.location.protocol + '//' + window.location.hostname + ':' + window.location.port;
+else
+  host = 'http://localhost:3010';
+const HOST = host;
 
 // START NETWORK CONFIG
 const APICONFIG 	    = TESTNET === true ? 'LNSTESTNET'  : 'LNS'; //TEMP
@@ -18,15 +27,27 @@ const ETHNETWORK      = TESTNET === true ? 'ROPSTEN'     : 'ETH';
 const ENABLEDCOINS = [
 	{ 'coinKey': 'lns', 'coinName':  'Lunes', 'address': '' },
 	{ 'coinKey': 'btc', 'coinName':  'BTC', 'address': '' },
-	// { 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
-	// { 'coinKey': 'ltc', 'coinName':  'LTC', 'address': 'Soon...' },
+	{ 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
+	{ 'coinKey': 'ltc', 'coinName':  'LTC', 'address': '' },
 	// { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
-	// { 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
+	{ 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
 ]
+
+// URLs para o blockexplorer de cada moeda de acordo com a rede utilizada
+const BLOCK_EXPLORERS = {
+  lns: TESTNET ? 'https://blockexplorer-testnet.lunes.io/' : 'https://blockexplorer.lunes.io/',
+  lunes: TESTNET ? 'https://blockexplorer-testnet.lunes.io/' : 'https://blockexplorer.lunes.io/',
+  btc: 'https://www.chain.so/',
+  ltc: 'https://www.chain.so/',
+  nano: 'https://www.chain.so/',
+  dash: 'https://www.chain.so/',
+  eth: TESTNET ? 'https://ropsten.etherscan.io/' : 'https://etherscan.io/'
+}
 
 const LUNES_LIB_ENV   = 'staging'; //'staging' || 'development' || 'production'
 const LUNES_LIB_LOGIN = 'manual'//| 'auto' || 'manual', isso serve para fazer login automático para nao ficar apertando o botão de login sempre
 const LUNES_LEASING_FEE = 0.001;
+const LUNES_TRANSACTION_FEE = 0.001;
 
 export {
 	TESTNET,
@@ -38,7 +59,11 @@ export {
 	ETHNETWORK,
 	ENABLEDCOINS,
 	LUNES_LIB_ENV,
-  LUNES_LIB_LOGIN,
-  LUNES_LEASING_FEE,
-	ENV
+	LUNES_LIB_LOGIN,
+	LUNES_LEASING_FEE,
+	ENV,
+	BLOCK_EXPLORERS,
+	LUNES_TRANSACTION_FEE,
+  HOST,
+  EXRATES_API
 }

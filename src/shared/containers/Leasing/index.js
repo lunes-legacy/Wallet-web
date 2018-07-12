@@ -7,7 +7,8 @@ import { decrypt } from "../../utils/crypt";
 // REDUX
 import { connect } from "react-redux";
 import { setBalance, setCurrenciesPrice, setCryptoPrice } from "Redux/actions";
-
+//COMPONENTS
+import { ErrorBoundary } from 'Components';
 import PanelLeft from './PanelLeft';
 import PanelRight from './PanelRight';
 import ModalLeasing from "./modal/index";
@@ -30,7 +31,7 @@ class Leasing extends React.Component {
   }
 
   componentDidMount() {
-    this.props.setBalance({ addresses: this.getAddress() });
+    // this.props.setBalance({ addresses: this.getAddress() });
   }
 
   getAddress() {
@@ -43,8 +44,12 @@ class Leasing extends React.Component {
 	render() {
 		return(
 			<Panels>
-				<PanelLeft />
-				<PanelRight />
+        <ErrorBoundary>
+          <PanelLeft />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <PanelRight />
+        </ErrorBoundary>
 			</Panels>
 		);
 	}

@@ -44,9 +44,9 @@ const Coin = styled.div`
   transition: .3s;
 
   &:hover {
-    -webkit-transform:scale(1); 
-    -moz-transform:scale(1); 
-    -o-transform:scale(1); 
+    -webkit-transform:scale(1);
+    -moz-transform:scale(1);
+    -o-transform:scale(1);
     transform:scale(1);
     box-shadow: 5px 0px 22px 5px rgba(0, 0, 0, 0.09);
     margin-right: -20px;
@@ -186,20 +186,22 @@ class Coins extends React.Component {
     if (!balance || !crypto || !currencies) {
       return <Loading />;
     }
-    
+
     let components = [];
     for (let coinKey in balance) {
       let { crypto }  = this.props.currencies;
+      if (!crypto[coinKey]) continue;
       let usdCurrent = crypto[coinKey].USD
       let coinAmount = this.props.balance[coinKey].total_confirmed;
       let coinBalance = numeral(coinAmount).format('0,0.000');
       let usdBalance = numeral(coinAmount * usdCurrent).format('0,0.000');
+
       let tmp = (
         <Coin
           key={coinKey}
           onClick={() => {
             this.props.setCryptoTx(coinKey);
-            this.props.openPanelRight({currentNetwork: coinKey.toLowerCase()}); 
+            this.props.openPanelRight({currentNetwork: coinKey.toLowerCase()});
             this.props.togglePanelLeft();
             this.props.setTxHistory({ network: coinKey.toUpperCase(), address: this.props.walletInfo.addresses[coinKey.toLowerCase()] });
           }}
@@ -209,7 +211,7 @@ class Coins extends React.Component {
           </WrapCoinImg>
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>
-              { coinKey } 
+              { coinKey == 'LNS' ? 'LUNES' : coinKey } 
               { coinBalance }
             </CoinAmount>
             <CoinValue clWhite offSide size={"2rem"}>
@@ -246,7 +248,7 @@ const mapDispatchToProps = dispatch => {
   return {
     openPanelRight: (data) => {
       dispatch(openPanelRight(data));
-    }, 
+    },
     togglePanelLeft: () => {
       dispatch(togglePanelLeft());
     },
