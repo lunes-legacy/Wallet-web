@@ -1,11 +1,6 @@
 import ReactDOM from 'react-dom';
 
-const resetModalStep = (_that) => {
-  _that.setState({currStep: 0}, () => {
-    console.warn('ralative variable that was able to set state !!!');
-  });
-}
-export const toggleModal = (modal, _that) => {
+export const toggleModal = (modal) => {
 	if (typeof modal === 'string')
 		modal = document.querySelector(`.${modal}`);
 
@@ -22,7 +17,6 @@ export const toggleModal = (modal, _that) => {
 		background.style.visibility = 'hidden';
 		modal.style.transform       = 'translateY(-100%)';
     modal.setAttribute('state','hidden');
-    resetModalStep(_that);
   }
 
   if (modal) {
@@ -30,11 +24,7 @@ export const toggleModal = (modal, _that) => {
     document.addEventListener('keydown', (event) => {
       event = event || window.event;
       if (event.keyCode == 27) {
-        background.style.opacity    = '0';
-        background.style.visibility = 'hidden';
-        modal.style.transform       = 'translateY(-100%)';
-        modal.setAttribute('state','hidden');
-        resetModalStep(_that);
+        toggleModal(modal);
       }
     });
   }

@@ -16,7 +16,8 @@ class ModalSend extends React.Component {
 		super(props);
 		this.state = {
 			currStep: 0,
-			generalProps: props
+			generalProps: props,
+      lastNetwork: ''
 		}
 	}
 	componentDidCatch(info, error) {
@@ -34,7 +35,28 @@ class ModalSend extends React.Component {
 		this.setState({
 			steps
 		});
-	}
+    //It serves to guarantee that the initial step of the modal get executed ever
+    let interval = setInterval(() => {
+      let modal = document.querySelector('.js-modal-send');
+      let state = modal.getAttribute('state');
+      if (state === 'hidden') {
+        this.setState({
+          currStep: 0
+        });
+      }
+    }, 1000);
+  }
+  componentDidUpdate() {
+    let { lastNetwork }    = this.state;
+    let { currentNetwork } = this.props.wallet;
+
+    if (currentNetwork.toUpperCase() !== lastNetwork.toUpperCase()) {
+      this.setState({
+        currStep: 0,
+        lastNetwork: currentNetwork
+      });
+    }
+  }
 	prevStep = () => {
 
 	}
@@ -51,8 +73,7 @@ class ModalSend extends React.Component {
 			currStep: 0
 		});
     let modal = document.querySelector('.js-modal-send');
-    var _this = this;
-    toggleModal(modal, _this);
+    toggleModal(modal);
 		/*{className={'js-modal-send'}}*/
 	}
 
@@ -60,12 +81,6 @@ class ModalSend extends React.Component {
 		let currentNetwork = this.props.wallet.currentNetwork.toLowerCase();
 		return  `/img/coins/${currentNetwork}.svg`;
 	}
-
-  componentDidUpdate() {
-    if (this.state.showToMe) {
-      alert('I"m showing to you babe');
-    }
-  }
 
 	render() {
 		if (!this.state.steps)

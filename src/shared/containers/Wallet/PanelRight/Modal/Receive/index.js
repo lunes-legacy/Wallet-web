@@ -90,8 +90,7 @@ class ModalReceive extends React.Component {
   _handleClickClose = (event) => {
     let modal = document.querySelector('.js-modal-receive');
     //this.props.dispatch({});
-    const _this = this;
-    toggleModal(modal, _this);
+    toggleModal(modal);
     /*{className={'js-modal-send'}}*/
   }
   render() {
