@@ -1,8 +1,8 @@
 import userReducer      from "./../reducers/userReducer.js";
 import walletReducer    from "./../reducers/walletReducer.js";
-import { 
-	createStore, 
-	combineReducers, 
+import {
+	createStore,
+	combineReducers,
 	applyMiddleware }   from "redux";
 import { createLogger } from "redux-logger";
 import promise          from "redux-promise-middleware";
@@ -14,9 +14,9 @@ import { initialState } from './initialState';
 // 		wallet: walletReducer
 // 	})
 let store = createStore(
-	combineReducers(initialState), 
+	combineReducers(initialState),
 	{},
-	applyMiddleware(createLogger(), thunk, promise())
+	applyMiddleware(thunk, promise())
 );
 
 export {

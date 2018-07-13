@@ -190,6 +190,13 @@ class PanelRight extends React.Component {
     this.setState(prevState => ({
       openConfirmModal: !prevState.openConfirmModal
     }));
+
+    setTimeout(() => {
+      const loading = document.querySelector('#modal-loading');
+      loading.style.display = 'none';
+      const message = document.querySelector('#message-modal');
+      message.style.display = 'block';
+    }, 15000);
   }
 
   // consulta de leasing
@@ -213,20 +220,20 @@ class PanelRight extends React.Component {
   }
 
   cancelLeasing = (key) => {
-    let payload = {
-      wallet_info: this.wallet_info,
-      key: key
-    };
+    // let payload = {
+    //   wallet_info: this.wallet_info,
+    //   key: key
+    // };
 
-    this.props.cancelLeasing(payload);
+    // this.props.cancelLeasing(payload);
 
-    this.setState({
-      canceledTxId: key
-    })
+    // this.setState({
+    //   canceledTxId: key
+    // })
 
-    // alert("CANCELED: " + key);
+    // // alert("CANCELED: " + key);
     this.toggleConfirmModal();
-    this.searchLeasing();
+    // this.searchLeasing();
   }
 
   // normalizar status do leasing, que hoje é 8 ou 9
@@ -344,7 +351,12 @@ class PanelRight extends React.Component {
           type={'success'}
           title={'Sucess'}
           hr
-          text={<div style={{fontSize: '1.2rem'}}>The lease was canceled. <br /><br /> {this.state.canceledTxId}</div>}
+          text={
+            <div style={{fontSize: '1.2rem'}}>
+              <Loading id="modal-loading" size={'35px'} bWidth={'7px'} />
+              <div id="message-modal" style={{display: 'none'}}>The lease was canceled. <br /><br /> {this.state.canceledTxId}</div>
+            </div>
+          }
         />
       </StyledPanelRight>
     );
