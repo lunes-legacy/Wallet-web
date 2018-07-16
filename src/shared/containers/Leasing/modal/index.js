@@ -55,7 +55,7 @@ class LeasingModal extends Component {
 
     leasingPorcentCalculator(value) {
         this.setState({
-            amount: (this.props.balance.LNS.total_confirmed * value)/ 100
+            amount: ((this.props.balance.LNS.total_confirmed * value)/ 100).toFixed(8)
         })
     }
 
