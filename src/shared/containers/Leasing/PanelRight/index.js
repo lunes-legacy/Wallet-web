@@ -213,17 +213,13 @@ class PanelRight extends React.Component {
       this.setState({
         loadingHistory: false
       });
-    }, 5000);
+    }, 3000);
   }
 
   componentDidMount = () => {
     this.wallet_info = localStorage.getItem('WALLET-INFO');
 
     this.searchLeasing();
-  }
-
-  componentWillMount = () => {
-
   }
 
   cancelLeasing = (key) => {
@@ -245,7 +241,7 @@ class PanelRight extends React.Component {
         },
         canceledTxId: key
       });
-    }, 7000);
+    }, 12000);
   }
 
   // normalizar status do leasing, que hoje é 8 ou 9
