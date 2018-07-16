@@ -12,7 +12,10 @@ import { TESTNET, LUNES_LEASING_FEE } from 'Config/constants';
 
 // REDUX
 import { connect } from 'react-redux';
-import { setLeasingAmount } from 'Redux/actions';
+import {
+  setLeasingAmount,
+  getLeasingHistory
+} from 'Redux/actions';
 
 import {
     Background,
@@ -79,6 +82,11 @@ class LeasingModal extends Component {
         const isValid = wallet.validateAddress('lns', address)
 
         return isValid;
+    }
+
+    // consulta de leasing
+    searchLeasing = () => {
+      this.props.getLeasingHistory(this.wallet_info);
     }
 
     startLeasing = async () => {
@@ -151,6 +159,9 @@ class LeasingModal extends Component {
               throw res;
           }
           this.setState({ ...this.state, loading: false });
+
+          this.searchLeasing();
+
           return this.showSuccess();
         }).catch(err => {
           this.setState({ ...this.state, loading: false });
@@ -198,7 +209,7 @@ class LeasingModal extends Component {
 
         setTimeout(() => {
             textMessage.style.visibility = 'hidden';
-        }, 1000);
+        }, 3000);
     }
 
     showSuccess = () => {
@@ -213,10 +224,11 @@ class LeasingModal extends Component {
         setTimeout(() => {
             textMessage.style.visibility = 'hidden';
             this.handleModal();
-        }, 1000);
+        }, 3000);
     }
 
     componentDidMount() {
+        this.wallet_info = localStorage.getItem('WALLET-INFO');
         // Função para fechar a modal ao pressionar ESC
         document.addEventListener('keydown', (event) => {
             event = event || window.event;
@@ -324,7 +336,10 @@ const mapDispatchToProps = dispatch => {
     return {
         setLeasingAmount: data => {
             dispatch(setLeasingAmount(data));
-        }
+        },
+        getLeasingHistory: data => {
+          dispatch(getLeasingHistory(data));
+        },
     };
 };
 

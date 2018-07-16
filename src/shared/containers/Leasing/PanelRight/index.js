@@ -179,7 +179,12 @@ class PanelRight extends React.Component {
     let wallet_info = {}
 
     this.state = {
+      loadingHistory: false,
       openConfirmModal: false,
+      confirmModal: {
+        title: 'Canceling...',
+        message: false
+      },
       canceledTxId: ''
     }
 
@@ -188,28 +193,30 @@ class PanelRight extends React.Component {
 
   toggleConfirmModal = () => {
     this.setState(prevState => ({
-      openConfirmModal: !prevState.openConfirmModal
+      openConfirmModal: !prevState.openConfirmModal,
+      confirmModal: {
+        title: 'Canceling...',
+        message: false
+      }
     }));
-
-    setTimeout(() => {
-      const loading = document.querySelector('#modal-loading');
-      loading.style.display = 'none';
-      const message = document.querySelector('#message-modal');
-      message.style.display = 'block';
-    }, 15000);
   }
 
   // consulta de leasing
   searchLeasing = () => {
+    this.setState({
+      loadingHistory: true
+    });
+
     this.props.getLeasingHistory(this.wallet_info);
-    // console.log(this.props.listLeasing);
+
+    setTimeout(() => {
+      this.setState({
+        loadingHistory: false
+      });
+    }, 5000);
   }
 
   componentDidMount = () => {
-    // bloco de teste ************
-    // ++ adicione aqui
-    // bloco de teste ************
-
     this.wallet_info = localStorage.getItem('WALLET-INFO');
 
     this.searchLeasing();
@@ -220,20 +227,25 @@ class PanelRight extends React.Component {
   }
 
   cancelLeasing = (key) => {
-    // let payload = {
-    //   wallet_info: this.wallet_info,
-    //   key: key
-    // };
+    let payload = {
+      wallet_info: this.wallet_info,
+      key: key
+    };
 
-    // this.props.cancelLeasing(payload);
+    this.props.cancelLeasing(payload);
 
-    // this.setState({
-    //   canceledTxId: key
-    // })
-
-    // // alert("CANCELED: " + key);
     this.toggleConfirmModal();
-    // this.searchLeasing();
+    setTimeout(() => {
+      this.searchLeasing();
+
+      this.setState({
+        confirmModal: {
+          title: 'Success',
+          message: true
+        },
+        canceledTxId: key
+      });
+    }, 7000);
   }
 
   // normalizar status do leasing, que hoje é 8 ou 9
@@ -254,7 +266,7 @@ class PanelRight extends React.Component {
             <CancelText clNormalGreen txCenter status={status} onClick={() => this.cancelLeasing(id)}>
               <IconActive /><br />
               CANCEL
-                        </CancelText>
+            </CancelText>
           </CancelBox>
         );
       } else {
@@ -262,7 +274,7 @@ class PanelRight extends React.Component {
           <CancelText clNormalRed txCenter status={status} onClick={() => { }}>
             <Icon src={'/img/leasing_panel_right/icon-power-off.svg'} /><br />
             CANCELED
-                    </CancelText>
+          </CancelText>
         );
       }
     }
@@ -273,7 +285,7 @@ class PanelRight extends React.Component {
         if (!this.props.listLeasing) {
             return <Noleasingtext txBold txCenter>NO LEASING FOUND</Noleasingtext>
         }
-        if (this.props.listLeasing.length < 1) {
+        if (this.props.listLeasing.length < 1 || this.state.loadingHistory) {
             return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
         } else {
             return this.props.listLeasing.map((obj, key) => {
@@ -348,13 +360,15 @@ class PanelRight extends React.Component {
           onClose={this.toggleConfirmModal}
           width={'400px'}
           height={'300px'}
-          type={'success'}
-          title={'Sucess'}
+          title={this.state.confirmModal.title}
           hr
           text={
             <div style={{fontSize: '1.2rem'}}>
-              <Loading id="modal-loading" size={'35px'} bWidth={'7px'} />
-              <div id="message-modal" style={{display: 'none'}}>The lease was canceled. <br /><br /> {this.state.canceledTxId}</div>
+              {
+                this.state.confirmModal.message ?
+                <div>The lease was canceled. <br /><br /> {this.state.canceledTxId}</div> :
+                <Loading size={'35px'} bWidth={'7px'} />
+              }
             </div>
           }
         />

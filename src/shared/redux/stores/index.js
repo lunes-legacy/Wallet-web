@@ -16,7 +16,7 @@ import { initialState } from './initialState';
 let store = createStore(
 	combineReducers(initialState),
 	{},
-	applyMiddleware(thunk, promise())
+	applyMiddleware(createLogger(), thunk, promise())
 );
 
 export {
