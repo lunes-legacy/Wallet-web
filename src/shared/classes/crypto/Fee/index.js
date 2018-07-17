@@ -79,7 +79,7 @@ export default class FeeClass {
 				}
 
 				data.feePerByte = data.networkFees.data.medium;
-				
+
 				data.amount = money.conevertCoin('satoshi', data.amount).toString();
 
 				let tmp = await coins.services.estimateFee({...data}, data.accessToken);
@@ -155,33 +155,57 @@ export default class FeeClass {
 			let { networkFees } = data;
 			delete data.networkFees;
 
-		// Se for ETH converte para Wei (menor unidade do ETH), senão, converte para Satoshi (menor unidade do BTC)
-		data.amount = data.network.toUpperCase() === "ETH" ?
-		money.conevertCoin('wei', data.amount).toString() :
-		money.conevertCoin('satoshi', data.amount).toString();
+      // Se for ETH converte para Wei (menor unidade do ETH), senão, converte para Satoshi (menor unidade do BTC)
+      data.amount = data.network.toUpperCase() === "ETH" ?
+        money.conevertCoin('wei', data.amount).toString() :
+        money.conevertCoin('satoshi', data.amount).toString();
 
-		for (let level in params) {
-			if (data.network.search(/(eth)/i) !== -1) {
-				params[level] = {
-					...data,
-					gasLimit: '37393',
-					gasPrice: networkFees[level]
-				}
-			} else {
-				params[level] = {
-					...data,
-					feePerByte: networkFees[level]
-				}
-			}
+      const feeLevels = [];
 
-			let currentEstimate = params[level];
-			result[level] = await coins.services.estimateFee({...currentEstimate}, data.accessToken);
-		}
+      for (let level in params) {
+        if (data.network.search(/(eth)/i) !== -1) {
+          params[level] = {
+            ...data,
+            gasLimit: '37393',
+            gasPrice: networkFees[level]
+          }
+        } else {
+          params[level] = {
+            ...data,
+            feePerByte: networkFees[level]
+          }
+        }
 
-		return result;
-	} catch (err) {
-		console.error(err);
-		return err;
-	}
-}
+        // Ạdiciona no array os dados para consultar cada nível de taxa
+        feeLevels.push(params[level]);
+      }
+
+      // Chama o método responsável por acessar a lunes-lib e consultar as taxas
+      const fees = await this.getEstimateFees(feeLevels, data.accessToken);
+
+      return {
+        low: {
+          ...fees[0] || undefined
+        },
+        medium: {
+          ...fees[1] || undefined
+        },
+        high: {
+          ...fees[2] || undefined
+        },
+
+      };
+    } catch (err) {
+      console.error(err);
+      return err;
+    }
+  }
+
+  // Método para consultar as taxas na lunes-lib de forma assíncrona
+  getEstimateFees = async (feeLevels, accessToken) => {
+    const promises = feeLevels.map(feeLevel => coins.services.estimateFee({...feeLevel}, accessToken));
+
+    // Executa todas as promises e aguarda elas serem resolvidas para retornar o resultado
+    return await Promise.all(promises);
+  }
 }
