@@ -20,6 +20,11 @@ const leaseReducer = (state=initialState, action) => {
                 ...state,
                 listLeasing: action.payload
             }
+        case 'CLEAR_LEASING_HISTORY':
+            return {
+                ...state,
+                listLeasing: action.payload
+            }
         case 'CANCEL_LEASING_FULFILLED': //_FULFILLED
         // pegar o retorno do cancelamento e tratar
             return {
