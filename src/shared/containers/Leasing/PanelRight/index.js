@@ -14,7 +14,8 @@ import { encrypt, decrypt } from '../../../utils/crypt';
 import { connect } from 'react-redux';
 import {
     getLeasingHistory,
-    cancelLeasing
+    cancelLeasing,
+    clearLeasingHistory
 } from 'Redux/actions';
 
 // CLASSES
@@ -179,7 +180,6 @@ class PanelRight extends React.Component {
     let wallet_info = {}
 
     this.state = {
-      loadingHistory: false,
       openConfirmModal: false,
       confirmModal: {
         title: 'Canceling...',
@@ -203,17 +203,8 @@ class PanelRight extends React.Component {
 
   // consulta de leasing
   searchLeasing = () => {
-    this.setState({
-      loadingHistory: true
-    });
-
+    this.props.clearLeasingHistory();
     this.props.getLeasingHistory(this.wallet_info);
-
-    setTimeout(() => {
-      this.setState({
-        loadingHistory: false
-      });
-    }, 3000);
   }
 
   componentDidMount = () => {
@@ -387,7 +378,10 @@ const mapDispatchToProps = dispatch => {
     },
     cancelLeasing: (data) => {
       dispatch(cancelLeasing(data));
-    }
+    },
+    clearLeasingHistory: () => {
+      dispatch(clearLeasingHistory());
+    },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PanelRight);

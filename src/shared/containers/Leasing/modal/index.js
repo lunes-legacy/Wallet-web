@@ -14,7 +14,8 @@ import { TESTNET, LUNES_LEASING_FEE } from 'Config/constants';
 import { connect } from 'react-redux';
 import {
   setLeasingAmount,
-  getLeasingHistory
+  getLeasingHistory,
+  clearLeasingHistory
 } from 'Redux/actions';
 
 import {
@@ -86,6 +87,7 @@ class LeasingModal extends Component {
 
     // consulta de leasing
     searchLeasing = () => {
+      this.props.clearLeasingHistory();
       this.props.getLeasingHistory(this.wallet_info);
     }
 
@@ -339,6 +341,9 @@ const mapDispatchToProps = dispatch => {
         },
         getLeasingHistory: data => {
           dispatch(getLeasingHistory(data));
+        },
+        clearLeasingHistory: () => {
+          dispatch(clearLeasingHistory());
         },
     };
 };
