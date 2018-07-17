@@ -190,9 +190,9 @@ class Registry extends React.Component {
       } else if (status === "fulfilled") {
         firstPanelEl.style.display  = "none";
         secondPanelEl.style.display = "block";
-        // statusEl.textContent = "Sucesso";
+        // statusEl.textContent = "Success";
       } else if (status === "rejected") {
-        statusEl.textContent = "Tente novamente";
+        statusEl.textContent = "Try again";
       }
     } catch(err) {
       console.warn("There's an error on handleStatus", 500, 'HANDLE_STATUS_ERROR', err);
