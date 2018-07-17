@@ -160,11 +160,15 @@ class LeasingModal extends Component {
           if (res.code) {
               throw res;
           }
-          this.setState({ ...this.state, loading: false });
 
-          this.searchLeasing();
+          // Aguarda 5s para chamar a função que atualiza o histórico
+          setTimeout(() => {
+            this.searchLeasing();
 
-          return this.showSuccess();
+            this.setState({ ...this.state, loading: false });
+
+            this.showSuccess()
+          }, 5000);
         }).catch(err => {
           this.setState({ ...this.state, loading: false });
           this.showError(err.message);
