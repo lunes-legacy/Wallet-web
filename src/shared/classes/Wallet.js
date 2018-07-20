@@ -12,6 +12,7 @@ import {
   LNSNETWORK,
   BTCNETWORK,
   LTCNETWORK,
+  BCHNETWORK,
   NANONETWORK,
   DASHNETWORK,
   ETHNETWORK
@@ -145,7 +146,9 @@ export class WalletClass {
 
   getNewAddress(seed, coin = null) {
     try {
+      console.log(networks[BCHNETWORK]);
       switch (coin) {
+        
         case 'lunes':
           return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);
 
@@ -154,6 +157,9 @@ export class WalletClass {
 
         case 'btc':
           return services.wallet.btc.wallet.newAddress(seed, networks[BTCNETWORK]);
+
+        case 'bch':
+          return services.wallet.btc.wallet.newAddress(seed, networks[BCHNETWORK]);
 
         case 'eth':
           return services.wallet.eth.wallet.newAddress(seed, networks[ETHNETWORK]);

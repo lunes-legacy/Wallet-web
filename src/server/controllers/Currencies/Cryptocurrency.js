@@ -13,6 +13,7 @@ export default class Cryptocurrency {
     let r = await Wallet.getCoinsPrice({
         LNS:  { fromSymbol: 'LNS',  toSymbol },
         BTC:  { fromSymbol: 'BTC',  toSymbol },
+        BCH:  { fromSymbol: 'BCH',  toSymbol },
         ETH:  { fromSymbol: 'ETH',  toSymbol },
         LTC:  { fromSymbol: 'LTC',  toSymbol },
         DASH: { fromSymbol: 'DASH', toSymbol }
