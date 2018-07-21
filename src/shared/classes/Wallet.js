@@ -61,6 +61,7 @@ export class WalletClass {
           addresses[coin.symbol].push(obj.address);
         });
       });
+      console.log(addresses);
       return addresses;
     } catch (err) {
       return errorPattern("Was not possible get user addresses", 500, "WALLET_GETUSERADDRESS_ERROR", err);
@@ -146,7 +147,6 @@ export class WalletClass {
 
   getNewAddress(seed, coin = null) {
     try {
-      console.log(networks[BCHNETWORK]);
       switch (coin) {
         
         case 'lunes':
@@ -193,7 +193,7 @@ export class WalletClass {
       console.log(`____________________________________________`);
 
       // if (coin === "btc" || coin === "dash" || coin === "ltc") {
-      if (coin.search(/(btc)|(dash)|(ltc)/i) !== -1) {
+      if (coin.search(/(btc)|(dash)|(ltc)|(bch)/i) !== -1) {
         amountConvert = money.conevertCoin('satoshi', amount);
         // feeConvert = money.conevertCoin('satoshi', fee);
         transactionData = {

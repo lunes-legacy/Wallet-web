@@ -18,6 +18,7 @@ let initialState = {
 	cryptoTx: {
 		LNS: { high: 0, medium: 0, low: 0 },
 		BTC: { high: 0, medium: 0, low: 0 },
+		BCH: { high: 0, medium: 0, low: 0 },
 		ETH: { high: 0, medium: 0, low: 0 },
 		LTC: { high: 0, medium: 0, low: 0 },
 		DASH: { high: 0, medium: 0, low: 0 }

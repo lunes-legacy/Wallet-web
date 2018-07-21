@@ -42,6 +42,7 @@ module.exports = {
 	coinsColor: {
 		lns: '#4CD566',
 		btc: '#f7921a',
+		bch: '#f7921a',
 		ltc: '#b6b7ba',
 		eth: '#497391',
 		nano: '#000',
