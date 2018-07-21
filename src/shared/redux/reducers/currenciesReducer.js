@@ -10,6 +10,7 @@ let initialState = {
 	},
 	crypto: {
 		BTC: { USD: 0, BRL: 0, EUR: 0 },
+		BCH: { USD: 0, BRL: 0, EUR: 0 },
 		ETH: { USD: 0, BRL: 0, EUR: 0 },
 		LNS: { USD: 0, BRL: 0, EUR: 0 },
 		LTC: { USD: 0, BRL: 0, EUR: 0 },
