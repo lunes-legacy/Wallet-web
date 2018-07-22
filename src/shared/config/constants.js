@@ -1,5 +1,5 @@
 // DEFINITION
-const testnet         = 'FALSE';
+const testnet         = 'TRUE';
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const ENV             = 'development'; // AMBIENTE
 
@@ -16,6 +16,7 @@ const HOST = host;
 const APICONFIG 	    = TESTNET === true ? 'LNSTESTNET'  : 'LNS'; //TEMP
 const LNSNETWORK      = TESTNET === true ? 'LNSTESTNET'  : 'LNS';
 const BTCNETWORK      = TESTNET === true ? 'BTCTESTNET'  : 'BTC';
+const BCHNETWORK      = TESTNET === true ? 'BCHTESTNET'  : 'BCH';
 const LTCNETWORK      = TESTNET === true ? 'LTCTESTNET'  : 'LTC';
 const NANONETWORK     = TESTNET === true ? 'NANOTESTNET' : 'NANO';
 const DASHNETWORK     = TESTNET === true ? 'DASHTESTNET' : 'DASH';
@@ -27,6 +28,7 @@ const ETHNETWORK      = TESTNET === true ? 'ROPSTEN'     : 'ETH';
 const ENABLEDCOINS = [
 	{ 'coinKey': 'lns', 'coinName':  'Lunes', 'address': '' },
 	{ 'coinKey': 'btc', 'coinName':  'BTC', 'address': '' },
+	{ 'coinKey': 'bch', 'coinName':  'BCH', 'address': '' },
 	{ 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
 	{ 'coinKey': 'ltc', 'coinName':  'LTC', 'address': '' },
 	// { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
@@ -37,7 +39,8 @@ const ENABLEDCOINS = [
 const BLOCK_EXPLORERS = {
   lns: TESTNET ? 'https://blockexplorer-testnet.lunes.io/' : 'https://blockexplorer.lunes.io/',
   lunes: TESTNET ? 'https://blockexplorer-testnet.lunes.io/' : 'https://blockexplorer.lunes.io/',
-  btc: 'https://www.chain.so/',
+	btc: 'https://www.chain.so/',
+	bch: 'https://explorer.bitcoin.com/bch/',
   ltc: 'https://www.chain.so/',
   nano: 'https://www.chain.so/',
   dash: 'https://www.chain.so/',
@@ -54,6 +57,7 @@ export {
 	APICONFIG,
 	LNSNETWORK,
 	BTCNETWORK,
+	BCHNETWORK,
 	LTCNETWORK,
 	DASHNETWORK,
 	ETHNETWORK,

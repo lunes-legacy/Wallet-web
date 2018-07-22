@@ -10,6 +10,7 @@ let initialState = {
 	},
 	crypto: {
 		BTC: { USD: 0, BRL: 0, EUR: 0 },
+		BCH: { USD: 0, BRL: 0, EUR: 0 },
 		ETH: { USD: 0, BRL: 0, EUR: 0 },
 		LNS: { USD: 0, BRL: 0, EUR: 0 },
 		LTC: { USD: 0, BRL: 0, EUR: 0 },
@@ -18,6 +19,7 @@ let initialState = {
 	cryptoTx: {
 		LNS: { high: 0, medium: 0, low: 0 },
 		BTC: { high: 0, medium: 0, low: 0 },
+		BCH: { high: 0, medium: 0, low: 0 },
 		ETH: { high: 0, medium: 0, low: 0 },
 		LTC: { high: 0, medium: 0, low: 0 },
 		DASH: { high: 0, medium: 0, low: 0 }

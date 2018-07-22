@@ -188,6 +188,7 @@ class Coins extends React.Component {
     }
 
     let components = [];
+    
     for (let coinKey in balance) {
       let { crypto }  = this.props.currencies;
       if (!crypto[coinKey]) continue;

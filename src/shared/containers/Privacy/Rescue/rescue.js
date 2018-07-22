@@ -57,6 +57,7 @@ class Rescue extends React.Component {
 				seed: null,
 				addresses: {
           lns: null,
+          bch: null,
 					btc: null,
           eth: null,
 					ltc: null,

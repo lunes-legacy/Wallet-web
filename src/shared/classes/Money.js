@@ -16,7 +16,7 @@ export class MoneyClass {
       return;
     }
     // if (to === 'btc' || to === 'lns' || to === 'lunes' || to === 'ltc') {
-    if (to.search(/(btc)|(lns)|(lunes)|(ltc)|(dash)/i) !== -1) {
+    if (to.search(/(btc)|(lns)|(lunes)|(ltc)|(dash)|(bch)/i) !== -1) {
       return this.convertToBtc(amount);
     } else if (to.search(/(satoshi)/i) !== -1) {
       return this.convertToSatoshi(amount);

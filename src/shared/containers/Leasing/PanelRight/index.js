@@ -14,7 +14,8 @@ import { encrypt, decrypt } from '../../../utils/crypt';
 import { connect } from 'react-redux';
 import {
     getLeasingHistory,
-    cancelLeasing
+    cancelLeasing,
+    clearLeasingHistory
 } from 'Redux/actions';
 
 // CLASSES
@@ -180,6 +181,10 @@ class PanelRight extends React.Component {
 
     this.state = {
       openConfirmModal: false,
+      confirmModal: {
+        title: 'Canceling...',
+        message: false
+      },
       canceledTxId: ''
     }
 
@@ -188,28 +193,24 @@ class PanelRight extends React.Component {
 
   toggleConfirmModal = () => {
     this.setState(prevState => ({
-      openConfirmModal: !prevState.openConfirmModal
+      openConfirmModal: !prevState.openConfirmModal,
+      confirmModal: {
+        title: 'Canceling...',
+        message: false
+      }
     }));
   }
 
   // consulta de leasing
   searchLeasing = () => {
+    this.props.clearLeasingHistory();
     this.props.getLeasingHistory(this.wallet_info);
-    // console.log(this.props.listLeasing);
   }
 
   componentDidMount = () => {
-    // bloco de teste ************
-    // ++ adicione aqui
-    // bloco de teste ************
-
     this.wallet_info = localStorage.getItem('WALLET-INFO');
 
     this.searchLeasing();
-  }
-
-  componentWillMount = () => {
-
   }
 
   cancelLeasing = (key) => {
@@ -220,13 +221,18 @@ class PanelRight extends React.Component {
 
     this.props.cancelLeasing(payload);
 
-    this.setState({
-      canceledTxId: key
-    })
-
-    // alert("CANCELED: " + key);
     this.toggleConfirmModal();
-    this.searchLeasing();
+    setTimeout(() => {
+      this.searchLeasing();
+
+      this.setState({
+        confirmModal: {
+          title: 'Success',
+          message: true
+        },
+        canceledTxId: key
+      });
+    }, 12000);
   }
 
   // normalizar status do leasing, que hoje é 8 ou 9
@@ -247,7 +253,7 @@ class PanelRight extends React.Component {
             <CancelText clNormalGreen txCenter status={status} onClick={() => this.cancelLeasing(id)}>
               <IconActive /><br />
               CANCEL
-                        </CancelText>
+            </CancelText>
           </CancelBox>
         );
       } else {
@@ -255,7 +261,7 @@ class PanelRight extends React.Component {
           <CancelText clNormalRed txCenter status={status} onClick={() => { }}>
             <Icon src={'/img/leasing_panel_right/icon-power-off.svg'} /><br />
             CANCELED
-                    </CancelText>
+          </CancelText>
         );
       }
     }
@@ -266,7 +272,7 @@ class PanelRight extends React.Component {
         if (!this.props.listLeasing) {
             return <Noleasingtext txBold txCenter>NO LEASING FOUND</Noleasingtext>
         }
-        if (this.props.listLeasing.length < 1) {
+        if (this.props.listLeasing.length < 1 || this.state.loadingHistory) {
             return <Loading className="js-loading" size={'35px'} bWidth={'7px'} />;
         } else {
             return this.props.listLeasing.map((obj, key) => {
@@ -341,10 +347,17 @@ class PanelRight extends React.Component {
           onClose={this.toggleConfirmModal}
           width={'400px'}
           height={'300px'}
-          type={'success'}
-          title={'Sucess'}
+          title={this.state.confirmModal.title}
           hr
-          text={<div style={{fontSize: '1.2rem'}}>The lease was canceled. <br /><br /> {this.state.canceledTxId}</div>}
+          text={
+            <div style={{fontSize: '1.2rem'}}>
+              {
+                this.state.confirmModal.message ?
+                <div>The lease was canceled. <br /><br /> {this.state.canceledTxId}</div> :
+                <Loading size={'35px'} bWidth={'7px'} />
+              }
+            </div>
+          }
         />
       </StyledPanelRight>
     );
@@ -365,7 +378,10 @@ const mapDispatchToProps = dispatch => {
     },
     cancelLeasing: (data) => {
       dispatch(cancelLeasing(data));
-    }
+    },
+    clearLeasingHistory: () => {
+      dispatch(clearLeasingHistory());
+    },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PanelRight);

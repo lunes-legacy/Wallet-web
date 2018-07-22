@@ -39,6 +39,13 @@ let initialState = {
   	img: 'dash.svg',
   	coinName: 'Dashcoin'
   },
+  BCH: {
+  	total_confirmed: 0,
+  	total_unconfirmed: 0,
+  	total_amount: 0,
+  	img: 'bch.svg',
+  	coinName: 'Bitcoin Cash'
+  },
   // NANO: {
   // 	total_confirmed: 100,
   // 	total_unconfirmed: 0,

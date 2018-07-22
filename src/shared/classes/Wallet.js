@@ -12,6 +12,7 @@ import {
   LNSNETWORK,
   BTCNETWORK,
   LTCNETWORK,
+  BCHNETWORK,
   NANONETWORK,
   DASHNETWORK,
   ETHNETWORK
@@ -60,6 +61,7 @@ export class WalletClass {
           addresses[coin.symbol].push(obj.address);
         });
       });
+      console.log(addresses);
       return addresses;
     } catch (err) {
       return errorPattern("Was not possible get user addresses", 500, "WALLET_GETUSERADDRESS_ERROR", err);
@@ -146,6 +148,7 @@ export class WalletClass {
   getNewAddress(seed, coin = null) {
     try {
       switch (coin) {
+        
         case 'lunes':
           return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);
 
@@ -154,6 +157,9 @@ export class WalletClass {
 
         case 'btc':
           return services.wallet.btc.wallet.newAddress(seed, networks[BTCNETWORK]);
+
+        case 'bch':
+          return services.wallet.btc.wallet.newAddress(seed, networks[BCHNETWORK]);
 
         case 'eth':
           return services.wallet.eth.wallet.newAddress(seed, networks[ETHNETWORK]);
@@ -187,7 +193,7 @@ export class WalletClass {
       console.log(`____________________________________________`);
 
       // if (coin === "btc" || coin === "dash" || coin === "ltc") {
-      if (coin.search(/(btc)|(dash)|(ltc)/i) !== -1) {
+      if (coin.search(/(btc)|(dash)|(ltc)|(bch)/i) !== -1) {
         amountConvert = money.conevertCoin('satoshi', amount);
         // feeConvert = money.conevertCoin('satoshi', fee);
         transactionData = {

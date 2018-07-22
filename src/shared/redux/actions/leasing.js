@@ -15,6 +15,13 @@ export const getLeasingHistory = (payload) => {
     }
 }
 
+export const clearLeasingHistory = () => {
+    return {
+        type: 'CLEAR_LEASING_HISTORY',
+        payload: []
+    }
+}
+
 export const cancelLeasing = (payload) => {
     return {
         type: 'CANCEL_LEASING',
