@@ -1,5 +1,5 @@
 // DEFINITION
-const testnet         = 'TRUE';
+const testnet         = 'FALSE';
 const TESTNET         = testnet === 'TRUE' ? true : false;
 const ENV             = 'development'; // AMBIENTE
 
@@ -19,6 +19,7 @@ const BTCNETWORK      = TESTNET === true ? 'BTCTESTNET'  : 'BTC';
 const BCHNETWORK      = TESTNET === true ? 'BCHTESTNET'  : 'BCH';
 const LTCNETWORK      = TESTNET === true ? 'LTCTESTNET'  : 'LTC';
 const NANONETWORK     = TESTNET === true ? 'NANOTESTNET' : 'NANO';
+const USDTNETWORK     = TESTNET === true ? 'USDTTESTNET' : 'USDT';
 const DASHNETWORK     = TESTNET === true ? 'DASHTESTNET' : 'DASH';
 const ETHNETWORK      = TESTNET === true ? 'ROPSTEN'     : 'ETH';
 // END NETWORK CONFIG
@@ -31,8 +32,9 @@ const ENABLEDCOINS = [
 	{ 'coinKey': 'bch', 'coinName':  'BCH', 'address': '' },
 	{ 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
 	{ 'coinKey': 'ltc', 'coinName':  'LTC', 'address': '' },
-	// { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
-	{ 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
+  // { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
+	{ 'coinKey': 'usdt', 'coinName':  'USDT', 'address': '' },
+	{ 'coinKey': 'dash', 'coinName':  'DASH', 'address': '' },
 ]
 
 // URLs para o blockexplorer de cada moeda de acordo com a rede utilizada
@@ -61,6 +63,7 @@ export {
 	LTCNETWORK,
 	DASHNETWORK,
 	ETHNETWORK,
+  USDTNETWORK,
 	ENABLEDCOINS,
 	LUNES_LIB_ENV,
 	LUNES_LIB_LOGIN,

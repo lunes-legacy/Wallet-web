@@ -110,6 +110,7 @@ class App extends React.Component {
     let upperCasedKey;
     let currentAddress;
     for (let key in addresses) {
+      console.warn('setBalances -> key & address', key+ ' - ' +addresses[key]);
       currentAddress = addresses[key];
       upperCasedKey  = key.toUpperCase();
       this.props.setUniqueBalance({address: currentAddress, network: upperCasedKey});

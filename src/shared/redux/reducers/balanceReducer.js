@@ -46,6 +46,13 @@ let initialState = {
   	img: 'bch.svg',
   	coinName: 'Bitcoin Cash'
   },
+  USDT: {
+   total_confirmed: 0,
+   total_unconfirmed: 0,
+   total_amount: 0,
+   img: 'nano.svg',
+   coinName: 'Tether'
+  }
   // NANO: {
   // 	total_confirmed: 100,
   // 	total_unconfirmed: 0,

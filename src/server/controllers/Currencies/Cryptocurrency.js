@@ -16,7 +16,8 @@ export default class Cryptocurrency {
         BCH:  { fromSymbol: 'BCH',  toSymbol },
         ETH:  { fromSymbol: 'ETH',  toSymbol },
         LTC:  { fromSymbol: 'LTC',  toSymbol },
-        DASH: { fromSymbol: 'DASH', toSymbol }
+        DASH: { fromSymbol: 'DASH', toSymbol },
+        TETHER: { fromSymbol: 'TETHER', toSymbol }
     });
     res.send(r);
   }

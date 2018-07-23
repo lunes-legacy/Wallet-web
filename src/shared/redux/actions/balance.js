@@ -13,6 +13,7 @@ export const setBalance = data => {
 };
 
 export const setUniqueBalance = (data) => {
+  console.log('setUniqueBalance -> DATA:::',data);
 	let { network, address, testnet } = data;
 	if (!testnet)
 		testnet = TESTNET;

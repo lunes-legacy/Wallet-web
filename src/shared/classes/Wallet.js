@@ -15,7 +15,8 @@ import {
   BCHNETWORK,
   NANONETWORK,
   DASHNETWORK,
-  ETHNETWORK
+  ETHNETWORK,
+  USDTNETWORK
 } from "Config/constants";
 
 const money = new MoneyClass;
@@ -172,6 +173,9 @@ export class WalletClass {
 
         case 'dash':
           return services.wallet.btc.wallet.newAddress(seed, networks[DASHNETWORK]);
+
+        case 'usdt':
+          return services.wallet.btc.wallet.newAddress(seed, networks[USDTNETWORK]);
 
         default:
           return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);

@@ -32,7 +32,7 @@ let client = {
 	node: {
 		fs: 'empty',
 		net: 'empty'
-	}, 
+	},
 	mode: webpackEnv,
 	module: {
 		rules: [
@@ -51,13 +51,13 @@ let client = {
 	]
 };
 
-// externals: [nodeExternals()], 
+// externals: [nodeExternals()],
 let server = {
 	entry: ['babel-polyfill',serverEntry],
 	target: 'node',
 	output: serverOutput,
 	mode: webpackEnv,
-	externals: [nodeExternals()], 
+	externals: [nodeExternals()],
 	module: {
 		rules: [
 			{
