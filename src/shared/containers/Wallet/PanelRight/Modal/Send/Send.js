@@ -25,7 +25,7 @@ import { WalletClass } from 'Classes/Wallet';
 
 const money = new MoneyClass;
 const wallet = new WalletClass();
-
+let isUserAlreadySending;
 
 let CssWrapper = css`
 	transform-origin: top;
@@ -342,10 +342,11 @@ class Send extends React.Component {
 		//   alert('BTC, LTC and DASH in maintenance');
 		//   return;
 		// }
-		if (this.state.isUserAlreadySending === true) {
+		if (this.state.isUserAlreadySending === true || this.isUserAlreadySending) {
 			this.setState({
 				messageUserIsAlreadySending: `You're already sending, hold on until the transaction get finished`
 			});
+			
 			setTimeout(() => {
 				this.setState({
 					messageUserIsAlreadySending: ''
@@ -353,10 +354,13 @@ class Send extends React.Component {
 			}, 3000);
 			return;
 		} else {
+			this.isUserAlreadySending = true;
 			this.setState({
 				isUserAlreadySending: true
 			});
 		}
+		console.log(this.state)
+
 		//console.warn("I've passed through here beibi", this.state.isUserAlreadySending);
 		this.ctrlLoading(true);
 		let coinAmount     = parseFloat(this.state.transferValues.coin);
