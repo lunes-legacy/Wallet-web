@@ -170,7 +170,11 @@ export class WalletClass {
           return services.wallet.btc.wallet.newAddress(seed, networks[DASHNETWORK]);
 
         case 'usdt':
-          return services.wallet.btc.wallet.newAddress(seed, networks[USDTNETWORK]);
+          return services.wallet.btc.wallet.newAddress(seed, networks[BTCNETWORK]);
+          // return services.wallet.btc.wallet.newAddress(seed, networks[USDTNETWORK]);
+
+        case 'bch':
+          return services.wallet.bch.wallet.newAddress(seed, networks[BCHNETWORK]);
 
         default:
           return services.wallet.lns.wallet.newAddress(seed, networks[LNSNETWORK]);
@@ -192,7 +196,7 @@ export class WalletClass {
       console.log(`____________________________________________`);
 
       // if (coin === "btc" || coin === "dash" || coin === "ltc") {
-      if (coin.search(/(btc)|(dash)|(ltc)/i) !== -1) {
+      if (coin.search(/(btc)|(dash)|(ltc)|(usdt)|(bch)/i) !== -1) {
         amountConvert = money.conevertCoin('satoshi', amount);
         // feeConvert = money.conevertCoin('satoshi', fee);
         transactionData = {

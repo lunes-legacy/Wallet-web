@@ -594,7 +594,7 @@ class Send extends React.Component {
       });
       throw errorPattern(err, 500, 'MODALSEND_TRANSACTION_ERROR');
     });
-
+    console.log('Send.js -> data:::',data);
     let txid = data && data.data && data.data.txID;
     if (!txid) {
       console.error('MODALSEND_TRANSACTIONSEND_DATA', data);
