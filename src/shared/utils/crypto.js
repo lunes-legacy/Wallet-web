@@ -9,9 +9,8 @@ export const getTxidLink = (network, txid) => {
   const explorer = BLOCK_EXPLORERS[network];
 
   // Se for Lunes ou Ethereum utiliza um formato diferente de url para o block explorer
-  if (network.search(/lns|lunes|eth/i) !== -1) {
+  if (network.search(/lns|lunes|eth|usdt/i) !== -1) {
     return `${explorer}tx/${txid}`;
   }
-
   return `${explorer}tx/${networkConstant}/${txid}`
 }

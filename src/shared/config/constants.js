@@ -26,6 +26,7 @@ const ETHNETWORK      = TESTNET === true ? 'ROPSTEN'     : 'ETH';
 
 // TO ENABLE OTHER COINS, SERACH IN "SHIFT + CRTL + F" FOR: "ENABLE COINS"
 // ENABLE COINS
+// ENABLE COINS IN src/server/controllers/Currencies/Crypto <<<<<
 const ENABLEDCOINS = [
 	{ 'coinKey': 'lns', 'coinName':  'Lunes', 'address': '' },
 	{ 'coinKey': 'btc', 'coinName':  'BTC', 'address': '' },
@@ -46,6 +47,7 @@ const BLOCK_EXPLORERS = {
   ltc: 'https://www.chain.so/',
   nano: 'https://www.chain.so/',
   dash: 'https://www.chain.so/',
+  usdt: 'https://www.blockchain.com/btc/',
   eth: TESTNET ? 'https://ropsten.etherscan.io/' : 'https://etherscan.io/'
 }
 

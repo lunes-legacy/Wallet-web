@@ -65,13 +65,13 @@ const arrangeUniqueNetworkBalance = (balance, state) => {
   let { network } = balance;
   let { confirmed, unconfirmed } = balance.data;
   let upperCasedNetwork = network.toUpperCase();
-
+  console.log('balance2',balance);
   return {
     coinName: state[upperCasedNetwork].coinName,
     img: state[upperCasedNetwork].img,
-    total_confirmed: money.conevertCoin(network, confirmed),
-    total_amount: money.conevertCoin(network, confirmed),
-    total_unconfirmed: unconfirmed ? money.conevertCoin(network, unconfirmed) : 0,
+    total_confirmed: money.convertCoin(network, confirmed),
+    total_amount: money.convertCoin(network, confirmed),
+    total_unconfirmed: unconfirmed ? money.convertCoin(network, unconfirmed) : 0,
   }
 }
 
@@ -83,6 +83,7 @@ const balanceReducer = (state = initialState, action) => {
       return state;
     case 'WALLET_SET_UNIQUE_BALANCE_FULFILLED':
       let balance = arrangeUniqueNetworkBalance(action.payload, state);
+      console.log('balance', balance);
       state = {
         ...state,
         [action.payload.network]: {

@@ -17,7 +17,7 @@ export default class Cryptocurrency {
         ETH:  { fromSymbol: 'ETH',  toSymbol },
         LTC:  { fromSymbol: 'LTC',  toSymbol },
         DASH: { fromSymbol: 'DASH', toSymbol },
-        TETHER: { fromSymbol: 'TETHER', toSymbol }
+        USDT: { fromSymbol: 'USDT', toSymbol }
     });
     res.send(r);
   }
