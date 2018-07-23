@@ -46,12 +46,13 @@ class ModalSend extends React.Component {
 	}
 
 	_handleClickClose = (event) => {
-		let modal = document.querySelector('.js-modal-send');
-		toggleModal(modal);
 		this.setState({
 			...this.state,
 			currStep: 0
 		});
+    let modal = document.querySelector('.js-modal-send');
+    var _this = this;
+    toggleModal(modal, _this);
 		/*{className={'js-modal-send'}}*/
 	}
 
@@ -59,6 +60,12 @@ class ModalSend extends React.Component {
 		let currentNetwork = this.props.wallet.currentNetwork.toLowerCase();
 		return  `/img/coins/${currentNetwork}.svg`;
 	}
+
+  componentDidUpdate() {
+    if (this.state.showToMe) {
+      alert('I"m showing to you babe');
+    }
+  }
 
 	render() {
 		if (!this.state.steps)

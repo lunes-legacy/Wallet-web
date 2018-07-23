@@ -1,4 +1,11 @@
-export const toggleModal = (modal) => {
+import ReactDOM from 'react-dom';
+
+const resetModalStep = (_that) => {
+  _that.setState({currStep: 0}, () => {
+    console.warn('ralative variable that was able to set state !!!');
+  });
+}
+export const toggleModal = (modal, _that) => {
 	if (typeof modal === 'string')
 		modal = document.querySelector(`.${modal}`);
 
@@ -14,7 +21,8 @@ export const toggleModal = (modal) => {
 		background.style.opacity    = '0';
 		background.style.visibility = 'hidden';
 		modal.style.transform       = 'translateY(-100%)';
-		modal.setAttribute('state','hidden');
+    modal.setAttribute('state','hidden');
+    resetModalStep(_that);
   }
 
   if (modal) {
@@ -26,6 +34,7 @@ export const toggleModal = (modal) => {
         background.style.visibility = 'hidden';
         modal.style.transform       = 'translateY(-100%)';
         modal.setAttribute('state','hidden');
+        resetModalStep(_that);
       }
     });
   }
