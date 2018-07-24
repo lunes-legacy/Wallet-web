@@ -9,14 +9,16 @@ let initialState = {
     img: "lns.svg",
     total_amount: 0,
     total_confirmed: 0,
-    total_unconfirmed: 0
+    total_unconfirmed: 0,
+    status: {type:'loading',message:''}
   },
   BTC: {
     coinName: "Bitcoin",
     img: "btc.svg",
     total_amount: 0,
     total_confirmed: 0,
-    total_unconfirmed: 0
+    total_unconfirmed: 0,
+    status: {type:'loading',message:''}
   },
   ETH: {
   	coinName: 'Ethereum',
@@ -24,34 +26,39 @@ let initialState = {
   	total_amount: 0,
   	total_confirmed: 0,
   	total_unconfirmed: 0,
+    status: {type:'loading',message:''}
   },
   LTC: {
   	coinName: 'Litecoin',
   	img: 'ltc.svg',
   	total_amount: 0,
   	total_confirmed: 0,
-  	total_unconfirmed: 0
+  	total_unconfirmed: 0,
+    status: {type:'loading',message:''}
   },
   DASH: {
   	total_confirmed: 0,
   	total_unconfirmed: 0,
   	total_amount: 0,
   	img: 'dash.svg',
-  	coinName: 'Dashcoin'
+  	coinName: 'Dashcoin',
+    status: {type:'loading',message:''}
   },
   BCH: {
   	total_confirmed: 0,
   	total_unconfirmed: 0,
   	total_amount: 0,
   	img: 'bch.svg',
-  	coinName: 'Bitcoin Cash'
+  	coinName: 'Bitcoin Cash',
+    status: {type:'loading',message:''}
   },
   USDT: {
-   total_confirmed: 0,
-   total_unconfirmed: 0,
-   total_amount: 0,
-   img: 'nano.svg',
-   coinName: 'Tether'
+    total_confirmed: 0,
+    total_unconfirmed: 0,
+    total_amount: 0,
+    img: 'nano.svg',
+    coinName: 'Tether',
+    status: {type:'loading',message:''}
   }
   // NANO: {
   // 	total_confirmed: 100,
@@ -80,14 +87,16 @@ const balanceReducer = (state = initialState, action) => {
     case "WALLET_SET_BALANCE":
       return state;
     case 'WALLET_SET_UNIQUE_BALANCE_REJECTED':
-      return state;
+      let message = action.payload.message ? action.payload.message : JSON.stringify(action.payload)
+      return { ...state, status: { type: 'error', message: message } };
     case 'WALLET_SET_UNIQUE_BALANCE_FULFILLED':
       let balance = arrangeUniqueNetworkBalance(action.payload, state);
       console.log('balance', balance);
       state = {
         ...state,
         [action.payload.network]: {
-          ...balance
+          ...balance,
+          status: {type:'completed',message:''}
         }
       }
       return state;
