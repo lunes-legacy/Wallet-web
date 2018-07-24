@@ -68,7 +68,6 @@ const currenciesReducer = (state = initialState, action) => {
           }
           state.crypto[key].status = { type:'completed', message:'' }
         });
-        console.log('STATE:::::::::;',state);
         return state;
       }
 		case 'CRYTPO_SET_TX_FULFILLED':
