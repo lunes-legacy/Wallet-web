@@ -35,11 +35,25 @@ export class WalletClass {
     }
 
     try {
-      let coinsPrice = {};
+      //if a mistake occur, so we have to get back in the older way to do that
+      let coinsPrice = {}; //TODO maybe remove
+      let promises = [];
+      let promise;
+      let sequence = [];
+      let result = {};
       for (let coinKey in data) {
-        coinsPrice[data[coinKey].fromSymbol] = await coins.getPrice(data[coinKey]);
+        // coinsPrice[data[coinKey].fromSymbol] = await coins.getPrice(data[coinKey]);
+        sequence.push(coinKey.toUpperCase());
+        promise = coins.getPrice(data[coinKey]);
+        promises.push(promise);
       }
-      return coinsPrice;
+      return await Promise.all(promises).then((r) => {
+        sequence.map((v, k) => {
+          result[v] = r[k];
+        });
+        return result;
+      });
+      return coinsPrice; //TODO maybe remove
     } catch (err) {
       return errorPattern(`Error on trying to get price`, 500, "COINGETPRICE_ERROR", err);
     }
