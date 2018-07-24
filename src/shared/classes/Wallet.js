@@ -258,9 +258,7 @@ export class WalletClass {
   getCryptoTx = async (data) => {
     try {
       // let result = await Fee.getNetworkFees({ network: coin });
-      let result = await Fee.estimate(data);
-
-      return result;
+      return await Fee.estimate(data);
     } catch (error) {
       console.error('Method: getCryptoTx', error);
       return error;
