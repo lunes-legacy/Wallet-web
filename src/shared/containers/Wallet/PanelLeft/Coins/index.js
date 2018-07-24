@@ -17,9 +17,6 @@ import {numeral} from 'Utils/numeral';
 const StyledCoins = styled.div`
   width: auto;
   min-width: 100%;
-  height: 100vh;
-  max-height: 100vh;
-
 `;
 const StyledLoading = styled.div`
   margin-top: 115%;
@@ -188,7 +185,7 @@ class Coins extends React.Component {
     }
 
     let components = [];
-    
+
     for (let coinKey in balance) {
       let { crypto }  = this.props.currencies;
       if (!crypto[coinKey]) continue;
