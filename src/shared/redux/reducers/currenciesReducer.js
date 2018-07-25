@@ -14,7 +14,8 @@ let initialState = {
 		ETH: { USD: 0, BRL: 0, EUR: 0 },
 		LNS: { USD: 0, BRL: 0, EUR: 0 },
 		LTC: { USD: 0, BRL: 0, EUR: 0 },
-		DASH: { USD: 0, BRL: 0, EUR: 0 }
+    DASH: { USD: 0, BRL: 0, EUR: 0 },
+		USDT: { USD: 0, BRL: 0, EUR: 0 },
 	},
 	cryptoTx: {
 		LNS: { high: 0, medium: 0, low: 0 },
@@ -22,8 +23,8 @@ let initialState = {
 		BCH: { high: 0, medium: 0, low: 0 },
 		ETH: { high: 0, medium: 0, low: 0 },
 		LTC: { high: 0, medium: 0, low: 0 },
-		DASH: { high: 0, medium: 0, low: 0 }
-
+    DASH: { high: 0, medium: 0, low: 0 },
+		USDT: { high: 0, medium: 0, low: 0 },
 	}
 }
 const currenciesReducer = (state = initialState, action) => {

@@ -16,7 +16,11 @@ export class MoneyClass {
       return;
     }
     // if (to === 'btc' || to === 'lns' || to === 'lunes' || to === 'ltc') {
-    if (to.search(/(btc)|(lns)|(lunes)|(ltc)|(dash)|(usdt)|(bch)/i) !== -1) {
+<<<<<<< HEAD
+    if (to.search(/(btc)|(lns)|(lunes)|(ltc)|(dash)|(bch)/i) !== -1) {
+=======
+    if (to.search(/(btc)|(lns)|(lunes)|(ltc)|(dash)|(usdt)/i) !== -1) {
+>>>>>>> Modifications related to tether US
       return this.convertToBtc(amount);
     } else if (to.search(/(satoshi)/i) !== -1) {
       return this.convertToSatoshi(amount);
