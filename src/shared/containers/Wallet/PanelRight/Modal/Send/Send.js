@@ -25,7 +25,7 @@ import { WalletClass } from 'Classes/Wallet';
 
 const money = new MoneyClass;
 const wallet = new WalletClass();
-
+let isUserAlreadySending;
 
 let CssWrapper = css`
   transform-origin: top;
@@ -358,6 +358,7 @@ class Send extends React.Component {
     this.ctrlLoading(true);
     let coinAmount     = parseFloat(this.state.transferValues.coin);
     let currentNetwork = this.props.wallet.currentNetwork;
+
     let feePerByte     = this.state.feePerByte.data[this.state.chosenFee];
     let estimatedFee   = this.state.fees[this.state.chosenFee];
 
