@@ -25,7 +25,7 @@ import { WalletClass } from 'Classes/Wallet';
 
 const money = new MoneyClass;
 const wallet = new WalletClass();
-
+let isUserAlreadySending;
 
 let CssWrapper = css`
   transform-origin: top;
@@ -60,147 +60,147 @@ let FeeButton = styled.button`
 
 /*
 1) O usuário entrou no modal
-  -É calculado o fee por byte da network e armazenado no react
+	-É calculado o fee por byte da network e armazenado no react
 2) O usuário digitou o valor a ser enviado
-  -estimateFee será disparado trazendo para o usuário os valores alta media e baixa.
+	-estimateFee será disparado trazendo para o usuário os valores alta media e baixa.
 3) O usuário digitou o endereco
-  -É verificado se é válido o endereco, se não, fica vermelho, o leo fez isso eu acho.
+	-É verificado se é válido o endereco, se não, fica vermelho, o leo fez isso eu acho.
 4) O usuário clica em enviar
-  -Neste momento transactionSend é chamado para ser iniciada a transacao
-  -Na programação
-    Enquanto aguarda o resultado do transactionSend, colocamos o modal step Loading
-      Se der erro, voltamos. this.previousStep()
-      Se for bem sucedido. this.nextStep()
-        Mostramos a etapa final.js para o usuario, onde aparecera a imagem e o txid
-        Enviamos um e-mail para o usuário com a transaction ID
+	-Neste momento transactionSend é chamado para ser iniciada a transacao
+	-Na programação
+		Enquanto aguarda o resultado do transactionSend, colocamos o modal step Loading
+			Se der erro, voltamos. this.previousStep()
+			Se for bem sucedido. this.nextStep()
+				Mostramos a etapa final.js para o usuario, onde aparecera a imagem e o txid
+				Enviamos um e-mail para o usuário com a transaction ID
 O que precisa ser feito:
-  Caixa de mensagem para mostrar ao usuário o que está acontecendo, se é erro, vermelho, se sucesso, verde.
-  [REVER] Usar o node-mailer para fazer o envio de e-mail(tx id).
-  Refatorar todo o modal send
-    Adicionar um método para voltar uma etapa
-    Conectar as propriedades com redux
-    Fazer algumas actions em redux
-    Separar melhor os componentes
-    Colocar os dados do estimateFee nos botões(ESTÁTICO)
-    Fazer a soma do valor total com a taxa
-  Passar a chamada de transação para o backend, para evitar manipulação do usuário.
+	Caixa de mensagem para mostrar ao usuário o que está acontecendo, se é erro, vermelho, se sucesso, verde.
+	[REVER] Usar o node-mailer para fazer o envio de e-mail(tx id).
+	Refatorar todo o modal send
+		Adicionar um método para voltar uma etapa
+		Conectar as propriedades com redux
+		Fazer algumas actions em redux
+		Separar melhor os componentes
+		Colocar os dados do estimateFee nos botões(ESTÁTICO)
+		Fazer a soma do valor total com a taxa
+	Passar a chamada de transação para o backend, para evitar manipulação do usuário.
 
 Todos os estados que precisamos e/ou iremos usar
-  this.state = {
-    stateButtonSend: 'Enviar',
-    addressIsValid: true,
-    fees: {
-      status: 'loading', //loading || complete
-      low: undefined,
-      medium: undefined,
-      high: undefined
-    },
-    networkFees: {
-      low: undefined,
-      medium: undefined,
-      high: undefined
-    },
-    estimateParams: {
-      network: undefined,
-      fromAddress: undefined,
-      toAddress: undefined,
-      amount: undefined,
-      accessToken: undefined,
-      networkFees: undefined //it is optional
-    }
-  }
-  this.props = {
-    component_wallet,
-    balance,
-    coinPrice,
-  }
+	this.state = {
+		stateButtonSend: 'Enviar',
+		addressIsValid: true,
+		fees: {
+			status: 'loading', //loading || complete
+			low: undefined,
+			medium: undefined,
+			high: undefined
+		},
+		networkFees: {
+			low: undefined,
+			medium: undefined,
+			high: undefined
+		},
+		estimateParams: {
+			network: undefined,
+			fromAddress: undefined,
+			toAddress: undefined,
+			amount: undefined,
+			accessToken: undefined,
+			networkFees: undefined //it is optional
+		}
+	}
+	this.props = {
+		component_wallet,
+		balance,
+		coinPrice,
+	}
 */
 const Fee = new FeeClass();
 const Money = new MoneyClass();
 
 class Send extends React.Component {
-  constructor(props) {
-    super(props);
-    this.ref = {};
-    this.ref.radioCoinAmount = React.createRef();
-    this.ref.coinAmount = React.createRef();
-    this.ref.sendButton = React.createRef();
-    this.ref.wrapper = React.createRef();
+	constructor(props) {
+		super(props);
+		this.ref = {};
+		this.ref.radioCoinAmount = React.createRef();
+		this.ref.coinAmount = React.createRef();
+		this.ref.sendButton = React.createRef();
+		this.ref.wrapper = React.createRef();
 
-    //quantity types: real, dollar, coin
-    this.state = {
-      isUserAlreadySending: false, //this will be to forbid the user to send twice
-      stateButtonSend: 'Enviar',
-      addressIsValid: true,
-      invalidAmount: false,
-      network: null,
-      sendAddress: '',
-      loading: false,
-      transferValues: {
-        coin: '',
-        brl: '',
-        usd: ''
-      },
-      radioControl: {
-        coin: true,
-        brl: false,
-        usd: false
-      },
-      feePerByte: {
-        low: undefined,
-        medium: undefined,
-        high: undefined
-      },
-      chosenFee: 'low',
-      feeButtonsStatus: {
-        type: 'initial', //'loading' | 'initial' | 'completed' | 'error'
-        message: 'Put an address and a value to get the right fee',
-      },
-      fees: {
-        low: {
+		//quantity types: real, dollar, coin
+		this.state = {
+			isUserAlreadySending: false, //this will be to forbid the user to send twice
+			stateButtonSend: 'Enviar',
+			addressIsValid: true,
+			invalidAmount: false,
+			network: null,
+			sendAddress: '',
+			loading: false,
+			transferValues: {
+				coin: '',
+				brl: '',
+				usd: ''
+			},
+			radioControl: {
+				coin: true,
+				brl: false,
+				usd: false
+			},
+			feePerByte: {
+				low: undefined,
+				medium: undefined,
+				high: undefined
+			},
+			chosenFee: 'low',
+			feeButtonsStatus: {
+				type: 'initial', //'loading' | 'initial' | 'completed' | 'error'
+				message: 'Put an address and a value to get the right fee',
+			},
+			fees: {
+				low: {
           value: undefined,
           gasPrice: '0',
-          txColor: style.normalRed,
-          textContent: 'Low',
-        },
-        medium: {
+					txColor: style.normalRed,
+					textContent: 'Low',
+				},
+				medium: {
           value: undefined,
           gasPrice: '0',
-          txColor: style.normalYellow,
-          textContent: 'Medium',
-        },
-        high: {
+					txColor: style.normalYellow,
+					textContent: 'Medium',
+				},
+				high: {
           value: undefined,
           gasPrice: '0',
-          txColor: style.normalGreen,
-          textContent: 'High',
-        }
-      }
-    }
-  }
-  componentDidMount = async () => {
-    this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
-    this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
-    this.wrapper = ReactDOM.findDOMNode(this.ref.wrapper.current);
+					txColor: style.normalGreen,
+					textContent: 'High',
+				}
+			}
+		}
+	}
+	componentDidMount = async () => {
+		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
+		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
+		this.wrapper = ReactDOM.findDOMNode(this.ref.wrapper.current);
 
-    setTimeout(() => {
-      this.animThisComponentIn();
+		setTimeout(() => {
+			this.animThisComponentIn();
     }, 500);
 
-    this.setState({
-      ...this.state,
-      chosenFee: 'low'
-    });
-  }
+		this.setState({
+			...this.state,
+			chosenFee: 'low'
+		});
+	}
 
-  /*
-    It will be usually called when the user dispatch a blur event.
-  */
-  _setFees = async () => {
-    let { currentNetwork } = this.props.wallet;
-    let amount      = parseFloat(this.state.transferValues.coin);
-    let fromAddress = this.props.walletInfo.addresses[currentNetwork.toLowerCase()];
-    let toAddress   = this.state.sendAddress;
+	/*
+		It will be usually called when the user dispatch a blur event.
+	*/
+	_setFees = async () => {
+		let { currentNetwork } = this.props.wallet;
+		let amount      = parseFloat(this.state.transferValues.coin);
+		let fromAddress = this.props.walletInfo.addresses[currentNetwork.toLowerCase()];
+		let toAddress   = this.state.sendAddress;
 
     let feePerByteNetwork = this.state.feePerByte.network;
     if (!feePerByteNetwork || feePerByteNetwork.toLowerCase() !== currentNetwork.toLowerCase()) {
