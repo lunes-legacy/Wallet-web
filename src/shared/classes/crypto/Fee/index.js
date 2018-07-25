@@ -48,153 +48,152 @@ export default class FeeClass {
 	}
 
 	estimate = async (data) => {
-		try {
-      // Verifica se foi passada rede
-      if (!data.network) {
-      	throw errorPattern('No network name was found', 500, 'FEE_ESTIMATE_ERROR');
-      }
+        try {
+            // Verifica se foi passada rede
+            if (!data.network) {
+            throw errorPattern('No network name was found', 500, 'FEE_ESTIMATE_ERROR');
+        }
 
-      // Se não for passado o parâmetro testnet: true || false, seta o valor padrão da constant TESTNET
-      if (!data.testnet) {
-      	data.testnet = TESTNET;
-      }
+        // Se não for passado o parâmetro testnet: true || false, seta o valor padrão da constant TESTNET
+        if (!data.testnet) {
+            data.testnet = TESTNET;
+        }
 
-      // Instancia a classe Money para converter os valores quando necessário
-      const money = new MoneyClass;
+        // Instancia a classe Money para converter os valores quando necessário
+        const money = new MoneyClass;
 
-			//THIS ENTIRE CONDITIONAL WILL BE REMOVED
-			if (data.network.search(/ltc/i) !== -1) {
-				if (!data.networkFees) {
-					data.networkFees = await this.getNetworkFees({...data});
-
-					if (!data.networkFees) {
-						throw errorPattern(`We've tried to get ${data.network}'s network fees, but it have resulted in error`, 500, 'FEE_ESTIMATE_ERROR');
-					}
-				}
-
-				if (window || document) {
-					data.accessToken = JSON.parse(decrypt(localStorage.getItem('ACCESS-TOKEN'))).accessToken;
-				} else {
-					throw errorPattern("We can't estimate the fee, without the user's access token", 500,'FEE_ESTIMATE_ERROR');
-				}
-
-				data.feePerByte = data.networkFees.data.medium;
-
-				data.amount = money.conevertCoin('satoshi', data.amount).toString();
-
-				let tmp = await coins.services.estimateFee({...data}, data.accessToken);
-
-				return {
-					low: {data:{fee:0}},
-					medium: tmp,
-					high: {data:{fee:0}}
-				};
-			}
-			//_________________________________________
-
-
-			if (data.network.search(/(lns)|(lunes)/i) !== -1) {
-				return {
-					low: {
-						network: data.network,
-						data: {
-							fee: LUNES_TRANSACTION_FEE * 100000000
-						}
-					},
-					medium: {
-						network: data.network,
-						data: {
-							fee: LUNES_TRANSACTION_FEE * 100000000
-						}
-					},
-					high: {
-						network: data.network,
-						data: {
-							fee: LUNES_TRANSACTION_FEE * 100000000
-						}
-					}
-				}
-			}
-
+		//THIS ENTIRE CONDITIONAL WILL BE REMOVED
+		if (data.network.search(/ltc/i) !== -1) {
 			if (!data.networkFees) {
 				data.networkFees = await this.getNetworkFees({...data});
 
 				if (!data.networkFees) {
 					throw errorPattern(`We've tried to get ${data.network}'s network fees, but it have resulted in error`, 500, 'FEE_ESTIMATE_ERROR');
 				}
+			}
 
-				data.networkFees = data.networkFees.data;
+			if (window || document) {
+				data.accessToken = JSON.parse(decrypt(localStorage.getItem('ACCESS-TOKEN'))).accessToken;
 			} else {
-				data.networkFees = data.networkFees.data;
+				throw errorPattern("We can't estimate the fee, without the user's access token", 500,'FEE_ESTIMATE_ERROR');
 			}
 
-			if (!data.toAddress || !data.fromAddress) {
-				throw errorPattern('You should pass through a valid address', 500, 'FEE_ESTIMATE_ERROR')
-			}
+			data.feePerByte = data.networkFees.data.medium;
 
-			if (!data.accessToken) {
-				if (window || document) {
-					data.accessToken = JSON.parse(decrypt(localStorage.getItem('ACCESS-TOKEN'))).accessToken;
-				} else {
-					throw errorPattern('We can\'t estimate the fee, without the user\'s access token', 500,'FEE_ESTIMATE_ERROR');
+			data.amount = money.conevertCoin('satoshi', data.amount).toString();
+
+			let tmp = await coins.services.estimateFee({...data}, data.accessToken);
+
+			return {
+				low: {data:{fee:0}},
+				medium: tmp,
+				high: {data:{fee:0}}
+			};
+		}
+		//_________________________________________
+
+
+		if (data.network.search(/(lns)|(lunes)/i) !== -1) {
+			return {
+				low: {
+					network: data.network,
+					data: {
+						fee: LUNES_TRANSACTION_FEE * 100000000
+					}
+				},
+				medium: {
+					network: data.network,
+					data: {
+						fee: LUNES_TRANSACTION_FEE * 100000000
+					}
+				},
+				high: {
+					network: data.network,
+					data: {
+						fee: LUNES_TRANSACTION_FEE * 100000000
+					}
 				}
 			}
+		}
 
-			let params = {
-				low:    {},
-				medium: {},
-				high:   {},
-			};
+		if (!data.networkFees) {
+			data.networkFees = await this.getNetworkFees({...data});
 
-			let result = {
-				low:    {},
-				medium: {},
-				high:   {}
+			if (!data.networkFees) {
+				throw errorPattern(`We've tried to get ${data.network}'s network fees, but it have resulted in error`, 500, 'FEE_ESTIMATE_ERROR');
 			}
 
-			let { networkFees } = data;
-			delete data.networkFees;
+			data.networkFees = data.networkFees.data;
+		} else {
+			data.networkFees = data.networkFees.data;
+		}
 
-      // Se for ETH converte para Wei (menor unidade do ETH), senão, converte para Satoshi (menor unidade do BTC)
-      data.amount = data.network.toUpperCase() === "ETH" ?
+		if (!data.toAddress || !data.fromAddress) {
+			throw errorPattern('You should pass through a valid address', 500, 'FEE_ESTIMATE_ERROR')
+		}
+
+		if (!data.accessToken) {
+			if (window || document) {
+				data.accessToken = JSON.parse(decrypt(localStorage.getItem('ACCESS-TOKEN'))).accessToken;
+			} else {
+				throw errorPattern('We can\'t estimate the fee, without the user\'s access token', 500,'FEE_ESTIMATE_ERROR');
+			}
+		}
+
+		let params = {
+			low:    {},
+			medium: {},
+			high:   {},
+		};
+
+		let result = {
+			low:    {},
+			medium: {},
+			high:   {}
+		}
+
+		let { networkFees } = data;
+		delete data.networkFees;
+
+        // Se for ETH converte para Wei (menor unidade do ETH), senão, converte para Satoshi (menor unidade do BTC)
+        data.amount = data.network.toUpperCase() === "ETH" ?
         money.conevertCoin('wei', data.amount).toString() :
         money.conevertCoin('satoshi', data.amount).toString();
 
-      const feeLevels = [];
+        const feeLevels = [];
 
-      for (let level in params) {
-        if (data.network.search(/(eth)/i) !== -1) {
-          params[level] = {
-            ...data,
-            gasLimit: '37393',
-            gasPrice: networkFees[level]
-          }
-        } else {
-          params[level] = {
-            ...data,
-            feePerByte: networkFees[level]
-          }
+        for (let level in params) {
+            if (data.network.search(/(eth)/i) !== -1) {
+              params[level] = {
+                ...data,
+                gasLimit: '37393',
+                gasPrice: networkFees[level]
+              }
+            } else {
+              params[level] = {
+                ...data,
+                feePerByte: networkFees[level]
+              }
+            }
+
+            // Ạdiciona no array os dados para consultar cada nível de taxa
+            feeLevels.push(params[level]);
         }
 
-        // Ạdiciona no array os dados para consultar cada nível de taxa
-        feeLevels.push(params[level]);
-      }
+        // Chama o método responsável por acessar a lunes-lib e consultar as taxas
+        const fees = await this.getEstimateFees(feeLevels, data.accessToken);
 
-      // Chama o método responsável por acessar a lunes-lib e consultar as taxas
-      const fees = await this.getEstimateFees(feeLevels, data.accessToken);
-
-      return {
-        low: {
-          ...fees[0] || undefined
-        },
-        medium: {
-          ...fees[1] || undefined
-        },
-        high: {
-          ...fees[2] || undefined
-        },
-
-      };
+        return {
+            low: {
+              ...fees[0] || undefined
+            },
+            medium: {
+              ...fees[1] || undefined
+            },
+            high: {
+              ...fees[2] || undefined
+            },
+        };
     } catch (err) {
       console.error(err);
       return err;

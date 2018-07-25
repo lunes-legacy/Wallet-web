@@ -258,18 +258,42 @@ class Send extends React.Component {
 
     let result = await wallet.getCryptoTx(data)
       .catch(e => {
-        console.log(e);
         this.setState({
           stateButtonSend: {
             type: 'error',
-            message: `Error on trying to do the estimation. Server message: ${e}`
+            message: `Error on trying to do the estimation. Server message: ${e.message}`
           }
         });
       });
-
-    if (!currentNetwork) {
-      console.error('Current network is not defined', 500, 'SETNETWORKFEES_ERROR');
+    if ("message" in result) {
+      this.setState({
+        feeButtonsStatus: {
+          type: 'error',
+          message: result.message
+        }
+      });
+      return;
     }
+    if (!currentNetwork) {
+      let message = 'Current network is not defined';
+      this.setState({
+        feeButtonsStatus: {
+          type: 'error',
+          message: message
+        }
+      });
+      return;
+    }
+    if (!("low" in result) && !("medium" in result) && !("high" in result)) {
+      this.setState({
+        feeButtonsStatus: {
+          type: 'error',
+          message: 'Unknown error'
+        }
+      });
+      throw errorPattern("Unknown error in method '_setFees'");
+    }
+
 
     if (!result) {
       console.error('Failed on trying to get network fees', 500, "SETNETWORKFEES_ERROR");
@@ -281,22 +305,29 @@ class Send extends React.Component {
       result.medium.data.fee = parseInt(result.medium.data.txFee);
       result.high.data.fee = parseInt(result.high.data.txFee);
     }
+    let low    = (result && result.low && result.low.data && result.low.data.fee) || 0
+    let medium = (result && result.medium && result.medium.data && result.medium.data.fee) || 0
+    let high   = (result && result.high && result.high.data && result.high.data.fee) || 0
+    let lowGasPrice  = (result && result.low && result.low.data && result.low.data.gasPrice) || 0
+    let medGasPrice  = (result && result.low && result.low.data && result.low.data.gasPrice) || 0
+    let highGasPrice = (result && result.low && result.low.data && result.low.data.gasPrice) || 0
+
     let fees = {
       ...this.state.fees,
       low: {
         ...this.state.fees.low,
-        value: money.conevertCoin(currentNetwork, result.low.data.fee) || 0,
-        gasPrice: result.low.data.gasPrice
+        value: money.convertCoin(currentNetwork, low),
+        gasPrice: lowGasPrice
       },
       medium: {
         ...this.state.fees.medium,
-        value: money.conevertCoin(currentNetwork, result.medium.data.fee) || 0,
-        gasPrice: result.medium.data.gasPrice
+        value: money.convertCoin(currentNetwork, medium),
+        gasPrice: medGasPrice
       },
       high: {
         ...this.state.fees.high,
-        value: money.conevertCoin(currentNetwork, result.high.data.fee) || 0,
-        gasPrice: result.high.data.gasPrice
+        value: money.convertCoin(currentNetwork, high),
+        gasPrice: highGasPrice
       }
     }
 
@@ -470,7 +501,7 @@ class Send extends React.Component {
       let medium = parseFloat(newFees.medium && newFees.medium.value) || undefined;
       let high   = parseFloat(newFees.high && newFees.high.value) || undefined;
 
-      if (val === low || val === medium || val === high) {
+      if (val === low || val === medium || val === high || !val) {
         continue;
       } else {
         newFees[key] = fee;
@@ -595,7 +626,6 @@ class Send extends React.Component {
       });
       throw errorPattern(err, 500, 'MODALSEND_TRANSACTION_ERROR');
     });
-    console.log('Send.js -> data:::',data);
     let txid = data && data.data && data.data.txID;
     if (!txid) {
       console.error('MODALSEND_TRANSACTIONSEND_DATA', data);
