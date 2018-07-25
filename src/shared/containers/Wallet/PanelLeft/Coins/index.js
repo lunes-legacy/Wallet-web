@@ -159,6 +159,7 @@ const keyframesAmountLoading = keyframes`
 const AmountLoading = styled.div`
   width: 2px;
   height: 15px;
+  margin: 0 0 0 10px;
   background: ${props => props.stick ? props.stick : style.normalGreen};
   display: inline-block;
 

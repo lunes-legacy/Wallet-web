@@ -39,41 +39,41 @@ const ButtonsRow = styled.div`
   margin: 0 auto;
   width: 50%;
 `;
+const keyframeShowLoadingSlowly = keyframes`
+from { opacity: 0; }
+to   { opacity: 1; }
+`;
 const WrapperSpinner = styled.div`
 position: fixed;
 top: 0px;
 left: 0px;
 width: 100%;
 height: 100%;
-background: rgba(0,0,0,.95);
 display: flex;
 justify-content: center;
 align-items: center;
 align-content: center;
 flex-flow: wrap;
-`;
-const keyframesImportingSpinner = keyframes`
-from { transform: rotate(0deg) }
-to   { transform: rotate(360deg) }
-`;
-const Spinner = styled.div`
-width: 5px;
-height: 50px;
-background: ${style.normalGreen}
-animation-name: ${keyframesImportingSpinner};
-animation-duration: 0.3s;
-animation-timing-function: linear;
-animation-iteration-count: infinite;
+visibility: hidden;
+opacity: 0;
+background: ${style.normalLilac2};
+animation-duration: 1.5s;
 animation-fill-mode: forwards;
+animation-timing-function: ease;
+${props =>
+  props.loading
+  ? `animation-name: ${keyframeShowLoadingSlowly}; visibility: visible;`
+  : 'animation-name: "", visibility: hidden;'};
 `;
 
 function LoadingImport(props) {
+  if (typeof window !== 'undefined')
+    console.log(props.loading);
   return (
-    <WrapperSpinner>
-      {/*<Spinner/>*/}
+    <WrapperSpinner loading={props.loading}>
       <Loading/>
       <div style={{width:'100%',height: '20px'}}></div>
-      <Text clWhite txCenter>Loading...</Text>
+      <Text clWhite txCenter>Importing your seed and creating wallets...</Text>
     </WrapperSpinner>
   );
 }
@@ -87,6 +87,7 @@ class Import extends React.Component {
     super();
     this.state = {
       notification: null,
+      loading: false,
       walletInfo: {
         seed: null,
         addresses: {
@@ -202,11 +203,10 @@ class Import extends React.Component {
   }
 
   render() {
-    if (this.state.loading)
-      return <LoadingImport/>
 
     return (
       <div>
+        <LoadingImport loading={this.state.loading}/>
         <PanelLeft>
           <CustomLogo />
           <Form margin={"10% auto 0 auto"} width={"80%"}>
