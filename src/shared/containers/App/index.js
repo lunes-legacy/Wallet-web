@@ -1,7 +1,8 @@
 // require("dotenv").load();
 import React, { PropTypes } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+import style from "Shared/style-variables";
 import NotFound from './NotFound';
 
 import { decrypt } from "../../utils/crypt";
@@ -80,6 +81,24 @@ let WrapBalance = styled.div`
 `;
 let Balance = styled.div`
   ${TextBase};
+`;
+const keyframesAmountLoading = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(180deg); }
+`;
+const AmountLoading = styled.div`
+  width: 2px;
+  height: 15px;
+  background: ${props => props.stick ? props.stick : style.normalGreen};
+  display: inline-block;
+
+  transform: rotate(0deg);
+  animation-name: ${keyframesAmountLoading};
+  animation-duration: 0.2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  animation-delay: 0s;
 `;
 
 class App extends React.Component {
@@ -182,6 +201,7 @@ class App extends React.Component {
     let { crypto } = this.props.currencies;
 
     let usdCurrent = crypto.LNS.USD;
+    let lunesBalanceStatus = this.props.balance.LNS.status;
     let lunesAmount = this.props.balance.LNS.total_confirmed;
 
     let lnsBalance = numeral(lunesAmount).format("0,0.00000000");
@@ -204,7 +224,7 @@ class App extends React.Component {
                 LUNES{" "}
               </Text>
               <Text clWhite txNormal txInline offSide size={"2.0rem"}>
-                {lnsBalance}
+                { lunesBalanceStatus.type === 'loading' ? <AmountLoading stick={style.normalGreen}/> : lnsBalance }
               </Text>
             </Balance>
             <Text clNormalGreen txBold txRight size={"1.2rem"}>
