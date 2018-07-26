@@ -69,7 +69,7 @@ let FeeButton = styled.button`
 	-Neste momento transactionSend é chamado para ser iniciada a transacao
 	-Na programação
 		Enquanto aguarda o resultado do transactionSend, colocamos o modal step Loading
-			Se der erro, voltamos. this.previousStep()
+			Se der erro, aparece o erro.
 			Se for bem sucedido. this.nextStep()
 				Mostramos a etapa final.js para o usuario, onde aparecera a imagem e o txid
 				Enviamos um e-mail para o usuário com a transaction ID
@@ -256,20 +256,21 @@ class Send extends React.Component {
       network: currentNetwork
     }
 
-    let result = await wallet.getCryptoTx(data)
-      .catch(e => {
-        this.setState({
-          stateButtonSend: {
-            type: 'error',
-            message: `Error on trying to do the estimation. Server message: ${e.message}`
-          }
-        });
-      });
-    if ("message" in result) {
+    let result = await wallet.getCryptoTx(data);
+    let estimateErrors = {};
+    //it will storer all errors to verify later on
+    Object.keys(result).map((k) => {
+      let current = result[k];
+      if ("message" in current)
+        estimateErrors[k] = current;
+    });
+    //if every result get an error, so
+    if ((Object.keys(estimateErrors).length === Object.keys(result).length) && (Object.keys(result).length > 0) && (typeof result === 'object')) {
+      let message = result['high'].message || result['medium'].message || result['low'].message;
       this.setState({
         feeButtonsStatus: {
           type: 'error',
-          message: result.message
+          message: message
         }
       });
       return;

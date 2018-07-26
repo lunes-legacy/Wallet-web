@@ -47,7 +47,7 @@ const BLOCK_EXPLORERS = {
   ltc: 'https://www.chain.so/',
   nano: 'https://www.chain.so/',
   dash: 'https://www.chain.so/',
-  usdt: 'https://www.blockchain.com/btc/',
+  usdt: 'https://omniexplorer.info/',
   eth: TESTNET ? 'https://ropsten.etherscan.io/' : 'https://etherscan.io/'
 }
 
