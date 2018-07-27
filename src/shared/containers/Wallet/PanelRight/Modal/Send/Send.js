@@ -118,6 +118,55 @@ Todos os estados que precisamos e/ou iremos usar
 const Fee = new FeeClass();
 const Money = new MoneyClass();
 
+
+var initialState = {
+  isUserAlreadySending: false, //this will be to forbid the user to send twice
+  addressIsValid: true,
+  invalidAmount: false,
+  sendAddress: '',
+  loading: false,
+  lastNetwork: undefined,
+  transferValues: {
+    coin: '',
+    brl: '',
+    usd: ''
+  },
+  radioControl: {
+    coin: true,
+    brl: false,
+    usd: false
+  },
+  feePerByte: {
+    low: undefined,
+    medium: undefined,
+    high: undefined
+  },
+  chosenFee: 'low',
+  feeButtonsStatus: {
+    type: 'initial', //'loading' | 'initial' | 'completed' | 'error'
+    message: 'Put an address and a value to get the right fee',
+  },
+  fees: {
+    low: {
+      value: undefined,
+      gasPrice: '0',
+      txColor: style.normalRed,
+      textContent: 'Low',
+    },
+    medium: {
+      value: undefined,
+      gasPrice: '0',
+      txColor: style.normalYellow,
+      textContent: 'Medium',
+    },
+    high: {
+      value: undefined,
+      gasPrice: '0',
+      txColor: style.normalGreen,
+      textContent: 'High',
+    }
+  }
+}
 class Send extends React.Component {
 	constructor(props) {
 		super(props);
@@ -128,56 +177,19 @@ class Send extends React.Component {
 		this.ref.wrapper = React.createRef();
 
 		//quantity types: real, dollar, coin
-		this.state = {
-			isUserAlreadySending: false, //this will be to forbid the user to send twice
-			stateButtonSend: 'Enviar',
-			addressIsValid: true,
-			invalidAmount: false,
-			network: null,
-			sendAddress: '',
-			loading: false,
-			transferValues: {
-				coin: '',
-				brl: '',
-				usd: ''
-			},
-			radioControl: {
-				coin: true,
-				brl: false,
-				usd: false
-			},
-			feePerByte: {
-				low: undefined,
-				medium: undefined,
-				high: undefined
-			},
-			chosenFee: 'low',
-			feeButtonsStatus: {
-				type: 'initial', //'loading' | 'initial' | 'completed' | 'error'
-				message: 'Put an address and a value to get the right fee',
-			},
-			fees: {
-				low: {
-          value: undefined,
-          gasPrice: '0',
-					txColor: style.normalRed,
-					textContent: 'Low',
-				},
-				medium: {
-          value: undefined,
-          gasPrice: '0',
-					txColor: style.normalYellow,
-					textContent: 'Medium',
-				},
-				high: {
-          value: undefined,
-          gasPrice: '0',
-					txColor: style.normalGreen,
-					textContent: 'High',
-				}
-			}
-		}
+		this.state = initialState;
 	}
+  componentDidUpdate() {
+    let { currentNetwork } = this.props.wallet;
+    let { lastNetwork }    = this.state;
+    if (lastNetwork !== currentNetwork) {
+      console.warn('1', lastNetwork, currentNetwork);
+      this.setState({
+        ...initialState,
+        lastNetwork: currentNetwork
+      })
+    }
+  }
 	componentDidMount = async () => {
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
 		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
@@ -188,7 +200,6 @@ class Send extends React.Component {
     }, 500);
 
 		this.setState({
-			...this.state,
 			chosenFee: 'low'
 		});
 	}
