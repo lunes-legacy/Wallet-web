@@ -53,8 +53,8 @@ text-align: center;
 
 class Home extends React.Component {
   componentWillMount() {
-    this.props.setCurrenciesPrice();
-    this.props.setCryptoPrice();
+    // this.props.setCurrenciesPrice();
+    // this.props.setCryptoPrice();
   }
 
   componentDidMount() {

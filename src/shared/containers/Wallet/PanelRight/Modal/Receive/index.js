@@ -32,23 +32,23 @@ class ModalReceive extends React.Component {
   }
 
   componentDidMount() {
-    
+
     this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
     this.makeQrCode();
-    
+
   }
 
   componentDidUpdate() {
     this.wrapperQr = ReactDOM.findDOMNode(this.ref.wrapperQr.current);
     this.makeQrCode();
-    
+
   }
 
   getCurrentAddress = () => {
     let currentNetwork = this.props.currentNetwork;
     let address = this.props.addresses;
     return address[currentNetwork];
-    
+
   };
 
   makeQrCode = () => {

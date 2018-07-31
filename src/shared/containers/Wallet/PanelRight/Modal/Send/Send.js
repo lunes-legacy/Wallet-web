@@ -14,7 +14,7 @@ import { setterModalSend } from 'Redux/actions';
 import { numeral } from 'Utils/numeral';
 import { InputText } from 'Components/forms/input-text';
 import { Col, Row, Button, TextBase, Text } from 'Components/index';
-import { SendButtonCss,	FirstRowCss, ThirdRowCss,	FourthRowCss } from './css';
+import { SendButtonCss, FirstRowCss, ThirdRowCss, FourthRowCss } from './css';
 import { InputRadio, WrapRadio, LabelRadio, RadioCheckmark } from 'Components/forms/input-radio';
 import Hr from '../Hr';
 
@@ -28,9 +28,9 @@ const wallet = new WalletClass();
 let isUserAlreadySending;
 
 let CssWrapper = css`
-	transform-origin: top;
-	transform: translateY(-100%);
-	transition: all 0.3s;
+  transform-origin: top;
+  transform: translateY(-100%);
+  transition: all 0.3s;
 `;
 
 let Image = styled.img`
@@ -41,20 +41,20 @@ let Image = styled.img`
 `;
 
 let FeeButton = styled.button`
-	${TextBase}
-	display: block;
-	background: transparent;
-	border: none;
-	padding: 5px 10px 5px 10px;
-	cursor: pointer;
-	color: white;
-	&:focus {
-		outline: none;
-	}
-	transition: border-color .3s;
-	@media (${style.media.desktop2}) {
-		display: inline;
-	}
+  ${TextBase}
+  display: block;
+  background: transparent;
+  border: none;
+  padding: 5px 10px 5px 10px;
+  cursor: pointer;
+  color: white;
+  &:focus {
+    outline: none;
+  }
+  transition: border-color .3s;
+  @media (${style.media.desktop2}) {
+    display: inline;
+  }
 `;
 
 
@@ -69,7 +69,7 @@ let FeeButton = styled.button`
 	-Neste momento transactionSend é chamado para ser iniciada a transacao
 	-Na programação
 		Enquanto aguarda o resultado do transactionSend, colocamos o modal step Loading
-			Se der erro, voltamos. this.previousStep()
+			Se der erro, aparece o erro.
 			Se for bem sucedido. this.nextStep()
 				Mostramos a etapa final.js para o usuario, onde aparecera a imagem e o txid
 				Enviamos um e-mail para o usuário com a transaction ID
@@ -210,72 +210,94 @@ class Send extends React.Component {
       }, () => {
         console.warn('feePerByte:::', this.state.feePerByte);
       });
-      console.warn('NETWORKFEES::::-----------------------------');
-      console.warn('NETWORKFEES::::',networkFees);
-      console.warn('NETWORKFEES::::-----------------------------');
     }
 
-		if (amount <= 0) {
-			this.setState({
-				feeButtonsStatus: {
-					type: 'error',
-					message: 'Amount is less or equals to 0'
-				}
-			});
-			return;
+    if (amount <= 0) {
+      this.setState({
+        feeButtonsStatus: {
+          type: 'error',
+          message: 'Amount is less or equals to 0'
+        }
+      });
+      return;
     }
 
-		if (!this.state.addressIsValid || !toAddress) {
-			this.setState({
-				feeButtonsStatus: {
-					type: 'error',
-					message: 'Receiver\'s address isn\'t right'
-				}
-			});
-			return;
+    if (!this.state.addressIsValid || !toAddress) {
+      this.setState({
+        feeButtonsStatus: {
+          type: 'error',
+          message: 'Receiver\'s address isn\'t right'
+        }
+      });
+      return;
     }
 
-		if (!fromAddress) {
-			this.setState({
-				feeButtonsStatus: {
-					type: 'error',
-					message: 'Sender\'s address isn\'t right'
-				}
-			});
-			return;
+    if (!fromAddress) {
+      this.setState({
+        feeButtonsStatus: {
+          type: 'error',
+          message: 'Sender\'s address isn\'t right'
+        }
+      });
+      return;
     }
 
-		this.setState({
-			feeButtonsStatus: {
-				type: 'loading',
-				message: 'Wait until the estimate get finished'
-			}
+    this.setState({
+      feeButtonsStatus: {
+        type: 'loading',
+        message: 'Wait until the estimate get finished'
+      }
     });
 
-		let data = {
-			toAddress,
-			fromAddress,
-			amount,
-			network: currentNetwork
-		}
-
-    let result = await wallet.getCryptoTx(data)
-      .catch(e => {
-        console.log(e);
-        this.setState({
-          stateButtonSend: {
-            type: 'error',
-            message: `Error on trying to do the estimation. Server message: ${e}`
-          }
-        });
-      });
-
-		if (!currentNetwork) {
-			console.error('Current network is not defined', 500, 'SETNETWORKFEES_ERROR');
+    let data = {
+      toAddress,
+      fromAddress,
+      amount,
+      network: currentNetwork
     }
 
-		if (!result) {
-			console.error('Failed on trying to get network fees', 500, "SETNETWORKFEES_ERROR");
+    let result = await wallet.getCryptoTx(data);
+    let estimateErrors = {};
+    //it will storer all errors to verify later on
+    Object.keys(result).map((k) => {
+      let current = result[k];
+      if ("message" in current)
+        estimateErrors[k] = current;
+    });
+    //if every result get an error, so
+    if ((Object.keys(estimateErrors).length === Object.keys(result).length) && (Object.keys(result).length > 0) && (typeof result === 'object')) {
+      let message = result['high'].message || result['medium'].message || result['low'].message;
+      this.setState({
+        feeButtonsStatus: {
+          type: 'error',
+          message: message
+        }
+      });
+      return;
+    }
+    if (!currentNetwork) {
+      let message = 'Current network is not defined';
+      this.setState({
+        feeButtonsStatus: {
+          type: 'error',
+          message: message
+        }
+      });
+      return;
+    }
+    if (!("low" in result) && !("medium" in result) && !("high" in result)) {
+      this.setState({
+        feeButtonsStatus: {
+          type: 'error',
+          message: 'Unknown error'
+        }
+      });
+      throw errorPattern("Unknown error in method '_setFees'");
+    }
+
+
+    if (!result) {
+      console.error('Failed on trying to get network fees', 500, "SETNETWORKFEES_ERROR");
     }
 
     // TODO: remover após padronização do parâmetro para *fee* em todas as moedas no back-end
@@ -284,107 +306,110 @@ class Send extends React.Component {
       result.medium.data.fee = parseInt(result.medium.data.txFee);
       result.high.data.fee = parseInt(result.high.data.txFee);
     }
-		let fees = {
-			...this.state.fees,
-			low: {
-				...this.state.fees.low,
-				value: money.conevertCoin(currentNetwork, result.low.data.fee) || 0,
-				gasPrice: result.low.data.gasPrice
-			},
-			medium: {
-				...this.state.fees.medium,
-				value: money.conevertCoin(currentNetwork, result.medium.data.fee) || 0,
-				gasPrice: result.medium.data.gasPrice
-			},
-			high: {
-				...this.state.fees.high,
-				value: money.conevertCoin(currentNetwork, result.high.data.fee) || 0,
-				gasPrice: result.high.data.gasPrice
-			}
+    let low    = (result && result.low && result.low.data && result.low.data.fee) || 0
+    let medium = (result && result.medium && result.medium.data && result.medium.data.fee) || 0
+    let high   = (result && result.high && result.high.data && result.high.data.fee) || 0
+    let lowGasPrice  = (result && result.low && result.low.data && result.low.data.gasPrice) || 0
+    let medGasPrice  = (result && result.low && result.low.data && result.low.data.gasPrice) || 0
+    let highGasPrice = (result && result.low && result.low.data && result.low.data.gasPrice) || 0
+
+    let fees = {
+      ...this.state.fees,
+      low: {
+        ...this.state.fees.low,
+        value: money.convertCoin(currentNetwork, low),
+        gasPrice: lowGasPrice
+      },
+      medium: {
+        ...this.state.fees.medium,
+        value: money.convertCoin(currentNetwork, medium),
+        gasPrice: medGasPrice
+      },
+      high: {
+        ...this.state.fees.high,
+        value: money.convertCoin(currentNetwork, high),
+        gasPrice: highGasPrice
+      }
     }
 
-		this.setState({
-			...this.state,
-			feeButtonsStatus: {
-				type: 'completed',
-				message: 'Success on getting the estimation'
-			},
+    this.setState({
+      ...this.state,
+      feeButtonsStatus: {
+        type: 'completed',
+        message: 'Success on getting the estimation'
+      },
       network: currentNetwork,
       chosenFee: currentNetwork === 'ltc' ? 'medium' : 'low', // Como LTC tem apenas a medium fee, define ela como a selecionada
-			fees
+      fees
     });
 
-		return fees;
-	}
+    return fees;
+  }
 
-	handleOnPercentChange = (event) => {
-		let element = event.currentTarget;
-		let value = element.value;
-		let amount = parseFloat(this.props.balance.total_confirmed);
-		let result = amount * (parseInt(value) / 100);
-		this.coinAmount.value = result;
-	}
+  handleOnPercentChange = (event) => {
+    let element = event.currentTarget;
+    let value = element.value;
+    let amount = parseFloat(this.props.balance.total_confirmed);
+    let result = amount * (parseInt(value) / 100);
+    this.coinAmount.value = result;
+  }
 
-	animThisComponentIn = () => {
-		this.wrapper.style.transform = 'translateY(0px)';
-	}
+  animThisComponentIn = () => {
+    this.wrapper.style.transform = 'translateY(0px)';
+  }
 
-	animThisComponentOut = () => {
-		this.wrapper.style.transform = 'translateY(-100%)';
-	}
+  animThisComponentOut = () => {
+    this.wrapper.style.transform = 'translateY(-100%)';
+  }
 
-	ctrlLoading(state) {
-		return this.setState({ ...this.state, loading: state });
-	}
+  ctrlLoading(state) {
+    return this.setState({ ...this.state, loading: state });
+  }
 
-	handleSend = async (address) => {
-		// if(this.props.wallet.currentNetwork.search(/(btc)|(ltc)|(dash)/i) !== -1) {
-		//   alert('BTC, LTC and DASH in maintenance');
-		//   return;
-		// }
-		if (this.state.isUserAlreadySending === true || this.isUserAlreadySending) {
-			this.setState({
-				messageUserIsAlreadySending: `You're already sending, hold on until the transaction get finished`
-			});
-			
-			setTimeout(() => {
-				this.setState({
-					messageUserIsAlreadySending: ''
-				});
-			}, 3000);
-			return;
-		} else {
-			this.isUserAlreadySending = true;
-			this.setState({
-				isUserAlreadySending: true
-			});
-		}
-		console.log(this.state)
-
-		//console.warn("I've passed through here beibi", this.state.isUserAlreadySending);
-		this.ctrlLoading(true);
-		let coinAmount     = parseFloat(this.state.transferValues.coin);
-		let currentNetwork = this.props.wallet.currentNetwork;
+  handleSend = async (address) => {
+    // if(this.props.wallet.currentNetwork.search(/(btc)|(ltc)|(dash)/i) !== -1) {
+    //   alert('BTC, LTC and DASH in maintenance');
+    //   return;
+    // }
+    if (this.state.isUserAlreadySending === true) {
+      this.setState({
+        messageUserIsAlreadySending: `You're already sending, hold on until the transaction get finished`
+      });
+      setTimeout(() => {
+        this.setState({
+          messageUserIsAlreadySending: ''
+        });
+      }, 3000);
+      return;
+    } else {
+      this.setState({
+        isUserAlreadySending: true
+      });
+    }
+    //console.warn("I've passed through here beibi", this.state.isUserAlreadySending);
+    this.ctrlLoading(true);
+    let coinAmount     = parseFloat(this.state.transferValues.coin);
+    let currentNetwork = this.props.wallet.currentNetwork;
     let feePerByte     = this.state.feePerByte.data[this.state.chosenFee];
     let estimatedFee   = this.state.fees[this.state.chosenFee];
 
     console.warn('feePerByte and estimatedFee__________');
     console.warn(feePerByte, estimatedFee);
     console.warn('feePerByte and estimatedFee__________');
-		if (address && address.length > 1) {
-			let validateAddress = await this.validateAddress(currentNetwork, address);
+    if (address && address.length > 1) {
+      let validateAddress = await this.validateAddress(currentNetwork, address);
 
-			if (!validateAddress) {
-				this.setState({ ...this.state, addressIsValid: false });
-				this.ctrlLoading(false);
-				return;
-			} else {
-				this.setState({ ...this.state, addressIsValid: true });
-			}
-		} else {
-			this.setState({ ...this.state, addressIsValid: false, sendAddress: 'Invalid Address' });
-			this.ctrlLoading(false);
-			return;
+      if (!validateAddress) {
+        this.setState({ ...this.state, addressIsValid: false });
+        this.ctrlLoading(false);
+        return;
+      } else {
+        this.setState({ ...this.state, addressIsValid: true });
+      }
+    } else {
+      this.setState({ ...this.state, addressIsValid: false, sendAddress: 'Invalid Address' });
+      this.ctrlLoading(false);
+      return;
     }
 
     // const feeValue = parseFloat(fee.value);
@@ -396,63 +421,52 @@ class Send extends React.Component {
       feeValueInBTC = Money.convertCoin('btc',feeValue);
 
     console.warn('COINAMOUNT | FEEVALUE',coinAmount, feeValue);
-		if (!coinAmount || coinAmount <= feeValueInBTC) {
+    if (!coinAmount || coinAmount <= feeValueInBTC) {
       console.error(errorPattern('Invalid amount',500,'MODALSEND_HANDLESEND_ERROR'));
-			this.setState({ ...this.state, invalidAmount: true });
-			this.ctrlLoading(false);
-			return;
-		}
+      this.setState({ ...this.state, invalidAmount: true });
+      this.ctrlLoading(false);
+      return;
+    }
 
-		let dataSend = this.transactionSend(address, coinAmount, feePerByte, estimatedFee.gasPrice);
-		this.ctrlLoading(false);
-		setTimeout(() => {
-			this.props.nextStep({ coinAmount, address });
-		}, 1000);
+    let dataSend = this.transactionSend(address, coinAmount, feePerByte, estimatedFee.gasPrice);
+    this.ctrlLoading(false);
+    setTimeout(() => {
+      this.props.nextStep({ coinAmount, address });
+    }, 1000);
 
-		this.animThisComponentOut();
-	}
+    this.animThisComponentOut();
+  }
 
-	_setChosenFee = (currentSelected) => {
-		// let buttons = document.querySelectorAll('.fee-button');
-		// Array.from(buttons).map((button) => {
-		// 	let state = button.getAttribute('state');
-		// 	if (state === 'selected') {
-		// 		button.setAttribute('state', 'deselected');
-		// 		button.style.borderBottom = `none`;
-		// 	}
-		// });
-		// currentSelected.setAttribute('state', 'selected');
-		// currentSelected.style.borderBottom = `5px solid ${style.normalGreen}`;
+  _setChosenFee = (currentSelected) => {
+    this.setState({
+      ...this.state,
+      chosenFee: 'medium'
+    });
+  }
 
-		this.setState({
-			...this.state,
-			chosenFee: 'medium'
-		});
-	}
+  handleClickFee = (fee) => {
+    this.setState({
+      chosenFee: fee
+    });
+  }
 
-	handleClickFee = (fee) => {
-		this.setState({
-			chosenFee: fee
-		});
-	}
+  validateAddress (network, address) {
+    let data = wallet.validateAddress(network, address)
+    return data;
+  }
 
-	validateAddress (network, address) {
-		let data = wallet.validateAddress(network, address)
-		return data;
-	}
-
-	_renderFeeTotal = () => {
+  _renderFeeTotal = () => {
     // if (this.state.network !== currentNetwork) this._setFees();
     let { feeButtonsStatus } = this.state;
 
-		if (feeButtonsStatus.type === 'loading') {
-			return <Loading />;
-		} else if (feeButtonsStatus.type === 'initial' || feeButtonsStatus.type === 'error') {
-			return null;
+    if (feeButtonsStatus.type === 'loading') {
+      return <Loading />;
+    } else if (feeButtonsStatus.type === 'initial' || feeButtonsStatus.type === 'error') {
+      return null;
     }
 
-		let currentNetwork = this.props.wallet.currentNetwork;
-		let coinAmount = this.state.transferValues.coin;
+    let currentNetwork = this.props.wallet.currentNetwork;
+    let coinAmount = this.state.transferValues.coin;
     let usdAmount = this.state.transferValues.usd;
 
     let chosenFeeValue = this.state.fees[this.state.chosenFee].value || 'error';
@@ -461,204 +475,203 @@ class Send extends React.Component {
       chosenFeeValue = currentNetwork === 'eth' ? chosenFeeValue : parseFloat(chosenFeeValue).toFixed(8);
     }
 
-		return (
-			<Col s={12} m={6} l={6}>
-				<Text txRight clWhite>You are sending
-					<Text color={style.coinsColor[currentNetwork]} txInline>
-						 { coinAmount ? coinAmount : 0} { currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase() } 
-					</Text>
-					({ numeral( usdAmount ).format('$0,0.0000') }) +
+    return (
+      <Col s={12} m={6} l={6}>
+        <Text txRight clWhite>You are sending
+          <Text color={style.coinsColor[currentNetwork]} txInline>
+             { coinAmount ? coinAmount : 0} { currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase() } 
+          </Text>
+          ({ numeral( usdAmount ).format('$0,0.0000') }) +
           { chosenFeeValue } of fee
-				</Text>
-			</Col>
-		);
+        </Text>
+      </Col>
+    );
   }
 
-	arrangeFeeButtons = () => {
-		let { fees } = this.state;
-		let { currentNetwork }= this.props.wallet;
-		let newFees = {};
+  arrangeFeeButtons = () => {
+    let { fees } = this.state;
+    let { currentNetwork }= this.props.wallet;
+    let newFees = {};
 
-		//this for loop is to filter the the duplicated values in the fees
-		for (let key in fees) {
-			let fee    = fees[key];
-			let val    = fee.value;
-			let low    = parseFloat(newFees.low && newFees.low.value) || undefined;
-			let medium = parseFloat(newFees.medium && newFees.medium.value) || undefined;
+    //this for loop is to filter the the duplicated values in the fees
+    for (let key in fees) {
+      let fee    = fees[key];
+      let val    = fee.value;
+      let low    = parseFloat(newFees.low && newFees.low.value) || undefined;
+      let medium = parseFloat(newFees.medium && newFees.medium.value) || undefined;
       let high   = parseFloat(newFees.high && newFees.high.value) || undefined;
 
-			if (val === low || val === medium || val === high) {
-				continue;
-			} else {
-				newFees[key] = fee;
-			}
+      if (val === low || val === medium || val === high || !val) {
+        continue;
+      } else {
+        newFees[key] = fee;
+      }
     }
 
-		//this for loop arrange the meanings
-		let feeKeys = Object.keys(newFees);
-		if (feeKeys.length === 2) {
-			newFees[feeKeys[0]].textContent = 'Low';
-			newFees[feeKeys[1]].textContent = 'High';
-			newFees[feeKeys[1]].txColor = style.normalGreen;
-		} else if (feeKeys.length === 1) {
-			newFees[feeKeys[0]].textContent = 'Normal';
-			newFees[feeKeys[0]].txColor = style.normalGreen;
+    //this for loop arrange the meanings
+    let feeKeys = Object.keys(newFees);
+    if (feeKeys.length === 2) {
+      newFees[feeKeys[0]].textContent = 'Low';
+      newFees[feeKeys[1]].textContent = 'High';
+      newFees[feeKeys[1]].txColor = style.normalGreen;
+    } else if (feeKeys.length === 1) {
+      newFees[feeKeys[0]].textContent = 'Normal';
+      newFees[feeKeys[0]].txColor = style.normalGreen;
     }
 
-		//THIS UNIQUE CONDITIONAL NEED TO BE REMOVED LATER ON
-		if (currentNetwork.search(/ltc/i) !== -1) {
-			delete newFees.low;
-			delete newFees.high;
+    //THIS UNIQUE CONDITIONAL NEED TO BE REMOVED LATER ON
+    if (currentNetwork.search(/ltc/i) !== -1) {
+      delete newFees.low;
+      delete newFees.high;
     };
 
-		return newFees;
+    return newFees;
   }
 
-	_renderFeeButtons = () => {
+  _renderFeeButtons = () => {
     let { feeButtonsStatus } = this.state;
 
-		if (feeButtonsStatus.type === 'loading') {
-			return <Loading />;
-		} else if (feeButtonsStatus.type === 'error' || feeButtonsStatus.type === 'initial') {
-			return <Text clWhite>{ feeButtonsStatus.message }</Text>;
+    if (feeButtonsStatus.type === 'loading') {
+      return <Loading />;
+    } else if (feeButtonsStatus.type === 'error' || feeButtonsStatus.type === 'initial') {
+      return <Text clWhite>{ feeButtonsStatus.message }</Text>;
     }
 
-		return (
-			<Col s={12} m={6} l={6}>
-				{
-					(() => {
-						let { chosenFee, fees } = this.state;
-						let components = [];
-						let borderBottom;
-						let fee; //it will be to be fit inside the for loop
-						fees = this.arrangeFeeButtons();
-						for (let key in fees) {
-							fee = fees[key];
-							borderBottom = chosenFee === key ? '5px solid green' : 'none';
-							components.push(
-								<FeeButton key={key} style={{ borderBottom }} onClick={() => { this.handleClickFee(key) }} value={fee.value}>{fee.value} <Text txInline style={{color: fee.txColor}}>{fee.textContent}</Text></FeeButton>
-							);
-						}
-						return components;
-					})()
-				}
-			</Col>
-		);
-	}
+    return (
+      <Col s={12} m={6} l={6}>
+        {
+          (() => {
+            let { chosenFee, fees } = this.state;
+            let components = [];
+            let borderBottom;
+            let fee; //it will be to be fit inside the for loop
+            fees = this.arrangeFeeButtons();
+            for (let key in fees) {
+              fee = fees[key];
+              borderBottom = chosenFee === key ? '5px solid green' : 'none';
+              components.push(
+                <FeeButton key={key} style={{ borderBottom }} onClick={() => { this.handleClickFee(key) }} value={fee.value}>{fee.value} <Text txInline style={{color: fee.txColor}}>{fee.textContent}</Text></FeeButton>
+              );
+            }
+            return components;
+          })()
+        }
+      </Col>
+    );
+  }
 
-	inputControl(value) {
-		switch (value) {
-			case 'coin':
-				this.setState({
-					...this.state,
-					radioControl: {
-						coin: true,
-						brl: false,
-						usd: false
-					}
-				});
+  inputControl(value) {
+    switch (value) {
+      case 'coin':
+        this.setState({
+          ...this.state,
+          radioControl: {
+            coin: true,
+            brl: false,
+            usd: false
+          }
+        });
 
-				break;
+        break;
 
-			case 'brl':
-				this.setState({
-					...this.state,
-					radioControl: {
-						coin: false,
-						brl: true,
-						usd: false
-					}
-				});
+      case 'brl':
+        this.setState({
+          ...this.state,
+          radioControl: {
+            coin: false,
+            brl: true,
+            usd: false
+          }
+        });
 
-				break;
+        break;
 
-			case 'usd':
-				this.setState({
-					...this.state,
-					radioControl: {
-						coin: false,
-						brl: false,
-						usd: true
-					}
-				});
+      case 'usd':
+        this.setState({
+          ...this.state,
+          radioControl: {
+            coin: false,
+            brl: false,
+            usd: true
+          }
+        });
 
-				break;
+        break;
 
-			default:
-				break;
-		}
-	}
+      default:
+        break;
+    }
+  }
 
   // TODO: verificar forma melhor de passar o gasPrice para a classe Wallet
-	transactionSend = async (address, amount, fee, gasPrice = '0') => {
-		this.props.setterModalSend({
-			status: 'loading',
-			message: 'Wait until the transaction got finished',
-		});
-		let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
-		let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
-		let data = await wallet.transactionSend(
-			walletInfo.seed,
-			this.props.wallet.currentNetwork,
-			address,
-			amount,
+  transactionSend = async (address, amount, fee, gasPrice = '0') => {
+    this.props.setterModalSend({
+      status: 'loading',
+      message: 'Wait until the transaction got finished',
+    });
+    let walletInfo = JSON.parse(decrypt(localStorage.getItem("WALLET-INFO")));
+    let tokenData = JSON.parse(decrypt(localStorage.getItem("ACCESS-TOKEN")));
+    let data = await wallet.transactionSend(
+      walletInfo.seed,
+      this.props.wallet.currentNetwork,
+      address,
+      amount,
       fee,
-			tokenData.accessToken,
+      tokenData.accessToken,
       gasPrice
-		).catch((err) => {
-			this.props.setterModalSend({
-				status: 'error',
-				message: 'Error on trying to do the transaction'
-			});
-			throw errorPattern(err, 500, 'MODALSEND_TRANSACTION_ERROR');
-		});
+    ).catch((err) => {
+      this.props.setterModalSend({
+        status: 'error',
+        message: 'Error on trying to do the transaction'
+      });
+      throw errorPattern(err, 500, 'MODALSEND_TRANSACTION_ERROR');
+    });
+    let txid = data && data.data && data.data.txID;
+    if (!txid) {
+      console.error('MODALSEND_TRANSACTIONSEND_DATA', data);
+      this.props.setterModalSend({
+        status: 'error',
+        message: 'No transaction ID was returned'
+      });
+      throw errorPattern('No transaction ID was returned', 500, 'MODALSEND_TRANSACTION_ERROR');
+    }
+    this.props.setterModalSend({
+      status: 'completed',
+      message: 'Success on sending transaction',
+      txid: txid
+    });
+    this.setState({
+      isUserAlreadySending: false
+    });
+  }
 
-		let txid = data && data.data && data.data.txID;
-		if (!txid) {
-			console.error('MODALSEND_TRANSACTIONSEND_DATA', data);
-			this.props.setterModalSend({
-				status: 'error',
-				message: 'No transaction ID was returned'
-			});
-			throw errorPattern('No transaction ID was returned', 500, 'MODALSEND_TRANSACTION_ERROR');
-		}
-		this.props.setterModalSend({
-			status: 'completed',
-			message: 'Success on sending transaction',
-			txid: txid
-		});
-		this.setState({
-			isUserAlreadySending: false
-		});
-	}
+  clearFields() {
+    this.setState({
+      ...this.state,
+      transferValues: {
+        coin: '',
+        brl: '' ,
+        usd: ''
+      }
+    })
+  }
 
-	clearFields() {
-		this.setState({
-			...this.state,
-			transferValues: {
-				coin: '',
-				brl: '' ,
-				usd: ''
-			}
-		})
-	}
+  convertCoins(value, type) {
+    let cryptoCurrencies = this.props.crypto;
+    let currentNetwork = this.props.wallet.currentNetwork;
+      currentNetwork = currentNetwork.toUpperCase();
+    let balance = this.props.balance[currentNetwork].total_amount;
+    let usdValue = cryptoCurrencies[currentNetwork].USD;
+    let brlValue = cryptoCurrencies[currentNetwork].BRL;
+    let amountStatus = false;
 
-	convertCoins(value, type) {
-		let cryptoCurrencies = this.props.crypto;
-		let currentNetwork = this.props.wallet.currentNetwork;
-	    currentNetwork = currentNetwork.toUpperCase();
-		let balance = this.props.balance[currentNetwork].total_amount;
-		let usdValue = cryptoCurrencies[currentNetwork].USD;
-		let brlValue = cryptoCurrencies[currentNetwork].BRL;
-		let amountStatus = false;
+    value = value.replace(",", ".");
+    value = value.replace(/[^0-9.]/igm, '');
+    // balance = parseFloat(balance.toFixed(8));
+    balance = parseFloat(balance).toFixed(8);
 
-		value = value.replace(",", ".");
-		value = value.replace(/[^0-9.]/igm, '');
-		// balance = parseFloat(balance.toFixed(8));
-		balance = parseFloat(balance).toFixed(8);
-
-		switch (type) {
-			case 'coin':
+    switch (type) {
+      case 'coin':
         amountStatus = (parseFloat(value) + this.state.fees[this.state.chosenFee].value) > balance;
         amountStatus ? console.error(errorPattern('Invalid amount',500,'MODALSEND_CONVERTCOINS_ERROR')) : null;
         this.setState({
@@ -691,207 +704,207 @@ class Send extends React.Component {
         (parseFloat(value) / usdValue) + this.state.fees[this.state.chosenFee].value > balance ? amountStatus = true : amountStatus = false;
         amountStatus ? console.error(errorPattern('Invalid amount',500,'MODALSEND_CONVERTCOINS_ERROR')) : null;
 
-				this.setState({
-					...this.state,
-					invalidAmount: amountStatus,
-					transferValues: {
-						coin: (value / usdValue).toFixed(8),
-						brl: ((brlValue * value) / usdValue).toFixed(2),
-						usd: value
-					}
-				});
-				break;
-		}
-	}
+        this.setState({
+          ...this.state,
+          invalidAmount: amountStatus,
+          transferValues: {
+            coin: (value / usdValue).toFixed(8),
+            brl: ((brlValue * value) / usdValue).toFixed(2),
+            usd: value
+          }
+        });
+        break;
+    }
+  }
 
-	render() {
-		let currentNetwork = this.props.wallet.currentNetwork;
+  render() {
+    let currentNetwork = this.props.wallet.currentNetwork;
 
-		return (
-			<Row css={CssWrapper} ref={this.ref.wrapper}>
-				<link rel="preload" href="/img/app_wallet/modal_send/sprite_animation_done.png" as="image"/>
-				<Col s={9} m={9} l={9}>
-					{/*When user is already sending a transaction*/}
-					{ this.state.messageUserIsAlreadySending ? <Text clWhite txCenter>{this.state.messageUserIsAlreadySending}</Text> : '' }
-					{/*FIRST ROW*/}
-					<Row css={FirstRowCss}>
-						<Col offset={'s3'} s={6} m={6} l={6}>
-							<div>
-								<WrapRadio>
-									<InputRadio
-										name={'amount-type'}
-										value={'coin'}
-										unique={'true'}
-										defaultChecked
-										onClick={ (input) => { this.inputControl(input.target.value) } }
-									/>
-									<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
-									<LabelRadio clWhite>
+    return (
+      <Row css={CssWrapper} ref={this.ref.wrapper}>
+        <link rel="preload" href="/img/app_wallet/modal_send/sprite_animation_done.png" as="image"/>
+        <Col s={9} m={9} l={9}>
+          {/*When user is already sending a transaction*/}
+          { this.state.messageUserIsAlreadySending ? <Text clWhite txCenter>{this.state.messageUserIsAlreadySending}</Text> : '' }
+          {/*FIRST ROW*/}
+          <Row css={FirstRowCss}>
+            <Col offset={'s3'} s={6} m={6} l={6}>
+              <div>
+                <WrapRadio>
+                  <InputRadio
+                    name={'amount-type'}
+                    value={'coin'}
+                    unique={'true'}
+                    defaultChecked
+                    onClick={ (input) => { this.inputControl(input.target.value) } }
+                  />
+                  <RadioCheckmark color={style.coinsColor[currentNetwork]}/>
+                  <LabelRadio clWhite>
                     { currentNetwork === 'lns' ? 'LUNES' : currentNetwork.toUpperCase() }
                   </LabelRadio>
-								</WrapRadio>
-							</div>
-						</Col>
-						<Col s={12} m={6} l={6}>
-							<Row defaultAlign={'right'}>
-								{ /* Crypto Input */}
-								<InputText
-									huge
-									phRight
-									phWeightLight
-									whiteTheme
-									txRight
-									noBorder
-									noBrowserAppearance
-									disabled={ !this.state.radioControl.coin }
-									value={ this.state.transferValues.coin }
-									onChange={ input => this.convertCoins(input.target.value, 'coin') }
-									onBlur={ () => { this._setFees() } }
-									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
-									data-amount-type={'coin'}
-									className={'input-amount coin'}
-									placeholder={'0'} />
-							</Row>
-						</Col>
-					</Row>
+                </WrapRadio>
+              </div>
+            </Col>
+            <Col s={12} m={6} l={6}>
+              <Row defaultAlign={'right'}>
+                { /* Crypto Input */}
+                <InputText
+                  huge
+                  phRight
+                  phWeightLight
+                  whiteTheme
+                  txRight
+                  noBorder
+                  noBrowserAppearance
+                  disabled={ !this.state.radioControl.coin }
+                  value={ this.state.transferValues.coin }
+                  onChange={ input => this.convertCoins(input.target.value, 'coin') }
+                  onBlur={ () => { this._setFees() } }
+                  style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
+                  data-amount-type={'coin'}
+                  className={'input-amount coin'}
+                  placeholder={'0'} />
+              </Row>
+            </Col>
+          </Row>
 
-					<Hr />
+          <Hr />
 
-					{/* SECOND ROW */}
-					<Row style={{ padding: '3rem 0 3rem 0' }}>
-						<Col s={6} m={6} l={6}>
-							<WrapRadio>
-								<InputRadio
-									name={'amount-type'}
-									value={'brl'}
-									unique={'true'}
-									onClick={ (input) => { this.inputControl(input.target.value) } }
-								/>
-								<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
-								<LabelRadio clWhite>BRL</LabelRadio>
-							</WrapRadio>
-							<WrapRadio css={css`margin: 4rem 0 0 0;`}>
-								<InputRadio
-									name={'amount-type'}
-									value={'usd'}
-									unique={'true'}
-									onClick={ (input) => { this.inputControl(input.target.value) } }
+          {/* SECOND ROW */}
+          <Row style={{ padding: '3rem 0 3rem 0' }}>
+            <Col s={6} m={6} l={6}>
+              <WrapRadio>
+                <InputRadio
+                  name={'amount-type'}
+                  value={'brl'}
+                  unique={'true'}
+                  onClick={ (input) => { this.inputControl(input.target.value) } }
+                />
+                <RadioCheckmark color={style.coinsColor[currentNetwork]}/>
+                <LabelRadio clWhite>BRL</LabelRadio>
+              </WrapRadio>
+              <WrapRadio css={css`margin: 4rem 0 0 0;`}>
+                <InputRadio
+                  name={'amount-type'}
+                  value={'usd'}
+                  unique={'true'}
+                  onClick={ (input) => { this.inputControl(input.target.value) } }
 
-								/>
-								<RadioCheckmark color={style.coinsColor[currentNetwork]}/>
-								<LabelRadio clWhite>USD</LabelRadio>
-							</WrapRadio>
-						</Col>
-						<Col s={6} m={6} l={6}>
-							<Row defaultAlign={'right'}>
-								<InputText
-									huge
-									phRight
-									phWeightLight
-									whiteTheme
-									txRight
-									noBorder
-									disabled={ !this.state.radioControl.brl }
-									noBrowserAppearance
-									ref={this.ref.brlAmount}
-									onChange={ (input) => { this.convertCoins(input.target.value, 'brl') } }
-									onBlur={() => { this._setFees() }}
-									value={ this.state.transferValues.brl }
-									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
-									className={'input-amount brl'}
-									data-amount-type={'brl'}
-									placeholder={'BRL 0.00'} />
-							</Row>
-							<Row defaultAlign='right'>
-								<InputText
-									huge
-									phRight
-									txRight
-									noBorder
-									grayTheme
-									phMediumFont
-									noBrowserAppearance
-									ref={this.ref.usdAmount}
-									value={ this.state.transferValues.usd }
-									disabled={ !this.state.radioControl.usd }
-									onChange = { (input) => { this.convertCoins(input.target.value, 'usd') } }
-									onBlur={() => { this._setFees() }}
-									style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
-									className={'input-amount usd'}
-									data-amount-type={'usd'}
-									placeholder={'USD 0.00'} />
-							</Row>
-						</Col>
-					</Row>
+                />
+                <RadioCheckmark color={style.coinsColor[currentNetwork]}/>
+                <LabelRadio clWhite>USD</LabelRadio>
+              </WrapRadio>
+            </Col>
+            <Col s={6} m={6} l={6}>
+              <Row defaultAlign={'right'}>
+                <InputText
+                  huge
+                  phRight
+                  phWeightLight
+                  whiteTheme
+                  txRight
+                  noBorder
+                  disabled={ !this.state.radioControl.brl }
+                  noBrowserAppearance
+                  ref={this.ref.brlAmount}
+                  onChange={ (input) => { this.convertCoins(input.target.value, 'brl') } }
+                  onBlur={() => { this._setFees() }}
+                  value={ this.state.transferValues.brl }
+                  style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
+                  className={'input-amount brl'}
+                  data-amount-type={'brl'}
+                  placeholder={'BRL 0.00'} />
+              </Row>
+              <Row defaultAlign='right'>
+                <InputText
+                  huge
+                  phRight
+                  txRight
+                  noBorder
+                  grayTheme
+                  phMediumFont
+                  noBrowserAppearance
+                  ref={this.ref.usdAmount}
+                  value={ this.state.transferValues.usd }
+                  disabled={ !this.state.radioControl.usd }
+                  onChange = { (input) => { this.convertCoins(input.target.value, 'usd') } }
+                  onBlur={() => { this._setFees() }}
+                  style={ this.state.invalidAmount ? { color: "red" } : { color: "white" } }
+                  className={'input-amount usd'}
+                  data-amount-type={'usd'}
+                  placeholder={'USD 0.00'} />
+              </Row>
+            </Col>
+          </Row>
 
-					<Hr />
-					{/*THIRD ROW*/}
-					<Row css={ThirdRowCss}>
-						<Col s={12} m={12} l={12}>
-							<InputText
-								style={ this.state.addressIsValid ? { color: "white" } : { color: "red" } }
-								name={"to-address"}
-								whiteTheme
-								normal
-								noBorder
-								type={'text'}
-								value={ this.state.sendAddress }
-								onChange={ (input) => { this.setState({ ...this.state, sendAddress: input.target.value }) } }
-								onBlur={() => { this._setFees() }}
-								placeholder={'Address'} />
-						</Col>
-					</Row>
+          <Hr />
+          {/*THIRD ROW*/}
+          <Row css={ThirdRowCss}>
+            <Col s={12} m={12} l={12}>
+              <InputText
+                style={ this.state.addressIsValid ? { color: "white" } : { color: "red" } }
+                name={"to-address"}
+                whiteTheme
+                normal
+                noBorder
+                type={'text'}
+                value={ this.state.sendAddress }
+                onChange={ (input) => { this.setState({ ...this.state, sendAddress: input.target.value }) } }
+                onBlur={() => { this._setFees() }}
+                placeholder={'Address'} />
+            </Col>
+          </Row>
 
-					<Hr />
-					{/*FOURTH ROW*/}
-					<Row css={FourthRowCss}>
+          <Hr />
+          {/*FOURTH ROW*/}
+          <Row css={FourthRowCss}>
 
-						{ this._renderFeeButtons() }
-						{ this._renderFeeTotal() }
-						{/*When user is already sending a transaction*/}
-						{
+            { this._renderFeeButtons() }
+            { this._renderFeeTotal() }
+            {/*When user is already sending a transaction*/}
+            {
               this.state.messageUserIsAlreadySending ?
               <Col><Text clWhite txCenter margin={'1.5rem 0 0 0'}>{this.state.messageUserIsAlreadySending}</Text></Col> :
               ''
             }
-					</Row>
-				</Col>
-				<Col defaultAlign={'center'} s={6} m={3} l={2}>
-					<Row>
-						<Button
-							style={ this.state.invalidAmount ? { 'backgroundColor': style.disabledText } : { 'backgroundColor': style.coinsColor[currentNetwork] }}
-							css={SendButtonCss}
-							className={'send-button'}
-							blockCenter
-							clWhite
-							onClick={ this.state.invalidAmount ? () => { alert("Invalid Amount") } : () => { this.handleSend(this.state.sendAddress) } }
-							innerRef={ this.ref.sendButton }>
-							Send
-						</Button>
-					</Row>
-					<Loading hide={this.state.loading} size={"25px"} />
-				</Col>
-			</Row>
-		);
-	}
+          </Row>
+        </Col>
+        <Col defaultAlign={'center'} s={6} m={3} l={2}>
+          <Row>
+            <Button
+              style={ this.state.invalidAmount ? { 'backgroundColor': style.disabledText } : { 'backgroundColor': style.coinsColor[currentNetwork] }}
+              css={SendButtonCss}
+              className={'send-button'}
+              blockCenter
+              clWhite
+              onClick={ this.state.invalidAmount ? () => { alert("Invalid Amount") } : () => { this.handleSend(this.state.sendAddress) } }
+              innerRef={ this.ref.sendButton }>
+              Send
+            </Button>
+          </Row>
+          <Loading hide={this.state.loading} size={"25px"} />
+        </Col>
+      </Row>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {
-	return {
-		crypto: state.currencies.crypto,
-		// cryptoTx: state.currencies.cryptoTx,
-		wallet: state.component.wallet,
-		balance: state.balance,
-		currencies: state.currencies.currencies,
-		walletInfo: state.walletInfo,
-		component_wallet: state.component.wallet
-	}
+  return {
+    crypto: state.currencies.crypto,
+    // cryptoTx: state.currencies.cryptoTx,
+    wallet: state.component.wallet,
+    balance: state.balance,
+    currencies: state.currencies.currencies,
+    walletInfo: state.walletInfo,
+    component_wallet: state.component.wallet
+  }
 }
 const mapDispatchToProps = (dispatch) => {
-	return {
-		setterModalSend: (data) => {
-			dispatch(setterModalSend(data));
-		}
-	}
+  return {
+    setterModalSend: (data) => {
+      dispatch(setterModalSend(data));
+    }
+  }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Send);

@@ -1,13 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import style from "Shared/style-variables";
+import { timer } from "Utils/functions";
 
 // CONSTANTS
 import { ENABLEDCOINS } from "Config/constants";
 
 // LIBS
 import { WalletClass } from "Classes/Wallet";
-import { encrypt } from "../../../utils/crypt";
+import { encrypt }     from "../../../utils/crypt";
 
 // REDUX
 import { connect } from "react-redux";
@@ -62,6 +63,7 @@ class Rescue extends React.Component {
           eth: null,
 					ltc: null,
           // nano: null,
+          usdt: null,
           dash: null
 				}
 			}
@@ -96,10 +98,11 @@ class Rescue extends React.Component {
   }
 
 
-  setSeed() {
+  setSeed = async () => {
     try {
       let err = 0;
       this.setState({ ...this.state, loading: true });
+      await timer(200);//it is to the loading be able to show up
 
       let seed = this.state.walletInfo.seed;
       let walletInfo = {};
@@ -123,7 +126,10 @@ class Rescue extends React.Component {
         this.props.setWalletInfo(walletInfo.addresses);
         // this.props.setBalance({ addresses: this.state.walletInfo.addresses });
         localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
-        return this.setState({ ...this.state, loading: false, notification: 'Sucesso', walletInfo: { seed: null, addresses: {} } });
+        setTimeout(() => {
+          location.reload()
+        }, 3000);
+        return this.setState({ ...this.state, loading: false, notification: 'It succeeded. Reloading the page in 3 seconds!', walletInfo: { seed: null, addresses: {} } });
       }
 
       return this.setState({ ...this.state, loading: false, notification: 'Invalid Words', walletInfo: { seed: null, addresses: {} } });

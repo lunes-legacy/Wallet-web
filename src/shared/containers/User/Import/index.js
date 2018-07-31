@@ -1,6 +1,7 @@
 import React from "react";
-import styled from "styled-components";
-
+import styled, { keyframes } from "styled-components";
+import style from "Shared/style-variables";
+import { timer } from "Utils/functions";
 // LIBS
 import { WalletClass } from "Classes/Wallet";
 import { encrypt } from "../../../utils/crypt";
@@ -16,6 +17,7 @@ import { FormGroup } from "Components/FormGroup";
 import { Textarea } from "Components/Input";
 import { P } from "Components/P";
 import { ButtonGreen, ButtonSecondary, ButtonDisabled } from "Components/Buttons";
+import { Text, Loading } from "Components";
 
 //PRIVATE COMPONENTS
 import PanelLeft from "./PanelLeft";
@@ -37,6 +39,44 @@ const ButtonsRow = styled.div`
   margin: 0 auto;
   width: 50%;
 `;
+const keyframeShowLoadingSlowly = keyframes`
+from { opacity: 0; }
+to   { opacity: 1; }
+`;
+const WrapperSpinner = styled.div`
+position: fixed;
+top: 0px;
+left: 0px;
+width: 100%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+align-content: center;
+flex-flow: wrap;
+visibility: hidden;
+opacity: 0;
+background: ${style.normalLilac2};
+animation-duration: 1.5s;
+animation-fill-mode: forwards;
+animation-timing-function: ease;
+${props =>
+  props.loading
+  ? `animation-name: ${keyframeShowLoadingSlowly}; visibility: visible;`
+  : 'animation-name: "", visibility: hidden;'};
+`;
+
+function LoadingImport(props) {
+  if (typeof window !== 'undefined')
+    console.log(props.loading);
+  return (
+    <WrapperSpinner loading={props.loading}>
+      <Loading/>
+      <div style={{width:'100%',height: '20px'}}></div>
+      <Text clWhite txCenter>Importing your seed and creating wallets...</Text>
+    </WrapperSpinner>
+  );
+}
 
 const Wallet = new WalletClass();
 
@@ -47,6 +87,7 @@ class Import extends React.Component {
     super();
     this.state = {
       notification: null,
+      loading: false,
       walletInfo: {
         seed: null,
         addresses: {
@@ -56,6 +97,7 @@ class Import extends React.Component {
           eth: null,
           ltc: null,
           // nano: null,
+          usdt: null,
           dash: null
         }
       }
@@ -96,7 +138,9 @@ class Import extends React.Component {
     }
   }
 
-  setSeed() {
+  setSeed = async () => {
+    this.setState({loading: true});
+    await timer(200);
     try {
       let err = 0;
       let seed = this.state.walletInfo.seed;
@@ -117,7 +161,6 @@ class Import extends React.Component {
           return this.setState({ ...this.state, loading: false, notification: error.message, walletInfo: { seed: null, addresses: {} } });
         }
       });
-
       if (err === 0) {
         this.props.setWalletInfo(walletInfo.addresses);
         localStorage.setItem("WALLET-INFO", encrypt(JSON.stringify(walletInfo)));
@@ -160,8 +203,10 @@ class Import extends React.Component {
   }
 
   render() {
+
     return (
       <div>
+        <LoadingImport loading={this.state.loading}/>
         <PanelLeft>
           <CustomLogo />
           <Form margin={"10% auto 0 auto"} width={"80%"}>
