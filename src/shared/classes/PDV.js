@@ -43,7 +43,7 @@ class PDVClass {
       destin
     }
     // let result = await Axios.post('redeem', params).then(r => r.data);
-    let result = Fake.redeem('error');
+    let result = Fake.redeem('success');
     if (result.code !== 200)
       throw errorPattern(`Error on redeem's request, got response status different of 200`, result.code, 'PDV_REDEEM_ERROR', result);
     return result;
