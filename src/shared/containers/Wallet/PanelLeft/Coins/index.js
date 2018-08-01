@@ -1,5 +1,5 @@
 import React       from "react";
-import styled      from "styled-components";
+import styled, { keyframes }      from "styled-components";
 import style       from "Shared/style-variables";
 import { TextBase, H1 } from "Components";
 
@@ -17,9 +17,6 @@ import {numeral} from 'Utils/numeral';
 const StyledCoins = styled.div`
   width: auto;
   min-width: 100%;
-  height: 100vh;
-  max-height: 100vh;
-
 `;
 const StyledLoading = styled.div`
   margin-top: 115%;
@@ -155,6 +152,26 @@ const CoinValue = styled.div`
 
 const CoinAmount = CoinValue.extend``;
 
+const keyframesAmountLoading = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(180deg); }
+`;
+const AmountLoading = styled.div`
+  width: 2px;
+  height: 15px;
+  margin: 0 0 0 10px;
+  background: ${props => props.stick ? props.stick : style.normalGreen};
+  display: inline-block;
+
+  transform: rotate(0deg);
+  animation-name: ${keyframesAmountLoading};
+  animation-duration: 0.2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+`;
+
 class Coins extends React.Component {
   constructor(props) {
     super(props);
@@ -188,10 +205,16 @@ class Coins extends React.Component {
     }
 
     let components = [];
-    
+
     for (let coinKey in balance) {
-      let { crypto }  = this.props.currencies;
+      let { crypto, currencies }  = this.props.currencies;
       if (!crypto[coinKey]) continue;
+
+      let { status: balanceStatus } = balance[coinKey];
+      let { status: priceStatus }   = crypto[coinKey];
+      if (balanceStatus.type === 'error')
+        console.error(balanceStatus.message);
+
       let usdCurrent = crypto[coinKey].USD
       let coinAmount = this.props.balance[coinKey].total_confirmed;
       let coinBalance = numeral(coinAmount).format('0,0.000');
@@ -213,10 +236,18 @@ class Coins extends React.Component {
           <WrapCoinData>
             <CoinAmount clWhite offSide size={"2.5rem"}>
               { coinKey == 'LNS' ? 'LUNES' : coinKey } 
-              { coinBalance }
+              {
+                balanceStatus.type === 'loading'
+                ? <AmountLoading stick={style.coinsColor[coinKey.toLowerCase()]}/>
+                : coinBalance
+              }
             </CoinAmount>
             <CoinValue clWhite offSide size={"2rem"}>
-              { "USD " + usdBalance }
+              {
+                priceStatus.type === 'loading'
+                ? <AmountLoading stick={style.coinsColor[coinKey.toLowerCase()]}/>
+                : "USD " + usdBalance
+              }
             </CoinValue>
           </WrapCoinData>
         </Coin>

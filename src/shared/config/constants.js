@@ -19,20 +19,23 @@ const BTCNETWORK      = TESTNET === true ? 'BTCTESTNET'  : 'BTC';
 const BCHNETWORK      = TESTNET === true ? 'BCHTESTNET'  : 'BCH';
 const LTCNETWORK      = TESTNET === true ? 'LTCTESTNET'  : 'LTC';
 const NANONETWORK     = TESTNET === true ? 'NANOTESTNET' : 'NANO';
+const USDTNETWORK     = TESTNET === true ? 'USDTTESTNET' : 'USDT';
 const DASHNETWORK     = TESTNET === true ? 'DASHTESTNET' : 'DASH';
 const ETHNETWORK      = TESTNET === true ? 'ROPSTEN'     : 'ETH';
 // END NETWORK CONFIG
 
 // TO ENABLE OTHER COINS, SERACH IN "SHIFT + CRTL + F" FOR: "ENABLE COINS"
 // ENABLE COINS
+// ENABLE COINS IN src/server/controllers/Currencies/Crypto <<<<<
 const ENABLEDCOINS = [
 	{ 'coinKey': 'lns', 'coinName':  'Lunes', 'address': '' },
 	{ 'coinKey': 'btc', 'coinName':  'BTC', 'address': '' },
 	{ 'coinKey': 'bch', 'coinName':  'BCH', 'address': '' },
 	{ 'coinKey': 'eth', 'coinName':  'ETH', 'address': '' },
 	{ 'coinKey': 'ltc', 'coinName':  'LTC', 'address': '' },
-	// { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
-	{ 'coinKey': 'dash', 'coinName':  'DASH', 'address': 'Soon...' },
+  // { 'coinKey': 'nano', 'coinName':  'NANO', 'address': 'Soon...' },
+	{ 'coinKey': 'usdt', 'coinName':  'USDT', 'address': '' },
+	{ 'coinKey': 'dash', 'coinName':  'DASH', 'address': '' },
 ]
 
 // URLs para o blockexplorer de cada moeda de acordo com a rede utilizada
@@ -44,6 +47,7 @@ const BLOCK_EXPLORERS = {
   ltc: 'https://www.chain.so/',
   nano: 'https://www.chain.so/',
   dash: 'https://www.chain.so/',
+  usdt: 'https://omniexplorer.info/',
   eth: TESTNET ? 'https://ropsten.etherscan.io/' : 'https://etherscan.io/'
 }
 
@@ -61,6 +65,7 @@ export {
 	LTCNETWORK,
 	DASHNETWORK,
 	ETHNETWORK,
+  USDTNETWORK,
 	ENABLEDCOINS,
 	LUNES_LIB_ENV,
 	LUNES_LIB_LOGIN,

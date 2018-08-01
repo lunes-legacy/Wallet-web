@@ -10,17 +10,16 @@ import { ErrorBoundary } from 'Components';
 import Coins from './Coins';
 
 let StyledPanelLeft = styled.div.attrs({
-	state: 'visible'
+	state: 'visible',
 })`
+padding: 0 0 100px 0;
 background: ${style.normalLilac};
 box-shadow: 30px 0 40px rgba(0,0,0,.09);
 color: #fff;
-height: 100%;
 max-width: 280px;
 min-width: 130px;
 position: relative;
 width: 30%;
-height: 100vh;
 z-index: 2;
 position: relative;
 width: 31.66666%;
@@ -102,12 +101,12 @@ class PanelLeft extends React.Component {
 
     render() {
         return(
-            <StyledPanelLeft id="myPanelLeft">
-                <TogglePanelLeft onClick={ () => this.props.togglePanelLeft() }>
-          	<Icon id="arrowIcon"/>
-        	</TogglePanelLeft>
-                <Coins/>
-            </StyledPanelLeft>
+          <StyledPanelLeft id="myPanelLeft">
+            <TogglePanelLeft onClick={ () => this.props.togglePanelLeft() }>
+              <Icon id="arrowIcon"/>
+            </TogglePanelLeft>
+            <Coins/>
+          </StyledPanelLeft>
         );
     }
 }
