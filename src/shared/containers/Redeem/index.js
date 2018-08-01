@@ -90,9 +90,8 @@ class Redeem extends React.Component {
     //   return;
     // }
     let result = await PDV.redeem('12312312312','asdjas9d8as09d8ajasdkjashdas09d8')
+      .then(r => { this.addMessage('success', r) })
       .catch(e => { "message" in e ? this.addMessage('error',{message: e.message}) : this.addMessage('error',{message: 'Error on trying to redeem, unknown error'}) })
-    // console.warn(result);
-
   }
   setAllDOM = async () => {
     await timer(500);
@@ -123,7 +122,7 @@ class Redeem extends React.Component {
             <Text clWhite txCenter size={"2.5rem"} onClick={() => { this.handleRedeem() }}>Rescue your coins</Text>
             <Input value={this.state.pin} className={'input-pin'} onChange={() => { this.handleInput('pin') }} placeholder="PIN"/>
             <Input value={this.state.phoneNumber} className={'input-phone-number'} onChange={() => { this.handleInput('phoneNumber') }} placeholder="Phone number"/>
-            <MessagesStyler success={this.state.messages} errors={this.state.errors}/>
+            <MessagesStyler successes={this.state.successes} errors={this.state.errors}/>
           </Col>
         </Row>
       </Wrapper>
@@ -136,10 +135,9 @@ class MessagesStyler extends React.Component {
   componentDidMount() {
 
   }
-  render() {
+  _renderErrors = () => {
     if (this.props.errors instanceof Array && this.props.errors.length < 1)
       return null;
-    // errors = this.props.errors.filter(error => !errors ? true : errors.indexOf(error) !== -1 ? false : true);
     //remove duplicated errors
     let errors = [];
     for (let i in this.props.errors) {
@@ -152,6 +150,29 @@ class MessagesStyler extends React.Component {
         <Text clWhite txCenter>{error.message}</Text>
       );
     });
+  }
+  _renderSuccesses = () => {
+    if (this.props.successes instanceof Array && this.props.successes.length < 1)
+      return null;
+    let successes = [];
+    for (let i in this.props.successes) {
+      let error = this.props.successes[i]
+      if (successes.indexOf(error) === -1)
+        successes = successes.concat(error)
+    }
+    return successes.map(success => {
+      return (
+        <Text clNormalGreen txCenter>{success.message}</Text>
+      );
+    })
+  }
+  render() {
+    return (
+      <div>
+        { this._renderErrors() }
+        { this._renderSuccesses() }
+      </div>
+    )
   }
 }
 
