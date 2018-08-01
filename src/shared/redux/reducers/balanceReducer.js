@@ -28,6 +28,14 @@ let initialState = {
   	total_unconfirmed: 0,
     status: {type:'loading',message:''}
   },
+  USDT: {
+    total_confirmed: 0,
+    total_unconfirmed: 0,
+    total_amount: 0,
+    img: 'nano.svg',
+    coinName: 'Tether',
+    status: {type:'loading',message:''}
+  },
   LTC: {
   	coinName: 'Litecoin',
   	img: 'ltc.svg',
@@ -50,14 +58,6 @@ let initialState = {
   	total_amount: 0,
   	img: 'bch.svg',
   	coinName: 'Bitcoin Cash',
-    status: {type:'loading',message:''}
-  },
-  USDT: {
-    total_confirmed: 0,
-    total_unconfirmed: 0,
-    total_amount: 0,
-    img: 'nano.svg',
-    coinName: 'Tether',
     status: {type:'loading',message:''}
   }
   // NANO: {
