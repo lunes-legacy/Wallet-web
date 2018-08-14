@@ -733,8 +733,6 @@ class Send extends React.Component {
     let balance = this.props.balance[currentNetwork.toUpperCase()].total_confirmed
     let fee     = this.state.fees[this.state.chosenFee].value
     fee         = fee ? fee : 0
-    console.warn("FEE____:::", fee)
-    console.warn("BALANCE:::", balance)
     let sendAllFunds = (balance - (balance * 0.2) - fee).toFixed(8)
     let textSendAll = ''
     if (currentNetwork.search(REGEX_TAXABLE_NETWORKS) !== -1) {
