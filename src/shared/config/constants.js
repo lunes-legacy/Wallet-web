@@ -56,6 +56,8 @@ const LUNES_LIB_LOGIN = 'manual'//| 'auto' || 'manual', isso serve para fazer lo
 const LUNES_LEASING_FEE = 0.001;
 const LUNES_TRANSACTION_FEE = 0.001;
 
+let REGEX_TAXABLE_NETWORKS = /(btc)|(bch)|(ltc)|(dash)/i
+
 export {
 	TESTNET,
 	APICONFIG,
@@ -74,5 +76,6 @@ export {
 	BLOCK_EXPLORERS,
 	LUNES_TRANSACTION_FEE,
   HOST,
-  EXRATES_API
+  EXRATES_API,
+  REGEX_TAXABLE_NETWORKS
 }
