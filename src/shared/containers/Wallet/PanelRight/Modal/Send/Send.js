@@ -730,7 +730,12 @@ class Send extends React.Component {
 
   render() {
     let currentNetwork = this.props.wallet.currentNetwork;
-
+    let balance = this.props.balance[currentNetwork.toUpperCase()].total_confirmed;
+    let fee     = this.state.fees[this.state.chosenFee].value
+    fee         = fee ? fee : 0
+    console.warn("FEE____:::", fee)
+    console.warn("BALANCE:::", balance)
+    let sendAllFunds = (balance - (balance * 0.2) - fee).toFixed(8)
     return (
       <Row css={CssWrapper} ref={this.ref.wrapper}>
         <link rel="preload" href="/img/app_wallet/modal_send/sprite_animation_done.png" as="image"/>
@@ -846,6 +851,9 @@ class Send extends React.Component {
                   placeholder={'USD 0.00'} />
               </Row>
             </Col>
+            <Row>
+              <Text clNormalGreen txCenter style={{cursor: 'pointer'}} onClick={() => this.convertCoins(sendAllFunds, 'coin')}>Use the total available amount minus the tax {sendAllFunds}</Text>
+            </Row>
           </Row>
 
           <Hr />
