@@ -733,12 +733,20 @@ class Send extends React.Component {
     let balance = this.props.balance[currentNetwork.toUpperCase()].total_confirmed
     let fee     = this.state.fees[this.state.chosenFee].value
     fee         = fee ? fee : 0
-    let sendAllFunds = (balance - (balance * 0.2) - fee).toFixed(8)
+    let sendAllFunds = (balance - (fee * 0.2) - fee).toFixed(8)
     let textSendAll = ''
     if (currentNetwork.search(REGEX_TAXABLE_NETWORKS) !== -1) {
       textSendAll  = `Use the total available amount minus the tax ${sendAllFunds}`
     } else {
-      sendAllFunds = (balance - fee).toFixed(8).toString()
+      if (currentNetwork.search(/(eth)/i) !== -1) {
+        console.warn('ETH_____')
+        console.warn('FEE_____', fee)
+        console.warn('BALANCE_', balance)
+        sendAllFunds = (balance - fee).toString()
+        console.warn('ALLFUNDS', sendAllFunds)
+      } else {
+        sendAllFunds = (balance - fee).toFixed(8).toString()
+      }
       textSendAll  = `Use the total available amount minus the tax ${sendAllFunds}`
     }
 
