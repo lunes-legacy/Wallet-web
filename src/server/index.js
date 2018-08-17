@@ -113,6 +113,7 @@ const render = (html, styleTags) => {
 				<meta name="application-name" content="Lunes Wallet Web">
 				<meta name="msapplication-TileColor" content="#9f00a7">
 				<meta name="theme-color" content="#ffffff">
+				<meta http-equiv="content-language" content="pt-br, en-US"/>
 				${styleTags}
 			</head>
 			<body>

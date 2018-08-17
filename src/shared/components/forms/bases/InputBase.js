@@ -16,6 +16,9 @@ let InputBase = css`
 			return 'border: none';
 		}
 	}}
+  &:focus {
+    outline: none;
+  }
 `;
 
 export default InputBase;

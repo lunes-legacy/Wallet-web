@@ -10,6 +10,7 @@ import { TextBase } from "Components/TextBase";
 import { Text } from "Components/Text";
 import { Loading } from 'Components/Loading';
 import { numeral } from 'Utils/numeral';
+import { findAssetName } from 'Config/assets';
 
 // CLASSES
 import { MoneyClass } from 'Classes/Money';
@@ -431,7 +432,7 @@ class Histories extends React.Component {
                     { amount }
                   </HeadAmountCoin>
                   <HeadCoinName>
-                    { (currentNetwork === 'lns') ? 'LUNES' : currentNetwork.toUpperCase() }
+                    { (currentNetwork.search(/(lns)|(lunes)/) !== -1) ? findAssetName(transaction.otherParams.assetId) : currentNetwork.toUpperCase() }
                   </HeadCoinName>
                 </HistoryHeadAmount>
               </Col>

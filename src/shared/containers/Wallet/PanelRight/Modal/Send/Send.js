@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import styled, { css } from 'styled-components';
 import style from 'Shared/style-variables';
 import { decrypt } from '../../../../../utils/crypt';
-import { TESTNET } from 'Config/constants';
+import { TESTNET, REGEX_TAXABLE_NETWORKS } from 'Config/constants';
 import { Loading } from 'Components/Loading';
 import { errorPattern, timer } from 'Utils/functions';
 
@@ -118,6 +118,55 @@ Todos os estados que precisamos e/ou iremos usar
 const Fee = new FeeClass();
 const Money = new MoneyClass();
 
+
+var initialState = {
+  isUserAlreadySending: false, //this will be to forbid the user to send twice
+  addressIsValid: true,
+  invalidAmount: false,
+  sendAddress: '',
+  loading: false,
+  lastNetwork: undefined,
+  transferValues: {
+    coin: '',
+    brl: '',
+    usd: ''
+  },
+  radioControl: {
+    coin: true,
+    brl: false,
+    usd: false
+  },
+  feePerByte: {
+    low: undefined,
+    medium: undefined,
+    high: undefined
+  },
+  chosenFee: 'low',
+  feeButtonsStatus: {
+    type: 'initial', //'loading' | 'initial' | 'completed' | 'error'
+    message: 'Put an address and a value to get the right fee',
+  },
+  fees: {
+    low: {
+      value: undefined,
+      gasPrice: '0',
+      txColor: style.normalRed,
+      textContent: 'Low',
+    },
+    medium: {
+      value: undefined,
+      gasPrice: '0',
+      txColor: style.normalYellow,
+      textContent: 'Medium',
+    },
+    high: {
+      value: undefined,
+      gasPrice: '0',
+      txColor: style.normalGreen,
+      textContent: 'High',
+    }
+  }
+}
 class Send extends React.Component {
 	constructor(props) {
 		super(props);
@@ -128,56 +177,19 @@ class Send extends React.Component {
 		this.ref.wrapper = React.createRef();
 
 		//quantity types: real, dollar, coin
-		this.state = {
-			isUserAlreadySending: false, //this will be to forbid the user to send twice
-			stateButtonSend: 'Enviar',
-			addressIsValid: true,
-			invalidAmount: false,
-			network: null,
-			sendAddress: '',
-			loading: false,
-			transferValues: {
-				coin: '',
-				brl: '',
-				usd: ''
-			},
-			radioControl: {
-				coin: true,
-				brl: false,
-				usd: false
-			},
-			feePerByte: {
-				low: undefined,
-				medium: undefined,
-				high: undefined
-			},
-			chosenFee: 'low',
-			feeButtonsStatus: {
-				type: 'initial', //'loading' | 'initial' | 'completed' | 'error'
-				message: 'Put an address and a value to get the right fee',
-			},
-			fees: {
-				low: {
-          value: undefined,
-          gasPrice: '0',
-					txColor: style.normalRed,
-					textContent: 'Low',
-				},
-				medium: {
-          value: undefined,
-          gasPrice: '0',
-					txColor: style.normalYellow,
-					textContent: 'Medium',
-				},
-				high: {
-          value: undefined,
-          gasPrice: '0',
-					txColor: style.normalGreen,
-					textContent: 'High',
-				}
-			}
-		}
+		this.state = initialState;
 	}
+  componentDidUpdate() {
+    let { currentNetwork } = this.props.wallet;
+    let { lastNetwork }    = this.state;
+    if (lastNetwork !== currentNetwork) {
+      console.warn('1', lastNetwork, currentNetwork);
+      this.setState({
+        ...initialState,
+        lastNetwork: currentNetwork
+      })
+    }
+  }
 	componentDidMount = async () => {
 		this.radioCoinAmount = ReactDOM.findDOMNode(this.ref.radioCoinAmount.current);
 		this.sendButton = ReactDOM.findDOMNode(this.ref.sendButton.current);
@@ -188,7 +200,6 @@ class Send extends React.Component {
     }, 500);
 
 		this.setState({
-			...this.state,
 			chosenFee: 'low'
 		});
 	}
@@ -718,7 +729,32 @@ class Send extends React.Component {
   }
 
   render() {
-    let currentNetwork = this.props.wallet.currentNetwork;
+    let currentNetwork = this.props.wallet.currentNetwork
+    let balance = this.props.balance[currentNetwork.toUpperCase()].total_confirmed
+    let fee     = this.state.fees[this.state.chosenFee].value
+    fee         = fee ? fee : 0
+    let sendAllFunds = (balance - fee).toFixed(8).toString()
+    //TODO USE IT
+    // let sendAllFunds = (balance - (fee * 0.2) - fee).toFixed(8).toString()
+    let textSendAll = `Use the total available amount minus the tax ${sendAllFunds}`
+    // if (currentNetwork.search(REGEX_TAXABLE_NETWORKS) !== -1) {
+    //   sendAllFunds = (balance - (fee * 0.2) - fee).toFixed(8).toString()
+    //   textSendAll  = `Use the total available amount minus the tax ${sendAllFunds}`
+    // } else {
+    //   if (currentNetwork.search(/(eth)/i) !== -1) {
+    //     sendAllFunds = (balance - fee).toString()
+    //   } else {
+    //     sendAllFunds = (balance - fee).toFixed(8).toString()
+    //   }
+    //   textSendAll  = `Use the total available amount minus the tax ${sendAllFunds}`
+    // }
+    if (sendAllFunds < 0)
+      textSendAll = ''
+    // console.warn('RENDER_____________')
+    // console.warn('FEE_____', fee)
+    // console.warn('ALLFUNDS', sendAllFunds)
+    // console.warn('BALANCE_', balance)
+    // console.warn('RENDER_____________')
 
     return (
       <Row css={CssWrapper} ref={this.ref.wrapper}>
@@ -835,6 +871,9 @@ class Send extends React.Component {
                   placeholder={'USD 0.00'} />
               </Row>
             </Col>
+            <Row>
+              <Text clNormalGreen txCenter style={{cursor: 'pointer'}} onClick={() => this.convertCoins(sendAllFunds, 'coin')}>{textSendAll}</Text>
+            </Row>
           </Row>
 
           <Hr />
