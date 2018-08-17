@@ -135,6 +135,12 @@ class PanelLeft extends React.Component {
           icon="ic_privacy.svg"
           activeClassName="active" />
 
+        {/*<ItemMenuApp
+          label="Redeem"
+          to="/app/redeem"
+          icon="ic_privacy.svg"
+          activeClassName="active" />*/}
+
         {/* <ItemMenuApp
           label="Recharge"
           to="/app/recharge"
@@ -187,4 +193,3 @@ class PanelLeft extends React.Component {
 }
 
 export default PanelLeft;
-
