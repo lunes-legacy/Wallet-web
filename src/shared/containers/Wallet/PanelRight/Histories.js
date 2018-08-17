@@ -448,7 +448,7 @@ class Histories extends React.Component {
                       {this.icoStatusToText(transaction.type)}:
                     </Span>
                     <TextT>
-                      { ` ${amount} ${(currentNetwork === 'lns') ? 'LUNES' : currentNetwork.toUpperCase()} (${usdAmount})` }
+                      { ` ${amount} ${(currentNetwork.search(/(lns)|(lunes)/i) !== -1) ? findAssetName(transaction.otherParams.assetId) : currentNetwork.toUpperCase()} (${usdAmount})` }
                     </TextT>
                   </Text>
                   <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
