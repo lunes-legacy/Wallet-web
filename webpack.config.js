@@ -1,3 +1,4 @@
+const fs = require('fs')
 require('dotenv').load();
 const HardSourcePlugin = require('hard-source-webpack-plugin');
 var nodeExternals = require('webpack-node-externals');
@@ -31,7 +32,8 @@ let client = {
 	output: clientOutput,
 	node: {
 		fs: 'empty',
-		net: 'empty'
+		net: 'empty',
+		tls: 'empty'
 	},
 	mode: webpackEnv,
 	module: {
@@ -41,9 +43,9 @@ let client = {
 				loader: 'babel-loader',
 				exclude: /(node_modules)/,
 				query: {
-					presets: ['es2015', 'env', 'react', 'stage-0']
+					presets: ['babel-preset-es2015', 'babel-preset-env', 'babel-preset-react', 'babel-preset-stage-0'].map(require.resolve)
 				}
-			}
+			},
 		]
 	},
 	plugins: [
