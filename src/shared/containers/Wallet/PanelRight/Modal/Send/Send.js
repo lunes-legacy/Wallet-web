@@ -733,21 +733,21 @@ class Send extends React.Component {
     let balance = this.props.balance[currentNetwork.toUpperCase()].total_confirmed
     let fee     = this.state.fees[this.state.chosenFee].value
     fee         = fee ? fee : 0
-    let sendAllFunds = (balance - fee).toFixed(8).toString()
+    let sendAllFunds /*= (balance - fee).toFixed(8).toString()*/
     //TODO USE IT
     // let sendAllFunds = (balance - (fee * 0.2) - fee).toFixed(8).toString()
     let textSendAll = `Use the total available amount minus the tax ${sendAllFunds}`
-    // if (currentNetwork.search(REGEX_TAXABLE_NETWORKS) !== -1) {
-    //   sendAllFunds = (balance - (fee * 0.2) - fee).toFixed(8).toString()
-    //   textSendAll  = `Use the total available amount minus the tax ${sendAllFunds}`
-    // } else {
-    //   if (currentNetwork.search(/(eth)/i) !== -1) {
-    //     sendAllFunds = (balance - fee).toString()
-    //   } else {
-    //     sendAllFunds = (balance - fee).toFixed(8).toString()
-    //   }
-    //   textSendAll  = `Use the total available amount minus the tax ${sendAllFunds}`
-    // }
+    if (currentNetwork.search(REGEX_TAXABLE_NETWORKS) !== -1) {
+      sendAllFunds = (balance - (fee * 0.2) - fee).toFixed(8).toString()
+      textSendAll  = `Use the total available amount minus the tax ${sendAllFunds}`
+    } else {
+      if (currentNetwork.search(/(eth)/i) !== -1) {
+        sendAllFunds = (balance - fee).toString()
+      } else {
+        sendAllFunds = (balance - fee).toFixed(8).toString()
+      }
+      textSendAll  = `Use the total available amount minus the tax ${sendAllFunds}`
+    }
     if (sendAllFunds < 0)
       textSendAll = ''
     // console.warn('RENDER_____________')
