@@ -408,6 +408,8 @@ class Histories extends React.Component {
         amount = numeral(amount).format('0,0.00000000');
       }
 
+      let assetName = findAssetName(transaction.otherParams.assetId)
+
       return (
         <History key={key}>
           <HistoryHead onClick={() => this.handleToggleHistory(key)}>
@@ -432,7 +434,7 @@ class Histories extends React.Component {
                     { amount }
                   </HeadAmountCoin>
                   <HeadCoinName>
-                    { (currentNetwork.search(/(lns)|(lunes)/) !== -1) ? findAssetName(transaction.otherParams.assetId) : currentNetwork.toUpperCase() }
+                    { (currentNetwork.search(/(lns)|(lunes)/) !== -1) ? assetName : currentNetwork.toUpperCase() }
                   </HeadCoinName>
                 </HistoryHeadAmount>
               </Col>
@@ -448,7 +450,7 @@ class Histories extends React.Component {
                       {this.icoStatusToText(transaction.type)}:
                     </Span>
                     <TextT>
-                      { ` ${amount} ${(currentNetwork.search(/(lns)|(lunes)/i) !== -1) ? findAssetName(transaction.otherParams.assetId) : currentNetwork.toUpperCase()} (${usdAmount})` }
+                      { ` ${amount} ${(currentNetwork.search(/(lns)|(lunes)/i) !== -1) ? assetName : currentNetwork.toUpperCase()} ${assetName.search(/(token)/i) !== -1 ? '' : '('+usdAmount+')'}` }
                     </TextT>
                   </Text>
                   <Text size={"1.4rem"} txBold margin={"1.5rem 0 0 0"}>
