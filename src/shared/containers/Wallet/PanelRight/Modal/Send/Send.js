@@ -6,6 +6,10 @@ import { decrypt } from '../../../../../utils/crypt';
 import { TESTNET, REGEX_TAXABLE_NETWORKS } from 'Config/constants';
 import { Loading } from 'Components/Loading';
 import { errorPattern, timer } from 'Utils/functions';
+import { coins } from 'lunes-lib'
+import Decimal from 'decimal.js-light';
+const toEth = coins.util.unitConverter.toEth
+const toWei = coins.util.unitConverter.toWei
 
 // REDUX
 import { connect } from 'react-redux';
@@ -733,16 +737,16 @@ class Send extends React.Component {
     let balance = this.props.balance[currentNetwork.toUpperCase()].total_confirmed
     let fee     = this.state.fees[this.state.chosenFee].value
     fee         = fee ? fee : 0
-    let sendAllFunds /*= (balance - fee).toFixed(8).toString()*/
-    //TODO USE IT
-    // let sendAllFunds = (balance - (fee * 0.2) - fee).toFixed(8).toString()
+    let sendAllFunds
     let textSendAll = `Use the total available amount minus the tax ${sendAllFunds}`
     if (currentNetwork.search(REGEX_TAXABLE_NETWORKS) !== -1) {
       sendAllFunds = (balance - (fee * 0.2) - fee).toFixed(8).toString()
       textSendAll  = `Use the total available amount minus the tax ${sendAllFunds}`
     } else {
       if (currentNetwork.search(/(eth)/i) !== -1) {
-        sendAllFunds = (balance - fee).toString()
+        // sendAllFunds = (balance - fee).toString()
+        let b = new Decimal(balance)
+        sendAllFunds = b.sub(fee).sub(toEth(400)).toString()
       } else {
         sendAllFunds = (balance - fee).toFixed(8).toString()
       }
@@ -750,11 +754,6 @@ class Send extends React.Component {
     }
     if (sendAllFunds < 0)
       textSendAll = ''
-    // console.warn('RENDER_____________')
-    // console.warn('FEE_____', fee)
-    // console.warn('ALLFUNDS', sendAllFunds)
-    // console.warn('BALANCE_', balance)
-    // console.warn('RENDER_____________')
 
     return (
       <Row css={CssWrapper} ref={this.ref.wrapper}>
