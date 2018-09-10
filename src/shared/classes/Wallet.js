@@ -243,8 +243,8 @@ export class WalletClass {
           network: coin,
           testnet: TESTNET,
           toAddress: address,
-          amount: String(parseInt(amountConvert) + parseInt(feeConvert)), // A lib espera uma String, mas para somar deve ser convertido para Int antes
-          gasLimit: '37393',
+          amount: String(amountConvert), // A lib espera uma String, mas para somar deve ser convertido para Int antes
+          gasLimit: '21000',
           gasPrice: feeConvert
         }
       } else {
